@@ -1,6 +1,7 @@
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-
+import styles from "../styles.module.css";
 interface Props {}
 
 export const SelectCategory: React.FC<Props> = () => {
@@ -9,39 +10,32 @@ export const SelectCategory: React.FC<Props> = () => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const element = e.target as HTMLInputElement;
     setCategory(element.name);
-    // console.log((<HTMLInputElement>e.target).value);
+    history.push({
+      pathname: "/today-question",
+      state: { category: element.name },
+    });
   };
 
   return (
-    <>
-      <ul>
+    <div className={styles.ct}>
+      <>원하는 카테고리를 선택해주세요.</>
+      <ul className={styles.categoryContainer}>
         <li>
-          <button name="자유" onClick={handleClick}>
+          <Button variant="outlined" name="자유" onClick={handleClick}>
             자유
-          </button>
+          </Button>
         </li>
         <li>
-          <button name="관계" onClick={handleClick}>
+          <Button variant="outlined" name="관계" onClick={handleClick}>
             관계
-          </button>
+          </Button>
         </li>
         <li>
-          <button name="직업" onClick={handleClick}>
+          <Button variant="outlined" name="직업" onClick={handleClick}>
             직업
-          </button>
+          </Button>
         </li>
       </ul>
-      <button
-        onClick={() => {
-          if (category === undefined) {
-            alert("no input");
-          } else {
-            history.push({ pathname: "/today-question", state: { category } });
-          }
-        }}
-      >
-        Next
-      </button>
-    </>
+    </div>
   );
 };

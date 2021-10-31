@@ -1,10 +1,11 @@
 // 질문 불러오기
 
-import { child, get, ref, set, update } from "@firebase/database";
+import { child, get, push, ref, set, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 
 export const getQuestion = async (category: string) => {
   const dbRef = ref(fireDB);
+  console.log(category);
 
   try {
     const snapshot = await get(child(dbRef, `questions/${category}`));
@@ -31,10 +32,11 @@ interface FormData {
 interface Updates {}
 
 export const submitAnswer = async (uid: string | null, formData: FormData) => {
-  const dbRef = ref(fireDB, `/users/${uid}/answers/`);
+  const answerRef = ref(fireDB, `/users/${uid}/answers`);
+  const newAnswerRef = push(answerRef);
 
-  const updates = {
-    [formData.question]: formData.answer,
-  };
-  update(dbRef, updates);
+  update(newAnswerRef, {
+    question: formData.question,
+    answer: formData.answer,
+  });
 };
