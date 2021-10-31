@@ -70,6 +70,12 @@
   font-size: 24px !important;
   line-height: 36px !important;
 }
+@media (min-width: 320px) and (max-width: 510px) {
+  .question {
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+}
 
 .hide {
   display: none;
