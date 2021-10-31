@@ -9,7 +9,6 @@ interface Props {}
 export const MyAnswers: React.FC<Props> = () => {
   const auth = useContext(UserContext);
   const answers = auth!!.user!!.answers;
-  console.log(answers);
 
   const history = useHistory();
 
@@ -28,7 +27,7 @@ export const MyAnswers: React.FC<Props> = () => {
           const answer = answers[key];
 
           return (
-            <li className={styles.questionItem}>
+            <li key={key} className={styles.questionItem}>
               <section>
                 <Typography variant="h6">질문</Typography>
                 <div className={styles.questionContent}>{answer.question}</div>

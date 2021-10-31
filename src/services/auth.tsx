@@ -9,10 +9,9 @@ export const loginWithId = async (id: String) => {
   try {
     const snapshot = await get(child(dbRef, `users/${id}`));
     if (snapshot.exists()) {
-      console.log(snapshot.val());
       return snapshot.val();
     } else {
-      console.log("No User Data.");
+      alert("등록되지 않은 사용자입니다.");
       return null;
     }
   } catch (e) {

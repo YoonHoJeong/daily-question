@@ -21,7 +21,6 @@ function Login() {
     async (e) => {
       e.preventDefault();
       const formattedId = id.replaceAll(".", "");
-      console.log(formattedId);
 
       const uid = await auth?.login(formattedId);
 

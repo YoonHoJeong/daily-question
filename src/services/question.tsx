@@ -1,6 +1,6 @@
 // 질문 불러오기
 
-import { child, get, push, ref, set, update } from "@firebase/database";
+import { child, get, push, ref, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 
 export const getQuestion = async (category: string) => {
@@ -9,10 +9,8 @@ export const getQuestion = async (category: string) => {
   try {
     const snapshot = await get(child(dbRef, `questions/${category}`));
     if (snapshot.exists()) {
-      console.log(snapshot.val());
       return await snapshot.val();
     } else {
-      console.log("No User Data.");
       return null;
     }
   } catch (e) {
@@ -43,5 +41,11 @@ export const submitRate = async (
   category: string,
   rate: string
 ) => {
-  console.log(uid, category, rate);
+  const rateRef = ref(fireDB, `/questions/${category}/rates`);
+  const newRateRef = push(rateRef);
+
+  update(newRateRef, {
+    uid,
+    rate,
+  });
 };

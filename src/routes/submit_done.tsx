@@ -37,7 +37,7 @@ export const SubmitDone: React.FC<Props> = () => {
           history.push("/my-answers");
         }}
       >
-        내 대답들 보기
+        내 답변 보기
       </Button>
       <Box className={styles.rates}>
         <Typography

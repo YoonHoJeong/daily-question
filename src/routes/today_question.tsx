@@ -57,11 +57,9 @@ export const TodayQuestion: React.FC<Props> = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const { answer, rate } = formData;
+    const { answer } = formData;
     if (answer === "") {
       alert("대답을 입력해주세요");
-    } else if (rate === "") {
-      alert("질문 평가를 완료해주세요");
     } else {
       await submitAnswer(auth!!.user!!.uid, formData);
       history.push({
@@ -84,8 +82,9 @@ export const TodayQuestion: React.FC<Props> = () => {
         component="main"
         sx={{ pt: 8, pb: 6 }}
       >
-        {formData.question.split("?").map((q) => (
+        {formData.question.split("?").map((q, idx) => (
           <Typography
+            key={idx}
             className={styles.question}
             variant="h6"
             color="text.secondary"
@@ -134,7 +133,7 @@ export const TodayQuestion: React.FC<Props> = () => {
             history.push("/my-answers");
           }}
         >
-          내 대답들 보기
+          내 답변 보기
         </Button>
         <IconButton
           aria-label="back"
@@ -145,16 +144,6 @@ export const TodayQuestion: React.FC<Props> = () => {
         >
           <ArrowBackIcon />
         </IconButton>
-        <Button
-          className={styles.myAnswerBtn}
-          variant="contained"
-          color="success"
-          onClick={() => {
-            history.push("/my-answers");
-          }}
-        >
-          내 대답들 보기
-        </Button>
       </Container>
     </form>
   );

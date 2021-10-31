@@ -26,7 +26,7 @@ export const SelectCategory: React.FC<Props> = () => {
           history.push("/my-answers");
         }}
       >
-        내 대답들 보기
+        내 답변 보기
       </Button>
       <>원하는 카테고리를 선택해주세요.</>
       <ul className={styles.categoryContainer}>
