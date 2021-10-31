@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import { gaLog } from "../services/firebase";
 import styles from "../styles.module.css";
 interface Props {}
 
@@ -15,7 +16,9 @@ export const SelectCategory: React.FC<Props> = () => {
       state: { category: element.name },
     });
   };
-
+  useEffect(() => {
+    gaLog("select_category_visited");
+  });
   return (
     <div className={styles.ct}>
       <Button

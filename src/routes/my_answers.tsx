@@ -1,7 +1,8 @@
 import { Button, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../app";
+import { gaLog } from "../services/firebase";
 import styles from "../styles.module.css";
 
 interface Props {}
@@ -12,6 +13,9 @@ export const MyAnswers: React.FC<Props> = () => {
 
   const history = useHistory();
 
+  useEffect(() => {
+    gaLog("my_answers_visited");
+  });
   return (
     <ul className={styles.ct}>
       <Button

@@ -12,6 +12,7 @@ import { UserContext } from "../app";
 import { getQuestion, submitAnswer } from "../services/question";
 import styles from "../styles.module.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { gaLog } from "../services/firebase";
 
 interface Props {}
 
@@ -38,7 +39,9 @@ export const TodayQuestion: React.FC<Props> = () => {
     answer: "",
     rate: "",
   });
-
+  useEffect(() => {
+    gaLog("today_questions_visited");
+  });
   useEffect(() => {
     async function fetchData() {
       // You can await here

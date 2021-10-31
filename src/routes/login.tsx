@@ -6,16 +6,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { UserContext } from "../app";
 import Box from "@mui/material/Box";
+import { gaLog } from "../services/firebase";
 
 function Login() {
   const [id, setId] = useState<string>("");
   const auth = useContext(UserContext);
 
   const history = useHistory();
+
+  useEffect(() => {
+    gaLog("login_visited");
+  });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> | undefined =
     async (e) => {

@@ -1,11 +1,12 @@
 import { Button, Typography, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
 import { UserContext } from "../app";
 import { submitRate } from "../services/question";
 import styles from "../styles.module.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { gaLog } from "../services/firebase";
 
 interface Props {}
 interface LocationState {
@@ -17,7 +18,9 @@ export const SubmitDone: React.FC<Props> = () => {
   const history = useHistory();
   const { category } = location.state as LocationState;
   const auth = useContext(UserContext);
-
+  useEffect(() => {
+    gaLog("submit_done_visited");
+  });
   return (
     <div className={styles.ct}>
       <IconButton
