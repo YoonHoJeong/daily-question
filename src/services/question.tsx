@@ -5,7 +5,6 @@ import { fireDB } from "./firebase";
 
 export const getQuestion = async (category: string) => {
   const dbRef = ref(fireDB);
-  console.log(category);
 
   try {
     const snapshot = await get(child(dbRef, `questions/${category}`));
@@ -29,8 +28,6 @@ interface FormData {
   rate: string;
 }
 
-interface Updates {}
-
 export const submitAnswer = async (uid: string | null, formData: FormData) => {
   const answerRef = ref(fireDB, `/users/${uid}/answers`);
   const newAnswerRef = push(answerRef);
@@ -39,4 +36,12 @@ export const submitAnswer = async (uid: string | null, formData: FormData) => {
     question: formData.question,
     answer: formData.answer,
   });
+};
+
+export const submitRate = async (
+  uid: string | null,
+  category: string,
+  rate: string
+) => {
+  console.log(uid, category, rate);
 };

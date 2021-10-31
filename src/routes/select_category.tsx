@@ -18,6 +18,16 @@ export const SelectCategory: React.FC<Props> = () => {
 
   return (
     <div className={styles.ct}>
+      <Button
+        variant="contained"
+        color="success"
+        className={styles.myAnswerBtn}
+        onClick={() => {
+          history.push("/my-answers");
+        }}
+      >
+        내 대답들 보기
+      </Button>
       <>원하는 카테고리를 선택해주세요.</>
       <ul className={styles.categoryContainer}>
         <li>

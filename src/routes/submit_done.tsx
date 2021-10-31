@@ -1,15 +1,35 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useLocation, useHistory } from "react-router";
+import { UserContext } from "../app";
+import { submitRate } from "../services/question";
+
 import styles from "../styles.module.css";
 
 interface Props {}
-
+interface LocationState {
+  category: string;
+}
 export const SubmitDone: React.FC<Props> = () => {
   const [rate, setRate] = useState<string>("");
+  const location = useLocation();
+  const history = useHistory();
+  const { category } = location.state as LocationState;
+  const auth = useContext(UserContext);
 
   return (
     <div className={styles.ct}>
+      <Button
+        variant="contained"
+        color="success"
+        className={styles.myAnswerBtn}
+        onClick={() => {
+          history.push("/my-answers");
+        }}
+      >
+        내 대답들 보기
+      </Button>
       <Box className={styles.rates}>
         <Typography
           variant="h6"
@@ -29,6 +49,7 @@ export const SubmitDone: React.FC<Props> = () => {
             onClick={(e) => {
               e.preventDefault();
               setRate("good");
+              submitRate(auth!!.user!!.uid, category, "good");
             }}
             name="good"
           >
@@ -40,6 +61,7 @@ export const SubmitDone: React.FC<Props> = () => {
             onClick={(e) => {
               e.preventDefault();
               setRate("bad");
+              submitRate(auth!!.user!!.uid, category, "bad");
             }}
             color="error"
             name="bad"

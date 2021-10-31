@@ -5,7 +5,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
@@ -61,7 +60,12 @@ export const TodayQuestion: React.FC<Props> = () => {
       alert("질문 평가를 완료해주세요");
     } else {
       await submitAnswer(auth!!.user!!.uid, formData);
-      history.push("/submit-done");
+      history.push({
+        pathname: "/submit-done",
+        state: {
+          category,
+        },
+      });
     }
   };
   if (loading) {
@@ -107,11 +111,26 @@ export const TodayQuestion: React.FC<Props> = () => {
               alert("대답을 입력해주세요");
             } else {
               await submitAnswer(auth!!.user!!.uid, formData);
-              history.push("/submit-done");
+              history.push({
+                pathname: "/submit-done",
+                state: {
+                  category,
+                },
+              });
             }
           }}
         >
           완료
+        </Button>
+        <Button
+          className={styles.myAnswerBtn}
+          variant="contained"
+          color="success"
+          onClick={() => {
+            history.push("/my-answers");
+          }}
+        >
+          내 대답들 보기
         </Button>
       </Container>
     </form>
