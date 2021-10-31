@@ -4,7 +4,6 @@ import React, { useContext, useState } from "react";
 import { useLocation, useHistory } from "react-router";
 import { UserContext } from "../app";
 import { submitRate } from "../services/question";
-
 import styles from "../styles.module.css";
 
 interface Props {}

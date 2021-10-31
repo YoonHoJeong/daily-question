@@ -2,6 +2,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -10,12 +11,14 @@ import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
 import { getQuestion, submitAnswer } from "../services/question";
 import styles from "../styles.module.css";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface Props {}
 
 interface LocationState {
   category: string;
 }
+
 interface FormData {
   category: string;
   question: string;
@@ -46,6 +49,7 @@ export const TodayQuestion: React.FC<Props> = () => {
     }
     fetchData();
   }, [category]);
+
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setFormData({ ...formData, answer: e.target.value });
   };
@@ -122,6 +126,25 @@ export const TodayQuestion: React.FC<Props> = () => {
         >
           완료
         </Button>
+        <Button
+          className={styles.myAnswerBtn}
+          variant="contained"
+          color="success"
+          onClick={() => {
+            history.push("/my-answers");
+          }}
+        >
+          내 대답들 보기
+        </Button>
+        <IconButton
+          aria-label="back"
+          className={styles.arrowBackBtn}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Button
           className={styles.myAnswerBtn}
           variant="contained"
