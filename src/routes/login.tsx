@@ -20,9 +20,10 @@ function Login() {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> | undefined =
     async (e) => {
       e.preventDefault();
-      const uid = await auth?.login(id);
+      const formattedId = id.replaceAll(".", "");
+      console.log(formattedId);
 
-      console.log(uid);
+      const uid = await auth?.login(formattedId);
 
       if (uid !== null) {
         history.push("/select-category");
@@ -40,15 +41,15 @@ function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>5</Avatar>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>D</Avatar>
         <Typography component="h1" variant="h5">
-          Daily Question Login In
+          Daily Question
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             fullWidth
             id="outlined-basic"
-            label="Email / Phone Number"
+            label="이메일 / 휴대전화"
             variant="outlined"
             placeholder="email or phone-number"
             value={id}
@@ -62,7 +63,7 @@ function Login() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            오늘의 질문이 도착했어요!
           </Button>
         </Box>
       </Box>

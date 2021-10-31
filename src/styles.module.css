@@ -43,7 +43,8 @@
 
   width: 80vw;
   max-width: 1040px;
-  height: 80vh;
+  min-height: 80vh;
+
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4 px;
   box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
@@ -95,4 +96,5 @@
 .questionContent {
   width: 100%;
   word-break: break-all;
+  line-height: 20px;
 }

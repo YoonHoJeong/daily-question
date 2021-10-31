@@ -21,22 +21,26 @@ export const MyAnswers: React.FC<Props> = () => {
       >
         뒤로가기
       </Button>
-      {Object.keys(answers).map((key) => {
-        const answer = answers[key];
+      {answers !== null
+        ? Object.keys(answers).map((key) => {
+            const answer = answers[key];
 
-        return (
-          <li className={styles.questionItem}>
-            <section>
-              <Typography variant="h6">질문</Typography>
-              <div className={styles.questionContent}>{answer.question}</div>
-            </section>
-            <section>
-              <Typography variant="h6">대답</Typography>
-              <div className={styles.questionContent}>{answer.answer}</div>
-            </section>
-          </li>
-        );
-      })}
+            return (
+              <li className={styles.questionItem}>
+                <section>
+                  <Typography variant="h6">질문</Typography>
+                  <div className={styles.questionContent}>
+                    {answer.question}
+                  </div>
+                </section>
+                <section>
+                  <Typography variant="h6">대답</Typography>
+                  <div className={styles.questionContent}>{answer.answer}</div>
+                </section>
+              </li>
+            );
+          })
+        : null}
     </ul>
   );
 };
