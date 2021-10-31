@@ -18,7 +18,7 @@ export const SelectCategory: React.FC<Props> = () => {
   };
   useEffect(() => {
     gaLog("select_category_visited");
-  });
+  }, []);
   return (
     <div className={styles.ct}>
       <Button

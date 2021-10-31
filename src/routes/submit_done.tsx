@@ -20,7 +20,7 @@ export const SubmitDone: React.FC<Props> = () => {
   const auth = useContext(UserContext);
   useEffect(() => {
     gaLog("submit_done_visited");
-  });
+  }, []);
   return (
     <div className={styles.ct}>
       <IconButton

@@ -40,9 +40,8 @@ export const TodayQuestion: React.FC<Props> = () => {
     rate: "",
   });
   useEffect(() => {
-    gaLog("today_questions_visited");
-  });
-  useEffect(() => {
+    gaLog("today_questions_visited_" + category);
+
     async function fetchData() {
       // You can await here
       const question = await getQuestion(category);

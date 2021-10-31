@@ -15,7 +15,7 @@ export const MyAnswers: React.FC<Props> = () => {
 
   useEffect(() => {
     gaLog("my_answers_visited");
-  });
+  }, []);
   return (
     <ul className={styles.ct}>
       <Button

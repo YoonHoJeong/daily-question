@@ -20,7 +20,7 @@ function Login() {
 
   useEffect(() => {
     gaLog("login_visited");
-  });
+  }, []);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> | undefined =
     async (e) => {
