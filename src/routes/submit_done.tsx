@@ -1,10 +1,11 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
 import { useLocation, useHistory } from "react-router";
 import { UserContext } from "../app";
 import { submitRate } from "../services/question";
 import styles from "../styles.module.css";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface Props {}
 interface LocationState {
@@ -19,6 +20,15 @@ export const SubmitDone: React.FC<Props> = () => {
 
   return (
     <div className={styles.ct}>
+      <IconButton
+        aria-label="back"
+        className={styles.arrowBackBtn}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
       <Button
         variant="contained"
         color="success"
