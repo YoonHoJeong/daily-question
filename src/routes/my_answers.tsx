@@ -9,6 +9,8 @@ interface Props {}
 export const MyAnswers: React.FC<Props> = () => {
   const auth = useContext(UserContext);
   const answers = auth!!.user!!.answers;
+  console.log(answers);
+
   const history = useHistory();
 
   return (
@@ -21,26 +23,26 @@ export const MyAnswers: React.FC<Props> = () => {
       >
         뒤로가기
       </Button>
-      {answers !== null
-        ? Object.keys(answers).map((key) => {
-            const answer = answers[key];
+      {answers !== undefined ? (
+        Object.keys(answers).map((key) => {
+          const answer = answers[key];
 
-            return (
-              <li className={styles.questionItem}>
-                <section>
-                  <Typography variant="h6">질문</Typography>
-                  <div className={styles.questionContent}>
-                    {answer.question}
-                  </div>
-                </section>
-                <section>
-                  <Typography variant="h6">대답</Typography>
-                  <div className={styles.questionContent}>{answer.answer}</div>
-                </section>
-              </li>
-            );
-          })
-        : null}
+          return (
+            <li className={styles.questionItem}>
+              <section>
+                <Typography variant="h6">질문</Typography>
+                <div className={styles.questionContent}>{answer.question}</div>
+              </section>
+              <section>
+                <Typography variant="h6">대답</Typography>
+                <div className={styles.questionContent}>{answer.answer}</div>
+              </section>
+            </li>
+          );
+        })
+      ) : (
+        <Typography variant="h6">등록된 답변이 없습니다!</Typography>
+      )}
     </ul>
   );
 };
