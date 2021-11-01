@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
 import { getQuestion, submitAnswer } from "../services/question";
@@ -39,6 +39,7 @@ export const TodayQuestion: React.FC<Props> = () => {
     answer: "",
     rate: "",
   });
+  const answerInputRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gaLog("today_questions_visited_" + category);
 
@@ -78,6 +79,25 @@ export const TodayQuestion: React.FC<Props> = () => {
 
   return (
     <form className={styles.ct} onSubmit={handleSubmit}>
+      <Button
+        className={styles.myAnswerBtn}
+        variant="contained"
+        color="success"
+        onClick={() => {
+          history.push("/my-answers");
+        }}
+      >
+        내 답변 보기
+      </Button>
+      <IconButton
+        aria-label="back"
+        className={styles.arrowBackBtn}
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
       <Container
         disableGutters
         maxWidth="md"
@@ -97,7 +117,8 @@ export const TodayQuestion: React.FC<Props> = () => {
         ))}
 
         <TextField
-          className={styles.answerInput}
+          ref={answerInputRef}
+          className={`${styles.answerInput}`}
           fullWidth
           value={formData.answer}
           name="answer"
@@ -107,14 +128,31 @@ export const TodayQuestion: React.FC<Props> = () => {
           multiline
           rows={4}
         />
-
-        <Button
-          variant="contained"
-          onClick={async () => {
-            const { answer } = formData;
-            if (answer === "") {
-              alert("대답을 입력해주세요");
-            } else {
+        <section className={styles.answerBtns}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={async (e) => {
+              const { answer } = formData;
+              if (answer === "") {
+                alert("답변을 입력해주세요!");
+              } else {
+                await submitAnswer(auth!!.user!!.uid, formData);
+                history.push({
+                  pathname: "/submit-done",
+                  state: {
+                    category,
+                  },
+                });
+              }
+            }}
+          >
+            답변 제출하기
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={async () => {
               await submitAnswer(auth!!.user!!.uid, formData);
               history.push({
                 pathname: "/submit-done",
@@ -122,30 +160,11 @@ export const TodayQuestion: React.FC<Props> = () => {
                   category,
                 },
               });
-            }
-          }}
-        >
-          완료
-        </Button>
-        <Button
-          className={styles.myAnswerBtn}
-          variant="contained"
-          color="success"
-          onClick={() => {
-            history.push("/my-answers");
-          }}
-        >
-          내 답변 보기
-        </Button>
-        <IconButton
-          aria-label="back"
-          className={styles.arrowBackBtn}
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
+            }}
+          >
+            오늘은 질문만 볼래요!
+          </Button>
+        </section>
       </Container>
     </form>
   );

@@ -39,7 +39,8 @@ export const submitAnswer = async (uid: string | null, formData: FormData) => {
 export const submitRate = async (
   uid: string | null,
   category: string,
-  rate: string
+  rate: number,
+  comment: string | null
 ) => {
   const rateRef = ref(fireDB, `/questions/${category}/rates`);
   const newRateRef = push(rateRef);
@@ -47,5 +48,6 @@ export const submitRate = async (
   update(newRateRef, {
     uid,
     rate,
+    comment,
   });
 };

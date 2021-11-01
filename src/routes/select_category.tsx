@@ -1,8 +1,11 @@
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { gaLog } from "../services/firebase";
 import styles from "../styles.module.css";
+
+const todayKeywords = ["카페", "부모님", "소통"];
+
 interface Props {}
 
 export const SelectCategory: React.FC<Props> = () => {
@@ -31,23 +34,15 @@ export const SelectCategory: React.FC<Props> = () => {
       >
         내 답변 보기
       </Button>
-      <>원하는 카테고리를 선택해주세요.</>
+      <>답해보고 싶은 키워드를 골라주세요 🤔</>
       <ul className={styles.categoryContainer}>
-        <li>
-          <Button variant="outlined" name="자유" onClick={handleClick}>
-            자유
-          </Button>
-        </li>
-        <li>
-          <Button variant="outlined" name="관계" onClick={handleClick}>
-            관계
-          </Button>
-        </li>
-        <li>
-          <Button variant="outlined" name="직업" onClick={handleClick}>
-            직업
-          </Button>
-        </li>
+        {todayKeywords.map((keyword) => (
+          <li key={keyword}>
+            <IconButton name={keyword} onClick={handleClick}>
+              {keyword}
+            </IconButton>
+          </li>
+        ))}
       </ul>
     </div>
   );

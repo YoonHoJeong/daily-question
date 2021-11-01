@@ -1,28 +1,49 @@
-import React from "react";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import { Login } from "../routes/login";
+import React, { useContext } from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { UserContext } from "../app";
+import { Admin } from "../routes/admin";
+import Login from "../routes/login";
+import { MyAnswers } from "../routes/my_answers";
 import { SelectCategory } from "../routes/select_category";
 import { SubmitDone } from "../routes/submit_done";
 import { TodayQuestion } from "../routes/today_question";
 
 interface Props {}
 
+const PrivateRoute = ({ children, ...rest }: any) => {
+  const auth = useContext(UserContext);
+
+  return (
+    <Route
+      {...rest}
+      render={() => (auth?.user !== null ? children : <Redirect to="/" />)}
+    ></Route>
+  );
+};
+
 export const Router: React.FC<Props> = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <Login />
         </Route>
-        <Route path="/select-category">
+        <PrivateRoute path="/select-category">
           <SelectCategory />
-        </Route>
-        <Route path="/todoy-question">
+        </PrivateRoute>
+        <PrivateRoute path="/today-question">
           <TodayQuestion />
-        </Route>
-        <Route path="/submit-done">
+        </PrivateRoute>
+        <PrivateRoute path="/submit-done">
           <SubmitDone />
+        </PrivateRoute>
+        <PrivateRoute path="/my-answers">
+          <MyAnswers />
+        </PrivateRoute>
+        <Route path="/admin">
+          <Admin />
         </Route>
+        <Redirect from="*" to="/" />
       </Switch>
     </BrowserRouter>
   );
