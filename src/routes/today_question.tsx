@@ -33,6 +33,7 @@ export const TodayQuestion: React.FC<Props> = () => {
   const auth = useContext(UserContext);
   const [loading, setLoading] = useState<Boolean>(true);
   const { category } = location.state as LocationState;
+
   const [formData, setFormData] = useState<FormData>({
     category,
     question: "",

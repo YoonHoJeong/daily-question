@@ -82,6 +82,12 @@
     font-size: 16px !important;
     line-height: 24px !important;
   }
+  .answerBtns {
+    flex-direction: column;
+  }
+  .answerBtns button {
+    margin: 5px 0px;
+  }
 }
 .hide {
   display: none !important;

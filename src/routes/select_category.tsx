@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { gaLog } from "../services/firebase";
@@ -12,7 +12,8 @@ export const SelectCategory: React.FC<Props> = () => {
   const [category, setCategory] = useState<string>();
   const history = useHistory();
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    const element = e.target as HTMLInputElement;
+    const element = e.currentTarget as HTMLInputElement;
+
     setCategory(element.name);
     history.push({
       pathname: "/today-question",
@@ -39,7 +40,7 @@ export const SelectCategory: React.FC<Props> = () => {
         {todayKeywords.map((keyword) => (
           <li key={keyword}>
             <IconButton name={keyword} onClick={handleClick}>
-              {keyword}
+              <Typography fontSize="large">{keyword}</Typography>
             </IconButton>
           </li>
         ))}
