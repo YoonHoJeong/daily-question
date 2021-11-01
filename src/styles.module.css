@@ -28,7 +28,7 @@
 
 .categoryContainer > li > button {
   margin: 10px;
-  width: 80px;
+  padding: 10px;
 }
 
 .ct {
@@ -43,7 +43,7 @@
 
   width: 80vw;
   max-width: 1040px;
-  min-height: 80vh;
+  min-height: 70vh;
 
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4 px;
@@ -60,6 +60,13 @@
 
 .rates {
   margin-top: 20px !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+.commentInput {
+  margin: 15px 0px !important;
 }
 
 .rateBtnBox {
@@ -76,10 +83,10 @@
     line-height: 24px !important;
   }
 }
-
 .hide {
-  display: none;
+  display: none !important;
 }
+
 .rateButton {
   margin-right: 10px;
 }
@@ -109,4 +116,10 @@
   width: 100%;
   word-break: break-all;
   line-height: 20px;
+}
+
+.answerBtns {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
