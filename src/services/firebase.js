@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAuth } from "@firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBZkKQu5Q0uweMFST5MeVDX7Z54o5xAvxw",
@@ -17,6 +18,7 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase
 export default app;
+export const auth = getAuth(app);
 export const fireDB = getDatabase(app);
 export const analytics = getAnalytics(app);
 export const gaLog = (tag) => {

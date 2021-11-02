@@ -1,9 +1,10 @@
 // 등록된 유저인지 확인
 
 import { child, get, ref } from "@firebase/database";
-import { fireDB } from "./firebase";
+import { auth, fireDB } from "./firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-export const loginWithId = async (id: String) => {
+export const loginWithId = async (id: string) => {
   const dbRef = ref(fireDB);
 
   try {
@@ -14,6 +15,21 @@ export const loginWithId = async (id: String) => {
       alert("등록되지 않은 사용자입니다.");
       return null;
     }
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+export const loginWithEmail = async (email: string, password: string) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    console.log(userCredential);
+    return userCredential.user;
   } catch (e) {
     console.log(e);
     return null;
