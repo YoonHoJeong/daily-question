@@ -29,10 +29,13 @@ interface FormData {
 export const submitAnswer = async (uid: string | null, formData: FormData) => {
   const answerRef = ref(fireDB, `/users/${uid}/answers`);
   const newAnswerRef = push(answerRef);
+  const date = new Date();
+  const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
   update(newAnswerRef, {
     question: formData.question,
     answer: formData.answer,
+    created_at: dateString,
   });
 };
 
@@ -51,3 +54,5 @@ export const submitRate = async (
     comment,
   });
 };
+
+export const getAllAnswers = async () => {};
