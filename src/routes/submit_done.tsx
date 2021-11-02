@@ -56,7 +56,7 @@ function IconContainer(props: any) {
 
 interface Props {}
 interface LocationState {
-  category: string;
+  qid: string;
 }
 export const SubmitDone: React.FC<Props> = () => {
   const [rate, setRate] = useState<number | null>(null);
@@ -64,11 +64,22 @@ export const SubmitDone: React.FC<Props> = () => {
   const [submitted, setSubmitted] = useState<Boolean>(false);
   const location = useLocation();
   const history = useHistory();
-  const { category } = location.state as LocationState;
+  const { qid } = location.state as LocationState;
   const auth = useContext(UserContext);
   useEffect(() => {
     gaLog("submit_done_visited");
   }, []);
+
+  const handleSubmitRate = async (e: any) => {
+    e.preventDefault();
+    console.log(auth!!.user!!.uid, qid, rate, comment);
+
+    if (rate !== null) {
+      await submitRate(auth!!.user!!.uid, qid, rate, comment);
+      setSubmitted(true);
+    }
+  };
+
   return (
     <div className={styles.ct}>
       <IconButton
@@ -125,14 +136,7 @@ export const SubmitDone: React.FC<Props> = () => {
           }`}
           variant="contained"
           fullWidth
-          onClick={async (e) => {
-            e.preventDefault();
-
-            if (rate !== null) {
-              await submitRate(auth!!.user!!.uid, category, rate, comment);
-              setSubmitted(true);
-            }
-          }}
+          onClick={handleSubmitRate}
         >
           소감 제출하기
         </Button>

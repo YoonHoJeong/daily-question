@@ -69,7 +69,7 @@ export const submitAnswer = async (
   uid: string | null,
   { qid, answer }: FormData
 ) => {
-  const answerRef = ref(fireDB, `/users/${uid}/answers`);
+  const answerRef = ref(fireDB, `/answers`);
   const newAid = push(answerRef).key;
 
   const created_at = formatDate(new Date());
@@ -85,16 +85,26 @@ export const submitAnswer = async (
 
 export const submitRate = async (
   uid: string | null,
-  category: string,
-  rate: number,
-  comment: string | null
+  qid: string,
+  degree?: number,
+  comment?: string | null
 ) => {
-  const rateRef = ref(fireDB, `/questions/${category}/rates`);
-  const newRateRef = push(rateRef);
+  const newRid = push(ref(fireDB, `/rates`)).key;
 
-  update(newRateRef, {
+  const updates = {};
+  const created_at = formatDate(new Date());
+
+  updates[`/rates/${newRid}`] = {
     uid,
-    rate,
+    qid,
+    rid: newRid,
+    degree,
     comment,
-  });
+    created_at,
+  };
+  updates[`/questions/${qid}/rates/${newRid}`] = true;
+  updates[`/users/${uid}/rates/${newRid}`] = true;
+  console.log(updates);
+
+  await update(ref(fireDB), updates);
 };
