@@ -30,7 +30,6 @@ export const SelectCategory: React.FC<Props> = () => {
   useEffect(() => {
     async function fetchQuestionsData() {
       const todayQuestions = await getTodayQuestion();
-      console.log("today's Questions");
 
       setQuestions(todayQuestions);
       setLoading(false);

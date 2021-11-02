@@ -4,25 +4,25 @@ import { child, get, push, ref, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 
 function addZero(number: number) {
-  return number < 10 ? `0${number}` : number;
+  return number < 10 ? `0${number}` : `${number}`;
 }
 
 function formatDate(date: Date) {
   let month = date.getMonth() + 1;
 
-  const dateString = `${date.getFullYear()}-${addZero(month)}//
-  -${addZero(date.getDate())}//
-  T${addZero(date.getHours())}//
-  :${addZero(date.getMinutes())}//
-  :${addZero(date.getSeconds())}`;
+  const dateString = `${date.getFullYear()}-${addZero(month)}-${addZero(
+    date.getDate()
+  )}T${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(
+    date.getSeconds()
+  )}`;
   return dateString;
 }
 function formatDateUntilDay(date: Date) {
   let month = date.getMonth() + 1;
 
-  const dateString = `${date.getFullYear()}-${addZero(month)}//
-  -${addZero(date.getDate())}//
-  T${addZero(date.getHours())}`;
+  const dateString = `${date.getFullYear()}-${addZero(month)}-${addZero(
+    date.getDate()
+  )}`;
 
   return dateString;
 }
@@ -34,6 +34,7 @@ export const getTodayQuestion = async () => {
 
   if (snapshot !== null) {
     const questions = snapshot.val();
+
     const todayQuestions = Object.keys(questions)
       .map((key) => questions[key])
       .filter((q) => today === q.publish_date);
