@@ -3,13 +3,53 @@
 import { child, get, push, ref, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 
-export const getQuestion = async (category: string) => {
+function addZero(number: number) {
+  return number < 10 ? `0${number}` : number;
+}
+
+function formatDate(date: Date) {
+  let month = date.getMonth() + 1;
+
+  const dateString = `${date.getFullYear()}-${addZero(month)}//
+  -${addZero(date.getDate())}//
+  T${addZero(date.getHours())}//
+  :${addZero(date.getMinutes())}//
+  :${addZero(date.getSeconds())}`;
+  return dateString;
+}
+function formatDateUntilDay(date: Date) {
+  let month = date.getMonth() + 1;
+
+  const dateString = `${date.getFullYear()}-${addZero(month)}//
+  -${addZero(date.getDate())}//
+  T${addZero(date.getHours())}`;
+
+  return dateString;
+}
+
+export const getTodayQuestion = async () => {
+  const snapshot = await get(ref(fireDB, "/questions"));
+
+  const today = formatDateUntilDay(new Date());
+
+  if (snapshot !== null) {
+    const questions = snapshot.val();
+    const todayQuestions = Object.keys(questions)
+      .map((key) => questions[key])
+      .filter((q) => today === q.publish_date);
+    return todayQuestions;
+  } else {
+    return [];
+  }
+};
+
+export const getQuestion = async (qid: string) => {
   const dbRef = ref(fireDB);
 
   try {
-    const snapshot = await get(child(dbRef, `questions/${category}`));
+    const snapshot = await get(child(dbRef, `questions/${qid}`));
     if (snapshot.exists()) {
-      return await snapshot.val();
+      return snapshot.val();
     } else {
       return null;
     }
@@ -20,23 +60,26 @@ export const getQuestion = async (category: string) => {
 };
 
 interface FormData {
-  category: string;
-  question: string;
+  qid: string;
   answer: string;
-  rate: string;
 }
 
-export const submitAnswer = async (uid: string | null, formData: FormData) => {
+export const submitAnswer = async (
+  uid: string | null,
+  { qid, answer }: FormData
+) => {
   const answerRef = ref(fireDB, `/users/${uid}/answers`);
-  const newAnswerRef = push(answerRef);
-  const date = new Date();
-  const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const newAid = push(answerRef).key;
 
-  update(newAnswerRef, {
-    question: formData.question,
-    answer: formData.answer,
-    created_at: dateString,
-  });
+  const created_at = formatDate(new Date());
+
+  const updates = {};
+
+  updates[`/questions/${qid}/answers/${newAid}`] = true;
+  updates[`/users/${uid}/answers/${newAid}`] = true;
+  updates[`/answers/${newAid}`] = { qid, answer, created_at, aid: newAid, uid };
+
+  update(ref(fireDB), updates);
 };
 
 export const submitRate = async (
@@ -54,5 +97,3 @@ export const submitRate = async (
     comment,
   });
 };
-
-export const getAllAnswers = async () => {};

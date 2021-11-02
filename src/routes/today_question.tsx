@@ -17,14 +17,12 @@ import { gaLog } from "../services/firebase";
 interface Props {}
 
 interface LocationState {
-  category: string;
+  qid: string;
 }
 
 interface FormData {
-  category: string;
-  question: string;
+  qid: string;
   answer: string;
-  rate: string;
 }
 
 export const TodayQuestion: React.FC<Props> = () => {
@@ -32,27 +30,27 @@ export const TodayQuestion: React.FC<Props> = () => {
   const history = useHistory();
   const auth = useContext(UserContext);
   const [loading, setLoading] = useState<Boolean>(true);
-  const { category } = location.state as LocationState;
+  const { qid } = location.state as LocationState;
+  const [question, setQuestion] = useState<string>("");
 
   const [formData, setFormData] = useState<FormData>({
-    category,
-    question: "",
+    qid: "",
     answer: "",
-    rate: "",
   });
   const answerInputRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    gaLog("today_questions_visited_" + category);
+    gaLog("today_questions_visited_" + qid);
 
     async function fetchData() {
       // You can await here
-      const question = await getQuestion(category);
+      const questionObj = await getQuestion(qid);
 
-      setFormData({ ...formData, question: question.title });
+      setQuestion(questionObj.question);
+      setFormData({ ...formData, qid });
       setLoading(false);
     }
     fetchData();
-  }, [category]);
+  }, [qid]);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setFormData({ ...formData, answer: e.target.value });
@@ -69,7 +67,7 @@ export const TodayQuestion: React.FC<Props> = () => {
       history.push({
         pathname: "/submit-done",
         state: {
-          category,
+          qid,
         },
       });
     }
@@ -105,7 +103,7 @@ export const TodayQuestion: React.FC<Props> = () => {
         component="main"
         sx={{ pt: 8, pb: 6 }}
       >
-        {formData.question.split("?").map((q, idx) => (
+        {question.split("?").map((q, idx) => (
           <Typography
             key={idx}
             className={styles.question}
@@ -142,7 +140,7 @@ export const TodayQuestion: React.FC<Props> = () => {
                 history.push({
                   pathname: "/submit-done",
                   state: {
-                    category,
+                    qid,
                   },
                 });
               }
@@ -158,7 +156,7 @@ export const TodayQuestion: React.FC<Props> = () => {
               history.push({
                 pathname: "/submit-done",
                 state: {
-                  category,
+                  qid,
                 },
               });
             }}

@@ -142,3 +142,16 @@
 .adminInput {
   margin-top: 15px !important;
 }
+
+/* admin */
+.adminMain {
+  width: 80vw;
+  height: 70vh;
+}
+
+.answerList {
+}
+
+.answerList > li {
+  margin-top: 15px;
+}

@@ -1,28 +1,47 @@
-import { Button, IconButton, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { gaLog } from "../services/firebase";
+import { getTodayQuestion } from "../services/question";
 import styles from "../styles.module.css";
-
-const todayKeywords = ["카페", "부모님", "소통"];
 
 interface Props {}
 
 export const SelectCategory: React.FC<Props> = () => {
-  const [category, setCategory] = useState<string>();
+  const [questions, setQuestions] = useState<any[]>();
+  const [loading, setLoading] = useState<Boolean>(true);
   const history = useHistory();
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const element = e.currentTarget as HTMLInputElement;
 
-    setCategory(element.name);
     history.push({
       pathname: "/today-question",
-      state: { category: element.name },
+      state: { qid: element.name },
     });
   };
   useEffect(() => {
     gaLog("select_category_visited");
   }, []);
+  useEffect(() => {
+    async function fetchQuestionsData() {
+      const todayQuestions = await getTodayQuestion();
+      console.log("today's Questions");
+
+      setQuestions(todayQuestions);
+      setLoading(false);
+    }
+    fetchQuestionsData();
+  }, []);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   return (
     <div className={styles.ct}>
       <Button
@@ -37,10 +56,10 @@ export const SelectCategory: React.FC<Props> = () => {
       </Button>
       <>답해보고 싶은 키워드를 골라주세요 🤔</>
       <ul className={styles.categoryContainer}>
-        {todayKeywords.map((keyword) => (
-          <li key={keyword}>
-            <IconButton name={keyword} onClick={handleClick}>
-              <Typography fontSize="large">{keyword}</Typography>
+        {questions!!.map((q) => (
+          <li key={q.qid}>
+            <IconButton name={q.qid} onClick={handleClick}>
+              <Typography fontSize="large">{q.keyword}</Typography>
             </IconButton>
           </li>
         ))}
