@@ -22,10 +22,7 @@ export const MyAnswers: React.FC<Props> = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await getUserAnswers(auth!!.user);
-      console.log(data);
-
       setAnswers(data);
-
       setLoading(false);
     }
     fetchData();
