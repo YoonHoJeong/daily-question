@@ -2,7 +2,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -11,8 +10,8 @@ import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
 import { getQuestion, submitAnswer } from "../services/question";
 import styles from "../styles.module.css";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { gaLog } from "../services/firebase";
+import { Header } from "../components/header";
 
 interface Props {}
 
@@ -78,25 +77,8 @@ export const TodayQuestion: React.FC<Props> = () => {
 
   return (
     <form className={styles.ct} onSubmit={handleSubmit}>
-      <Button
-        className={styles.myAnswerBtn}
-        variant="contained"
-        color="success"
-        onClick={() => {
-          history.push("/my-answers");
-        }}
-      >
-        내 답변 보기
-      </Button>
-      <IconButton
-        aria-label="back"
-        className={styles.arrowBackBtn}
-        onClick={() => {
-          history.goBack();
-        }}
-      >
-        <ArrowBackIcon />
-      </IconButton>
+      <Header history={history} />
+
       <Container
         disableGutters
         maxWidth="md"

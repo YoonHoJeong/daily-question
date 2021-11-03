@@ -49,7 +49,7 @@ export const SelectCategory: React.FC<Props> = () => {
 
   return (
     <div className={styles.ct}>
-      <header className={styles.categoryHeader}>
+      <header className={styles.header}>
         <Button
           className={styles.changeCategoryBtn}
           onClick={(e) => {
