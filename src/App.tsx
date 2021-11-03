@@ -4,8 +4,9 @@ import GlobalStyles from "./components/GlobalStyles";
 import { Router } from "./components/router";
 import { loginWithId } from "./services/auth";
 import styles from "./styles.module.css";
-import { fireDB } from "./services/firebase";
+import { auth, fireDB } from "./services/firebase";
 import { onValue, ref } from "firebase/database";
+import { onAuthStateChanged } from "@firebase/auth";
 
 interface User {
   answers: string[];
@@ -21,15 +22,8 @@ export const UserContext = createContext<Auth | null>(null);
 
 const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const value = {
-    user,
-    login: async (id: string) => {
-      const user = await loginWithId(id);
+  const [isAuthenticating, setIsAuthenticating] = useState<Boolean>(true);
 
-      setUser(user);
-      return user;
-    },
-  };
   useEffect(() => {
     if (user !== null) {
       const userRef = ref(fireDB, `users/${user.uid}`);
@@ -41,6 +35,23 @@ const UserProvider: React.FC = ({ children }) => {
       return () => unsubscribe();
     }
   }, [user]);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticating(false);
+    });
+  }, [user]);
+
+  const value = {
+    user,
+    login: async (id: string) => {
+      const user = await loginWithId(id);
+
+      setUser(user);
+      return user;
+    },
+    isAuthenticating,
+  };
 
   return <UserContext.Provider value={value}>{children} </UserContext.Provider>;
 };

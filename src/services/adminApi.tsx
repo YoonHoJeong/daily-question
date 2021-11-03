@@ -1,5 +1,15 @@
-import { get, onValue, ref } from "@firebase/database";
+import {
+  endBefore,
+  equalTo,
+  get,
+  onValue,
+  orderByChild,
+  query,
+  ref,
+  startAt,
+} from "@firebase/database";
 import { fireDB } from "./firebase";
+import { formatDateUntilDay } from "./question";
 
 export const adminApi = {
   getAllAnswers: (
@@ -37,8 +47,46 @@ export const adminApi = {
     const questionsRef = ref(fireDB, "/questions");
     return onValue(questionsRef, async (snapshot) => {
       const questions = snapshot.val();
-      console.log(questions);
+      Object.keys(questions).map((key) => {
+        const q = questions[key];
+      });
       setIsLoading(false);
     });
+  },
+  getQuestionsByDate: (date: string) => {
+    const qQuery = query(
+      ref(fireDB, "/questions"),
+      orderByChild("publish_date"),
+      equalTo(date)
+    );
+    const unsub = onValue(qQuery, (snapshot) => {
+      console.log(snapshot.val());
+    });
+
+    return unsub;
+  },
+  getAnswersByDate: (
+    date: string,
+    setAnswers: React.Dispatch<any>,
+    isLoading: Boolean,
+    setIsLoading: React.Dispatch<React.SetStateAction<Boolean>>
+  ) => {
+    const tomorrow = new Date(date);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowString = formatDateUntilDay(tomorrow);
+
+    const qQuery = query(
+      ref(fireDB, "/answers"),
+      orderByChild("created_at"),
+      startAt(date),
+      endBefore(tomorrowString)
+    );
+    const unsub = onValue(qQuery, (snapshot) => {
+      console.log(snapshot.val());
+      setAnswers(snapshot.val());
+      setIsLoading(false);
+    });
+
+    return unsub;
   },
 };

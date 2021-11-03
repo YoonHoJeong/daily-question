@@ -1,25 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { UserContext } from "../app";
 import { Admin } from "../routes/admin";
+import { AdminLogin } from "../routes/admin_login";
 import Login from "../routes/login";
 import { MyAnswers } from "../routes/my_answers";
 import { SelectCategory } from "../routes/select_category";
 import { SubmitDone } from "../routes/submit_done";
 import { TodayQuestion } from "../routes/today_question";
+import PrivateRoute from "./private_route";
+import ProtectedRoute from "./protected_route";
 
 interface Props {}
-
-const PrivateRoute = ({ children, ...rest }: any) => {
-  const auth = useContext(UserContext);
-
-  return (
-    <Route
-      {...rest}
-      render={() => (auth?.user !== null ? children : <Redirect to="/" />)}
-    ></Route>
-  );
-};
 
 export const Router: React.FC<Props> = () => {
   return (
@@ -40,8 +31,11 @@ export const Router: React.FC<Props> = () => {
         <PrivateRoute path="/my-answers">
           <MyAnswers />
         </PrivateRoute>
-        <Route path="/admin">
+        <ProtectedRoute path="/admin/main">
           <Admin />
+        </ProtectedRoute>
+        <Route exact path="/admin">
+          <AdminLogin />
         </Route>
         <Redirect from="*" to="/" />
       </Switch>
