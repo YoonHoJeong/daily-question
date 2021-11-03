@@ -36,7 +36,7 @@ export const MyAnswers: React.FC<Props> = () => {
   }
 
   return (
-    <ul className={styles.ct}>
+    <div className={`${styles.ct} ${styles.myAnswersContainer}`}>
       <Button
         className={styles.backBtn}
         onClick={() => {
@@ -45,24 +45,28 @@ export const MyAnswers: React.FC<Props> = () => {
       >
         뒤로가기
       </Button>
-      {answers !== undefined ? (
-        answers.map((answer) => {
-          return (
-            <li key={answer.aid} className={styles.questionItem}>
-              <section>
-                <Typography>질문</Typography>
-                <div className={styles.questionContent}>{answer.question}</div>
-              </section>
-              <section>
-                <Typography>대답</Typography>
-                <div className={styles.questionContent}>{answer.answer}</div>
-              </section>
-            </li>
-          );
-        })
-      ) : (
-        <Typography variant="h6">등록된 답변이 없습니다!</Typography>
-      )}
-    </ul>
+      <ul>
+        {answers !== undefined ? (
+          answers.map((answer) => {
+            return (
+              <li key={answer.aid} className={styles.questionItem}>
+                <section>
+                  <Typography>질문</Typography>
+                  <div className={styles.questionContent}>
+                    {answer.question}
+                  </div>
+                </section>
+                <section>
+                  <Typography>대답</Typography>
+                  <div className={styles.questionContent}>{answer.answer}</div>
+                </section>
+              </li>
+            );
+          })
+        ) : (
+          <Typography variant="h6">등록된 답변이 없습니다!</Typography>
+        )}
+      </ul>
+    </div>
   );
 };

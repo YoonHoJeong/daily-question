@@ -44,6 +44,7 @@
   width: 80vw;
   max-width: 1040px;
   min-height: 70vh;
+  max-height: 80vh;
 
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   border-radius: 4 px;
@@ -178,4 +179,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.myAnswersContainer {
+  display: block;
+  max-height: 100%;
+  overflow: scroll;
+}
+
+.myAnswersContainer > ul {
+  height: 100%;
 }
