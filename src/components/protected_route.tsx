@@ -6,7 +6,7 @@ const ProtectedRoute = ({ children, ...rest }: any) => {
     <Route
       {...rest}
       render={() =>
-        auth?.currentUser !== null ? children : <Redirect to="/" />
+        auth?.currentUser !== null ? children : <Redirect to="/admin" />
       }
     ></Route>
   );

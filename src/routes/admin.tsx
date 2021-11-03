@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { adminApi } from "../services/admin";
+import { adminApi } from "../services/adminApi";
 import styles from "../styles.module.css";
 
 interface Props {}
 
 export const Admin: React.FC<Props> = () => {
   const [answers, setAnswers] = useState<any>(null);
+  const [questions, setQuestions] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   useEffect(() => {
-    const unsub = adminApi.getAllAnswers(setAnswers, setIsLoading);
+    const unsub = adminApi.getAllQuestions(
+      setQuestions,
+      isLoading,
+      setIsLoading
+    );
+
     return () => unsub();
   }, []);
 
