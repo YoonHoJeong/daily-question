@@ -85,7 +85,7 @@ export const TodayQuestion: React.FC<Props> = () => {
         component="main"
         sx={{ pt: 8, pb: 6 }}
       >
-        {question.split("?").map((q, idx) => (
+        {question.split("\n").map((q, idx) => (
           <Typography
             key={idx}
             className={styles.question}
@@ -93,7 +93,7 @@ export const TodayQuestion: React.FC<Props> = () => {
             color="text.secondary"
             component="p"
           >
-            {q === "" ? null : `${q}?`}
+            {q}
           </Typography>
         ))}
 

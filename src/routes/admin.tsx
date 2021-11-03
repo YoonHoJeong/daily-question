@@ -96,7 +96,9 @@ export const Admin: React.FC<Props> = () => {
                 name={category.qid}
                 color="secondary"
                 variant={
-                  category.qid === selectedCategory ? "contained" : "outlined"
+                  `${category.qid}` === selectedCategory
+                    ? "contained"
+                    : "outlined"
                 }
                 onClick={handleClickCategory}
               >
