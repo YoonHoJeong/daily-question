@@ -29,7 +29,7 @@ export const Admin: React.FC<Props> = () => {
     formatDateUntilDay(new Date())
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>();
+  const [categories, setCategories] = useState<any[]>();
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const serviceDateList: string[] = getServiceDateList();
 
@@ -41,6 +41,7 @@ export const Admin: React.FC<Props> = () => {
 
   const handleClickCategory = (e: any) => {
     const elem = e.target as HTMLButtonElement;
+
     setSelectedCategory(elem.name);
   };
 
@@ -48,7 +49,12 @@ export const Admin: React.FC<Props> = () => {
     let unsub: any;
     async function fetchData() {
       const questionsData = await getQuestionsUntilToday();
-      setCategories(questionsData[selectedDate].map((q: any) => q.keyword));
+      setCategories(
+        questionsData[selectedDate].map((q: any) => ({
+          qid: q.qid,
+          keyword: q.keyword,
+        }))
+      );
     }
     setIsLoading((cur) => {
       setIsLoading(true);
@@ -86,29 +92,30 @@ export const Admin: React.FC<Props> = () => {
           <ul>
             {categories?.map((category) => (
               <Button
-                key={category}
-                name={category}
+                key={category.qid}
+                name={category.qid}
                 color="secondary"
                 variant={
-                  category === selectedCategory ? "contained" : "outlined"
+                  category.qid === selectedCategory ? "contained" : "outlined"
                 }
                 onClick={handleClickCategory}
               >
-                {category}
+                {category.keyword}
               </Button>
             ))}
           </ul>
           <ul>
             {Object.keys(answers).map((aid) => {
               const answer = answers[aid];
-
-              return (
-                <li>
-                  <span>{answer.created_at}</span>
-                  <span>{answer.email || answer.phone_number}</span>
-                  <span>{answer.answer}</span>
-                </li>
-              );
+              if (selectedCategory === "" || answer.qid === selectedCategory) {
+                return (
+                  <li>
+                    <span>{answer.created_at}</span>
+                    <span>{answer.email || answer.phone_number}</span>
+                    <span>{answer.answer}</span>
+                  </li>
+                );
+              }
             })}
           </ul>
         </>
