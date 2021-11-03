@@ -3,6 +3,8 @@
 import { child, get, push, ref, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 
+const SERVICE_LAUNCH_DATE = "2021-11-01";
+
 function addZero(number: number) {
   return number < 10 ? `0${number}` : `${number}`;
 }
@@ -41,7 +43,7 @@ export const getQuestionsUntilToday = async () => {
       .filter(
         (q) =>
           new Date(today) >= new Date(q.publish_date) &&
-          new Date(q.publish_date) >= new Date("2021-11-01")
+          new Date(q.publish_date) >= new Date(SERVICE_LAUNCH_DATE)
       )
       .forEach((q) => {
         questionsSortByDate[q.publish_date] !== undefined
@@ -53,6 +55,27 @@ export const getQuestionsUntilToday = async () => {
   } else {
     return {};
   }
+};
+
+export const getUserAnswers = async (user: any) => {
+  const { answers } = user;
+  const snapshot = await get(ref(fireDB, "/answers"));
+  const allAnswers = snapshot.val();
+  const qsnapshot = await get(ref(fireDB, `questions`));
+
+  const questions = qsnapshot.val();
+  const result: any[] = [];
+
+  Object.keys(allAnswers)
+    .filter((aid) => Object.keys(answers).includes(aid))
+    .map((aid) => {
+      const ans = allAnswers[aid];
+      const { qid } = ans;
+
+      result.push({ ...ans, question: questions[qid].question });
+    });
+
+  return result;
 };
 
 export const getTodayQuestions = async () => {
