@@ -107,11 +107,15 @@ export const Admin: React.FC<Props> = () => {
           <ul>
             {Object.keys(answers).map((aid) => {
               const answer = answers[aid];
-              if (selectedCategory === "" || answer.qid === selectedCategory) {
+
+              if (
+                selectedCategory === "" ||
+                `${answer.qid}` === selectedCategory
+              ) {
                 return (
                   <li>
-                    <span>{answer.created_at}</span>
-                    <span>{answer.email || answer.phone_number}</span>
+                    <span>{answer.created_at} | </span>
+                    <span>{answer.email || answer.phone_number} | </span>
                     <span>{answer.answer}</span>
                   </li>
                 );

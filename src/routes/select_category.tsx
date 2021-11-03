@@ -80,7 +80,7 @@ export const SelectCategory: React.FC<Props> = () => {
       <ul className={styles.datesContainer}>
         {Object.keys(questions!!)
           .filter((date) => {
-            return wantOnlyToday === true
+            return wantOnlyToday
               ? formatDateUntilDay(new Date()) === date
               : new Date(formatDateUntilDay(new Date())) > new Date(date);
           })
