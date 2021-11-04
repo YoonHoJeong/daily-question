@@ -66,7 +66,6 @@ export const SubmitDone: React.FC<Props> = () => {
 
   const handleSubmitRate = async (e: any) => {
     e.preventDefault();
-    console.log(auth!!.user!!.uid, qid, rate, comment);
 
     if (rate !== null) {
       await submitRate(auth!!.user!!.uid, qid, rate, comment);

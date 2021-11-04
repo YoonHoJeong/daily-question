@@ -117,7 +117,7 @@ export const Admin: React.FC<Props> = () => {
                 return (
                   <li>
                     <span>{answer.created_at} | </span>
-                    <span>{answer.email || answer.phone_number} | </span>
+                    <span>{answer.uid} | </span>
                     <span>{answer.answer}</span>
                   </li>
                 );

@@ -155,7 +155,6 @@ export const submitRate = async (
   };
   updates[`/questions/${qid}/rates/${newRid}`] = true;
   updates[`/users/${uid}/rates/${newRid}`] = true;
-  console.log(updates);
 
   await update(ref(fireDB), updates);
 };
