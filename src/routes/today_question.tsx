@@ -17,6 +17,7 @@ interface Props {}
 
 interface LocationState {
   qid: string;
+  wantOnlyToday: Boolean;
 }
 
 interface FormData {
@@ -134,7 +135,6 @@ export const TodayQuestion: React.FC<Props> = () => {
             variant="outlined"
             size="large"
             onClick={async () => {
-              await submitAnswer(auth!!.user!!.uid, formData);
               history.push({
                 pathname: "/submit-done",
                 state: {

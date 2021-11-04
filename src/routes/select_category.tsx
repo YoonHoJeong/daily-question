@@ -27,7 +27,7 @@ export const SelectCategory: React.FC<Props> = () => {
 
     history.push({
       pathname: "/today-question",
-      state: { qid: element.name },
+      state: { qid: element.name, wantOnlyToday },
     });
   };
   useEffect(() => {
