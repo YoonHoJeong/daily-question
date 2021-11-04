@@ -7,6 +7,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { ObjectFlags } from "typescript";
+import { getToday, getTomorrow } from "../services/dateService";
 import { gaLog } from "../services/firebase";
 import {
   formatDateUntilDay,
@@ -76,7 +77,18 @@ export const SelectCategory: React.FC<Props> = () => {
           내 답변 보기
         </Button>
       </header>
-      {wantOnlyToday ? <div>질문 키워드를 선택해 주세요 😊</div> : null}
+
+      {wantOnlyToday ? (
+        <>
+          {"2021-11-05" === getToday() ? (
+            <div className={styles.lastMsg}>이번 주 마지막 질문이에요.</div>
+          ) : null}
+          <div>
+            질문 키워드를 선택해 주세요{" "}
+            {"2021-11-05" === getToday() ? <span> 😂 </span> : <span>😊</span>}
+          </div>
+        </>
+      ) : null}
       <ul className={styles.datesContainer}>
         {Object.keys(questions!!)
           .filter((date) => {

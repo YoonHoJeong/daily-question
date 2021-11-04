@@ -6,6 +6,8 @@ import {
 } from "../services/question";
 import styles from "../styles.module.css";
 import { Button } from "@mui/material";
+import axios from "axios";
+
 interface Props {}
 
 const LAUNCH_DATE = "2021-11-01";
@@ -32,6 +34,14 @@ export const Admin: React.FC<Props> = () => {
   const [categories, setCategories] = useState<any[]>();
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const serviceDateList: string[] = getServiceDateList();
+  const [ip, setIP] = useState("");
+
+  //creating function to load ip address from the API
+  const getData = async () => {
+    const res = await axios.get("https://geolocation-db.com/json/");
+    console.log(res.data);
+    setIP(res.data.IPv4);
+  };
 
   const handleClickDate = (e: any) => {
     const elem = e.target as HTMLButtonElement;
@@ -71,7 +81,10 @@ export const Admin: React.FC<Props> = () => {
 
     return () => unsub();
   }, [selectedDate]);
-
+  useEffect(() => {
+    //passing getData method to the lifecycle method
+    getData();
+  }, []);
   return (
     <main className={styles.adminMain}>
       <div>admin</div>

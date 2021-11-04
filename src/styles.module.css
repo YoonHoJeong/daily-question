@@ -190,3 +190,9 @@
 .myAnswersContainer > ul {
   height: 100%;
 }
+
+.lastMsg {
+  color: #1976d2;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
