@@ -88,7 +88,6 @@ export const SelectCategory: React.FC<Props> = () => {
           <Button
             color="warning"
             variant="contained"
-            fullWidth
             onClick={(e) => {
               e.preventDefault();
               window.location.href = "https://forms.gle/AqJ642yNG7pCwgYt7";
