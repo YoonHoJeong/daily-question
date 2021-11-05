@@ -128,12 +128,14 @@ export const TodayQuestion: React.FC<Props> = () => {
                 });
               }
             }}
+            disabled
           >
             답변 제출하기
           </Button>
           <Button
             variant="outlined"
             size="large"
+            disabled
             onClick={async () => {
               history.push({
                 pathname: "/submit-done",

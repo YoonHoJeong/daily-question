@@ -80,13 +80,22 @@ export const SelectCategory: React.FC<Props> = () => {
 
       {wantOnlyToday ? (
         <>
-          {"2021-11-05" === getToday() ? (
-            <div className={styles.lastMsg}>이번 주 마지막 질문이에요.</div>
-          ) : null}
-          <div>
-            질문 키워드를 선택해 주세요{" "}
-            {"2021-11-05" === getToday() ? <span> 😂 </span> : <span>😊</span>}
-          </div>
+          <div>이번 주 질문은 마감되었습니다 😥</div>
+          <br />
+          <br />
+          <div>다음 주 질문도 받아보시겠어요?</div>
+          <br />
+          <Button
+            color="warning"
+            variant="contained"
+            fullWidth
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "https://forms.gle/AqJ642yNG7pCwgYt7";
+            }}
+          >
+            11월 2주차 등록하기
+          </Button>
         </>
       ) : null}
       <ul className={styles.datesContainer}>
