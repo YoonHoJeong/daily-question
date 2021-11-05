@@ -6,6 +6,7 @@ import {
 } from "../services/question";
 import styles from "../styles.module.css";
 import { Button } from "@mui/material";
+import { getToday } from "../services/dateService";
 
 interface Props {}
 
@@ -37,9 +38,7 @@ export const Admin: React.FC<Props> = () => {
     answers: {},
     rates: {},
   });
-  const [selectedDate, setSelectedDate] = useState<string>(
-    formatDateUntilDay(new Date())
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(getToday());
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<any[]>();
   const [loading, setLoading] = useState<Boolean>(true);
@@ -138,33 +137,37 @@ export const Admin: React.FC<Props> = () => {
 
                 return { ...questions[qid], answer, rate };
               });
-              console.log(userQuestions);
 
               return (
                 <ul>
-                  {user.uid}
-                  {userQuestions.map((data) => (
-                    <li>
-                      <div>
-                        keyword: {data.keyword}({data.publish_date}){" "}
-                        {data.question}
-                      </div>
-                      {data.answer ? (
+                  {userQuestions
+                    .filter((data) => {
+                      const created_at = data.answer
+                        ? formatDateUntilDay(new Date(data.answer.created_at))
+                        : formatDateUntilDay(new Date(data.rate.created_at));
+
+                      return created_at === selectedDate;
+                    })
+                    .map((data) => (
+                      <li>
                         <div>
-                          답변:{" "}
-                          {`${data.answer.created_at}: ${data.answer.answer}`}
+                          [{data.keyword}]({data.publish_date}) {data.question}
                         </div>
-                      ) : null}
-                      {data.rate ? (
-                        <div>
-                          평점:{" "}
-                          {`${data.rate.created_at}: [${data.rate.degree}] ${data.rate.comment}`}
-                        </div>
-                      ) : null}
-                      ------------------------------------
-                    </li>
-                  ))}
-                  ==============================
+                        {data.answer ? (
+                          <div>
+                            답변:{" "}
+                            {`${data.answer.created_at}: ${data.answer.answer}`}
+                          </div>
+                        ) : null}
+                        {data.rate ? (
+                          <div>
+                            평점:{" "}
+                            {`${data.rate.created_at}: [${data.rate.degree}] ${data.rate.comment}`}
+                          </div>
+                        ) : null}
+                        ------------------------------------
+                      </li>
+                    ))}
                 </ul>
               );
             })}
