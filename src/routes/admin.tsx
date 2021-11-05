@@ -24,18 +24,18 @@ function getServiceDateList() {
 }
 
 interface Data {
-  users: any[];
-  questions: any[];
-  answers: any[];
-  rates: any[];
+  users: {};
+  questions: {};
+  answers: {};
+  rates: {};
 }
 
 export const Admin: React.FC<Props> = () => {
   const [{ users, questions, answers, rates }, setData] = useState<Data>({
-    users: [],
-    questions: [],
-    answers: [],
-    rates: [],
+    users: {},
+    questions: {},
+    answers: {},
+    rates: {},
   });
   const [selectedDate, setSelectedDate] = useState<string>(
     formatDateUntilDay(new Date())
@@ -105,18 +105,41 @@ export const Admin: React.FC<Props> = () => {
             ))}
           </ul>
           <ul>
-            {users
-              .filter((user) => user.answers !== undefined)
-              .map((user) => (
-                <li>
-                  -- {user.uid}
-                  <div className="">{questions[user]}</div>
-                  <div className=""></div>
-                  <div className=""></div>
-                  <div className=""></div>
-                  =======================
-                </li>
-              ))}
+            {Object.keys(users).map((uid) => {
+              const user = users[uid];
+              let rateQids: any[] = [];
+              let answerQids: any[] = [];
+              if (user.rates !== undefined) {
+                rateQids = Object.keys(user.rates).map((rid) => rates[rid].qid);
+              }
+              if (user.answers !== undefined) {
+                answerQids = Object.keys(user.answers).map(
+                  (aid) => answers[aid]?.qid
+                );
+              }
+              const userQids = Array.from(
+                new Set([...rateQids, ...answerQids])
+              );
+              const userQuestions = userQids.map((qid) => {
+                const rate = Object.keys(rates)
+                  .filter(
+                    (rid) =>
+                      rates[rid].uid === user.uid && rates[rid].qid === qid
+                  )
+                  .map((rid) => rates[rid])
+                  .pop();
+                const answer = Object.keys(answers)
+                  .filter(
+                    (aid) =>
+                      answers[aid].uid === user.uid && answers[aid].qid === qid
+                  )
+                  .map((aid) => answers[aid])
+                  .pop();
+
+                return { ...questions[qid], answer, rate };
+              });
+              console.log(userQuestions);
+            })}
           </ul>
         </>
       )}

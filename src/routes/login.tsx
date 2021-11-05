@@ -11,6 +11,7 @@ import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
 import Box from "@mui/material/Box";
 import { gaLog } from "../services/firebase";
+import styles from "../styles.module.css";
 
 function Login() {
   const [id, setId] = useState<string>("");
@@ -26,7 +27,6 @@ function Login() {
     async (e) => {
       e.preventDefault();
       const formattedId = id.replaceAll(".", "");
-
       const uid = await auth?.login(formattedId);
 
       if (uid !== null) {
@@ -44,10 +44,12 @@ function Login() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>D</Avatar>
-        <Typography component="h1" variant="h5">
-          Daily Question
-        </Typography>
+        <div className={styles.titleBox}>
+          <img className={styles.logo} src="logo.png" alt="" />
+          <Typography className={styles.loginTitle} component="h1" variant="h5">
+            1 Question 1 Day
+          </Typography>
+        </div>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             fullWidth
@@ -80,7 +82,7 @@ function Login() {
           window.location.href = "https://forms.gle/AqJ642yNG7pCwgYt7";
         }}
       >
-        11월 2주차 신청하기 (~11.06)
+        11월 2주차 부터 시작하기
       </Button>
     </Container>
   );

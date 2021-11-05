@@ -196,3 +196,19 @@
   margin-bottom: 10px;
   font-weight: 700;
 }
+
+/* login page */
+
+.loginTitle {
+  margin: 15px 0 !important;
+}
+
+.logo {
+  width: 96px;
+}
+
+.titleBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
