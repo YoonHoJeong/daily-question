@@ -31,7 +31,6 @@ export const adminApi = {
     const filtered = Object.keys(answers)
       .filter((aid) => answers[aid].uid !== "01031918941")
       .reduce((res, key) => ((res[key] = answers[key]), res), {});
-    console.log(filtered);
 
     return filtered;
   },
