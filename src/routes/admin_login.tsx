@@ -1,9 +1,8 @@
 import { Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { loginWithEmail } from "../services/auth";
 import styles from "../styles.module.css";
-import axios from "axios";
 
 interface Props {}
 
@@ -30,18 +29,6 @@ export const AdminLogin: React.FC<Props> = () => {
       history.push("/admin/main");
     }
   };
-  useEffect(() => {
-    const getData = async () => {
-      const {
-        data: { IPv4: ip },
-      } = await axios.get("https://geolocation-db.com/json/");
-      console.log(ip);
-
-      // setIP(res.data.IPv4)
-    };
-    //passing getData method to the lifecycle method
-    getData();
-  }, []);
 
   return (
     <form className={styles.adminPage}>

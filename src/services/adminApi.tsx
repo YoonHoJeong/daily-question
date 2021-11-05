@@ -12,81 +12,40 @@ import { fireDB } from "./firebase";
 import { formatDateUntilDay } from "./question";
 
 export const adminApi = {
-  getAllAnswers: (
-    setAnswers: React.Dispatch<any>,
-    setIsLoading: React.Dispatch<React.SetStateAction<Boolean>>
-  ) => {
-    const answersRef = ref(fireDB, "/answers");
+  getAllUsers: async () => {
+    const snapshot = await get(ref(fireDB, "/users"));
+    const users = snapshot.val();
+    const filtered = Object.keys(users)
+      .filter((rid) => users[rid].uid !== "01031918941")
+      .map((rid) => users[rid]);
 
-    return onValue(answersRef, async (snapshot) => {
-      setIsLoading(true);
-      let value = snapshot.val();
-      console.log(value);
-
-      if (value !== null) {
-        const qSnapshot = await get(ref(fireDB, `/questions/${value.qid}`));
-        const questionObj = qSnapshot.val();
-
-        if (questionObj !== null) {
-          value["question"] = questionObj.question;
-          const aSnapshot = await get(ref(fireDB, `/answers/${value.qid}`));
-          const answerObj = aSnapshot.val();
-          const userSnapshot = await get(ref(fireDB, `/users/${value.uid}`));
-          const userObj = userSnapshot.val();
-        }
-        setAnswers(value);
-        setIsLoading(false);
-      }
-    });
+    return filtered;
   },
-  getAllQuestions: (
-    setQuestions: React.Dispatch<any>,
-    isLoading: Boolean,
-    setIsLoading: React.Dispatch<React.SetStateAction<Boolean>>
-  ) => {
-    const questionsRef = ref(fireDB, "/questions");
-    return onValue(questionsRef, async (snapshot) => {
-      const questions = snapshot.val();
-      Object.keys(questions).map((key) => {
-        const q = questions[key];
-      });
-      setIsLoading(false);
-    });
+  getAllAnswers: async () => {
+    const snapshot = await get(ref(fireDB, "/answers"));
+    const answers = snapshot.val();
+    const filtered = Object.keys(answers)
+      .filter((rid) => answers[rid].uid !== "01031918941")
+      .map((rid) => answers[rid]);
+
+    return filtered;
   },
-  getQuestionsByDate: (date: string) => {
-    const qQuery = query(
-      ref(fireDB, "/questions"),
-      orderByChild("publish_date"),
-      equalTo(date)
-    );
-    const unsub = onValue(qQuery, (snapshot) => {
-      console.log(snapshot.val());
-    });
+  getAllRates: async () => {
+    const snapshot = await get(ref(fireDB, "/rates"));
+    const rates = snapshot.val();
+    const filtered = Object.keys(rates)
+      .filter((rid) => rates[rid].uid !== "01031918941")
+      .map((rid) => rates[rid]);
 
-    return unsub;
+    return filtered;
   },
-  getAnswersByDate: (
-    date: string,
-    setAnswers: React.Dispatch<any>,
-    isLoading: Boolean,
-    setIsLoading: React.Dispatch<React.SetStateAction<Boolean>>
-  ) => {
-    const tomorrow = new Date(date);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowString = formatDateUntilDay(tomorrow);
+  getAllQuestions: async () => {
+    const snapshot = await get(ref(fireDB, "/questions"));
+    const questions = snapshot.val();
+    const filtered = Object.keys(questions)
+      .filter((rid) => questions[rid].uid !== "01031918941")
+      .map((rid) => questions[rid]);
 
-    const qQuery = query(
-      ref(fireDB, "/answers"),
-      orderByChild("created_at"),
-      startAt(date),
-      endBefore(tomorrowString)
-    );
-    const unsub = onValue(qQuery, (snapshot) => {
-      console.log(snapshot.val());
-      setAnswers(snapshot.val());
-      setIsLoading(false);
-    });
-
-    return unsub;
+    return filtered;
   },
 };

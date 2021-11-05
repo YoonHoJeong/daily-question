@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../app";
 import Box from "@mui/material/Box";
 import { gaLog } from "../services/firebase";
@@ -70,6 +70,18 @@ function Login() {
           </Button>
         </Box>
       </Box>
+
+      <Button
+        color="warning"
+        variant="contained"
+        fullWidth
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.href = "https://forms.gle/AqJ642yNG7pCwgYt7";
+        }}
+      >
+        11월 2주차 신청하기 (~11.06)
+      </Button>
     </Container>
   );
 }

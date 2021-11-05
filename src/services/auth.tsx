@@ -28,7 +28,6 @@ export const loginWithEmail = async (email: string, password: string) => {
       email,
       password
     );
-    console.log(userCredential);
     return userCredential.user;
   } catch (e) {
     console.log(e);
