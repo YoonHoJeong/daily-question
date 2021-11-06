@@ -1,13 +1,17 @@
+import { CircularProgress } from "@mui/material";
 import { Route, Redirect } from "react-router";
-import { auth } from "../services/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoute = ({ children, ...rest }: any) => {
+  const auth = useAuth();
+  if (auth!!.isAuthenticating) {
+    return <CircularProgress />;
+  }
+
   return (
     <Route
       {...rest}
-      render={() =>
-        auth?.currentUser !== null ? children : <Redirect to="/admin" />
-      }
+      render={() => (auth?.user !== null ? children : <Redirect to="/admin" />)}
     ></Route>
   );
 };

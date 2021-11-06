@@ -7,6 +7,7 @@ import {
 import styles from "../styles.module.css";
 import { Button } from "@mui/material";
 import { getToday } from "../services/dateService";
+import { useAuth } from "../hooks/useAuth";
 
 interface Props {}
 
@@ -67,6 +68,7 @@ export const Admin: React.FC<Props> = () => {
       setLoading(false);
     }
     fetchData();
+    console.log("admin mount");
   }, []);
 
   return (

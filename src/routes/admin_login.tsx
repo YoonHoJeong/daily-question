@@ -1,6 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 import { loginWithEmail } from "../services/auth";
 import styles from "../styles.module.css";
 
@@ -12,9 +13,11 @@ interface FormProps {
 }
 
 export const AdminLogin: React.FC<Props> = () => {
+  const auth = useAuth();
   const [form, setForm] = useState<FormProps>({ email: "", password: "" });
   const [error, setError] = useState<string>("");
   const history = useHistory();
+
   const handleChange = (e: any) => {
     setError("");
     setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
@@ -22,7 +25,9 @@ export const AdminLogin: React.FC<Props> = () => {
 
   const handleLogin = async () => {
     const { email, password } = form;
-    const user = await loginWithEmail(email, password);
+
+    const user = await auth!!.login(email, password);
+
     if (user === null) {
       setError("이메일 혹은 비밀번호를 확인해주세요.");
     } else {
