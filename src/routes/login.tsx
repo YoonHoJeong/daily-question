@@ -67,12 +67,12 @@ function Login() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            오늘의 질문이 도착했어요!
+            오늘의 질문이 도착했어요 😀
           </Button>
         </Box>
       </Box>
 
-      <Button
+      {/* <Button
         color="warning"
         variant="contained"
         fullWidth
@@ -82,7 +82,7 @@ function Login() {
         }}
       >
         11월 2주차 부터 시작하기
-      </Button>
+      </Button> */}
     </Container>
   );
 }

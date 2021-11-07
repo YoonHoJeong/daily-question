@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 import styles from "../styles.module.css";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
