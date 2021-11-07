@@ -212,3 +212,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+.uid {
+  margin-bottom: 5px;
+  font-weight: 700;
+}

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Container,
   CssBaseline,
@@ -7,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { UserContext } from "../app";
 import Box from "@mui/material/Box";
 import { gaLog } from "../services/firebase";

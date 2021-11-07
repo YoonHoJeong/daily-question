@@ -68,7 +68,6 @@ export const Admin: React.FC<Props> = () => {
       setLoading(false);
     }
     fetchData();
-    console.log("admin mount");
   }, []);
 
   return (
@@ -141,8 +140,6 @@ export const Admin: React.FC<Props> = () => {
               });
 
               const dates: any[] = userQuestions.filter((q) => {
-                console.log(q.publish_date, selectedDate);
-
                 return q.publish_date === selectedDate;
               });
 
@@ -152,15 +149,8 @@ export const Admin: React.FC<Props> = () => {
 
               return (
                 <ul>
-                  {userQuestions.filter((data) => {
-                    const created_at = data.answer
-                      ? formatDateUntilDay(new Date(data.answer.created_at))
-                      : formatDateUntilDay(new Date(data.rate.created_at));
-
-                    return created_at === selectedDate;
-                  })
-                    ? uid
-                    : null}
+                  =============================================
+                  <div className={styles.uid}>User Id: {uid}</div>
                   {userQuestions
                     .filter((data) => {
                       const created_at = data.answer
@@ -186,9 +176,10 @@ export const Admin: React.FC<Props> = () => {
                             {`${data.rate.created_at}: [${data.rate.degree}] ${data.rate.comment}`}
                           </div>
                         ) : null}
-                        ------------------------------------
+                        <br />
                       </li>
                     ))}
+                  =============================================
                 </ul>
               );
             })}

@@ -1,5 +1,4 @@
 // 질문 불러오기
-
 import { child, get, push, ref, update } from "@firebase/database";
 import { fireDB } from "./firebase";
 

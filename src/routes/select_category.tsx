@@ -6,13 +6,10 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import { ObjectFlags } from "typescript";
-import { getToday, getTomorrow } from "../services/dateService";
 import { gaLog } from "../services/firebase";
 import {
   formatDateUntilDay,
   getQuestionsUntilToday,
-  getTodayQuestions,
 } from "../services/question";
 import styles from "../styles.module.css";
 
