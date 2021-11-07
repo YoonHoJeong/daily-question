@@ -114,7 +114,7 @@ export const TodayQuestion: React.FC<Props> = () => {
           <Button
             variant="contained"
             size="large"
-            onClick={async (e) => {
+            onClick={async () => {
               const { answer } = formData;
               if (answer === "") {
                 alert("답변을 입력해주세요!");
@@ -128,14 +128,12 @@ export const TodayQuestion: React.FC<Props> = () => {
                 });
               }
             }}
-            disabled
           >
             답변 제출하기
           </Button>
           <Button
             variant="outlined"
             size="large"
-            disabled
             onClick={async () => {
               history.push({
                 pathname: "/submit-done",

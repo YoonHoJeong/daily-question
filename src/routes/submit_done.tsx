@@ -122,7 +122,7 @@ export const SubmitDone: React.FC<Props> = () => {
         variant="h6"
         align="center"
       >
-        내일 질문도 기대해주세요 😘
+        내일 질문도 기대해주세요 😊
       </Typography>
     </div>
   );

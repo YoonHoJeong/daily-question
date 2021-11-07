@@ -67,7 +67,7 @@ export const getUserAnswers = async (user: any) => {
 
   Object.keys(allAnswers)
     .filter((aid) => Object.keys(answers).includes(aid))
-    .map((aid) => {
+    .forEach((aid) => {
       const ans = allAnswers[aid];
       const { qid } = ans;
 

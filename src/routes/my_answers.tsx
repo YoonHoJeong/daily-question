@@ -2,6 +2,7 @@ import { Button, CircularProgress, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../app";
+import { AnswerItem } from "../components/answer_item";
 import { gaLog } from "../services/firebase";
 import { getUserAnswers } from "../services/question";
 import styles from "../styles.module.css";
@@ -45,20 +46,7 @@ export const MyAnswers: React.FC<Props> = () => {
       <ul>
         {answers !== undefined ? (
           answers.map((answer) => {
-            return (
-              <li key={answer.aid} className={styles.questionItem}>
-                <section>
-                  <Typography>질문</Typography>
-                  <div className={styles.questionContent}>
-                    {answer.question}
-                  </div>
-                </section>
-                <section>
-                  <Typography>대답</Typography>
-                  <div className={styles.questionContent}>{answer.answer}</div>
-                </section>
-              </li>
-            );
+            return <AnswerItem key={answer.aid} answer={answer} />;
           })
         ) : (
           <Typography variant="h6">등록된 답변이 없습니다!</Typography>

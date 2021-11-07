@@ -48,9 +48,9 @@ export const SelectCategory: React.FC<Props> = () => {
   return (
     <div className={styles.ct}>
       <header className={styles.header}>
-        <Button
+        {/* <Button
           className={styles.changeCategoryBtn}
-          onClick={(e) => {
+          onClick={() => {
             setLoading(true);
             if (wantOnlyToday) {
               setWantOnlyToday(false);
@@ -61,7 +61,7 @@ export const SelectCategory: React.FC<Props> = () => {
           }}
         >
           {wantOnlyToday ? "이전 질문 구경하기" : "돌아가기"}
-        </Button>
+        </Button> */}
 
         <Button
           variant="contained"
@@ -77,12 +77,8 @@ export const SelectCategory: React.FC<Props> = () => {
 
       {wantOnlyToday ? (
         <>
-          <div>이번 주 질문은 마감되었습니다 😥</div>
-          <br />
-          <br />
-          <div>다음 주 질문도 받아보시겠어요?</div>
-          <br />
-          <Button
+          <div>키워드를 선택해 주세요 😋</div>
+          {/* <Button
             color="warning"
             variant="contained"
             onClick={(e) => {
@@ -91,7 +87,7 @@ export const SelectCategory: React.FC<Props> = () => {
             }}
           >
             11월 2주차 등록하기
-          </Button>
+          </Button> */}
         </>
       ) : null}
       <ul className={styles.datesContainer}>
