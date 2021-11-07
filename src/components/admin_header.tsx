@@ -21,6 +21,11 @@ export const AdminHeader: React.FC<Props> = () => {
           <Button>사용자 등록</Button>
         </Link>
       </li>
+      <li>
+        <Link to={`/admin/enroll-question`}>
+          <Button>질문 등록</Button>
+        </Link>
+      </li>
     </ul>
   );
 };

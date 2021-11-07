@@ -228,3 +228,9 @@
 
   padding: 20px;
 }
+
+/* question enroll form */
+.questionEnrollForm {
+  display: flex;
+  flex-direction: column;
+}

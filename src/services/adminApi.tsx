@@ -1,5 +1,6 @@
 import { get, push, ref, update } from "@firebase/database";
 import { UserFormState } from "../routes/admin_enroll";
+import { QuestionForm } from "../routes/admin_enroll_question";
 import { fireDB } from "./firebase";
 
 export const adminApi = {
@@ -117,5 +118,18 @@ export const adminApi = {
     } catch (e) {
       console.log(e);
     }
+  },
+  enrollQuestion: async ({ keyword, publish_date, question }: QuestionForm) => {
+    const newQid = push(ref(fireDB, "questions")).key;
+    const updates = {};
+
+    updates[`/questions/${newQid}`] = {
+      qid: newQid,
+      keyword,
+      publish_date,
+      question,
+    };
+
+    await update(ref(fireDB), updates);
   },
 };

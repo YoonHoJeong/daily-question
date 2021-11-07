@@ -1,5 +1,5 @@
 import { Button, TextField, CircularProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AdminHeader } from "../components/admin_header";
 import { AdminUserItem } from "../components/admin_user_item";
 import { adminApi } from "../services/adminApi";
@@ -15,7 +15,7 @@ export interface UserFormState {
 }
 
 export const AdminEnroll: React.FC<Props> = () => {
-  const [formData, setFormData] = useState({ uid: "" });
+  const [formData, setFormData] = useState<UserFormState>({ uid: "" });
   const [users, setUsers] = useState<{}>({});
   const [loading, setLoading] = useState<Boolean>(true);
 
@@ -31,17 +31,32 @@ export const AdminEnroll: React.FC<Props> = () => {
   }, []);
 
   const isValidForm = () => {
-    if (formData.uid === "") {
+    const { uid, email, phone_number, sex, age } = formData;
+    if (uid === "") {
+      return false;
+    }
+    if (phone_number && phone_number.includes("@")) {
+      return false;
+    }
+    if (email && !email.includes("@")) {
+      return false;
+    }
+    if (sex && sex !== "남성" && sex !== "여성") {
+      return false;
+    }
+    const ages = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
+    if (age && !ages.includes(age)) {
       return false;
     }
     return true;
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       if (isValidForm()) {
-        adminApi.enrollNewUser(formData);
+        await adminApi.enrollNewUser(formData);
+        setFormData({ uid: "" });
       }
     } catch (e) {
       alert("Invalid Input Form");
@@ -68,20 +83,38 @@ export const AdminEnroll: React.FC<Props> = () => {
     <>
       <AdminHeader />
       <form className={styles.enrollUserForm} action="" onSubmit={handleSubmit}>
-        <TextField required label="uId" name="uid" onChange={handleChange} />
+        <TextField
+          value={formData.uid}
+          required
+          label="uid"
+          name="uid"
+          onChange={handleChange}
+        />
         <TextField
           type="email"
           label="email"
           name="email"
+          value={formData.email ? formData.email : ""}
           onChange={handleChange}
         />
         <TextField
+          value={formData.phone_number ? formData.phone_number : ""}
           label="phone_number"
           name="phone_number"
           onChange={handleChange}
         />
-        <TextField label="sex" name="sex" onChange={handleChange} />
-        <TextField label="age" name="age" onChange={handleChange} />
+        <TextField
+          value={formData.sex ? formData.sex : ""}
+          label="sex"
+          name="sex"
+          onChange={handleChange}
+        />
+        <TextField
+          value={formData.age ? formData.age : ""}
+          label="age"
+          name="age"
+          onChange={handleChange}
+        />
         <Button variant="contained" onClick={handleSubmit}>
           Add New User
         </Button>
@@ -90,7 +123,11 @@ export const AdminEnroll: React.FC<Props> = () => {
         {Object.keys(users).map((uid) => {
           const user = users[uid];
           return (
-            <AdminUserItem user={user} handleDeleteUser={handleDeleteUser} />
+            <AdminUserItem
+              key={uid}
+              user={user}
+              handleDeleteUser={handleDeleteUser}
+            />
           );
         })}
       </ul>
