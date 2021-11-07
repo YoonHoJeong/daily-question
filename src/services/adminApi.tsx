@@ -1,15 +1,5 @@
-import {
-  endBefore,
-  equalTo,
-  get,
-  onValue,
-  orderByChild,
-  query,
-  ref,
-  startAt,
-} from "@firebase/database";
+import { get, ref } from "@firebase/database";
 import { fireDB } from "./firebase";
-import { formatDateUntilDay } from "./question";
 
 export const adminApi = {
   getAllUsers: async () => {

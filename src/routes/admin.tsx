@@ -140,8 +140,27 @@ export const Admin: React.FC<Props> = () => {
                 return { ...questions[qid], answer, rate };
               });
 
+              const dates: any[] = userQuestions.filter((q) => {
+                console.log(q.publish_date, selectedDate);
+
+                return q.publish_date === selectedDate;
+              });
+
+              if (dates.length <= 0) {
+                return null;
+              }
+
               return (
                 <ul>
+                  {userQuestions.filter((data) => {
+                    const created_at = data.answer
+                      ? formatDateUntilDay(new Date(data.answer.created_at))
+                      : formatDateUntilDay(new Date(data.rate.created_at));
+
+                    return created_at === selectedDate;
+                  })
+                    ? uid
+                    : null}
                   {userQuestions
                     .filter((data) => {
                       const created_at = data.answer
