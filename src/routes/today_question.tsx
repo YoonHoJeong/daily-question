@@ -112,6 +112,7 @@ export const TodayQuestion: React.FC<Props> = () => {
         />
         <section className={styles.answerBtns}>
           <Button
+            id="answer"
             variant="contained"
             size="large"
             onClick={async () => {
@@ -129,21 +130,18 @@ export const TodayQuestion: React.FC<Props> = () => {
               }
             }}
           >
-            답변 제출하기
+            답변 제출하기 📌
           </Button>
           <Button
-            variant="outlined"
-            size="large"
-            onClick={async () => {
-              history.push({
-                pathname: "/submit-done",
-                state: {
-                  qid,
-                },
-              });
+            id="myanswer"
+            variant="contained"
+            color="success"
+            className={styles.myAnswerBtn}
+            onClick={() => {
+              history.push("/my-answers");
             }}
           >
-            오늘은 질문만 볼래요!
+            내 답변 보기
           </Button>
         </section>
       </Container>

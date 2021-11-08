@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../app";
 import { AnswerItem } from "../components/answer_item";
 import { gaLog } from "../services/firebase";
@@ -9,12 +9,20 @@ import styles from "../styles.module.css";
 
 interface Props {}
 
+interface LocationState {
+  qid: string;
+  from: string;
+  rateSubmitted?: Boolean;
+}
+
 export const MyAnswers: React.FC<Props> = () => {
   const auth = useContext(UserContext);
 
   const [loading, setLoading] = useState<Boolean>(true);
   const [answers, setAnswers] = useState<any[]>([]);
   const history = useHistory();
+  const location = useLocation();
+  const { qid, from, rateSubmitted } = location.state as LocationState;
 
   useEffect(() => {
     gaLog("my_answers_visited");
@@ -38,7 +46,12 @@ export const MyAnswers: React.FC<Props> = () => {
       <Button
         className={styles.backBtn}
         onClick={() => {
-          history.goBack();
+          history.push({
+            pathname: from,
+            state: {
+              rateSubmitted,
+            },
+          });
         }}
       >
         뒤로가기

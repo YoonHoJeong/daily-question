@@ -19,16 +19,6 @@ export const Header: React.FC<Props> = ({ history }) => {
       >
         <ArrowBackIcon />
       </IconButton>
-      <Button
-        variant="contained"
-        color="success"
-        className={styles.myAnswerBtn}
-        onClick={() => {
-          history.push("/my-answers");
-        }}
-      >
-        내 답변 보기
-      </Button>
     </header>
   );
 };

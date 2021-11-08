@@ -51,17 +51,19 @@ function IconContainer(props: any) {
 interface Props {}
 interface LocationState {
   qid: string;
+  rateSubmitted?: Boolean;
 }
+
 export const SubmitDone: React.FC<Props> = () => {
   const [rate, setRate] = useState<number | null>(null);
   const [comment, setComment] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<Boolean>(false);
   const location = useLocation();
   const history = useHistory();
-  const { qid } = location.state as LocationState;
+  const { qid, rateSubmitted } = location.state as LocationState;
   const auth = useContext(UserContext);
   useEffect(() => {
-    gaLog("submit_done_visited");
+    rateSubmitted && setSubmitted(rateSubmitted);
   }, []);
 
   const handleSubmitRate = async (e: any) => {
@@ -72,58 +74,93 @@ export const SubmitDone: React.FC<Props> = () => {
       setSubmitted(true);
     }
   };
+  const handleClickOtherQuestions:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | undefined = () => {
+    history.push("/select-category");
+  };
 
   return (
     <div className={styles.ct}>
-      <Header history={history} />
+      {submitted ? (
+        <div className={styles.ratingDone}>
+          <Typography
+            className={`${submitted ? null : styles.hide}`}
+            variant="h6"
+            align="center"
+          >
+            내일도 기대해주세요 😊
+          </Typography>
+          <Button
+            id="myanswer"
+            variant="contained"
+            color="success"
+            fullWidth
+            className={styles.myAnswerBtn}
+            onClick={() => {
+              history.push({
+                pathname: "/my-answers",
+                state: {
+                  qid,
+                  from: "/submit-done",
+                  rateSubmitted: true,
+                },
+              });
+            }}
+          >
+            내 답변 보기
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleClickOtherQuestions}
+          >
+            다른 질문 확인하기
+          </Button>
+        </div>
+      ) : (
+        <Box className={`${styles.rates} ${submitted ? styles.hide : null}`}>
+          <Typography variant="h6" align="center">
+            오늘 질문은 어떠셨나요?
+          </Typography>
+          <Rating
+            name="highlight-selected-only"
+            defaultValue={0}
+            onChange={(event, newValue) => {
+              setRate(newValue);
+            }}
+            size="large"
+            IconContainerComponent={IconContainer}
+            highlightSelectedOnly
+          />
 
-      <Box className={`${styles.rates} ${submitted ? styles.hide : null}`}>
-        <Typography variant="h6" align="center">
-          오늘 질문은 어떠셨나요?
-        </Typography>
-        <Rating
-          name="highlight-selected-only"
-          defaultValue={0}
-          onChange={(event, newValue) => {
-            setRate(newValue);
-          }}
-          size="large"
-          IconContainerComponent={IconContainer}
-          highlightSelectedOnly
-        />
-
-        <TextField
-          className={`${styles.commentInput} ${
-            rate === null ? `${styles.hide}` : null
-          }`}
-          id="outlined-multiline-static"
-          fullWidth
-          label="소감을 작성해주세요."
-          multiline
-          rows={4}
-          onChange={(e) => {
-            setComment(e.currentTarget.value);
-          }}
-          value={comment === null ? "" : comment}
-        />
-        <Button
-          className={`${styles.rateBtnBox} ${
-            rate === null ? `${styles.hide}` : null
-          }`}
-          variant="contained"
-          fullWidth
-          onClick={handleSubmitRate}
-        >
-          소감 제출하기
-        </Button>
-      </Box>
-      <Typography
-        className={`${submitted ? null : styles.hide}`}
-        variant="h6"
-        align="center"
-      >
-        내일 질문도 기대해주세요 😊
-      </Typography>
+          <TextField
+            className={`${styles.commentInput} ${
+              rate === null ? `${styles.hide}` : null
+            }`}
+            id="outlined-multiline-static"
+            fullWidth
+            label="소감을 작성해주세요."
+            multiline
+            rows={4}
+            onChange={(e) => {
+              setComment(e.currentTarget.value);
+            }}
+            value={comment === null ? "" : comment}
+          />
+          <Button
+            id="rating"
+            className={`${styles.rateBtnBox} ${
+              rate === null ? `${styles.hide}` : null
+            }`}
+            variant="contained"
+            fullWidth
+            onClick={handleSubmitRate}
+          >
+            소감 제출하기
+          </Button>
+        </Box>
+      )}
     </div>
   );
 };
