@@ -10,7 +10,7 @@ import styles from "../styles.module.css";
 interface Props {}
 
 interface LocationState {
-  qid: string;
+  qid?: string;
   from: string;
   rateSubmitted?: Boolean;
 }

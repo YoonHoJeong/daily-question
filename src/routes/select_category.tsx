@@ -69,7 +69,12 @@ export const SelectCategory: React.FC<Props> = () => {
           color="success"
           className={styles.myAnswerBtn}
           onClick={() => {
-            history.push("/my-answers");
+            history.push({
+              pathname: "/my-answers",
+              state: {
+                from: "/select-category",
+              },
+            });
           }}
         >
           내 답변 보기

@@ -96,7 +96,6 @@ export const SubmitDone: React.FC<Props> = () => {
             variant="contained"
             color="success"
             fullWidth
-            className={styles.myAnswerBtn}
             onClick={() => {
               history.push({
                 pathname: "/my-answers",
