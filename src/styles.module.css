@@ -19,6 +19,7 @@
   height: 100vh;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -256,4 +257,23 @@
 .questionsContainer {
   width: 100%;
   padding: 0px 15px;
+}
+
+/* admin Header */
+.adminHeader {
+  display: flex;
+}
+
+/* enroll user */
+.enrollUser {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 80vw;
+  height: 80vh;
+}
+
+.enrollUserMain {
+  width: 100%;
+  display: flex;
 }

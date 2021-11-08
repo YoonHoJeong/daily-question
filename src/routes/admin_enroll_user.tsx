@@ -14,7 +14,7 @@ export interface UserFormState {
   age?: "10대" | "20대" | "30대" | "40대" | "50대" | "60대 이상" | null;
 }
 
-export const AdminEnroll: React.FC<Props> = () => {
+export const AdminEnrollUser: React.FC<Props> = () => {
   const [formData, setFormData] = useState<UserFormState>({ uid: "" });
   const [users, setUsers] = useState<{}>({});
   const [loading, setLoading] = useState<Boolean>(true);
@@ -80,57 +80,63 @@ export const AdminEnroll: React.FC<Props> = () => {
   }
 
   return (
-    <>
+    <div className={styles.enrollUser}>
       <AdminHeader />
-      <form className={styles.enrollUserForm} action="" onSubmit={handleSubmit}>
-        <TextField
-          value={formData.uid}
-          required
-          label="uid"
-          name="uid"
-          onChange={handleChange}
-        />
-        <TextField
-          type="email"
-          label="email"
-          name="email"
-          value={formData.email ? formData.email : ""}
-          onChange={handleChange}
-        />
-        <TextField
-          value={formData.phone_number ? formData.phone_number : ""}
-          label="phone_number"
-          name="phone_number"
-          onChange={handleChange}
-        />
-        <TextField
-          value={formData.sex ? formData.sex : ""}
-          label="sex"
-          name="sex"
-          onChange={handleChange}
-        />
-        <TextField
-          value={formData.age ? formData.age : ""}
-          label="age"
-          name="age"
-          onChange={handleChange}
-        />
-        <Button variant="contained" onClick={handleSubmit}>
-          Add New User
-        </Button>
-      </form>
-      <ul className={styles.userList}>
-        {Object.keys(users).map((uid) => {
-          const user = users[uid];
-          return (
-            <AdminUserItem
-              key={uid}
-              user={user}
-              handleDeleteUser={handleDeleteUser}
-            />
-          );
-        })}
-      </ul>
-    </>
+      <main className={styles.enrollUserMain}>
+        <form
+          className={styles.enrollUserForm}
+          action=""
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            value={formData.uid}
+            required
+            label="uid"
+            name="uid"
+            onChange={handleChange}
+          />
+          <TextField
+            type="email"
+            label="email"
+            name="email"
+            value={formData.email ? formData.email : ""}
+            onChange={handleChange}
+          />
+          <TextField
+            value={formData.phone_number ? formData.phone_number : ""}
+            label="phone_number"
+            name="phone_number"
+            onChange={handleChange}
+          />
+          <TextField
+            value={formData.sex ? formData.sex : ""}
+            label="sex"
+            name="sex"
+            onChange={handleChange}
+          />
+          <TextField
+            value={formData.age ? formData.age : ""}
+            label="age"
+            name="age"
+            onChange={handleChange}
+          />
+          <Button variant="contained" onClick={handleSubmit}>
+            Add New User
+          </Button>
+        </form>
+        <ul className={styles.userList}>
+          {Object.keys(users).map((uid) => {
+            const user = users[uid];
+            return (
+              <AdminUserItem
+                key={uid}
+                user={user}
+                handleDeleteUser={handleDeleteUser}
+              />
+            );
+          })}
+        </ul>
+      </main>
+    </div>
   );
 };

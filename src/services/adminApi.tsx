@@ -1,5 +1,5 @@
 import { get, push, ref, update } from "@firebase/database";
-import { UserFormState } from "../routes/admin_enroll";
+import { UserFormState } from "../routes/admin_enroll_user";
 import { QuestionForm } from "../routes/admin_enroll_question";
 import { fireDB } from "./firebase";
 

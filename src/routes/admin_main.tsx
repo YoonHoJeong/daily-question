@@ -54,7 +54,6 @@ export const AdminMain: React.FC<Props> = () => {
     <>
       <AdminHeader />
       <main className={styles.adminMain}>
-        <div>admin</div>
         {serviceDateList.map((date) => (
           <Button
             key={date}
