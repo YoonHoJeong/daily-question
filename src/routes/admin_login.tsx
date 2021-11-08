@@ -1,5 +1,5 @@
-import { Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Button, CircularProgress, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import { loginWithEmail } from "../services/auth";
@@ -16,6 +16,7 @@ export const AdminLogin: React.FC<Props> = () => {
   const auth = useAuth();
   const [form, setForm] = useState<FormProps>({ email: "", password: "" });
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<Boolean>(true);
   const history = useHistory();
 
   const handleChange = (e: any) => {
@@ -34,6 +35,16 @@ export const AdminLogin: React.FC<Props> = () => {
       history.push("/admin/main");
     }
   };
+
+  useEffect(() => {
+    if (auth?.user !== null) {
+      history.push("/admin/main");
+    }
+  }, [auth]);
+
+  if (auth?.isAuthenticating) {
+    return <CircularProgress />;
+  }
 
   return (
     <form className={styles.adminPage}>

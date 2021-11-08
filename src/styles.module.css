@@ -105,7 +105,7 @@
 .backBtn {
   position: absolute !important;
   top: 10px;
-  right: 10px;
+  left: 10px;
 }
 
 .arrowBackBtn {
@@ -276,4 +276,20 @@
 .enrollUserMain {
   width: 100%;
   display: flex;
+}
+/* login.tsx */
+.loginButtonList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.loginForm button {
+  margin-top: 10px;
+}
+
+.myAnswerBtn {
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
 }

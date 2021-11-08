@@ -40,7 +40,6 @@ export const TodayQuestion: React.FC<Props> = () => {
   const answerInputRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gaLog("today_questions_visited_" + qid);
-    console.log(history);
 
     async function fetchData() {
       // You can await here
@@ -57,12 +56,10 @@ export const TodayQuestion: React.FC<Props> = () => {
     setFormData({ ...formData, answer: e.target.value });
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-
+  const handleSubmitAnswer = async () => {
     const { answer } = formData;
     if (answer === "") {
-      alert("대답을 입력해주세요");
+      alert("답변을 입력해주세요!");
     } else {
       await submitAnswer(auth!!.user!!.uid, formData);
       history.push({
@@ -78,7 +75,7 @@ export const TodayQuestion: React.FC<Props> = () => {
   }
 
   return (
-    <form className={styles.ct} onSubmit={handleSubmit}>
+    <form className={styles.ct} onSubmit={handleSubmitAnswer}>
       <Header history={history} />
 
       <Container
@@ -116,39 +113,9 @@ export const TodayQuestion: React.FC<Props> = () => {
             id="answer"
             variant="contained"
             size="large"
-            onClick={async () => {
-              const { answer } = formData;
-              if (answer === "") {
-                alert("답변을 입력해주세요!");
-              } else {
-                await submitAnswer(auth!!.user!!.uid, formData);
-                history.push({
-                  pathname: "/submit-done",
-                  state: {
-                    qid,
-                  },
-                });
-              }
-            }}
+            onClick={handleSubmitAnswer}
           >
             답변 제출하기 📌
-          </Button>
-          <Button
-            id="myanswer"
-            variant="contained"
-            color="success"
-            className={styles.myAnswerBtn}
-            onClick={() => {
-              history.push({
-                pathname: "/my-answers",
-                state: {
-                  qid,
-                  from: "/today-question",
-                },
-              });
-            }}
-          >
-            내 답변 보기
           </Button>
         </section>
       </Container>

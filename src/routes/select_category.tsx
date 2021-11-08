@@ -63,7 +63,8 @@ export const SelectCategory: React.FC<Props> = () => {
           {wantOnlyToday ? "이전 질문 구경하기" : "돌아가기"}
         </Button> */}
 
-        {/* <Button
+        <Button
+          id="myanswer"
           variant="contained"
           color="success"
           className={styles.myAnswerBtn}
@@ -72,7 +73,7 @@ export const SelectCategory: React.FC<Props> = () => {
           }}
         >
           내 답변 보기
-        </Button> */}
+        </Button>
       </header>
 
       {wantOnlyToday ? (
