@@ -1,18 +1,20 @@
 import React from "react";
 import { formatDateUntilDay } from "../services/question";
 import styles from "../styles.module.css";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { AdminHeader } from "../components/admin_header";
 
 interface Props {}
 
-const LAUNCH_DATE = "2021-11-01";
-
 export function getServiceDateList() {
+  const LAUNCH_DATE = "2021-11-01";
   const dates = [];
   const tmpDate = new Date(LAUNCH_DATE);
   const todayDate = new Date();
 
+  // 시간, 분, 초 기본값이 09:00:00
+  todayDate.setHours(9);
+  todayDate.setMinutes(1);
   while (tmpDate <= todayDate) {
     dates.push(formatDateUntilDay(tmpDate));
     tmpDate.setDate(tmpDate.getDate() + 1);
@@ -30,13 +32,15 @@ export interface Data {
 export const Admin: React.FC<Props> = () => {
   return (
     <main className={styles.adminMain}>
-      <AdminHeader />
-      <Route exact path="/admin/main">
-        Home
-      </Route>
-      <Route exact path={`/admin/enroll`}>
-        User Enrollment
-      </Route>
+      <Switch>
+        <AdminHeader />
+        <Route exact path="/admin/main">
+          Home
+        </Route>
+        <Route exact path={`/admin/enroll`}>
+          User Enrollment
+        </Route>
+      </Switch>
     </main>
   );
 };

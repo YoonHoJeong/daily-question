@@ -135,7 +135,6 @@ function Login() {
               <Button
                 fullWidth
                 type="submit"
-                variant="contained"
                 color="success"
                 onClick={handleClickBack}
               >
