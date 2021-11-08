@@ -242,3 +242,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.ratingDone button {
+  margin-top: 10px;
+}

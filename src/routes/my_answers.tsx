@@ -46,9 +46,10 @@ export const MyAnswers: React.FC<Props> = () => {
       <Button
         className={styles.backBtn}
         onClick={() => {
-          history.push({
+          history.replace({
             pathname: from,
             state: {
+              qid,
               rateSubmitted,
             },
           });

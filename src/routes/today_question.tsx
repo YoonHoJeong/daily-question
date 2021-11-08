@@ -40,6 +40,7 @@ export const TodayQuestion: React.FC<Props> = () => {
   const answerInputRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gaLog("today_questions_visited_" + qid);
+    console.log(history);
 
     async function fetchData() {
       // You can await here
@@ -138,7 +139,13 @@ export const TodayQuestion: React.FC<Props> = () => {
             color="success"
             className={styles.myAnswerBtn}
             onClick={() => {
-              history.push("/my-answers");
+              history.push({
+                pathname: "/my-answers",
+                state: {
+                  qid,
+                  from: "/today-question",
+                },
+              });
             }}
           >
             내 답변 보기

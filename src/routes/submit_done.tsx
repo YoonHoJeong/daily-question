@@ -111,6 +111,7 @@ export const SubmitDone: React.FC<Props> = () => {
             내 답변 보기
           </Button>
           <Button
+            id="anotherkeyword"
             fullWidth
             variant="contained"
             onClick={handleClickOtherQuestions}
