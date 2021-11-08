@@ -129,21 +129,7 @@ export const TodayQuestion: React.FC<Props> = () => {
               }
             }}
           >
-            답변 제출하기
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={async () => {
-              history.push({
-                pathname: "/submit-done",
-                state: {
-                  qid,
-                },
-              });
-            }}
-          >
-            오늘은 질문만 볼래요!
+            답변 제출하기 📌
           </Button>
         </section>
       </Container>
