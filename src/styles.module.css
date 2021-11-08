@@ -246,3 +246,14 @@
 .ratingDone button {
   margin-top: 10px;
 }
+
+/* enroll-question */
+.dateList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.questionsContainer {
+  width: 100%;
+  padding: 0px 15px;
+}
