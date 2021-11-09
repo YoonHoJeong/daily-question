@@ -182,10 +182,16 @@
   align-items: center;
 }
 
+/* my answers */
 .myAnswersContainer {
-  display: block;
-  max-height: 100%;
-  overflow: scroll;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.myAnswersMain {
 }
 
 .myAnswersContainer > ul {

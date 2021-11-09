@@ -129,8 +129,8 @@ function Login() {
                 />
               ) : null}
 
-              <Button fullWidth type="submit" variant="contained">
-                오늘의 질문 확인하기 😀
+              <Button id="login" fullWidth type="submit" variant="contained">
+                로그인
               </Button>
               <Button
                 fullWidth

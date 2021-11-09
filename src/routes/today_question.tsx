@@ -17,7 +17,6 @@ interface Props {}
 
 interface LocationState {
   qid: string;
-  wantOnlyToday: Boolean;
 }
 
 interface FormData {

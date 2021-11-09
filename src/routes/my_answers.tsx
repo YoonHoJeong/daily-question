@@ -6,6 +6,7 @@ import { AnswerItem } from "../components/answer_item";
 import { gaLog } from "../services/firebase";
 import { getUserAnswers } from "../services/question";
 import styles from "../styles.module.css";
+import { getServiceDateList } from "./admin";
 
 interface Props {}
 
@@ -42,7 +43,7 @@ export const MyAnswers: React.FC<Props> = () => {
   }
 
   return (
-    <div className={`${styles.ct} ${styles.myAnswersContainer}`}>
+    <div className={`${styles.myAnswersContainer}`}>
       <Button
         className={styles.backBtn}
         onClick={() => {
@@ -57,15 +58,8 @@ export const MyAnswers: React.FC<Props> = () => {
       >
         뒤로가기
       </Button>
-      <ul>
-        {answers !== undefined ? (
-          answers.map((answer) => {
-            return <AnswerItem key={answer.aid} answer={answer} />;
-          })
-        ) : (
-          <Typography variant="h6">등록된 답변이 없습니다!</Typography>
-        )}
-      </ul>
+
+      <div className={styles.myAnswersMain}>my answers</div>
     </div>
   );
 };

@@ -15,6 +15,8 @@ export function getServiceDateList() {
   // 시간, 분, 초 기본값이 09:00:00
   todayDate.setHours(9);
   todayDate.setMinutes(1);
+  console.log(todayDate.getDay());
+
   while (tmpDate <= todayDate) {
     dates.push(formatDateUntilDay(tmpDate));
     tmpDate.setDate(tmpDate.getDate() + 1);
