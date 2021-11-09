@@ -13,14 +13,18 @@ import {
   formatDateUntilDay,
   getQuestionsUntilToday,
 } from "../services/question";
-import styles from "../styles.module.css";
+import commonStyles from "../styles.module.css";
+import ownStyles from "./select_category.module.css";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+let styles = Object.assign(commonStyles, ownStyles);
 
 interface Props {}
 
 export const SelectCategory: React.FC<Props> = () => {
   const [questions, setQuestions] = useState<{}>({});
   const [loading, setLoading] = useState<Boolean>(true);
-  const [isKeywordsOn, setIsKeywordsOn] = useState<Boolean>(true);
+  const [isKeywordsOn, setIsKeywordsOn] = useState<Boolean>(false);
   const history = useHistory();
   const handleClickKeyword: React.MouseEventHandler<HTMLButtonElement> = (
     e
@@ -54,19 +58,44 @@ export const SelectCategory: React.FC<Props> = () => {
     fetchQuestionsData();
   }, []);
 
+  const handleClickTodayQuestion:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | undefined = () => {
+    setIsKeywordsOn(true);
+  };
+
+  const handleClickOffKeywords:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | undefined = () => {
+    setIsKeywordsOn(false);
+  };
+
   if (loading) {
     return <CircularProgress />;
   }
 
   return (
     <div className={styles.ct}>
-      <header className={styles.header}>
-        <MyAnswerButton goBack={goBackFromMyAnswer} />
-      </header>
-      <KeywordList
-        questions={questions}
-        handleClickKeyword={handleClickKeyword}
-      />
+      {isKeywordsOn ? (
+        <>
+          <header className={styles.header}>
+            <IconButton onClick={handleClickOffKeywords}>
+              <ArrowBackIcon />
+            </IconButton>
+          </header>
+          <KeywordList
+            questions={questions}
+            handleClickKeyword={handleClickKeyword}
+          />
+        </>
+      ) : (
+        <div className={styles.btns}>
+          <Button variant="contained" onClick={handleClickTodayQuestion}>
+            오늘의 질문이 도착했어요 😋
+          </Button>
+          <MyAnswerButton goBack={goBackFromMyAnswer} />
+        </div>
+      )}
     </div>
   );
 };

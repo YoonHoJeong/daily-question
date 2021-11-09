@@ -1,0 +1,8 @@
+.btns {
+  display: flex;
+  flex-direction: column;
+}
+
+.btns > button:not(:first-child) {
+  margin-top: 10px;
+}
