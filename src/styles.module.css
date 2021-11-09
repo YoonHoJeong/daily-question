@@ -182,22 +182,6 @@
   align-items: center;
 }
 
-/* my answers */
-.myAnswersContainer {
-  padding: 20px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.myAnswersMain {
-}
-
-.myAnswersContainer > ul {
-  height: 100%;
-}
-
 .lastMsg {
   color: #1976d2;
   margin-bottom: 10px;

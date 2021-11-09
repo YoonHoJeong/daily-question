@@ -1,0 +1,14 @@
+.myAnswersContainer {
+  padding: 35px;
+
+  background-color: antiquewhite;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.myAnswersContainer > ul {
+  height: 100%;
+}

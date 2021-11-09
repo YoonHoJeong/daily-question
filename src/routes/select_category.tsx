@@ -90,7 +90,11 @@ export const SelectCategory: React.FC<Props> = () => {
         </>
       ) : (
         <div className={styles.btns}>
-          <Button variant="contained" onClick={handleClickTodayQuestion}>
+          <Button
+            id="todayquestion"
+            variant="contained"
+            onClick={handleClickTodayQuestion}
+          >
             오늘의 질문이 도착했어요 😋
           </Button>
           <MyAnswerButton goBack={goBackFromMyAnswer} />
