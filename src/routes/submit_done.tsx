@@ -77,7 +77,12 @@ export const SubmitDone: React.FC<Props> = () => {
   const handleClickOtherQuestions:
     | React.MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
-    history.push("/select-category");
+    history.push({
+      pathname: "/select-category",
+      state: {
+        isKeywordsOn: true,
+      },
+    });
   };
 
   return (

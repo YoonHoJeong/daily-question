@@ -5,7 +5,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { KeywordList } from "../components/keyword_list";
 import { MyAnswerButton } from "../components/my_answer_btn";
 import { gaLog } from "../services/firebase";
@@ -21,10 +21,19 @@ let styles = Object.assign(commonStyles, ownStyles);
 
 interface Props {}
 
+interface LocationState {
+  isKeywordsOn: boolean;
+}
+
 export const SelectCategory: React.FC<Props> = () => {
+  const location = useLocation();
+  const locationState = location.state as LocationState;
+
   const [questions, setQuestions] = useState<{}>({});
   const [loading, setLoading] = useState<Boolean>(true);
-  const [isKeywordsOn, setIsKeywordsOn] = useState<Boolean>(false);
+  const [isKeywordsOn, setIsKeywordsOn] = useState<Boolean>(
+    locationState ? locationState.isKeywordsOn : false
+  );
   const history = useHistory();
   const handleClickKeyword: React.MouseEventHandler<HTMLButtonElement> = (
     e
