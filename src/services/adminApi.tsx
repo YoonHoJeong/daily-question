@@ -17,7 +17,7 @@ export const adminApi = {
     const snapshot = await get(ref(fireDB, "/users"));
     const users = snapshot.val();
     const filtered = Object.keys(users)
-      .filter((uid) => uid !== "01031918941" && !uid.includes("anonymous"))
+      .filter((uid) => !uid.includes("anonymous"))
       .reduce((res, key) => ((res[key] = users[key]), res), {});
 
     return filtered;
@@ -81,6 +81,42 @@ export const adminApi = {
   },
 
   deleteUser: async (uid: string) => {
+    // 실제로 삭제하진 않고, 익명으로 변경
+    let snapshot = await get(ref(fireDB, `/users/${uid}`));
+    const user = snapshot.val();
+    let aids: any[] = [];
+    let rids: any[] = [];
+    if (user.answers) {
+      aids = Object.keys(user.answers);
+    }
+    if (user.rates) {
+      rids = Object.keys(user.rates);
+    }
+
+    const updates = {};
+
+    const toDeleteUpdates = {};
+
+    // answers, rates uid 변경
+    aids?.forEach((aid) => {
+      toDeleteUpdates[`/answers/${aid}`] = {};
+    });
+    rids?.forEach((rid) => {
+      toDeleteUpdates[`/rates/${rid}`] = {};
+    });
+
+    // 기존 user 객체 삭제
+    toDeleteUpdates[`/users/${uid}`] = {};
+
+    try {
+      await update(ref(fireDB), updates);
+      await update(ref(fireDB), toDeleteUpdates);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  deleteUserAnonymous: async (uid: string) => {
     // 실제로 삭제하진 않고, 익명으로 변경
     const newUid = `anonymous${push(ref(fireDB, "users")).key}`;
     let snapshot = await get(ref(fireDB, `/users/${uid}`));

@@ -21,8 +21,11 @@ export const AdminEnrollUser: React.FC<Props> = () => {
 
   async function fetchData() {
     setLoading(true);
+    console.log("asd");
+
     const data = await adminApi.getUsersExceptAnonymous();
     setUsers(data);
+
     setLoading(false);
   }
 
@@ -70,7 +73,7 @@ export const AdminEnrollUser: React.FC<Props> = () => {
     const uid = e.currentTarget.name;
     const response = window.confirm(`${uid} 사용자를 삭제하시겠습니까?`);
     if (response) {
-      await adminApi.deleteUser(uid);
+      await adminApi.deleteUserAnonymous(uid);
       await fetchData();
     }
   };
@@ -125,16 +128,11 @@ export const AdminEnrollUser: React.FC<Props> = () => {
           </Button>
         </form>
         <ul className={styles.userList}>
-          {Object.keys(users).map((uid) => {
-            const user = users[uid];
-            return (
-              <AdminUserItem
-                key={uid}
-                user={user}
-                handleDeleteUser={handleDeleteUser}
-              />
-            );
-          })}
+          {Object.keys(users)
+            .map((uid) => users[uid])
+            .map((user) => (
+              <AdminUserItem user={user} handleDeleteUser={handleDeleteUser} />
+            ))}
         </ul>
       </main>
     </div>

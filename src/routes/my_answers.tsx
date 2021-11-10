@@ -51,16 +51,17 @@ const GrassItems: React.FC<{
 
   return (
     <ul className={styles.grassGrid}>
-      {filtered.map((date: string) => (
-        <li
-          key={date}
-          data-date={date}
-          onClick={handleClickGrass}
-          className={`${styles.grassItem} ${
-            datesAnswerCnt[date] > 0 ? styles.colored : null
-          }`}
-        ></li>
-      ))}
+      {filtered &&
+        filtered.map((date: string) => (
+          <li
+            key={date}
+            data-date={date}
+            onClick={handleClickGrass}
+            className={`${styles.grassItem} ${
+              datesAnswerCnt[date] > 0 ? styles.colored : null
+            }`}
+          ></li>
+        ))}
     </ul>
   );
 };
@@ -104,7 +105,6 @@ export const MyAnswers: React.FC<Props> = () => {
           tmpDateList[`${tmpMonth}월 ${week}주차`] = weekDates;
         }
       });
-      console.log(tmpDateList);
 
       const tmpDatesAnmswerCnt = {};
       answerData.forEach((answer) => {

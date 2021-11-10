@@ -57,7 +57,7 @@ export const getQuestionsUntilToday = async () => {
 };
 
 export const getUserAnswers = async (user: any) => {
-  const { answers } = user;
+  const answers = user.answers ? user.answers : {};
   const snapshot = await get(ref(fireDB, "/answers"));
   const allAnswers = snapshot.val();
   const qsnapshot = await get(ref(fireDB, `questions`));
