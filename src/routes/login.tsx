@@ -11,6 +11,7 @@ import { UserContext } from "../app";
 import Box from "@mui/material/Box";
 import { gaLog } from "../services/firebase";
 import styles from "../styles.module.css";
+import { EnrollButton } from "../components/enroll_btn";
 
 interface LoginInput {
   type: "email" | "phone_number" | null;
@@ -100,6 +101,7 @@ function Login() {
               >
                 휴대폰 번호로 로그인하기
               </Button>
+              <EnrollButton />
             </div>
           ) : (
             <>

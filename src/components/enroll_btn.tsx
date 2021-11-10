@@ -6,14 +6,14 @@ interface Props {}
 export const EnrollButton: React.FC<Props> = () => {
   return (
     <Button
-      color="warning"
-      variant="contained"
+      color="error"
+      variant="outlined"
       onClick={(e) => {
         e.preventDefault();
-        window.location.href = "https://forms.gle/AqJ642yNG7pCwgYt7";
+        window.location.href = "https://forms.gle/xQZwCNAQdYuAZnWD8";
       }}
     >
-      11월 2주차 등록하기
+      11월 3주차 등록하기(~11.14)
     </Button>
   );
 };
