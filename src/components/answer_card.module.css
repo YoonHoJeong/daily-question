@@ -1,10 +1,9 @@
 .card {
   margin-top: 12px;
-  max-width: 300px;
+  width: 290px;
+  max-width: 290px;
 
   border: 1px solid #cecece;
-
-  width: 100%;
   border-radius: 10px;
   padding: 8px 13px;
   --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -34,7 +33,7 @@
 }
 
 .answerText {
-  color: #cecaca;
+  color: #555555;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.43;

@@ -18,6 +18,8 @@ import dateService from "../services/dateService";
 import { AnswerCard } from "../components/answer_card";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Collapse from "@mui/material/Collapse";
+import { maxWidth } from "@mui/system";
 
 let styles = Object.assign(commonStyles, ownStyles);
 
@@ -73,7 +75,7 @@ export const MyAnswers: React.FC<Props> = () => {
   );
   const [answers, setAnswers] = useState<any[]>([]);
   const [datesAnswerCnt, setDatesAnswerCnt] = useState({});
-
+  const [answersOn, setAnswersOn] = useState<boolean>(false);
   const [dateList, setDateList] = useState<{}>([]);
   const history = useHistory();
   const location = useLocation();
@@ -135,8 +137,10 @@ export const MyAnswers: React.FC<Props> = () => {
     const date = e.currentTarget.getAttribute("data-date");
     if (selectedDate === date) {
       date && setSelectedDate("");
+      setAnswersOn(false);
     } else {
       date && setSelectedDate(date);
+      setAnswersOn(true);
     }
   };
 
@@ -199,16 +203,18 @@ export const MyAnswers: React.FC<Props> = () => {
         selectedWeek={selectedWeek}
         datesAnswerCnt={datesAnswerCnt}
       />
-      <ul className={styles.answerList}>
-        {answers
-          .filter(
-            ({ created_at }) =>
-              formatDateUntilDay(new Date(created_at)) === selectedDate
-          )
-          .map((answer) => (
-            <AnswerCard key={answer.aid} answer={answer} />
-          ))}
-      </ul>
+      <Collapse in={answersOn} timeout={600} sx={{ maxWidth: "290px" }}>
+        <ul className={styles.answerList}>
+          {answers
+            .filter(
+              ({ created_at }) =>
+                formatDateUntilDay(new Date(created_at)) === selectedDate
+            )
+            .map((answer) => (
+              <AnswerCard key={answer.aid} answer={answer} />
+            ))}
+        </ul>
+      </Collapse>
     </div>
   );
 };
