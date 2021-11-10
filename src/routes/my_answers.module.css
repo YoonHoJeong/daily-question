@@ -1,14 +1,65 @@
 .myAnswersContainer {
-  padding: 35px;
+  width: 100%;
+  height: 100%;
 
-  background-color: antiquewhite;
+  padding: 20px;
+  padding-top: 60px;
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+}
+.weekText {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.msg {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 30px;
+}
+
+.grassGrid {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+  -ms-grid-columns: repeat(5, 50px);
+
+  column-gap: 5px;
+  row-gap: 10px;
+
+  margin-top: 15px;
+}
+.grassGrid > li {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.myAnswersContainer > ul {
-  height: 100%;
+.grassItem {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #00a3ff;
+}
+
+.grassItem.colored {
+  background-color: #00a3ff;
+}
+
+.monthText {
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.coloredDate {
+  color: #00a3ff;
+}
+
+.answerList {
+  margin: 30px 0px;
+  margin-bottom: 20px;
+  overflow-y: scroll;
 }

@@ -19,13 +19,18 @@ const dateService = {
     const dateList = [];
     const firstDate = new Date(date);
     firstDate.setDate(firstDate.getDate() - day + 1);
-
     for (let i = 0; i < 5; i++) {
       dateList.push(formatDateUntilDay(firstDate));
       firstDate.setDate(firstDate.getDate() + 1);
     }
 
     return dateList;
+  },
+
+  getWeekByDate: (date: Date) => {
+    const month = date.getMonth() + 1;
+    const week = ((date.getDate() / 7) | 0) + 1;
+    return `${month}월 ${week}주차`;
   },
 };
 

@@ -63,15 +63,17 @@ export const getUserAnswers = async (user: any) => {
   const qsnapshot = await get(ref(fireDB, `questions`));
 
   const questions = qsnapshot.val();
-  const result: any[] = [];
-
-  Object.keys(allAnswers)
+  const result: any[] = Object.keys(allAnswers)
     .filter((aid) => Object.keys(answers).includes(aid))
-    .forEach((aid) => {
+    .map((aid) => {
       const ans = allAnswers[aid];
       const { qid } = ans;
 
-      result.push({ ...ans, question: questions[qid].question });
+      return {
+        ...ans,
+        question: questions[qid].question,
+        keyword: questions[qid].keyword,
+      };
     });
 
   return result;
