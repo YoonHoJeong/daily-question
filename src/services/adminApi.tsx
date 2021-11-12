@@ -155,7 +155,12 @@ export const adminApi = {
       console.log(e);
     }
   },
-  enrollQuestion: async ({ keyword, publish_date, question }: QuestionForm) => {
+  enrollQuestion: async ({
+    qid = null,
+    keyword,
+    publish_date,
+    question,
+  }: QuestionForm) => {
     const newQid = push(ref(fireDB, "questions")).key;
     const updates = {};
 

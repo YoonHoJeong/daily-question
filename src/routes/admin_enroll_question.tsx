@@ -10,6 +10,7 @@ import { getServiceDateList } from "./admin";
 interface Props {}
 
 export interface QuestionForm {
+  qid: string | null;
   keyword: string;
   publish_date: string;
   question: string;
@@ -26,6 +27,7 @@ interface Questions {
 
 export const EnrollQuestion: React.FC<Props> = () => {
   const [formData, setFormData] = useState<QuestionForm>({
+    qid: null,
     keyword: "",
     publish_date: "",
     question: "",
@@ -69,7 +71,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
         alert(
           `keyword: ${formData.keyword} \npublish_date: ${formData.publish_date} \nquestion: ${formData.question} \n 질문 등록에 성공했습니다.`
         );
-        setFormData({ keyword: "", publish_date: "", question: "" });
+        setFormData({ qid: null, keyword: "", publish_date: "", question: "" });
       } catch (e) {
         alert("질문 등록에 실패했습니다.");
       }
@@ -83,12 +85,38 @@ export const EnrollQuestion: React.FC<Props> = () => {
     setSelectedDate(e.currentTarget.name);
   };
 
+  const handleEditQuestion:
+    | React.MouseEventHandler<HTMLButtonElement>
+    | undefined = (e) => {
+    const li = e.currentTarget.parentNode;
+    const pd = li?.querySelector(".publish_date");
+    const kw = li?.querySelector(".keyword");
+    const q = li?.querySelector(".question");
+    const btn = li?.querySelector("button");
+
+    if (kw?.getAttribute("contentEditable") === "true") {
+      // 완료 버튼 클릭
+      kw?.setAttribute("contentEditable", "false");
+      q?.setAttribute("contentEditable", "false");
+
+      const publish_date = pd?.innerHTML;
+      const keyword = kw?.innerHTML;
+      const question = q?.innerHTML;
+
+      if (btn) btn.innerText = "수정하기";
+    } else {
+      kw?.setAttribute("contentEditable", "true");
+      q?.setAttribute("contentEditable", "true");
+      if (btn) btn.innerText = "완료";
+    }
+  };
+
   if (loading) {
     return <CircularProgress />;
   }
 
   return (
-    <>
+    <div className={styles.enrollQuestion}>
       <AdminHeader />
       <form
         className={styles.questionEnrollForm}
@@ -114,6 +142,8 @@ export const EnrollQuestion: React.FC<Props> = () => {
           value={formData?.question}
           label="question"
           name="question"
+          multiline
+          fullWidth
           onChange={handleChange}
         />
         <Button variant="contained" onClick={handleSubmit}>
@@ -125,7 +155,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
           {getServiceDateList()
             .concat([getTomorrow()])
             .map((date) => (
-              <li>
+              <li key={date}>
                 <Button
                   name={date}
                   variant={date === selectedDate ? "contained" : "outlined"}
@@ -143,16 +173,32 @@ export const EnrollQuestion: React.FC<Props> = () => {
               const q = questions[qid];
 
               return (
-                <li>
-                  <div>publish_date: {q.publish_date}</div>
-                  <div>keyword: {q.keyword}</div>
-                  <div>question: {q.question}</div>
+                <li key={qid}>
+                  <div>
+                    배포일자:
+                    <span className="publish_date">{q.publish_date}</span>
+                  </div>
+                  <div>
+                    키워드: <span className="keyword">{q.keyword}</span>
+                  </div>
+                  <div>
+                    질문: <span className="question">{q.question}</span>
+                  </div>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    name={qid}
+                    onClick={handleEditQuestion}
+                  >
+                    수정하기
+                  </Button>
+                  <br />
                   <br />
                 </li>
               );
             })}
         </ul>
       </div>
-    </>
+    </div>
   );
 };

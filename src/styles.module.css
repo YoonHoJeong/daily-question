@@ -221,7 +221,15 @@
 }
 
 /* question enroll form */
+.enrollQuestion {
+  width: 80vw;
+  max-width: 80vh;
+  overflow-y: auto;
+}
+
 .questionEnrollForm {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
 }
