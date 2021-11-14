@@ -101,7 +101,7 @@ function Login() {
               >
                 휴대폰 번호로 로그인하기
               </Button>
-              <EnrollButton />
+              {/* <EnrollButton /> */}
             </div>
           ) : (
             <>
