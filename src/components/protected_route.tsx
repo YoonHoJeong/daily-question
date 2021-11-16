@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoute = ({ children, ...rest }: any) => {
   const auth = useAuth();
+
   if (auth!!.isAuthenticating) {
     return <CircularProgress />;
   }

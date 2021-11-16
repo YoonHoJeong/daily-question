@@ -33,6 +33,7 @@ export const AdminMain: React.FC<Props> = () => {
       const rates = await adminApi.getAllRates();
 
       setData({ users, answers, questions, rates });
+
       setLoading(false);
     }
     fetchData();

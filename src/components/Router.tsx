@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { Admin } from "../routes/admin";
 import { AdminLogin } from "../routes/admin_login";
+import { AdminMain } from "../routes/admin_main";
+
 import Login from "../routes/login";
 import { MyAnswers } from "../routes/my_answers";
 import { SelectCategory } from "../routes/select_category";
@@ -32,9 +34,9 @@ export const Router: React.FC<Props> = () => {
           <MyAnswers />
         </PrivateRoute>
         <ProtectedRoute path="/admin/main">
-          <Admin />
+          <AdminMain />
         </ProtectedRoute>
-        <Route exact path="/admin">
+        <Route path="/admin">
           <AdminLogin />
         </Route>
         <Redirect from="*" to="/" />

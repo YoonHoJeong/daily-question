@@ -7,6 +7,7 @@ import styles from "./styles.module.css";
 import { auth, fireDB } from "./services/firebase";
 import { onValue, ref } from "firebase/database";
 import { onAuthStateChanged } from "@firebase/auth";
+import { AuthProvider } from "./hooks/useAuth";
 
 interface User {
   answers: string[];
@@ -61,7 +62,9 @@ function App() {
     <div className={styles.app}>
       <GlobalStyles />
       <UserProvider>
-        <Router />
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
       </UserProvider>
     </div>
   );

@@ -1,8 +1,15 @@
 import React from "react";
 import { formatDateUntilDay } from "../services/question";
 import styles from "../styles.module.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { AdminHeader } from "../components/admin_header";
+import { AdminMain } from "./admin_main";
+import { useAuth } from "../hooks/useAuth";
+import { CircularProgress } from "@mui/material";
+import ProtectedRoute from "../components/protected_route";
+import { AdminLogin } from "./admin_login";
+import { AdminEnrollUser } from "./admin_enroll_user";
+import { EnrollQuestion } from "./admin_enroll_question";
 
 interface Props {}
 
@@ -32,17 +39,28 @@ export interface Data {
 }
 
 export const Admin: React.FC<Props> = () => {
+  const { pathname } = useLocation();
+  const auth = useAuth();
+
+  if (auth?.isAuthenticating) {
+    return <CircularProgress />;
+  }
+
   return (
-    <main className={styles.adminMain}>
-      <Switch>
-        <AdminHeader />
-        <Route exact path="/admin/main">
-          Home
-        </Route>
-        <Route exact path={`/admin/enroll`}>
-          User Enrollment
-        </Route>
-      </Switch>
-    </main>
+    <>
+      <Route path={pathname}>
+        <AdminLogin />
+      </Route>
+      <AdminHeader />
+      <ProtectedRoute exact path={`${pathname}/main`}>
+        <AdminMain />
+      </ProtectedRoute>
+      <ProtectedRoute exact path={`${pathname}/enroll-user`}>
+        <AdminEnrollUser />
+      </ProtectedRoute>
+      <ProtectedRoute exact path={`${pathname}/enroll-question`}>
+        <EnrollQuestion />
+      </ProtectedRoute>
+    </>
   );
 };
