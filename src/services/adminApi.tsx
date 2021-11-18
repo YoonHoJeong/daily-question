@@ -2,17 +2,34 @@ import { get, push, ref, update } from "@firebase/database";
 import { UserFormState } from "../routes/admin_enroll_user";
 import { QuestionForm } from "../routes/admin_enroll_question";
 import { fireDB } from "./firebase";
+import { Answer } from "../interfaces";
 
+const getAllUsers = async () => {
+  const snapshot = await get(ref(fireDB, "/users"));
+  const users = snapshot.val();
+  const filtered = Object.keys(users)
+    .filter((uid) => users[uid].uid !== "01031918941")
+    .reduce((res, key) => ((res[key] = users[key]), res), {});
+
+  return filtered;
+};
+const getAllRates = async () => {
+  const snapshot = await get(ref(fireDB, "/rates"));
+  const rates = snapshot.val();
+  const filtered = Object.keys(rates)
+    .filter((rid) => rates[rid].uid !== "01031918941")
+    .reduce((res, key) => ((res[key] = rates[key]), res), {});
+
+  return filtered;
+};
+const getAllQuestions = async () => {
+  const snapshot = await get(ref(fireDB, "/questions"));
+  const questions = snapshot.val();
+
+  return questions;
+};
 export const adminApi = {
-  getAllUsers: async () => {
-    const snapshot = await get(ref(fireDB, "/users"));
-    const users = snapshot.val();
-    const filtered = Object.keys(users)
-      .filter((uid) => users[uid].uid !== "01031918941")
-      .reduce((res, key) => ((res[key] = users[key]), res), {});
-
-    return filtered;
-  },
+  getAllUsers,
   getUsersExceptAnonymous: async () => {
     const snapshot = await get(ref(fireDB, "/users"));
     const users = snapshot.val();
@@ -22,31 +39,40 @@ export const adminApi = {
 
     return filtered;
   },
-  getAllAnswers: async () => {
-    const snapshot = await get(ref(fireDB, "/answers"));
-    const answers = snapshot.val();
+  getAllAnswers: async function (): Promise<Answer[]> {
+    // get data
+    const answers = (await get(ref(fireDB, "/answers"))).val();
+    const questions = (await get(ref(fireDB, "/questions"))).val();
+    const rates = (await get(ref(fireDB, "/rates"))).val();
 
-    const filtered = Object.keys(answers)
-      .filter((aid) => answers[aid].uid !== "01031918941")
-      .reduce((res, key) => ((res[key] = answers[key]), res), {});
+    // created_at / uid / category / question / answer / rate_degree / rate_comment
+    return Object.keys(answers).map((aid) => {
+      const { uid, answer, qid, created_at } = answers[aid];
 
-    return filtered;
+      const { keyword, question, publish_date } = questions[qid];
+      const rate = Object.keys(rates)
+        .filter((rid) => rates[rid].uid === uid && rates[rid].qid === qid)
+        .map((rid) => rates[rid])
+        .pop();
+
+      const res = {
+        aid,
+        created_at,
+        uid,
+        question: {
+          question,
+          keyword,
+          publish_date,
+        },
+        answer,
+      };
+      res["rate"] = rate;
+
+      return res;
+    });
   },
-  getAllRates: async () => {
-    const snapshot = await get(ref(fireDB, "/rates"));
-    const rates = snapshot.val();
-    const filtered = Object.keys(rates)
-      .filter((rid) => rates[rid].uid !== "01031918941")
-      .reduce((res, key) => ((res[key] = rates[key]), res), {});
-
-    return filtered;
-  },
-  getAllQuestions: async () => {
-    const snapshot = await get(ref(fireDB, "/questions"));
-    const questions = snapshot.val();
-
-    return questions;
-  },
+  getAllRates,
+  getAllQuestions,
 
   enrollNewUser: async ({
     uid,

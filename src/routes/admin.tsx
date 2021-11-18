@@ -48,9 +48,7 @@ export const Admin: React.FC<Props> = () => {
 
   return (
     <>
-      <Route path={pathname}>
-        <AdminLogin />
-      </Route>
+
       <AdminHeader />
       <ProtectedRoute exact path={`${pathname}/main`}>
         <AdminMain />
