@@ -12,7 +12,13 @@ const ProtectedRoute = ({ children, ...rest }: any) => {
   return (
     <Route
       {...rest}
-      render={() => (auth?.user !== null ? children : <Redirect to="/admin" />)}
+      render={() =>
+        auth?.user !== null ? (
+          children
+        ) : (
+          <Redirect to="/admin/enroll-question" />
+        )
+      }
     ></Route>
   );
 };

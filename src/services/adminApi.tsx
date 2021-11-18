@@ -182,21 +182,36 @@ export const adminApi = {
     }
   },
   enrollQuestion: async ({
-    qid = null,
+    qid,
     keyword,
     publish_date,
     question,
   }: QuestionForm) => {
-    const newQid = push(ref(fireDB, "questions")).key;
     const updates = {};
 
-    updates[`/questions/${newQid}`] = {
-      qid: newQid,
-      keyword,
-      publish_date,
-      question,
-    };
+    if (qid !== null) {
+      console.log("qid not null");
 
+      updates[`/questions/${qid}`] = {
+        qid,
+        keyword,
+        publish_date,
+        question,
+      };
+    } else {
+      const newQid = push(ref(fireDB, "questions")).key;
+
+      updates[`/questions/${newQid}`] = {
+        qid: newQid,
+        keyword,
+        publish_date,
+        question,
+      };
+    }
     await update(ref(fireDB), updates);
+  },
+  getQuestionById: async (qid: string) => {
+    const question = (await get(ref(fireDB, `/questions/${qid}`))).val();
+    return question;
   },
 };

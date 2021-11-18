@@ -87,28 +87,15 @@ export const EnrollQuestion: React.FC<Props> = () => {
 
   const handleEditQuestion:
     | React.MouseEventHandler<HTMLButtonElement>
-    | undefined = (e) => {
-    const li = e.currentTarget.parentNode;
-    const pd = li?.querySelector(".publish_date");
-    const kw = li?.querySelector(".keyword");
-    const q = li?.querySelector(".question");
-    const btn = li?.querySelector("button");
-
-    if (kw?.getAttribute("contentEditable") === "true") {
-      // 완료 버튼 클릭
-      kw?.setAttribute("contentEditable", "false");
-      q?.setAttribute("contentEditable", "false");
-
-      const publish_date = pd?.innerHTML;
-      const keyword = kw?.innerHTML;
-      const question = q?.innerHTML;
-
-      if (btn) btn.innerText = "수정하기";
-    } else {
-      kw?.setAttribute("contentEditable", "true");
-      q?.setAttribute("contentEditable", "true");
-      if (btn) btn.innerText = "완료";
-    }
+    | undefined = async (e) => {
+    const qid = e.currentTarget.name;
+    const {
+      publish_date,
+      keyword,
+      question,
+      qid: qidData,
+    } = await adminApi.getQuestionById(qid);
+    setFormData({ publish_date, keyword, question, qid });
   };
 
   if (loading) {
@@ -117,7 +104,6 @@ export const EnrollQuestion: React.FC<Props> = () => {
 
   return (
     <div className={styles.enrollQuestion}>
-      <AdminHeader />
       <form
         className={styles.questionEnrollForm}
         action=""

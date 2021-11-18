@@ -84,7 +84,6 @@ export const AdminEnrollUser: React.FC<Props> = () => {
 
   return (
     <div className={styles.enrollUser}>
-      <AdminHeader />
       <main className={styles.enrollUserMain}>
         <form
           className={styles.enrollUserForm}

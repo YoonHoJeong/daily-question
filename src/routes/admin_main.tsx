@@ -1,99 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { Data, getServiceDateList } from "./admin";
-import { useLocation } from "react-router";
-import { getToday } from "../services/dateService";
-import { Button } from "@mui/material";
-import { adminApi } from "../services/adminApi";
-import { formatDateUntilDay } from "../services/question";
-import styles from "../styles.module.css";
+import React from "react";
+import { Route, Switch, useLocation } from "react-router";
+
 import { AdminHeader } from "../components/admin_header";
-import { Answer } from "../interfaces";
-import { AnswerList } from "../components/answer_list";
+import { AdminAnswers } from "./admin_answers";
+import { EnrollQuestion } from "./admin_enroll_question";
+import { AdminEnrollUser } from "./admin_enroll_user";
+import styles from "./admin_main.module.css";
 
 interface Props {}
 
 export const AdminMain: React.FC<Props> = () => {
-  const [answers, setAnswers] = useState<Answer[]>([]);
-
   const location = useLocation();
-  const [selectedDate, setSelectedDate] = useState<string>(getToday());
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [categories, setCategories] = useState<any[]>();
-  const [loading, setLoading] = useState<Boolean>(true);
-  const serviceDateList: string[] = getServiceDateList();
-
-  useEffect(() => {
-    async function fetchData() {
-      const answersData = await adminApi.getAllAnswers();
-      setAnswers(answersData);
-
-      setLoading(false);
-    }
-    fetchData();
-  }, []);
-
-  const handleClickDate = (e: any) => {
-    const elem = e.target as HTMLButtonElement;
-    setSelectedDate(elem.name);
-    setSelectedCategory("");
-  };
-
-  const handleClickCategory = (e: any) => {
-    const elem = e.target as HTMLButtonElement;
-
-    setSelectedCategory(elem.name);
-  };
+  console.log(location.pathname);
 
   return (
-    <>
+    <div className={styles.adminMain}>
       <AdminHeader />
-      <main className={styles.adminMain}>
-        {serviceDateList.map((date) => (
-          <Button
-            key={date}
-            name={date}
-            onClick={handleClickDate}
-            variant={date === selectedDate ? "contained" : "outlined"}
-          >
-            {date}
-          </Button>
-        ))}
-        {loading ? (
-          <div>loading....</div>
-        ) : (
-          <>
-            <ul>
-              {categories?.map((category) => (
-                <Button
-                  key={category.qid}
-                  name={category.qid}
-                  color="secondary"
-                  variant={
-                    `${category.qid}` === selectedCategory
-                      ? "contained"
-                      : "outlined"
-                  }
-                  onClick={handleClickCategory}
-                >
-                  {category.keyword}
-                </Button>
-              ))}
-            </ul>
-            <AnswerList
-              answers={answers
-                .filter(
-                  ({ question: { publish_date } }) =>
-                    publish_date === selectedDate
-                )
-                .sort(
-                  (a, b) =>
-                    new Date(b.created_at).getTime() -
-                    new Date(a.created_at).getTime()
-                )}
-            />
-          </>
-        )}
-      </main>
-    </>
+      <Switch>
+        <Route exact path={`/admin/main`}>
+          <AdminAnswers />
+        </Route>
+        <Route exact path={`/admin/enroll-question`}>
+          <EnrollQuestion />
+        </Route>
+        <Route exact path={`/admin/enroll-user`}>
+          <AdminEnrollUser />
+        </Route>
+      </Switch>
+    </div>
   );
 };

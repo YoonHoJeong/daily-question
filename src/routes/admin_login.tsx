@@ -18,6 +18,7 @@ export const AdminLogin: React.FC<Props> = () => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<Boolean>(true);
   const history = useHistory();
+  console.log("adminlogin");
 
   const handleChange = (e: any) => {
     setError("");

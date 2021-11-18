@@ -18,7 +18,7 @@ export const AdminHeader: React.FC<Props> = () => {
               location.pathname === "/admin/main" ? "contained" : "outlined"
             }
           >
-            메인
+            답변 리스트
           </Button>
         </Link>
       </li>
