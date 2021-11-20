@@ -1,5 +1,15 @@
 // 질문 불러오기
-import { child, get, push, ref, update } from "@firebase/database";
+import {
+  child,
+  equalTo,
+  get,
+  orderByChild,
+  push,
+  query,
+  ref,
+  update,
+} from "@firebase/database";
+import { getToday } from "./dateService";
 import { fireDB } from "./firebase";
 
 const SERVICE_LAUNCH_DATE = "2021-11-01";
@@ -28,32 +38,16 @@ export function formatDateUntilDay(date: Date) {
   return dateString;
 }
 
-export const getQuestionsUntilToday = async () => {
-  const snapshot = await get(ref(fireDB, "/questions"));
-
-  const today = formatDateUntilDay(new Date());
-  let questionsSortByDate = {};
-
-  if (snapshot !== null) {
-    const questions = snapshot.val();
-
-    const questionsUntilToday = Object.keys(questions)
-      .map((key) => questions[key])
-      .filter(
-        (q) =>
-          new Date(today) >= new Date(q.publish_date) &&
-          new Date(q.publish_date) >= new Date(SERVICE_LAUNCH_DATE)
-      )
-      .forEach((q) => {
-        questionsSortByDate[q.publish_date] !== undefined
-          ? questionsSortByDate[q.publish_date].push(q)
-          : (questionsSortByDate[q.publish_date] = [q]);
-      });
-
-    return questionsSortByDate;
-  } else {
-    return {};
-  }
+export const getTodayQuestions = async () => {
+  const snapshot = await get(
+    query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      equalTo(getToday())
+    )
+  );
+  const questions = snapshot.val();
+  return questions;
 };
 
 export const getUserAnswers = async (user: any) => {
@@ -77,23 +71,6 @@ export const getUserAnswers = async (user: any) => {
     });
 
   return result;
-};
-
-export const getTodayQuestions = async () => {
-  const snapshot = await get(ref(fireDB, "/questions"));
-
-  const today = formatDateUntilDay(new Date());
-
-  if (snapshot !== null) {
-    const questions = snapshot.val();
-
-    const todayQuestions = Object.keys(questions)
-      .map((key) => questions[key])
-      .filter((q) => today === q.publish_date);
-    return todayQuestions;
-  } else {
-    return [];
-  }
 };
 
 export const getQuestion = async (qid: string) => {

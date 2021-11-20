@@ -1,8 +1,17 @@
-import { get, push, ref, update } from "@firebase/database";
+import {
+  equalTo,
+  get,
+  orderByChild,
+  push,
+  query,
+  ref,
+  update,
+} from "@firebase/database";
 import { UserFormState } from "../routes/admin_enroll_user";
 import { QuestionForm } from "../routes/admin_enroll_question";
 import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
+import { getToday } from "./dateService";
 
 const getAllUsers = async () => {
   const snapshot = await get(ref(fireDB, "/users"));
@@ -25,6 +34,19 @@ const getAllRates = async () => {
 const getAllQuestions = async () => {
   const snapshot = await get(ref(fireDB, "/questions"));
   const questions = snapshot.val();
+
+  return questions;
+};
+const getTodayQuestions = async () => {
+  const snapshot = await get(
+    query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      equalTo(getToday())
+    )
+  );
+  const questions = snapshot.val();
+  console.log(questions);
 
   return questions;
 };
@@ -73,6 +95,7 @@ export const adminApi = {
   },
   getAllRates,
   getAllQuestions,
+  getTodayQuestions,
 
   enrollNewUser: async ({
     uid,

@@ -257,6 +257,9 @@
 .dateInput {
   margin: 15px 0;
 }
+.filterContainer {
+  display: flex;
+}
 
 /* admin Header */
 .adminHeader {
