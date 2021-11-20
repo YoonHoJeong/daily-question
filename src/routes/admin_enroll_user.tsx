@@ -127,11 +127,12 @@ export const AdminEnrollUser: React.FC<Props> = () => {
           </Button>
         </form>
         <ul className={styles.userList}>
-          {Object.keys(users)
-            .map((uid) => users[uid])
-            .map((user) => (
-              <AdminUserItem user={user} handleDeleteUser={handleDeleteUser} />
-            ))}
+          {Object.keys(users).map((uid) => (
+            <AdminUserItem
+              user={users[uid]}
+              handleDeleteUser={handleDeleteUser}
+            />
+          ))}
         </ul>
       </main>
     </div>

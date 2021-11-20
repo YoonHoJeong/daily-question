@@ -14,7 +14,9 @@ export const AnswerList: React.FC<Props> = ({ answers }) => {
         <div>
           작성 유저 수: {new Set(answers.map((answer) => answer.uid)).size}명
         </div>
-        <div>최근 답변 등록 시간: {answers[0].created_at}</div>
+        {answers.length > 0 ? (
+          <div>최근 답변 등록 시간: {answers[0].created_at}</div>
+        ) : null}
       </div>
       <table className={styles.answerTable}>
         <tbody>

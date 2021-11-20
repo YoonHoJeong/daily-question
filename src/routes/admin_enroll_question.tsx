@@ -168,7 +168,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
                     키워드: <span className="keyword">{q.keyword}</span>
                   </div>
                   <div>
-                    질문: <span className="question">{q.question}</span>
+                    질문<pre className="question">{q.question}</pre>
                   </div>
                   <Button
                     variant="contained"

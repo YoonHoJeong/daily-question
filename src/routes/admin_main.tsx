@@ -10,9 +10,6 @@ import styles from "./admin_main.module.css";
 interface Props {}
 
 export const AdminMain: React.FC<Props> = () => {
-  const location = useLocation();
-  console.log(location.pathname);
-
   return (
     <div className={styles.adminMain}>
       <AdminHeader />

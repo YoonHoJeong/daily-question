@@ -5,7 +5,6 @@ import { useLocation, useHistory } from "react-router";
 import { UserContext } from "../app";
 import { submitRate } from "../services/question";
 import styles from "../styles.module.css";
-import { gaLog } from "../services/firebase";
 
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
