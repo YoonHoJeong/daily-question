@@ -223,7 +223,6 @@
 /* question enroll form */
 .enrollQuestion {
   width: 80vw;
-  max-width: 80vh;
   overflow-y: auto;
 }
 
@@ -254,7 +253,9 @@
 
 .questionsContainer {
   width: 100%;
-  padding: 0px 15px;
+}
+.dateInput {
+  margin: 15px 0;
 }
 
 /* admin Header */

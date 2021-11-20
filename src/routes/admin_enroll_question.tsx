@@ -1,11 +1,8 @@
-import { Button, CircularProgress, TextField } from "@mui/material";
+import { Button, CircularProgress, Input, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { AdminHeader } from "../components/admin_header";
 import { adminApi } from "../services/adminApi";
-import { getTomorrow } from "../services/dateService";
 import { formatDateUntilDay } from "../services/question";
 import styles from "../styles.module.css";
-import { getServiceDateList } from "./admin";
 
 interface Props {}
 
@@ -79,10 +76,10 @@ export const EnrollQuestion: React.FC<Props> = () => {
       alert("입력된 값들을 확인해 주세요.");
     }
   };
-  const handleClickDate:
-    | React.MouseEventHandler<HTMLButtonElement>
+  const handleChangeDate:
+    | React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
     | undefined = (e) => {
-    setSelectedDate(e.currentTarget.name);
+    setSelectedDate(e.currentTarget.value);
   };
 
   const handleEditQuestion:
@@ -137,21 +134,12 @@ export const EnrollQuestion: React.FC<Props> = () => {
         </Button>
       </form>
       <div className={styles.questionsContainer}>
-        <ul className={styles.dateList}>
-          {getServiceDateList()
-            .concat([getTomorrow()])
-            .map((date) => (
-              <li key={date}>
-                <Button
-                  name={date}
-                  variant={date === selectedDate ? "contained" : "outlined"}
-                  onClick={handleClickDate}
-                >
-                  {date}
-                </Button>
-              </li>
-            ))}
-        </ul>
+        <Input
+          type="date"
+          className={styles.dateInput}
+          defaultValue={selectedDate}
+          onChange={handleChangeDate}
+        />
         <ul>
           {Object.keys(questions)
             .filter((qid) => questions[qid].publish_date === selectedDate)
