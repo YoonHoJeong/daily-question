@@ -1,15 +1,10 @@
-import {
-  Button,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Button, CircularProgress, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 import { KeywordList } from "../components/keyword_list";
 import { MyAnswerButton } from "../components/my_answer_btn";
 import { gaLog } from "../services/firebase";
-import { formatDateUntilDay, getTodayQuestions } from "../services/question";
+import { getTodayQuestions } from "../services/question";
 import commonStyles from "../styles.module.css";
 import ownStyles from "./select_category.module.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -59,6 +54,7 @@ export const SelectCategory: React.FC<Props> = () => {
     async function fetchQuestionsData() {
       const questionsData = await getTodayQuestions();
       setQuestions(questionsData);
+
       setLoading(false);
     }
     fetchQuestionsData();

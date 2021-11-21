@@ -12,34 +12,26 @@ export const KeywordList: React.FC<Props> = ({
   questions,
   handleClickKeyword,
 }) => {
+  if (questions === null) {
+    return <div>💬 질문을 준비 중입니다.</div>;
+  }
+
   return (
     <>
       <div>키워드를 선택해 주세요 😋</div>
-      <ul className={styles.datesContainer}>
-        {Object.keys(questions!!)
-          .filter((date) => {
-            return formatDateUntilDay(new Date()) === date;
-          })
-          .map((date) => {
-            const dateQuestions = questions!![date];
-            return (
-              <li key={date}>
-                <ul className={styles.categoryContainer} id="keyword">
-                  {dateQuestions!!.map((q: any) => (
-                    <li key={q.qid}>
-                      <IconButton
-                        id="keyword"
-                        name={q.qid}
-                        onClick={handleClickKeyword}
-                      >
-                        <Typography fontSize="large">{q.keyword}</Typography>
-                      </IconButton>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            );
-          })}
+
+      <ul className={styles.categoryContainer} id="keyword">
+        {Object.keys(questions).map((qid: string) => (
+          <li key={qid}>
+            <IconButton
+              id="keyword"
+              name={questions[qid].qid}
+              onClick={handleClickKeyword}
+            >
+              <Typography fontSize="large">{questions[qid].keyword}</Typography>
+            </IconButton>
+          </li>
+        ))}
       </ul>
     </>
   );

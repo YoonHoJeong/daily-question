@@ -24,7 +24,6 @@ export const AdminAnswers: React.FC<Props> = () => {
     const keywordsData = Object.keys(questions)
       .filter((qid) => questions[qid].publish_date === selectedDate)
       .map((qid) => questions[qid].keyword);
-    console.log(keywordsData);
 
     setSelectedKeyword("전체");
     setKeywords(keywordsData);
@@ -36,11 +35,13 @@ export const AdminAnswers: React.FC<Props> = () => {
 
       setQuestions(questions);
       setAnswers(answersData);
-      syncKeywords();
+      setSelectedDate(getToday());
+
       setLoading(false);
     }
     fetchData();
   }, []);
+
   useEffect(() => {
     setLoading(true);
     syncKeywords();

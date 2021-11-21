@@ -105,31 +105,18 @@ function Login() {
             </div>
           ) : (
             <>
-              {loginInput?.type === "email" ? (
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  label="이메일"
-                  name="email"
-                  variant="outlined"
-                  placeholder="ex) daily@question.com"
-                  value={loginInput.id !== null ? loginInput.id : ""}
-                  onChange={handleChange}
-                />
-              ) : null}
-
-              {loginInput?.type === "phone_number" ? (
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  name="phone_number"
-                  label="휴대폰 번호"
-                  variant="outlined"
-                  placeholder="ex) 01012345678"
-                  value={loginInput.id !== null ? loginInput.id : ""}
-                  onChange={handleChange}
-                />
-              ) : null}
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                name={loginInput?.type}
+                label={
+                  loginInput?.type === "phone_number" ? "휴대폰 번호" : "이메일"
+                }
+                variant="outlined"
+                placeholder="ex) 01012345678"
+                value={loginInput.id !== null ? loginInput.id : ""}
+                onChange={handleChange}
+              />
 
               <Button id="login" fullWidth type="submit" variant="contained">
                 로그인

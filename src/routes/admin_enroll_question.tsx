@@ -2,7 +2,7 @@ import { Button, CircularProgress, Input, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { adminApi } from "../services/adminApi";
 import { formatDateUntilDay } from "../services/question";
-import styles from "../styles.module.css";
+import styles from "./admin_enroll_question.module.css";
 
 interface Props {}
 
@@ -34,14 +34,13 @@ export const EnrollQuestion: React.FC<Props> = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     formatDateUntilDay(new Date())
   );
+  async function fetchData() {
+    const questionsData = await adminApi.getAllQuestions();
+    setQuestions(questionsData);
+    setLoading(false);
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const questionsData = await adminApi.getAllQuestions();
-      setQuestions(questionsData);
-      setLoading(false);
-    }
-
     fetchData();
   }, []);
 
@@ -59,7 +58,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
       [e.currentTarget.name]: e.currentTarget.value,
     });
   };
-  const handleSubmit = async (e: any) => {
+  const handleEnrollQuestion = async (e: any) => {
     e.preventDefault();
 
     if (isFormValid()) {
@@ -69,6 +68,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
           `keyword: ${formData.keyword} \npublish_date: ${formData.publish_date} \nquestion: ${formData.question} \n 질문 등록에 성공했습니다.`
         );
         setFormData({ qid: null, keyword: "", publish_date: "", question: "" });
+        fetchData();
       } catch (e) {
         alert("질문 등록에 실패했습니다.");
       }
@@ -94,6 +94,16 @@ export const EnrollQuestion: React.FC<Props> = () => {
     } = await adminApi.getQuestionById(qid);
     setFormData({ publish_date, keyword, question, qid });
   };
+  const handleDelete: React.MouseEventHandler<HTMLButtonElement> | undefined =
+    async (e) => {
+      const confirm = window.confirm("정말 삭제하시겠습니까?");
+      const qid = e.currentTarget.name;
+      // console.log(qid, confirm);
+      if (confirm) {
+        await adminApi.deleteQuestion(qid);
+        fetchData();
+      }
+    };
 
   if (loading) {
     return <CircularProgress />;
@@ -104,7 +114,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
       <form
         className={styles.questionEnrollForm}
         action=""
-        onSubmit={handleSubmit}
+        onSubmit={handleEnrollQuestion}
       >
         <TextField
           value={formData?.keyword}
@@ -129,7 +139,7 @@ export const EnrollQuestion: React.FC<Props> = () => {
           fullWidth
           onChange={handleChange}
         />
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button variant="contained" onClick={handleEnrollQuestion}>
           질문 등록
         </Button>
       </form>
@@ -140,38 +150,48 @@ export const EnrollQuestion: React.FC<Props> = () => {
           defaultValue={selectedDate}
           onChange={handleChangeDate}
         />
-        <ul>
-          {Object.keys(questions)
-            .filter((qid) => questions[qid].publish_date === selectedDate)
-            .map((qid) => {
-              const q = questions[qid];
+        <table>
+          <tbody>
+            <tr className={styles.tr}>
+              <th className={styles.th}>keyword</th>
+              <th className={styles.th}>question</th>
+              <th></th>
+            </tr>
+            {Object.keys(questions)
+              .filter((qid) => questions[qid].publish_date === selectedDate)
+              .map((qid) => {
+                const q = questions[qid];
 
-              return (
-                <li key={qid}>
-                  <div>
-                    배포일자:
-                    <span className="publish_date">{q.publish_date}</span>
-                  </div>
-                  <div>
-                    키워드: <span className="keyword">{q.keyword}</span>
-                  </div>
-                  <div>
-                    질문<pre className="question">{q.question}</pre>
-                  </div>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    name={qid}
-                    onClick={handleEditQuestion}
-                  >
-                    수정하기
-                  </Button>
-                  <br />
-                  <br />
-                </li>
-              );
-            })}
-        </ul>
+                return (
+                  <tr key={qid} className={styles.tr}>
+                    <td className={styles.td}>{q.keyword}</td>
+                    <td className={styles.td}>
+                      <pre>{q.question}</pre>
+                    </td>
+                    <td className={styles.td}>
+                      <Button
+                        variant="contained"
+                        color="warning"
+                        name={qid}
+                        style={{ marginRight: "5px" }}
+                        onClick={handleEditQuestion}
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        name={qid}
+                        onClick={handleDelete}
+                      >
+                        삭제
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
       </div>
     </div>
   );

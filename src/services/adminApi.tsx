@@ -213,8 +213,6 @@ export const adminApi = {
     const updates = {};
 
     if (qid !== null) {
-      console.log("qid not null");
-
       updates[`/questions/${qid}`] = {
         qid,
         keyword,
@@ -233,6 +231,18 @@ export const adminApi = {
     }
     await update(ref(fireDB), updates);
   },
+  deleteQuestion: async (qid: string) => {
+    const updates = {};
+
+    updates[`questions/${qid}`] = {};
+
+    try {
+      await update(ref(fireDB), updates);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   getQuestionById: async (qid: string) => {
     const question = (await get(ref(fireDB, `/questions/${qid}`))).val();
     return question;
