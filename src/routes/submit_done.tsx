@@ -11,7 +11,6 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { Header } from "../components/header";
 
 const customIcons = {
   1: {
@@ -85,7 +84,7 @@ export const SubmitDone: React.FC<Props> = () => {
   };
 
   return (
-    <div className={styles.ct}>
+    <div>
       {submitted ? (
         <div className={styles.ratingDone}>
           <Typography
@@ -123,7 +122,7 @@ export const SubmitDone: React.FC<Props> = () => {
           </Button>
         </div>
       ) : (
-        <Box className={`${styles.rates} ${submitted ? styles.hide : null}`}>
+        <div className={`${styles.rates} ${submitted ? styles.hide : null}`}>
           <Typography variant="h6" align="center">
             오늘 질문은 어떠셨나요?
           </Typography>
@@ -163,7 +162,7 @@ export const SubmitDone: React.FC<Props> = () => {
           >
             소감 제출하기
           </Button>
-        </Box>
+        </div>
       )}
     </div>
   );

@@ -18,7 +18,7 @@ export const KeywordList: React.FC<Props> = ({
 
   return (
     <>
-      <div>키워드를 선택해 주세요 😋</div>
+      <div>키워드를 선택해 주세요 😃</div>
 
       <ul className={styles.categoryContainer} id="keyword">
         {Object.keys(questions).map((qid: string) => (
