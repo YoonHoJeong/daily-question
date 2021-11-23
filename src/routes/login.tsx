@@ -101,7 +101,6 @@ function Login() {
               >
                 휴대폰 번호로 로그인하기
               </Button>
-              {/* <EnrollButton /> */}
             </div>
           ) : (
             <>
@@ -113,7 +112,11 @@ function Login() {
                   loginInput?.type === "phone_number" ? "휴대폰 번호" : "이메일"
                 }
                 variant="outlined"
-                placeholder="ex) 01012345678"
+                placeholder={
+                  loginInput?.type === "phone_number"
+                    ? "ex) 01031918941"
+                    : "ex) gildong@5years.com"
+                }
                 value={loginInput.id !== null ? loginInput.id : ""}
                 onChange={handleChange}
               />
