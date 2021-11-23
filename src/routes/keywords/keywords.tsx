@@ -24,7 +24,7 @@ export const Keywords: React.FC<Props> = () => {
   useEffect(() => {
     async function fetchQuestionsData() {
       const questionsData = await getTodayQuestions();
-      setQuestions(questionsData);
+    setQuestions(questionsData);
 
       setLoading(false);
     }
