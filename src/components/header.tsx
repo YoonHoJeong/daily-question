@@ -5,9 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton } from "@mui/material";
 import { useHistory, useLocation } from "react-router";
 
-interface Props {
-  history: any;
-}
+interface Props {}
 
 export const Header: React.FC<Props> = () => {
   const history = useHistory();
@@ -18,16 +16,7 @@ export const Header: React.FC<Props> = () => {
       <IconButton
         aria-label="back"
         onClick={() => {
-          if (location.pathname === "/today-question") {
-            history.replace({
-              pathname: "/select-category",
-              state: {
-                isKeywordsOn: true,
-              },
-            });
-          } else {
-            history.goBack();
-          }
+          history.goBack();
         }}
       >
         <ArrowBackIcon />

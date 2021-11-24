@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { UserContext } from "../../app";
 import { getQuestion, submitAnswer } from "../../services/question";
-import styles from "../../styles.module.css";
+import styles from "./today_question.module.css";
 import { gaLog } from "../../services/firebase";
 import { Header } from "../../components/header";
 
@@ -31,7 +31,6 @@ export const TodayQuestion: React.FC<Props> = () => {
   const [loading, setLoading] = useState<Boolean>(true);
   const { qid } = location.state as LocationState;
   const [question, setQuestion] = useState<string>("");
-
   const [formData, setFormData] = useState<FormData>({
     qid: "",
     answer: "",
@@ -74,9 +73,8 @@ export const TodayQuestion: React.FC<Props> = () => {
   }
 
   return (
-    <form className={styles.ct} onSubmit={handleSubmitAnswer}>
-      <Header history={history} />
-
+    <form className={styles.form} onSubmit={handleSubmitAnswer}>
+      <Header />
       <Container
         disableGutters
         maxWidth="md"
@@ -107,16 +105,15 @@ export const TodayQuestion: React.FC<Props> = () => {
           multiline
           rows={4}
         />
-        <section className={styles.answerBtns}>
-          <Button
-            id="answer"
-            variant="contained"
-            size="large"
-            onClick={handleSubmitAnswer}
-          >
-            답변 제출하기 📌
-          </Button>
-        </section>
+        <Button
+          id="answer"
+          variant="contained"
+          fullWidth
+          onClick={handleSubmitAnswer}
+          size="large"
+        >
+          답변 제출하기 📌
+        </Button>
       </Container>
     </form>
   );
