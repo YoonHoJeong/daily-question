@@ -13,6 +13,8 @@ import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
 import { getToday } from "./dateService";
 
+const excludeId = ["01031918941"];
+
 const getAllUsers = async () => {
   const snapshot = await get(ref(fireDB, "/users"));
   const users = snapshot.val();
@@ -68,30 +70,32 @@ export const adminApi = {
     const rates = (await get(ref(fireDB, "/rates"))).val();
 
     // created_at / uid / category / question / answer / rate_degree / rate_comment
-    return Object.keys(answers).map((aid) => {
-      const { uid, answer, qid, created_at } = answers[aid];
+    return Object.keys(answers)
+      .filter((aid) => !excludeId.includes(answers[aid].uid))
+      .map((aid) => {
+        const { uid, answer, qid, created_at } = answers[aid];
 
-      const { keyword, question, publish_date } = questions[qid];
-      const rate = Object.keys(rates)
-        .filter((rid) => rates[rid].uid === uid && rates[rid].qid === qid)
-        .map((rid) => rates[rid])
-        .pop();
+        const { keyword, question, publish_date } = questions[qid];
+        const rate = Object.keys(rates)
+          .filter((rid) => rates[rid].uid === uid && rates[rid].qid === qid)
+          .map((rid) => rates[rid])
+          .pop();
 
-      const res = {
-        aid,
-        created_at,
-        uid,
-        question: {
-          question,
-          keyword,
-          publish_date,
-        },
-        answer,
-      };
-      res["rate"] = rate;
+        const res = {
+          aid,
+          created_at,
+          uid,
+          question: {
+            question,
+            keyword,
+            publish_date,
+          },
+          answer,
+        };
+        res["rate"] = rate;
 
-      return res;
-    });
+        return res;
+      });
   },
   getAllRates,
   getAllQuestions,
