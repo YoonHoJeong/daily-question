@@ -103,7 +103,7 @@ export const TodayQuestion: React.FC<Props> = () => {
           id="outlined-multiline-static"
           label="답변"
           multiline
-          rows={6}
+          rows={5}
         />
         <Button
           id="answer"

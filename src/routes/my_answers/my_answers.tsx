@@ -11,6 +11,7 @@ import { AnswerCard } from "../../components/answer_card";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Collapse from "@mui/material/Collapse";
+import { Header } from "../../components/header";
 
 let styles = Object.assign(commonStyles, ownStyles);
 
@@ -157,55 +158,54 @@ export const MyAnswers: React.FC<Props> = () => {
   };
 
   return (
-    <div className={`${styles.myAnswersContainer}`}>
-      <Button className={styles.backBtn} onClick={handleClickGoBack}>
-        <ArrowBackIosIcon />
-      </Button>
+    <>
+      <Header />
+      <div className={`${styles.myAnswersContainer}`}>
+        <div className={styles.weekText}>
+          <IconButton name="back" onClick={handleChangeMonth}>
+            {"   "}
+            <ArrowBackIosIcon />
+          </IconButton>
+          {selectedWeek}
+          <IconButton name="next" onClick={handleChangeMonth}>
+            {"   "}
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+        <div className={styles.msg}>
+          5일 중{" "}
+          <span className={styles.coloredDate}>
+            {
+              Object.keys(datesAnswerCnt).filter(
+                (date) =>
+                  dateService.getWeekByDate(new Date(date)) === selectedWeek
+              ).length
+            }
+            일
+          </span>{" "}
+          대답했어요.
+        </div>
 
-      <div className={styles.weekText}>
-        <IconButton name="back" onClick={handleChangeMonth}>
-          {"   "}
-          <ArrowBackIosIcon />
-        </IconButton>
-        {selectedWeek}
-        <IconButton name="next" onClick={handleChangeMonth}>
-          {"   "}
-          <ArrowForwardIosIcon />
-        </IconButton>
+        <GrassItems
+          dateList={dateList}
+          answers={answers}
+          handleClickGrass={handleClickGrass}
+          selectedWeek={selectedWeek}
+          datesAnswerCnt={datesAnswerCnt}
+        />
+        <Collapse in={answersOn} timeout={600} sx={{ maxWidth: "290px" }}>
+          <ul className={styles.answerList}>
+            {answers
+              .filter(
+                ({ created_at }) =>
+                  formatDateUntilDay(new Date(created_at)) === selectedDate
+              )
+              .map((answer) => (
+                <AnswerCard key={answer.aid} answer={answer} />
+              ))}
+          </ul>
+        </Collapse>
       </div>
-      <div className={styles.msg}>
-        5일 중{" "}
-        <span className={styles.coloredDate}>
-          {
-            Object.keys(datesAnswerCnt).filter(
-              (date) =>
-                dateService.getWeekByDate(new Date(date)) === selectedWeek
-            ).length
-          }
-          일
-        </span>{" "}
-        대답했어요.
-      </div>
-
-      <GrassItems
-        dateList={dateList}
-        answers={answers}
-        handleClickGrass={handleClickGrass}
-        selectedWeek={selectedWeek}
-        datesAnswerCnt={datesAnswerCnt}
-      />
-      <Collapse in={answersOn} timeout={600} sx={{ maxWidth: "290px" }}>
-        <ul className={styles.answerList}>
-          {answers
-            .filter(
-              ({ created_at }) =>
-                formatDateUntilDay(new Date(created_at)) === selectedDate
-            )
-            .map((answer) => (
-              <AnswerCard key={answer.aid} answer={answer} />
-            ))}
-        </ul>
-      </Collapse>
-    </div>
+    </>
   );
 };

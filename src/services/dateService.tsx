@@ -1,10 +1,10 @@
 import { formatDateUntilDay } from "./question";
 
 export const getToday = () => {
-  //   const date = new Date();
-  //   date.setDate(date.getDate() + 1);
-  //   return formatDateUntilDay(date);
-  return formatDateUntilDay(new Date());
+  const date = new Date();
+  date.setHours(date.getHours() - 3); // 오전 3시를 기점으로 question 변경
+
+  return formatDateUntilDay(date);
 };
 export const getTomorrow = () => {
   const date = new Date();

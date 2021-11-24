@@ -150,12 +150,13 @@
   position: absolute;
   top: 0px;
   left: 0px;
-  padding: 10px;
+  padding: 5px 10px;
 
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.075);
 }
 
 .lastMsg {

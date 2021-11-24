@@ -1,20 +1,15 @@
-import { Button, CircularProgress } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
-import { MyAnswerButton } from "../../components/my_answer_btn";
 import { gaLog } from "../../services/firebase";
-import { getTodayQuestions } from "../../services/question";
-import commonStyles from "../../styles.module.css";
-import ownStyles from "./select_category.module.css";
-
-let styles = Object.assign(commonStyles, ownStyles);
+import styles from "./select_category.module.css";
 
 interface Props {}
 
 export const SelectCategory: React.FC<Props> = () => {
   const history = useHistory();
 
-  const goBackFromMyAnswer = () => {
+  const handleClickMyAnswers = () => {
     history.push({
       pathname: "/my-answers",
       state: {
@@ -38,17 +33,22 @@ export const SelectCategory: React.FC<Props> = () => {
   };
 
   return (
-    <div>
-      <div className={styles.btns}>
-        <Button
-          id="todayquestion"
-          variant="contained"
-          onClick={handleClickTodayQuestion}
-        >
-          오늘의 질문 확인하기 😀
-        </Button>
-        <MyAnswerButton goBack={goBackFromMyAnswer} />
-      </div>
+    <div className={styles.btns}>
+      <Button
+        variant="contained"
+        className={styles.todayBtn}
+        id="todayquestion"
+        onClick={handleClickTodayQuestion}
+      >
+        오늘의 질문 확인하기😀
+      </Button>
+      <Button
+        variant="outlined"
+        className={styles.myAnswerBtn}
+        onClick={handleClickMyAnswers}
+      >
+        내 답변 목록
+      </Button>
     </div>
   );
 };
