@@ -6,12 +6,12 @@
 
   width: 85%;
   max-width: 500px;
-  height: 20vh;
+  height: 16vh;
 }
 
 .btns > button {
   height: 65px;
-  font-size: 1rem;
+  font-size: 0.875rem;
   border-radius: 10px;
 }
 
@@ -20,9 +20,17 @@
 }
 
 .todayBtn {
-  flex: 0.6;
+  flex: 0.55;
 }
 
 .myAnswerBtn {
-  flex: 0.4;
+  flex: 0.45;
+}
+
+@media (min-width: 510px) {
+  .btns > button {
+    height: 65px;
+    font-size: 1.125rem;
+    border-radius: 10px;
+  }
 }

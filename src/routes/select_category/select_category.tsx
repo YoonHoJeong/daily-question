@@ -44,6 +44,7 @@ export const SelectCategory: React.FC<Props> = () => {
       </Button>
       <Button
         variant="outlined"
+        id="myanswer"
         className={styles.myAnswerBtn}
         onClick={handleClickMyAnswers}
       >

@@ -2,16 +2,6 @@
   width: 300px;
 }
 
-.loginForm {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.loginButton {
-  margin-top: 10px;
-}
-
 .app {
   position: relative;
 
@@ -56,34 +46,6 @@
   overflow: hidden;
 }
 
-.rates {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 75vw;
-  max-width: 700px;
-}
-
-.commentInput {
-  margin: 15px 0px !important;
-}
-
-.rateBtnBox {
-  padding: 10px 0px;
-}
-
-.hide {
-  display: none !important;
-}
-
-.rateButton {
-  margin-right: 10px;
-}
-.rateBtn {
-  margin: 0px 10px !important;
-}
-
 .backBtn {
   position: absolute !important;
   top: 10px;
@@ -126,9 +88,6 @@
   height: 70vh;
 }
 
-.answerList {
-}
-
 .answerList > li {
   margin-top: 15px;
 }
@@ -147,15 +106,17 @@
 }
 
 .header {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
+  z-index: 99;
   padding: 5px 10px;
 
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.075);
 }
 
@@ -163,22 +124,6 @@
   color: #1976d2;
   margin-bottom: 10px;
   font-weight: 700;
-}
-
-/* login page */
-
-.loginTitle {
-  margin: 15px 0 !important;
-}
-
-.logo {
-  width: 96px;
-}
-
-.titleBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .uid {
@@ -236,14 +181,4 @@
 .enrollUserMain {
   width: 100%;
   display: flex;
-}
-/* login.tsx */
-.loginButtonList {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.loginForm button {
-  margin-top: 10px;
 }

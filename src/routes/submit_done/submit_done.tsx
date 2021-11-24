@@ -4,7 +4,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
 import { UserContext } from "../../app";
 import { submitRate } from "../../services/question";
-import styles from "../../styles.module.css";
+import styles from "./submit_done.module.css";
 
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
@@ -76,15 +76,15 @@ export const SubmitDone: React.FC<Props> = () => {
     | React.MouseEventHandler<HTMLButtonElement>
     | undefined = () => {
     history.push({
-      pathname: "/select-category",
+      pathname: "/keywords",
       state: {
-        isKeywordsOn: true,
+        from: "/submit-done",
       },
     });
   };
 
   return (
-    <div>
+    <>
       {submitted ? (
         <div className={styles.ratingDone}>
           <Typography
@@ -94,10 +94,21 @@ export const SubmitDone: React.FC<Props> = () => {
           >
             내일도 기대해주세요 😊
           </Typography>
+
+          <Button
+            id="anotherkeyword"
+            className={styles.otherQuestionsBtn}
+            fullWidth
+            variant="outlined"
+            onClick={handleClickOtherQuestions}
+          >
+            다른 질문 확인하기
+          </Button>
           <Button
             id="myanswer"
-            variant="contained"
+            variant="outlined"
             color="success"
+            className={styles.myAnswerBtn}
             fullWidth
             onClick={() => {
               history.push({
@@ -110,15 +121,7 @@ export const SubmitDone: React.FC<Props> = () => {
               });
             }}
           >
-            내 답변 보기
-          </Button>
-          <Button
-            id="anotherkeyword"
-            fullWidth
-            variant="contained"
-            onClick={handleClickOtherQuestions}
-          >
-            다른 질문 확인하기
+            내 답변 목록
           </Button>
         </div>
       ) : (
@@ -143,8 +146,8 @@ export const SubmitDone: React.FC<Props> = () => {
             }`}
             id="outlined-multiline-static"
             fullWidth
-            label="소감을 작성해 주세요."
-            placeholder="어떤 의견이라도 좋아요. 😀"
+            label="소감을 작성해주세요."
+            placeholder="어떤 의견이라도 좋아요. "
             multiline
             rows={4}
             onChange={(e) => {
@@ -165,6 +168,6 @@ export const SubmitDone: React.FC<Props> = () => {
           </Button>
         </Box>
       )}
-    </div>
+    </>
   );
 };

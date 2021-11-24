@@ -7,13 +7,7 @@ interface Props {
 
 export const MyAnswerButton: React.FC<Props> = ({ goBack }) => {
   return (
-    <Button
-      id="myanswer"
-      variant="contained"
-      color="success"
-      className={styles.myAnswerBtn}
-      onClick={goBack}
-    >
+    <Button id="myanswer" className={styles.myAnswerBtn} onClick={goBack}>
       내 답변 보기
     </Button>
   );

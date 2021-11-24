@@ -1,7 +1,8 @@
 .card {
-  margin-top: 12px;
-  width: 290px;
-  max-width: 290px;
+  margin: 0px auto;
+  margin-top: 14px;
+  width: 100%;
+  max-width: 400px;
 
   border: 1px solid #cecece;
   border-radius: 10px;
@@ -30,6 +31,7 @@
   line-height: 1.5;
   letter-spacing: 0.00938em;
   margin-bottom: 0.25em;
+  white-space: pre-line;
 }
 
 .answerText {
@@ -38,4 +40,5 @@
   font-size: 12px;
   line-height: 1.43;
   letter-spacing: 0.01071em;
+  white-space: pre-line;
 }
