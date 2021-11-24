@@ -48,7 +48,7 @@ export const TodayQuestion: React.FC<Props> = () => {
       setLoading(false);
     }
     fetchData();
-  }, [qid]);
+  }, []);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setFormData({ ...formData, answer: e.target.value });
@@ -103,7 +103,7 @@ export const TodayQuestion: React.FC<Props> = () => {
           id="outlined-multiline-static"
           label="답변"
           multiline
-          rows={4}
+          rows={6}
         />
         <Button
           id="answer"

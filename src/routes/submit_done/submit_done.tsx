@@ -84,7 +84,7 @@ export const SubmitDone: React.FC<Props> = () => {
   };
 
   return (
-    <div className={styles.ct}>
+    <div>
       {submitted ? (
         <div className={styles.ratingDone}>
           <Typography
@@ -124,7 +124,7 @@ export const SubmitDone: React.FC<Props> = () => {
       ) : (
         <Box className={`${styles.rates} ${submitted ? styles.hide : null}`}>
           <Typography variant="h6" align="center">
-            오늘 질문은 어떠셨나요?
+            오늘의 질문은 어떠셨나요?
           </Typography>
           <Rating
             name="highlight-selected-only"
@@ -143,7 +143,8 @@ export const SubmitDone: React.FC<Props> = () => {
             }`}
             id="outlined-multiline-static"
             fullWidth
-            label="소감을 작성해주세요."
+            label="소감을 작성해 주세요."
+            placeholder="어떤 의견이라도 좋아요. 😀"
             multiline
             rows={4}
             onChange={(e) => {
