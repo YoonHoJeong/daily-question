@@ -7,11 +7,11 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { UserContext } from "../app";
+import { UserContext } from "../../app";
 import Box from "@mui/material/Box";
-import { gaLog } from "../services/firebase";
-import styles from "../styles.module.css";
-import { EnrollButton } from "../components/enroll_btn";
+import { gaLog } from "../../services/firebase";
+import styles from "../../styles.module.css";
+import { EnrollButton } from "../../components/enroll_btn";
 
 interface LoginInput {
   type: "email" | "phone_number" | null;

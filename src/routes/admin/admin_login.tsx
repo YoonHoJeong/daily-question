@@ -1,9 +1,9 @@
 import { Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { useAuth } from "../hooks/useAuth";
-import { loginWithEmail } from "../services/auth";
-import styles from "../styles.module.css";
+import { useAuth } from "../../hooks/useAuth";
+import { loginWithEmail } from "../../services/auth";
+import styles from "../../styles.module.css";
 
 interface Props {}
 

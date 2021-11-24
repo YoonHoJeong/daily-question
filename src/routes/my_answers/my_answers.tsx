@@ -1,25 +1,16 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Button, CircularProgress, IconButton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { UserContext } from "../app";
-import { AnswerItem } from "../components/answer_item";
-import { gaLog } from "../services/firebase";
-import { formatDateUntilDay, getUserAnswers } from "../services/question";
-import commonStyles from "../styles.module.css";
+import { UserContext } from "../../app";
+import { gaLog } from "../../services/firebase";
+import { formatDateUntilDay, getUserAnswers } from "../../services/question";
+import commonStyles from "../../styles.module.css";
 import ownStyles from "./my_answers.module.css";
-import dateService from "../services/dateService";
-import { AnswerCard } from "../components/answer_card";
+import dateService from "../../services/dateService";
+import { AnswerCard } from "../../components/answer_card";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Collapse from "@mui/material/Collapse";
-import { maxWidth } from "@mui/system";
 
 let styles = Object.assign(commonStyles, ownStyles);
 

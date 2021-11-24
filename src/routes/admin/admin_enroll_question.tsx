@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Input, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { adminApi } from "../services/adminApi";
-import { formatDateUntilDay } from "../services/question";
+import { adminApi } from "../../services/adminApi";
+import { formatDateUntilDay } from "../../services/question";
 import styles from "./admin_enroll_question.module.css";
 
 interface Props {}

@@ -7,11 +7,11 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
-import { UserContext } from "../app";
-import { getQuestion, submitAnswer } from "../services/question";
-import styles from "../styles.module.css";
-import { gaLog } from "../services/firebase";
-import { Header } from "../components/header";
+import { UserContext } from "../../app";
+import { getQuestion, submitAnswer } from "../../services/question";
+import styles from "../../styles.module.css";
+import { gaLog } from "../../services/firebase";
+import { Header } from "../../components/header";
 
 interface Props {}
 

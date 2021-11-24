@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getToday } from "../services/dateService";
-import { adminApi } from "../services/adminApi";
-import styles from "../styles.module.css";
-import { Answer } from "../interfaces";
-import { AnswerList } from "../components/answer_list";
+import { getToday } from "../../services/dateService";
+import { adminApi } from "../../services/adminApi";
+import styles from "../../styles.module.css";
+import { Answer } from "../../interfaces";
+import { AnswerList } from "../../components/answer_list";
 import Input from "@mui/material/Input";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";

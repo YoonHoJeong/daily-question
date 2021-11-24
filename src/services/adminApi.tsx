@@ -7,8 +7,8 @@ import {
   ref,
   update,
 } from "@firebase/database";
-import { UserFormState } from "../routes/admin_enroll_user";
-import { QuestionForm } from "../routes/admin_enroll_question";
+import { UserFormState } from "../routes/admin/admin_enroll_user";
+import { QuestionForm } from "../routes/admin/admin_enroll_question";
 import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
 import { getToday } from "./dateService";
@@ -48,7 +48,6 @@ const getTodayQuestions = async () => {
     )
   );
   const questions = snapshot.val();
-  console.log(questions);
 
   return questions;
 };

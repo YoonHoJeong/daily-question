@@ -1,9 +1,9 @@
 import { Button, TextField, CircularProgress } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { AdminHeader } from "../components/admin_header";
-import { AdminUserItem } from "../components/admin_user_item";
-import { adminApi } from "../services/adminApi";
-import styles from "../styles.module.css";
+import { AdminHeader } from "../../components/admin_header";
+import { AdminUserItem } from "../../components/admin_user_item";
+import { adminApi } from "../../services/adminApi";
+import styles from "../../styles.module.css";
 
 interface Props {}
 export interface UserFormState {

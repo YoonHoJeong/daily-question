@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch, useLocation } from "react-router";
 
-import { AdminHeader } from "../components/admin_header";
+import { AdminHeader } from "../../components/admin_header";
 import { AdminAnswers } from "./admin_answers";
 import { EnrollQuestion } from "./admin_enroll_question";
 import { AdminEnrollUser } from "./admin_enroll_user";

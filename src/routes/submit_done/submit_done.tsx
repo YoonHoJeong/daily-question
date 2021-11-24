@@ -2,16 +2,15 @@ import { Button, Typography, Rating, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
-import { UserContext } from "../app";
-import { submitRate } from "../services/question";
-import styles from "../styles.module.css";
+import { UserContext } from "../../app";
+import { submitRate } from "../../services/question";
+import styles from "../../styles.module.css";
 
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import { Header } from "../components/header";
 
 const customIcons = {
   1: {
