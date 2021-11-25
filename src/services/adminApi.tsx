@@ -13,7 +13,7 @@ import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
 import { getToday } from "./dateService";
 
-const excludeId = ["01031918941"];
+const excludeId = ["01031918941", "1135"];
 
 const getAllUsers = async () => {
   const snapshot = await get(ref(fireDB, "/users"));

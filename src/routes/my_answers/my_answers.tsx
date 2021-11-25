@@ -1,8 +1,7 @@
 import { CircularProgress, IconButton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { UserContext } from "../../app";
-import { gaLog } from "../../services/firebase";
+import { sendPageView, UserContext } from "../../app";
 import { formatDateUntilDay, getUserAnswers } from "../../services/question";
 import styles from "./my_answers.module.css";
 import dateService from "../../services/dateService";
@@ -72,10 +71,7 @@ export const MyAnswers: React.FC<Props> = () => {
   const { qid, from, rateSubmitted } = location.state as LocationState;
 
   useEffect(() => {
-    gaLog("my_answers_visited");
-  }, []);
-
-  useEffect(() => {
+    sendPageView();
     async function fetchData() {
       const answerData = await getUserAnswers(auth!!.user);
       setAnswers(answerData);

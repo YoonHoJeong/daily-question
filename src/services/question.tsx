@@ -12,8 +12,6 @@ import {
 import { getToday } from "./dateService";
 import { fireDB } from "./firebase";
 
-const SERVICE_LAUNCH_DATE = "2021-11-01";
-
 function addZero(number: number) {
   return number < 10 ? `0${number}` : `${number}`;
 }

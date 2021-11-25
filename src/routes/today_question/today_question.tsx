@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router";
-import { UserContext } from "../../app";
+import { sendPageView, UserContext } from "../../app";
 import { getQuestion, submitAnswer } from "../../services/question";
 import styles from "./today_question.module.css";
 import { gaLog } from "../../services/firebase";
@@ -37,7 +37,7 @@ export const TodayQuestion: React.FC<Props> = () => {
   });
   const answerInputRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    gaLog("today_questions_visited_" + qid);
+    sendPageView();
 
     async function fetchData() {
       // You can await here

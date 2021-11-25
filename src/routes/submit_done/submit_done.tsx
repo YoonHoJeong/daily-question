@@ -2,7 +2,7 @@ import { Button, Typography, Rating, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
-import { UserContext } from "../../app";
+import { sendPageView, UserContext } from "../../app";
 import { submitRate } from "../../services/question";
 import styles from "./submit_done.module.css";
 
@@ -61,6 +61,7 @@ export const SubmitDone: React.FC<Props> = () => {
   const { qid, rateSubmitted } = location.state as LocationState;
   const auth = useContext(UserContext);
   useEffect(() => {
+    sendPageView();
     rateSubmitted && setSubmitted(rateSubmitted);
   }, []);
 

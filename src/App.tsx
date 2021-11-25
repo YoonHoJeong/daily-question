@@ -8,7 +8,18 @@ import { auth, fireDB } from "./services/firebase";
 import { onValue, ref } from "firebase/database";
 import { onAuthStateChanged } from "@firebase/auth";
 import { AuthProvider } from "./hooks/useAuth";
+import ReactGA from "react-ga";
 
+const TRACKING_ID = "UA-211720916-1";
+ReactGA.initialize(TRACKING_ID);
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+export function sendPageView() {
+  const path = window.location.pathname;
+  console.log(path);
+
+  ReactGA.pageview(path);
+}
 interface User {
   answers: string[];
   uid: string;
@@ -24,6 +35,10 @@ export const UserContext = createContext<Auth | null>(null);
 const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState<Boolean>(true);
+
+  useEffect(() => {
+    sendPageView();
+  }, []);
 
   useEffect(() => {
     if (user !== null) {

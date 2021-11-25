@@ -4,6 +4,7 @@ import { Header } from "../../components/header";
 import { KeywordList } from "../../components/keyword_list";
 import { getTodayQuestions } from "../../services/question";
 import { Route, useHistory, useLocation } from "react-router";
+import { sendPageView } from "../../app";
 
 interface Props {}
 
@@ -24,6 +25,7 @@ export const Keywords: React.FC<Props> = () => {
     });
   };
   useEffect(() => {
+    sendPageView();
     async function fetchQuestionsData() {
       const questionsData = await getTodayQuestions();
       setQuestions(questionsData);
