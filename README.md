@@ -8,4 +8,5 @@
 
 # Week#3
 
-1.
+- update today question
+- update my-answers
