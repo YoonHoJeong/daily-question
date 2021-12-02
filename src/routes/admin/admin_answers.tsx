@@ -15,12 +15,15 @@ export const AdminAnswers: React.FC<Props> = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [questions, setQuestions] = useState<{}>({});
   const [selectedKeyword, setSelectedKeyword] = useState<string>("전체");
-  const [selectedDate, setSelectedDate] = useState<string>(getToday());
+  const [selectedDate, setSelectedDate] = useState<string>();
   const [loading, setLoading] = useState<Boolean>(true);
 
   const [keywords, setKeywords] = useState<string[]>();
 
   function syncKeywords() {
+    console.log("syncKeywords");
+    console.log(questions);
+
     const keywordsData = Object.keys(questions)
       .filter((qid) => questions[qid].publish_date === selectedDate)
       .map((qid) => questions[qid].keyword);
@@ -43,9 +46,7 @@ export const AdminAnswers: React.FC<Props> = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
     syncKeywords();
-    setLoading(false);
   }, [selectedDate]);
 
   const handleChangeDate:
