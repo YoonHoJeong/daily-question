@@ -2,7 +2,8 @@
   width: 100%;
   height: 100%;
 
-  padding-top: 51px;
+  padding: 0px 15px;
+  padding-top: 60px;
   margin-bottom: 50px;
 
   display: flex;
@@ -22,15 +23,18 @@
 }
 
 .grassGrid {
+  width: 100%;
+  max-width: 300px;
+
   display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(5, 50px);
-  -ms-grid-columns: repeat(5, 50px);
+  grid-template-columns: repeat(5, 1fr);
+  -ms-grid-columns: repeat(5, 1fr);
 
   column-gap: 5px;
   row-gap: 10px;
 
-  margin-top: 15px;
+  margin: 25px 0px;
 }
 .grassGrid > li {
   display: flex;
@@ -43,10 +47,16 @@
   height: 50px;
   border-radius: 50%;
   border: 2px solid #00a3ff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #00a3ff;
 }
 
 .grassItem.colored {
   background-color: #00a3ff;
+  color: white;
 }
 
 .monthText {
@@ -56,4 +66,10 @@
 
 .coloredDate {
   color: #00a3ff;
+}
+
+.answerList {
+  width: 100%;
+  max-width: 450px;
+  overflow-y: scroll;
 }

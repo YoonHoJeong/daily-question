@@ -1,17 +1,9 @@
-import { Card, CardContent, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Answer } from "../interfaces";
 import styles from "./answer_card.module.css";
 
 interface Props {
-  answer: {
-    aid: string;
-    answer: string;
-    created_at: string;
-    question: string;
-    qid: string;
-    uid: string;
-    keyword: string;
-  };
+  answer: Answer;
 }
 
 export const AnswerCard: React.FC<Props> = ({ answer }) => {
@@ -19,17 +11,21 @@ export const AnswerCard: React.FC<Props> = ({ answer }) => {
 
   const handleClickExpand: React.MouseEventHandler<HTMLDivElement> | undefined =
     () => {
-      setIsCardFold(!isCardFold);
+      console.log(isCardFold);
+
+      setIsCardFold((prev) => !prev);
     };
 
   return (
     <div className={styles.card} onClick={handleClickExpand}>
       <div>
-        <p className={styles.keywordText}>{answer.keyword}</p>
+        <p className={styles.keywordText}>{answer.question.keyword}</p>
 
         <div className={styles.questionText}>
           Q.{" "}
-          {isCardFold ? `${answer.question.substr(0, 17)}...` : answer.question}
+          {isCardFold
+            ? `${answer.question.question.substr(0, 17)}...`
+            : answer.question.question}
         </div>
       </div>
       <p className={styles.answerText}>

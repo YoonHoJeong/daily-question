@@ -9,6 +9,7 @@ import {
   ref,
   update,
 } from "@firebase/database";
+import { Answer } from "../interfaces";
 import { getToday } from "./dateService";
 import { fireDB } from "./firebase";
 
@@ -48,27 +49,47 @@ export const getTodayQuestions = async () => {
   return questions;
 };
 
-export const getUserAnswers = async (user: any) => {
-  const answers = user.answers ? user.answers : {};
-  const snapshot = await get(ref(fireDB, "/answers"));
-  const allAnswers = snapshot.val();
-  const qsnapshot = await get(ref(fireDB, `questions`));
+export interface UserAnswers {
+  [week: string]: {
+    [date: string]: {
+      [aid: string]: Answer;
+    };
+  };
+}
 
-  const questions = qsnapshot.val();
-  const result: any[] = Object.keys(allAnswers)
-    .filter((aid) => Object.keys(answers).includes(aid))
-    .map((aid) => {
-      const ans = allAnswers[aid];
-      const { qid } = ans;
+export const userAnswers = async (uid: string): Promise<UserAnswers> => {
+  const answersData = (
+    await get(query(ref(fireDB, "answers"), orderByChild("uid"), equalTo(uid)))
+  ).val();
+  const questions = (await get(ref(fireDB, "questions"))).val();
 
-      return {
-        ...ans,
-        question: questions[qid].question,
-        keyword: questions[qid].keyword,
+  let answers = {};
+  // answers : { week : { date: { aid: answer } } }
+
+  console.log(answersData);
+
+  if (answersData) {
+    Object.keys(answersData).forEach((aid) => {
+      const q = questions[answersData[aid].qid];
+      if (!answers[q.week]) answers[q.week] = {};
+      if (!answers[q.week][q.publish_date])
+        answers[q.week][q.publish_date] = {};
+      answers[q.week][q.publish_date][aid] = {
+        aid: answersData[aid].aid,
+        created_at: answersData[aid].created_at,
+        uid: answersData[aid].uid,
+        question: {
+          question: q.question,
+          keyword: q.keyword,
+          publish_date: q.publish_date,
+        },
+        answer: answersData[aid].answer,
       };
     });
+  }
+  console.log(answers);
 
-  return result;
+  return answers;
 };
 
 export const getQuestion = async (qid: string) => {
