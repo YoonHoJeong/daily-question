@@ -73,3 +73,7 @@
   max-width: 450px;
   overflow-y: scroll;
 }
+
+.weekBox {
+  position: relative;
+}

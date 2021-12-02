@@ -42,21 +42,6 @@ export const MyAnswers: React.FC<Props> = () => {
       setAnswers(answersData);
 
       setLoading(false);
-      // let tmpDateList: {} = {};
-
-      // const tmpDatesAnmswerCnt = {};
-      // answerData.forEach((answer) => {
-      //   const d = formatDateUntilDay(new Date(answer.created_at));
-      //   if (tmpDatesAnmswerCnt[d]) {
-      //     tmpDatesAnmswerCnt[d] = tmpDatesAnmswerCnt[d] + 1;
-      //   } else {
-      //     tmpDatesAnmswerCnt[d] = 1;
-      //   }
-      // });
-
-      // setDatesAnswerCnt(tmpDatesAnmswerCnt);
-      // setDateList(tmpDateList);
-      // setLoading(false);
     }
     fetchData();
   }, []);
@@ -89,6 +74,8 @@ export const MyAnswers: React.FC<Props> = () => {
       selectedAnswers = selectedAnswers.concat(tmp);
     });
   }
+  const weeks = Object.keys(answers).sort((a, b) => (a > b ? 1 : -1));
+  const weekIdx = weeks.indexOf(selectedWeek);
 
   const weeklyDates = dateService.weekDates(selectedWeek);
 
@@ -96,7 +83,40 @@ export const MyAnswers: React.FC<Props> = () => {
     <>
       <Header />
       <div className={`${styles.myAnswersContainer}`}>
-        <div className={styles.weekText}>{formatWeek(selectedWeek)}</div>
+        <div className={styles.weekBox}>
+          {weekIdx !== 0 ? (
+            <IconButton
+              style={{
+                position: "absolute",
+                top: -8,
+                left: -40,
+              }}
+              onClick={() => {
+                setSelectedWeek(weeks[weekIdx - 1]);
+                setSelectedDate("");
+              }}
+            >
+              <ArrowBackIosIcon />
+            </IconButton>
+          ) : null}
+          <div className={styles.weekText}>{formatWeek(weeks[weekIdx])}</div>
+
+          {weekIdx !== weeks.length - 1 ? (
+            <IconButton
+              style={{
+                position: "absolute",
+                top: -8,
+                right: -40,
+              }}
+              onClick={() => {
+                setSelectedWeek(weeks[weekIdx + 1]);
+                setSelectedDate("");
+              }}
+            >
+              <ArrowForwardIosIcon />
+            </IconButton>
+          ) : null}
+        </div>
         <div className={styles.msg}>
           5일 중{" "}
           <span className={styles.coloredDate}>

@@ -21,9 +21,6 @@ export const AdminAnswers: React.FC<Props> = () => {
   const [keywords, setKeywords] = useState<string[]>();
 
   function syncKeywords() {
-    console.log("syncKeywords");
-    console.log(questions);
-
     const keywordsData = Object.keys(questions)
       .filter((qid) => questions[qid].publish_date === selectedDate)
       .map((qid) => questions[qid].keyword);
