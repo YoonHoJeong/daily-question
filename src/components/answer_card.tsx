@@ -9,15 +9,13 @@ interface Props {
 export const AnswerCard: React.FC<Props> = ({ answer }) => {
   const [isCardFold, setIsCardFold] = useState<Boolean>(true);
 
-  const handleClickExpand: React.MouseEventHandler<HTMLDivElement> | undefined =
+  const handleClickExpand: React.MouseEventHandler<HTMLLIElement> | undefined =
     () => {
-      console.log(isCardFold);
-
       setIsCardFold((prev) => !prev);
     };
 
   return (
-    <div className={styles.card} onClick={handleClickExpand}>
+    <li className={styles.card} onClick={handleClickExpand}>
       <div>
         <p className={styles.keywordText}>{answer.question.keyword}</p>
 
@@ -35,6 +33,6 @@ export const AnswerCard: React.FC<Props> = ({ answer }) => {
             : answer.answer
           : answer.answer}
       </p>
-    </div>
+    </li>
   );
 };

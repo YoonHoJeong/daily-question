@@ -66,8 +66,6 @@ export const userAnswers = async (uid: string): Promise<UserAnswers> => {
   let answers = {};
   // answers : { week : { date: { aid: answer } } }
 
-  console.log(answersData);
-
   if (answersData) {
     Object.keys(answersData).forEach((aid) => {
       const q = questions[answersData[aid].qid];
@@ -87,7 +85,6 @@ export const userAnswers = async (uid: string): Promise<UserAnswers> => {
       };
     });
   }
-  console.log(answers);
 
   return answers;
 };
