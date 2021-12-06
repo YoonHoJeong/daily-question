@@ -11,7 +11,7 @@ import { UserFormState } from "../routes/admin/admin_enroll_user";
 import { QuestionForm } from "../routes/admin/admin_enroll_question";
 import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
-import { getToday } from "./dateService";
+import dateService, { getToday } from "./dateService";
 
 const excludeId = ["01031918941", "1135"];
 
@@ -230,6 +230,7 @@ export const adminApi = {
         keyword,
         publish_date,
         question,
+        week: dateService.todayWeek(),
       };
     }
     await update(ref(fireDB), updates);
