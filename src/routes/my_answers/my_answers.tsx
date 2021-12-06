@@ -1,18 +1,12 @@
 import { CircularProgress, IconButton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
 import { sendPageView, UserContext } from "../../app";
-import {
-  formatDateUntilDay,
-  UserAnswers,
-  userAnswers,
-} from "../../services/question";
+import { UserAnswers, userAnswers } from "../../services/question";
 import styles from "./my_answers.module.css";
 import dateService from "../../services/dateService";
 import { AnswerCard } from "../../components/answer_card";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Collapse from "@mui/material/Collapse";
 import { Header } from "../../components/header";
 
 interface Props {}
@@ -39,6 +33,12 @@ export const MyAnswers: React.FC<Props> = () => {
     async function fetchData() {
       setLoading(true);
       const answersData = await userAnswers(auth!!.user!!.uid);
+
+      // 이번 주 answersData가 없을 때, 이번 주 key 추가
+      if (!answersData[selectedWeek]) {
+        answersData[selectedWeek] = {};
+      }
+
       setAnswers(answersData);
 
       setLoading(false);
@@ -60,7 +60,7 @@ export const MyAnswers: React.FC<Props> = () => {
     return <CircularProgress />;
   }
 
-  const weeklyAnswers = answers[selectedWeek];
+  const weeklyAnswers = answers[selectedWeek] || {};
   let selectedAnswers: any[] = [];
   if (selectedDate) {
     selectedAnswers = Object.keys(weeklyAnswers[selectedDate]).map(

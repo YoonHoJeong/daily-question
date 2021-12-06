@@ -2,7 +2,6 @@ import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { sendPageView } from "../../app";
-import { gaLog } from "../../services/firebase";
 import styles from "./select_category.module.css";
 
 interface Props {}

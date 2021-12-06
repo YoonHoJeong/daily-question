@@ -95,8 +95,7 @@ export const AdminAnswers: React.FC<Props> = () => {
         Object.keys(qDateCnts[keywordAnswerCnts[data.name].publish_date])
           .length >= 5
     )
-    .sort((a, b) => a.answer_rate - b.answer_rate);
-
+    .sort((a, b) => b.answer_rate - a.answer_rate);
   return (
     <main className={styles.adminMain}>
       <LineChart
