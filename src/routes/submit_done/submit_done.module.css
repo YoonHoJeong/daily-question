@@ -7,24 +7,6 @@
   justify-content: center;
 }
 
-.rates {
-  margin-top: 20px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 75vw;
-  max-width: 320px;
-}
-
-.commentInput {
-  margin: 15px 0px !important;
-}
-
-.rateBtnBox {
-  padding: 10px 0px;
-}
-
 .hide {
   display: none !important;
 }

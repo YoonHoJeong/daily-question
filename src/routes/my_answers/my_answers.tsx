@@ -34,11 +34,6 @@ export const MyAnswers: React.FC<Props> = () => {
       setLoading(true);
       const answersData = await userAnswers(auth!!.user!!.uid);
 
-      // 이번 주 answersData가 없을 때, 이번 주 key 추가
-      if (!answersData[selectedWeek]) {
-        answersData[selectedWeek] = {};
-      }
-
       setAnswers(answersData);
 
       setLoading(false);
@@ -75,6 +70,9 @@ export const MyAnswers: React.FC<Props> = () => {
     });
   }
   const weeks = Object.keys(answers).sort((a, b) => (a > b ? 1 : -1));
+  if (!weeks.includes(dateService.todayWeek())) {
+    weeks.push(dateService.todayWeek());
+  }
   const weekIdx = weeks.indexOf(selectedWeek);
 
   const weeklyDates = dateService.weekDates(selectedWeek);

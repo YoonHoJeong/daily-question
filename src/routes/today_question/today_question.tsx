@@ -61,7 +61,7 @@ export const TodayQuestion: React.FC<Props> = () => {
     } else {
       await submitAnswer(auth!!.user!!.uid, formData);
       history.push({
-        pathname: "/submit-done",
+        pathname: "/rating",
         state: {
           qid,
         },
