@@ -100,14 +100,14 @@ export const SubmitDone: React.FC<Props> = () => {
             id="anotherkeyword"
             className={styles.otherQuestionsBtn}
             fullWidth
-            variant="outlined"
+            variant="contained"
             onClick={handleClickOtherQuestions}
           >
             다른 질문 확인하기
           </Button>
           <Button
             id="myanswer"
-            variant="outlined"
+            variant="contained"
             color="success"
             className={styles.myAnswerBtn}
             fullWidth

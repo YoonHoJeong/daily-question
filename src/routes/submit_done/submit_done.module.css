@@ -1,5 +1,10 @@
 .ratingDone {
   width: 85%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .rates {
@@ -32,9 +37,11 @@
 }
 
 .otherQuestionsBtn {
-  margin-top: 16px;
+  max-width: 500px;
+  margin-top: 16px !important;
 }
 
 .myAnswerBtn {
-  margin-top: 10px;
+  max-width: 500px;
+  margin-top: 10px !important;
 }
