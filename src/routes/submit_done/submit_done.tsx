@@ -24,7 +24,7 @@ export const SubmitDone: React.FC<Props> = () => {
 
   return (
     <div className={styles.ratingDone}>
-      <Typography className={styles.hide} variant="h6" align="center">
+      <Typography variant="h6" align="center">
         내일도 기대해주세요 😊
       </Typography>
 
