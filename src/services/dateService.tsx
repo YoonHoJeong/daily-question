@@ -16,18 +16,6 @@ function calcWeek(dateObj: Date) {
   return `${year}-${month}W${week}`;
 }
 
-export const getToday = () => {
-  const date = new Date();
-  date.setHours(date.getHours() - 3); // 오전 3시를 기점으로 question 변경
-
-  return formatDateUntilDay(date);
-};
-export const getTomorrow = () => {
-  const date = new Date();
-  date.setDate(date.getDate() + 1);
-  return formatDateUntilDay(date);
-};
-
 const dateService = {
   getWeekDateListByDate: (date: Date) => {
     // 받은 date를 바탕으로 그 주의 월 ~ 금요일을 반환
@@ -68,6 +56,18 @@ const dateService = {
     }
 
     return dates;
+  },
+
+  getToday: () => {
+    const date = new Date();
+    date.setHours(date.getHours() - 3); // 오전 3시를 기점으로 question 변경
+
+    return formatDateUntilDay(date);
+  },
+  getTomorrow: () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return formatDateUntilDay(date);
   },
 };
 

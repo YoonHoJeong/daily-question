@@ -10,7 +10,7 @@ import {
   update,
 } from "@firebase/database";
 import { Answer } from "../interfaces";
-import { getToday } from "./dateService";
+import dateService from "./dateService";
 import { fireDB } from "./firebase";
 
 function addZero(number: number) {
@@ -42,7 +42,7 @@ export const getTodayQuestions = async () => {
     query(
       ref(fireDB, "questions"),
       orderByChild("publish_date"),
-      equalTo(getToday())
+      equalTo(dateService.getToday())
     )
   );
   const questions = snapshot.val();

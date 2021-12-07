@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getToday } from "../../services/dateService";
+import dateService from "../../services/dateService";
 import { adminApi } from "../../services/adminApi";
 import styles from "../../styles.module.css";
 import { Answer } from "../../interfaces";
@@ -37,7 +37,7 @@ export const AdminAnswers: React.FC<Props> = () => {
 
       setQuestions(questions);
       setAnswers(answersData);
-      setSelectedDate(getToday());
+      setSelectedDate(dateService.getToday());
 
       setLoading(false);
     }

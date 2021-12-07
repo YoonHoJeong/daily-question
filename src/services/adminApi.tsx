@@ -11,7 +11,7 @@ import { UserFormState } from "../routes/admin/admin_enroll_user";
 import { QuestionForm } from "../routes/admin/admin_enroll_question";
 import { fireDB } from "./firebase";
 import { Answer } from "../interfaces";
-import dateService, { getToday } from "./dateService";
+import dateService from "./dateService";
 
 const excludeId = ["01031918941", "1135"];
 
@@ -44,7 +44,7 @@ const getTodayQuestions = async () => {
     query(
       ref(fireDB, "questions"),
       orderByChild("publish_date"),
-      equalTo(getToday())
+      equalTo(dateService.getToday())
     )
   );
   const questions = snapshot.val();
