@@ -14,3 +14,4 @@
 # Week#6
 
 - auto save user's answers
+- share people's answer
