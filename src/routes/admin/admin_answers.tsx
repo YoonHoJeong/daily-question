@@ -34,6 +34,7 @@ export const AdminAnswers: React.FC<Props> = () => {
     async function fetchData() {
       const answersData = await adminApi.getAllAnswers();
       const questions = await adminApi.getAllQuestions();
+      console.log(answersData.length);
 
       setQuestions(questions);
       setAnswers(answersData);

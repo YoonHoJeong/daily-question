@@ -21,9 +21,10 @@ export const AdminEnrollUser: React.FC<Props> = () => {
 
   async function fetchData() {
     setLoading(true);
-    console.log("asd");
 
     const data = await adminApi.getUsersExceptAnonymous();
+    console.log(Object.keys(data).length);
+
     setUsers(data);
 
     setLoading(false);

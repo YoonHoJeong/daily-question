@@ -36,6 +36,7 @@ const getAllRates = async () => {
 const getAllQuestions = async () => {
   const snapshot = await get(ref(fireDB, "/questions"));
   const questions = snapshot.val();
+  console.log(Object.keys(questions).length);
 
   return questions;
 };
@@ -56,6 +57,8 @@ export const adminApi = {
   getUsersExceptAnonymous: async () => {
     const snapshot = await get(ref(fireDB, "/users"));
     const users = snapshot.val();
+    console.log(Object.keys(users).length);
+
     const filtered = Object.keys(users)
       .filter((uid) => !uid.includes("anonymous"))
       .reduce((res, key) => ((res[key] = users[key]), res), {});

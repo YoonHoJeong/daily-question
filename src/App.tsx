@@ -16,7 +16,6 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 
 export function sendPageView() {
   const path = window.location.pathname;
-  console.log(path);
 
   ReactGA.pageview(path);
 }

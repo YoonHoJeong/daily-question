@@ -6,6 +6,7 @@ import { AdminMain } from "../routes/admin/admin_main";
 import Keywords from "../routes/keywords";
 import Login from "../routes/login";
 import MyAnswers from "../routes/my_answers";
+import RatingPage from "../routes/rating";
 import SelectCategory from "../routes/select_category";
 import SubmitDone from "../routes/submit_done";
 import TodayQuestion from "../routes/today_question";
@@ -25,6 +26,9 @@ export const Router: React.FC<Props> = () => {
         </PrivateRoute>
         <PrivateRoute path="/today-question">
           <TodayQuestion />
+        </PrivateRoute>
+        <PrivateRoute path="/rating">
+          <RatingPage />
         </PrivateRoute>
         <PrivateRoute path="/submit-done">
           <SubmitDone />
