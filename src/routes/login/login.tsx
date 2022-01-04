@@ -11,7 +11,7 @@ interface LoginInput {
   id: string | null;
 }
 
-function Login() {
+function LoginScreen() {
   const [loginInput, setLoginInput] = useState<LoginInput>({
     id: null,
     type: null,
@@ -124,4 +124,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginScreen;

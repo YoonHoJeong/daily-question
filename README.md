@@ -13,13 +13,14 @@
 
 routing에 사용되는 page templates
 
-1. Login
-1. Menu
-1. Keywords
-1. Question
-1. Rate
-1. SubmitDone
-1. Answers
+1. admin (/years_teams)
+1. Login (/login)
+1. Menu (/)
+1. Keywords (/keywords)
+1. Question (/question)
+1. Rating (/rating)
+1. SubmitDone (/submit-done)
+1. Answers (/answers)
 
 ## src/components
 

@@ -1,3 +1,3 @@
-import { Keywords } from "./keywords";
+import { Keywords as KeywordsScreen } from "./keywords";
 
-export default Keywords;
+export default KeywordsScreen;
