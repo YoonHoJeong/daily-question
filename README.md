@@ -66,3 +66,10 @@ components에 사용하는 비즈니스 로직 구성
 ## src/services
 
 외부 서비스 자원과 통신하는 로직
+
+# Refactoring Log
+
+- 22.01.04
+  - [x] file naming, function component convention
+  - [x] basic routing
+  - [ ] add login
