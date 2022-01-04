@@ -9,11 +9,13 @@
    1. hooks
    1. services
 
+1. named export 사용
+
 ## src/routes
 
 routing에 사용되는 page templates
 
-1. admin (/years_teams)
+1. admin (/yadmin)
 1. Login (/login)
 1. Menu (/)
 1. Keywords (/keywords)
