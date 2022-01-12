@@ -72,4 +72,5 @@ components에 사용하는 비즈니스 로직 구성
 - 22.01.04
   - [x] file naming, function component convention
   - [x] basic routing
+  - [x] make static website
   - [ ] add login

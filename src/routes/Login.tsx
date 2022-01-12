@@ -2,14 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 
+const Container = styled.div``;
 const ServiceIcon = styled.img``;
 const ServiceTitle = styled.div``;
 const LoginButtonContainer = styled.div``;
-const Container = styled.div``;
 
 interface Props {}
 
 const Login: React.FC<Props> = () => {
+  console.log("login");
+
   return (
     <Container>
       <ServiceIcon src="logo.png" />

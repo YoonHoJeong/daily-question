@@ -1,11 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import AppRefac from "./AppRefac";
+import AuthService from "./services/AuthService";
+import App from "./app";
+
+const authService = new AuthService();
+export const AuthContext = React.createContext(authService);
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppRefac />
+    <AuthContext.Provider value={authService}>
+      <App />
+    </AuthContext.Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
