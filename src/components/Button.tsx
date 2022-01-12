@@ -11,6 +11,7 @@ type ButtonType = "contained" | "outlined";
 interface Props {
   children: React.ReactNode;
   variant?: ButtonType;
+  [x: string | number | symbol]: unknown;
 }
 
 const Button: React.FC<Props> = ({ children, ...args }) => {

@@ -7,7 +7,7 @@ interface Props extends RouteProps {}
 const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
 
-  if (!auth.user) {
+  if (!auth!.user) {
     return <Redirect to="/login" />;
   }
 

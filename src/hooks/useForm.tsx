@@ -6,7 +6,6 @@ export const useForm = (initialValue: any) => {
     form,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
-      console.log(form);
     },
   };
 };
