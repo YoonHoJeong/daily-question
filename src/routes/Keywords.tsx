@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -18,13 +19,19 @@ const Keywords: React.FC<Props> = () => {
       <Title>키워드를 선택해 주세요.</Title>
       <KeywordList>
         <Keyword>
-          <button>방어</button>
+          <Link to={`/question/${1}`}>
+            <button>방어</button>
+          </Link>
         </Keyword>
         <Keyword>
-          <button>칼로리</button>
+          <Link to={`/question/${2}`}>
+            <button>칼로리</button>
+          </Link>
         </Keyword>
         <Keyword>
-          <button>밈</button>
+          <Link to={`/question/${3}`}>
+            <button>밈</button>
+          </Link>
         </Keyword>
       </KeywordList>
     </Container>
