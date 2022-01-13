@@ -18,19 +18,18 @@ interface Props {}
 const Home: React.FC<Props> = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
+  async function fetchQuestion() {
+    const db = getDatabase();
+    const questionsRef = ref(db, "/questions");
+    const fetchedData = (await get(questionsRef)).val();
+    const questionsData = Object.keys(fetchedData).map(
+      (qid) => fetchedData[qid]
+    );
 
+    setQuestions(questionsData.slice(0, 3));
+    setLoading(false);
+  }
   useEffect(() => {
-    async function fetchQuestion() {
-      const db = getDatabase();
-      const questionsRef = ref(db, "/questions");
-      const fetchedData = (await get(questionsRef)).val();
-      const questionsData = Object.keys(fetchedData).map(
-        (qid) => fetchedData[qid]
-      );
-
-      setQuestions(questionsData.slice(0, 3));
-      setLoading(false);
-    }
     fetchQuestion();
   }, []);
 
@@ -40,7 +39,7 @@ const Home: React.FC<Props> = () => {
 
   return (
     <Container>
-      <Title>오늘의 질문입니다.</Title>
+      <Title>오늘의 질문</Title>
       <KeywordList>
         {questions.map((q) => (
           <Keyword key={q.qid}>
