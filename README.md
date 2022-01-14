@@ -69,6 +69,14 @@ components에 사용하는 비즈니스 로직 구성
 
 # Refactoring Log
 
+- [ ] night mode
+- [ ] 내 답변 / 질문 검색하기
+- [ ] 답변 엑셀로 내보내기
+- [ ] 게시판
+  - [ ] 내 질문 & 답변 공개 / 비공개 설정
+  - [ ] 하트
+- [ ] 하단 네비게이션 - 오늘 질문, 게시판, 내 정보
+
 - 22.01.04
 
   - [x] file naming, function component convention
@@ -76,7 +84,12 @@ components에 사용하는 비즈니스 로직 구성
   - [x] make static website
 
 - 22.01.12
+
   - [x] add login
     - [x] useForm(hook)
     - [x] useAuth(hook)
       - [x] login
+
+- 22.01.13
+  - [x] firebase 연결, 질문 가져오기
+  - [x] 답변 제출

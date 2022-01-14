@@ -11,6 +11,7 @@ interface Auth {
 interface User {
   name: string;
   email?: string | null;
+  uid: string;
 }
 
 export const AuthContext = React.createContext<Auth | null>(null);
@@ -30,12 +31,14 @@ const useProviderAuth = () => {
       setUser({
         name: user.displayName || "undefined",
         email: user.email,
+        uid: user.uid,
       });
     } catch (e: any) {
+      let error = null;
       if (e.code) {
         switch (e.code) {
           case "auth/user-not-found":
-            const error = "등록되지 않은 이메일입니다.";
+            error = "등록되지 않은 이메일입니다.";
             break;
         }
       } else {
