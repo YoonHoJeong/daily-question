@@ -91,5 +91,10 @@ components에 사용하는 비즈니스 로직 구성
       - [x] login
 
 - 22.01.13
+
   - [x] firebase 연결, 질문 가져오기
   - [x] 답변 제출
+
+- 22.01.14
+  - [x] user scenario #1 - submit answers
+  - [ ]
