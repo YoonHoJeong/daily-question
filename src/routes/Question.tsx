@@ -1,6 +1,7 @@
+import { CircularProgress } from "@mui/material";
 import { child, get, getDatabase, push, ref, update } from "firebase/database";
 import React, { SyntheticEvent, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -22,12 +23,14 @@ interface Props {}
 
 const QuestionScreen: React.FC<Props> = () => {
   const params = useParams<{ qid: string }>();
+  const [submitting, setSubmitting] = useState(false);
   const { form, onChange } = useForm({ answer: "" });
   const qid = params.qid || "";
+  const history = useHistory();
   const auth = useAuth();
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
-  const onSubmit = (e: SyntheticEvent) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     const db = getDatabase(firebaseApp);
@@ -54,14 +57,19 @@ const QuestionScreen: React.FC<Props> = () => {
     updates["/questions/" + qid + "/answers/" + aid] = true;
 
     try {
-      update(ref(db), updates);
-      alert("답변이 제출되었습니다 :)");
+      setSubmitting(true);
+      await update(ref(db), updates);
+      console.log("답변 제출");
+      setSubmitting(false);
+      history.push("/submit-done");
     } catch (e) {
       console.error(e);
     }
   };
 
   async function fetchData() {
+    console.log("fetch Data");
+
     const db = getDatabase();
 
     const snapshot = await get(ref(db, `questions/${qid}`));
@@ -74,8 +82,8 @@ const QuestionScreen: React.FC<Props> = () => {
     fetchData();
   }
 
-  if (loading) {
-    return <>loading...</>;
+  if (loading || submitting) {
+    return <CircularProgress />;
   }
 
   return (
