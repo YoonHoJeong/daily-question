@@ -1,6 +1,10 @@
-import React from "react";
+import { CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import AnswerCard from "../components/AnswerCard";
+import { useAuth } from "../hooks/useAuth";
+import { useFireDBFetch } from "../hooks/useFireDBFetch";
+import { Answer } from "../model/interfaces";
 
 const Container = styled.div`
   width: 100%;
@@ -20,6 +24,25 @@ const AnswerDateCount = styled.span``;
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
+  const auth = useAuth();
+  const uid = auth?.user?.uid || "";
+  const {
+    data: answers,
+    loading,
+    error,
+  } = useFireDBFetch<{ [aid: string]: Answer }>(`answers/`, {
+    by: "uid",
+    value: uid,
+  });
+
+  useEffect(() => {
+    console.log("mount");
+  }, []);
+
+  if (loading) {
+    return <>loading...</>;
+  }
+
   return (
     <Container>
       <Weeks>
@@ -40,9 +63,9 @@ const Answers: React.FC<Props> = () => {
       </Dates>
 
       <AnswerList>
-        <AnswerCard />
-        <AnswerCard />
-        <AnswerCard />
+        {Object.keys(answers).map((aid) => (
+          <AnswerCard key={answers[aid].aid} answer={answers[aid]} />
+        ))}
       </AnswerList>
     </Container>
   );

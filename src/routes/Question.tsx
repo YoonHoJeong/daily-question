@@ -90,7 +90,7 @@ const QuestionScreen: React.FC<Props> = () => {
       setForm({ answer: userAnswerByQid?.answer, aid: userAnswerByQid?.aid });
     }
     fetchData();
-  }, [qid, uid]);
+  }, [qid, uid, setForm]);
 
   if (questionLoading || loading || submitting) {
     return <CircularProgress />;

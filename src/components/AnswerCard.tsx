@@ -1,22 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { Answer } from "../model/interfaces";
 
 const Container = styled.li``;
 const KeywordText = styled.p``;
 const QuestionText = styled.p``;
 const AnswerText = styled.p``;
 
-interface Props {}
+interface Props {
+  answer: Answer;
+}
 
-const AnswerCard: React.FC<Props> = () => {
+const AnswerCard: React.FC<Props> = ({ answer }) => {
   return (
     <Container>
-      <KeywordText>방어기제</KeywordText>
-      <QuestionText>
-        Q. 상대방의 의견이나 행동에 대해 생각해보지 않고 부정적으로 반응했던
-        적이 있나요?
-      </QuestionText>
-      <AnswerText>네 있습니다. 어쩌구어쩌구어쩌구어쩌구어쩌구</AnswerText>
+      <KeywordText>{answer.qid}</KeywordText>
+      <QuestionText>Q. {answer.qid}</QuestionText>
+      <AnswerText>{answer.answer}</AnswerText>
     </Container>
   );
 };

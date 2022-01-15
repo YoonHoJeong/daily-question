@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export function useFireDBFetch<T>(
   path: string,
-  queryConstraints?: { [key: string]: string }
+  filter?: { by: string; value: any }
 ): {
   data: T;
   loading: boolean;
@@ -24,9 +24,19 @@ export function useFireDBFetch<T>(
     async function fetchData() {
       try {
         const db = getDatabase();
+        let dbRef = query(ref(db, path));
 
-        const snapshot = await get(ref(db, path));
+        if (filter) {
+          dbRef = query(
+            ref(db, path),
+            orderByChild(filter.by),
+            equalTo(filter.value)
+          );
+        }
+
+        const snapshot = await get(dbRef);
         const fetched = snapshot.val();
+        console.log("fetched");
 
         setData(fetched);
       } catch (e: any) {
@@ -36,7 +46,7 @@ export function useFireDBFetch<T>(
       }
     }
     fetchData();
-  }, [path]);
+  }, []);
 
   return { data, loading, error };
 }
