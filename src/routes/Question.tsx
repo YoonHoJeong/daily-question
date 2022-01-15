@@ -1,14 +1,22 @@
 import { CircularProgress } from "@mui/material";
-import { child, get, getDatabase, push, ref, update } from "firebase/database";
-import React, { SyntheticEvent, useState } from "react";
+import {
+  equalTo,
+  get,
+  getDatabase,
+  orderByChild,
+  query,
+  ref,
+} from "firebase/database";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
+import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { useForm } from "../hooks/useForm";
-import { Question } from "../model/interfaces";
-import { convertDate } from "../services/DateManager";
+import { Answer, Question } from "../model/interfaces";
 import { firebaseApp } from "../services/firebase";
+import { submitAnswer } from "../services/fireDB";
 
 const Container = styled.form`
   width: 100%;
@@ -22,67 +30,69 @@ const AnswerInput = styled.textarea``;
 interface Props {}
 
 const QuestionScreen: React.FC<Props> = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [editing, setEditing] = useState<boolean>(true);
   const params = useParams<{ qid: string }>();
-  const [submitting, setSubmitting] = useState(false);
-  const { form, onChange } = useForm({ answer: "" });
-  const qid = params.qid || "";
-  const history = useHistory();
   const auth = useAuth();
-  const [question, setQuestion] = useState<Question | null>(null);
-  const [loading, setLoading] = useState(true);
+  const qid = params.qid || "";
+  const uid = auth?.user?.uid || "";
+
+  const [submitting, setSubmitting] = useState(false);
+  const { form, setForm, onChange } = useForm({ answer: "" });
+  const {
+    data: question,
+    loading: questionLoading,
+    error: qError,
+  } = useFireDBFetch<Question>(`questions/${qid}`);
+
+  const history = useHistory();
+
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    const db = getDatabase(firebaseApp);
-    const aid = push(child(ref(db), "answers")).key;
-    const uid = auth?.user?.uid; // undefined
-
-    // TODO: validation check
-    if (!uid) {
-      alert("로그인 후 이용해주세요.");
+    if (!form.answer) {
+      alert("답변을 작성해 주세요.");
       return;
     }
 
-    const updates = {};
-
-    const formData = {
-      qid,
-      aid,
-      uid,
-      answer: form.answer,
-      created_at: convertDate(new Date()),
-    };
-    updates["/answers/" + aid] = formData;
-    updates["/users/" + uid + "/answers/" + aid] = true;
-    updates["/questions/" + qid + "/answers/" + aid] = true;
-
-    try {
-      setSubmitting(true);
-      await update(ref(db), updates);
-      console.log("답변 제출");
-      setSubmitting(false);
-      history.push("/submit-done");
-    } catch (e) {
-      console.error(e);
-    }
+    setSubmitting(true);
+    await submitAnswer(uid, qid, form);
+    setSubmitting(false);
+    history.push("/submit-done");
   };
 
-  async function fetchData() {
-    console.log("fetch Data");
+  const onEdit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    setEditing(true);
+  };
 
-    const db = getDatabase();
+  useEffect(() => {
+    async function fetchData() {
+      const answerSnapshot = await get(
+        query(
+          ref(getDatabase(firebaseApp), "answers"),
+          orderByChild("uid"),
+          equalTo(uid)
+        )
+      );
 
-    const snapshot = await get(ref(db, `questions/${qid}`));
-    const fetched = snapshot.val();
-    setQuestion(fetched);
-    setLoading(false);
-  }
+      const userAnswers = answerSnapshot.val();
+      const userAnswerByQid = Object.keys(userAnswers)
+        .filter((aid) => userAnswers[aid].qid === qid)
+        .map((aid) => userAnswers[aid])
+        .pop();
 
-  if (qid) {
+      if (userAnswerByQid) {
+        setEditing(false);
+      }
+
+      setLoading(false);
+      setForm({ answer: userAnswerByQid.answer, aid: userAnswerByQid.aid });
+    }
     fetchData();
-  }
+  }, [qid, uid]);
 
-  if (loading || submitting) {
+  if (questionLoading || loading || submitting) {
     return <CircularProgress />;
   }
 
@@ -91,12 +101,20 @@ const QuestionScreen: React.FC<Props> = () => {
       <QuestionText>{question?.question}</QuestionText>
       <AnswerInput
         name="answer"
+        value={form.answer}
+        disabled={!editing}
         placeholder="답변"
         onChange={onChange}
       ></AnswerInput>
-      <Button type="submit" variant="contained">
-        답변 제출하기
-      </Button>
+      {editing ? (
+        <Button type="submit" variant="contained">
+          답변 제출하기
+        </Button>
+      ) : (
+        <Button variant="contained" onClick={onEdit}>
+          답변 수정하기
+        </Button>
+      )}
     </Container>
   );
 };

@@ -4,6 +4,7 @@ export const useForm = (initialValue?: any) => {
   const [form, setForm] = useState({ ...initialValue });
   return {
     form,
+    setForm,
     onChange: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
