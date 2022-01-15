@@ -77,7 +77,7 @@ const QuestionScreen: React.FC<Props> = () => {
       );
 
       const userAnswers = answerSnapshot.val();
-      const userAnswerByQid = Object.keys(userAnswers)
+      const userAnswerByQid: Answer = Object.keys(userAnswers)
         .filter((aid) => userAnswers[aid].qid === qid)
         .map((aid) => userAnswers[aid])
         .pop();
@@ -87,7 +87,7 @@ const QuestionScreen: React.FC<Props> = () => {
       }
 
       setLoading(false);
-      setForm({ answer: userAnswerByQid.answer, aid: userAnswerByQid.aid });
+      setForm({ answer: userAnswerByQid?.answer, aid: userAnswerByQid?.aid });
     }
     fetchData();
   }, [qid, uid]);
