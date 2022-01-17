@@ -36,7 +36,6 @@ export function useFireDBFetch<T>(
 
         const snapshot = await get(dbRef);
         const fetched = snapshot.val();
-        console.log("fetched");
 
         setData(fetched);
       } catch (e: any) {
@@ -46,7 +45,7 @@ export function useFireDBFetch<T>(
       }
     }
     fetchData();
-  }, []);
+  }, [path, filter]);
 
   return { data, loading, error };
 }

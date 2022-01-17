@@ -1,10 +1,15 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React, { useContext, useState } from "react";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp } from "../services/firebase";
 
 interface Props {}
 interface Auth {
   user: User | null;
+  isAuthenticating: boolean;
   login: (email: string, password: string) => Promise<void>;
 }
 
@@ -23,6 +28,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
 const useProviderAuth = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
 
   const login = async (email: string, password: string) => {
@@ -49,7 +55,29 @@ const useProviderAuth = () => {
     }
   };
 
-  return { user, login };
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // When user is signed in.
+        console.log("user logged in", auth);
+        setUser({
+          name: user.displayName || "undefined",
+          email: user.email,
+          uid: user.uid,
+        });
+        setIsAuthenticating(false);
+      } else {
+        // When User is not signed in.
+        console.log("logged out", auth);
+        setUser(null);
+        setIsAuthenticating(false);
+      }
+    });
+
+    return () => unsub();
+  }, [auth]);
+
+  return { user, isAuthenticating, login };
 };
 
 export const useAuth = () => {

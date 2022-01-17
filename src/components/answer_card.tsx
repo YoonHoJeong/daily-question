@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Answer } from "../interfaces";
 import styles from "./answer_card.module.css";
 
 interface Props {
-  answer: Answer;
+  answer: any;
 }
 
 export const AnswerCard: React.FC<Props> = ({ answer }) => {
   const [isCardFold, setIsCardFold] = useState<Boolean>(true);
 
-  const handleClickExpand: React.MouseEventHandler<HTMLLIElement> | undefined =
-    () => {
-      setIsCardFold((prev) => !prev);
-    };
+  const handleClickExpand:
+    | React.MouseEventHandler<HTMLLIElement>
+    | undefined = () => {
+    setIsCardFold((prev) => !prev);
+  };
 
   return (
     <li className={styles.card} onClick={handleClickExpand}>

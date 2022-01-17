@@ -29,7 +29,7 @@ const BottomNavigation: React.FC<Props> = () => {
         <Link to="/">Board</Link>
       </li>
       <li>
-        <Link to="/answers">Answers</Link>
+        <Link to="/user">User</Link>
       </li>
     </Container>
   );

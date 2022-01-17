@@ -101,3 +101,14 @@ components에 사용하는 비즈니스 로직 구성
   - [x] user scenario #1 - submit answers
 
 - 22.01.15
+
+  - [x] load user answer
+  - [x] my answers page
+  - [x] create user-answers db(for my-answers)
+
+- 22.01.17
+  - [x] route 변경
+    - [x] 3번 째 route ('/answers' -> '/user')
+  - [x] user route page done
+  - [x] logged in when reload page
+  - [x] delete 'PrivateRoutes' component (multiple routing error)

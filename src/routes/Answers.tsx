@@ -1,10 +1,9 @@
 import { CircularProgress } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AnswerCard from "../components/AnswerCard";
 import { useAuth } from "../hooks/useAuth";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
-import { Answer } from "../model/interfaces";
 
 const Container = styled.div`
   width: 100%;
@@ -19,7 +18,9 @@ const Date = styled.li``;
 const AnswerList = styled.ul``;
 
 const HelperText = styled.p``;
-const AnswerDateCount = styled.span``;
+const AnswerDateCount = styled.span`
+  color: blue;
+`;
 
 interface Props {}
 
@@ -30,14 +31,12 @@ const Answers: React.FC<Props> = () => {
     data: answers,
     loading,
     error,
-  } = useFireDBFetch<{ [aid: string]: Answer }>(`answers/`, {
-    by: "uid",
-    value: uid,
-  });
+  } = useFireDBFetch<any>(`user-answers/${uid}`);
+  const [selectedWeek, setSelectedWeek] = useState<string | undefined>();
 
   useEffect(() => {
-    console.log("mount");
-  }, []);
+    setSelectedWeek(Object.keys(answers).pop());
+  }, [answers]);
 
   if (loading) {
     return <>loading...</>;
@@ -45,28 +44,35 @@ const Answers: React.FC<Props> = () => {
 
   return (
     <Container>
-      <Weeks>
-        <Week>2021년 12월 2주차</Week>
-        <Week>2021년 12월 3주차</Week>
-        <Week>2021년 12월 4주차</Week>
-      </Weeks>
+      {selectedWeek ? (
+        <>
+          <Weeks>
+            {Object.keys(answers).map((week) => {
+              const weekArr = week.replace("W", "-").split("-");
+              return (
+                <Week>{`${weekArr[0]}년 ${weekArr[1]}월 ${weekArr[2]}주차`}</Week>
+              );
+            })}
+          </Weeks>
 
-      <HelperText>
-        5일 중 <AnswerDateCount>1일</AnswerDateCount> 대답했어요.
-      </HelperText>
-      <Dates>
-        <Date>1</Date>
-        <Date>2</Date>
-        <Date>3</Date>
-        <Date>4</Date>
-        <Date>5</Date>
-      </Dates>
+          <HelperText>
+            5일 중{" "}
+            <AnswerDateCount>
+              {Object.keys(answers[selectedWeek]).length}일
+            </AnswerDateCount>{" "}
+            대답했어요.
+          </HelperText>
+          <Dates>
+            {Object.keys(answers[selectedWeek]).map((date) => (
+              <Date key={date}>{date}</Date>
+            ))}
+          </Dates>
 
-      <AnswerList>
-        {Object.keys(answers).map((aid) => (
-          <AnswerCard key={answers[aid].aid} answer={answers[aid]} />
-        ))}
-      </AnswerList>
+          <AnswerList></AnswerList>
+        </>
+      ) : (
+        <p>등록된 답변이 없습니다.</p>
+      )}
     </Container>
   );
 };

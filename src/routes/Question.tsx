@@ -1,4 +1,3 @@
-import { CircularProgress } from "@mui/material";
 import {
   equalTo,
   get,
@@ -93,7 +92,7 @@ const QuestionScreen: React.FC<Props> = () => {
   }, [qid, uid, setForm]);
 
   if (questionLoading || loading || submitting) {
-    return <CircularProgress />;
+    return <>loading...</>;
   }
 
   return (
