@@ -1,4 +1,4 @@
-import Admin from "./Admin";
+import Admin from "./admin/Admin";
 import Answers from "./Answers";
 import Keywords from "./Keywords";
 import Login from "./Login";

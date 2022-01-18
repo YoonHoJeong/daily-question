@@ -1,8 +1,6 @@
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import BottomNavigation from "./BottomNavigation";
-import { Header } from "./Header";
 
 interface Props extends RouteProps {}
 
@@ -17,15 +15,7 @@ const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() =>
-        auth?.user !== null ? (
-          <>
-            <Header />
-            {children}
-            <BottomNavigation />
-          </>
-        ) : (
-          <Redirect to="/login" />
-        )
+        auth?.user !== null ? <>{children}</> : <Redirect to="/login" />
       }
     ></Route>
   );

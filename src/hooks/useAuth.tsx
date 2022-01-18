@@ -5,6 +5,7 @@ import {
   User,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { firebaseApp } from "../services/firebase";
 
 interface Props {}
@@ -33,6 +34,7 @@ const useProviderAuth = () => {
   const [user, setUser] = useState<CustomUser | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
+  const history = useHistory();
 
   const formatUser = async (user: User | null) => {
     if (user) {
@@ -56,15 +58,18 @@ const useProviderAuth = () => {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       formatUser(user);
+      history.push("/dqadmin");
     } catch (e: any) {
       let error = null;
       if (e.code) {
         switch (e.code) {
           case "auth/user-not-found":
             error = "등록되지 않은 이메일입니다.";
+            alert(error);
             break;
         }
       } else {
+        alert(e);
         console.error(e);
       }
 
