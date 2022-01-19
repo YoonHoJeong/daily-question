@@ -1,12 +1,6 @@
-import {
-  equalTo,
-  get,
-  getDatabase,
-  orderByChild,
-  query,
-  ref,
-} from "firebase/database";
+import { equalTo, get, orderByChild, query, ref } from "firebase/database";
 import { useCallback, useEffect, useState } from "react";
+import { fireDB } from "../services/firebase";
 
 export function useFireDBFetch<T>(
   path: string,
@@ -23,16 +17,16 @@ export function useFireDBFetch<T>(
 
   const fetchData = useCallback(async () => {
     try {
-      const db = getDatabase();
-      let dbRef = query(ref(db, path));
+      let dbRef = query(ref(fireDB, path));
 
       if (filter) {
         dbRef = query(
-          ref(db, path),
+          ref(fireDB, path),
           orderByChild(filter.by),
           equalTo(filter.value)
         );
       }
+      console.log("dsaf");
 
       const snapshot = await get(dbRef);
       const fetched = snapshot.val();

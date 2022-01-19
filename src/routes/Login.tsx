@@ -25,7 +25,7 @@ const Login: React.FC<Props> = () => {
     if (auth && auth.user) {
       history.push("/");
     }
-  }, [auth, auth!.user]);
+  }, [auth, history]);
 
   return (
     <Container>

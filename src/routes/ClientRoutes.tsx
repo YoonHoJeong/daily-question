@@ -11,9 +11,11 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
+  background-color: #f2f2f2;
+
   box-sizing: border-box;
 
-  padding-top: 50px;
+  padding-top: 90px;
   padding-bottom: 70px;
 `;
 
