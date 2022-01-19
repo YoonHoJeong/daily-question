@@ -1,18 +1,10 @@
 import React from "react";
-import { Router } from "./components/router";
 import styled from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
 import GlobalStyles from "./components/GlobalStyles";
+import { Router } from "./components/Router";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  box-sizing: border-box;
-
-  padding-top: 50px;
-  padding-bottom: 70px;
-`;
+const Container = styled.div``;
 
 interface Props {}
 
