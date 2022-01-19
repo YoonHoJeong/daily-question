@@ -15,6 +15,7 @@ const Container = styled.div`
 
   box-sizing: border-box;
 
+  padding: 0px 40px;
   padding-top: 90px;
   padding-bottom: 70px;
 `;
@@ -26,9 +27,6 @@ const ClientRoutes: React.FC<Props> = () => {
     <Container>
       <Header />
       <Switch>
-        <Route path="/keywords">
-          <Keywords></Keywords>
-        </Route>
         <Route path="/question/:qid">
           <Question></Question>
         </Route>
