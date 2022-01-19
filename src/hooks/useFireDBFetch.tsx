@@ -6,7 +6,7 @@ import {
   query,
   ref,
 } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useFireDBFetch<T>(
   path: string,
@@ -15,37 +15,44 @@ export function useFireDBFetch<T>(
   data: T;
   loading: boolean;
   error: any;
+  refresh: () => Promise<void>;
 } {
   const [data, setData] = useState<T>({} as T);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const db = getDatabase();
-        let dbRef = query(ref(db, path));
+  const fetchData = useCallback(async () => {
+    try {
+      const db = getDatabase();
+      let dbRef = query(ref(db, path));
 
-        if (filter) {
-          dbRef = query(
-            ref(db, path),
-            orderByChild(filter.by),
-            equalTo(filter.value)
-          );
-        }
-
-        const snapshot = await get(dbRef);
-        const fetched = snapshot.val();
-
-        setData(fetched);
-      } catch (e: any) {
-        setError(e);
-      } finally {
-        setLoading(false);
+      if (filter) {
+        dbRef = query(
+          ref(db, path),
+          orderByChild(filter.by),
+          equalTo(filter.value)
+        );
       }
+
+      const snapshot = await get(dbRef);
+      const fetched = snapshot.val();
+      console.log(fetched);
+
+      setData(fetched);
+    } catch (e: any) {
+      console.error(e);
+
+      setError(e);
+    } finally {
+      setLoading(false);
     }
-    fetchData();
   }, [path, filter]);
 
-  return { data, loading, error };
+  const refresh = () => fetchData();
+
+  useEffect(() => {
+    fetchData();
+  }, [path, filter, fetchData]);
+
+  return { data, loading, error, refresh };
 }

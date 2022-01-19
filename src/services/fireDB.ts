@@ -1,5 +1,5 @@
-import { firebaseApp } from "./firebase";
-import { ref, child, push, getDatabase, update } from "@firebase/database";
+import { fireDB } from "./firebase";
+import { ref, child, push, update } from "@firebase/database";
 import { convertDate } from "./DateManager";
 
 export const submitAnswer = async (
@@ -7,8 +7,7 @@ export const submitAnswer = async (
   qid: string,
   formData: { answer: string; aid?: string }
 ) => {
-  const db = getDatabase(firebaseApp);
-  const aid = formData.aid || push(child(ref(db), "answers")).key;
+  const aid = formData.aid || push(child(ref(fireDB), "answers")).key;
 
   // TODO: validation check
   if (!uid) {
@@ -30,8 +29,27 @@ export const submitAnswer = async (
   updates["/questions/" + qid + "/answers/" + aid] = true;
 
   try {
-    await update(ref(db), updates);
+    await update(ref(fireDB), updates);
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const enrollQuestion = async (
+  keyword: string,
+  question: string,
+  publish_date: string
+) => {
+  const updates = {};
+  const newQid = push(child(ref(fireDB), "questions")).key;
+
+  updates["/questions/" + newQid] = { keyword, question, publish_date };
+
+  try {
+    await update(ref(fireDB), updates);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 };

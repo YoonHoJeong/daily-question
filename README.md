@@ -107,8 +107,21 @@ components에 사용하는 비즈니스 로직 구성
   - [x] create user-answers db(for my-answers)
 
 - 22.01.17
+
   - [x] route 변경
     - [x] 3번 째 route ('/answers' -> '/user')
   - [x] user route page done
   - [x] logged in when reload page
   - [x] delete 'PrivateRoutes' component (multiple routing error)
+
+- 22.01.18
+
+  - [x] admin page
+    - [x] admin login
+    - [x] admin routes setting
+
+- 22.01.19
+  - admin
+    - [ ] 답변 관리
+    - [x] 질문 등록 및 관리
+    - [ ] 회원 정보 관리

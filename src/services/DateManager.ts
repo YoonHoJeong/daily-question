@@ -14,4 +14,11 @@ export const convertDate = (date: Date) => {
   return `${y}-${m}-${d}T${h}:${min}:${sec}`;
 };
 
+export const getToday = () => {
+  const date = new Date();
+  const dateStr = convertDate(date).split("T")[0];
+
+  return dateStr;
+};
+
 // week's format - yyyy-mmWw

@@ -34,7 +34,6 @@ const useProviderAuth = () => {
   const [user, setUser] = useState<CustomUser | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
-  const history = useHistory();
 
   const formatUser = async (user: User | null) => {
     if (user) {
@@ -58,7 +57,6 @@ const useProviderAuth = () => {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       formatUser(user);
-      history.push("/dqadmin");
     } catch (e: any) {
       let error = null;
       if (e.code) {
