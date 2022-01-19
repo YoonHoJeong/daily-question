@@ -127,4 +127,5 @@ components에 사용하는 비즈니스 로직 구성
     - [ ] 회원 정보 관리
   - styling
     - [x] home
+    - [x] question
     - [x] header
