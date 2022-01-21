@@ -39,6 +39,8 @@ const QuestionText = styled.p`
   display: flex;
   align-items: flex-end;
 
+  white-space: pre-line;
+
   color: #4d4d4d;
 `;
 

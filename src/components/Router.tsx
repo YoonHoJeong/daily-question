@@ -4,6 +4,8 @@ import { Login } from "../routes";
 import AdminLogin from "../routes/admin/AdminLogin";
 import AdminRoutes from "../routes/admin/AdminRoutes";
 import ClientRoutes from "../routes/ClientRoutes";
+import Register from "../routes/Register";
+import UserAuthPage from "../routes/UserAuthPage";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
 
@@ -13,8 +15,14 @@ export const Router: React.FC<Props> = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/onboarding">
+          <UserAuthPage />
+        </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
         </Route>
         <Route path="/dqadmin/login">
           <AdminLogin />

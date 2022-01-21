@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() =>
-        auth?.user !== null ? <>{children}</> : <Redirect to="/login" />
+        auth?.user !== null ? <>{children}</> : <Redirect to="/onboarding" />
       }
     ></Route>
   );

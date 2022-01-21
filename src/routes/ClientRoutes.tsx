@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavigation from "../components/BottomNavigation";
 import { Header } from "../components/Header";
-import { Answers, Keywords, Question, Rating, SubmitDone } from "../routes";
+import { Answers, Question, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "../routes/User";
 
@@ -28,19 +28,16 @@ const ClientRoutes: React.FC<Props> = () => {
       <Header />
       <Switch>
         <Route path="/question/:qid">
-          <Question></Question>
-        </Route>
-        <Route path="/rating">
-          <Rating></Rating>
+          <Question />
         </Route>
         <Route path="/submit-done">
-          <SubmitDone></SubmitDone>
+          <SubmitDone />
         </Route>
         <Route path="/user">
           <User />
         </Route>
         <Route path="/answers">
-          <Answers></Answers>
+          <Answers />
         </Route>
         <Route exact path="/">
           <Home />

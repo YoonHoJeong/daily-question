@@ -1,11 +1,11 @@
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { firebaseApp } from "../services/firebase";
 
 interface Props {}
@@ -14,6 +14,7 @@ interface Auth {
   isAuthenticating: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  register: (form: RegisterForm) => Promise<boolean>;
 }
 
 interface CustomUser {
@@ -21,6 +22,12 @@ interface CustomUser {
   email?: string | null;
   uid: string;
   admin: boolean;
+}
+
+interface RegisterForm {
+  name: string;
+  email: string;
+  password: string;
 }
 
 export const AuthContext = React.createContext<Auth | null>(null);
@@ -83,6 +90,30 @@ const useProviderAuth = () => {
     }
   };
 
+  const register = async (form: RegisterForm) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+
+      // name 설정
+      formatUser(userCredential.user);
+      console.log("가입 완료");
+      
+
+      return true;
+    } catch (e) {
+      console.error(e);
+
+      formatUser(null);
+      console.log("가입 실패");
+
+      return false;
+    }
+  };
+
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -99,7 +130,7 @@ const useProviderAuth = () => {
     return () => unsub();
   }, [auth]);
 
-  return { user, isAuthenticating, login, logout };
+  return { user, isAuthenticating, login, logout, register };
 };
 
 export const useAuth = () => {

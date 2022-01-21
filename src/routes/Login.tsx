@@ -1,14 +1,39 @@
 import React, { SyntheticEvent, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
+import { Header } from "../components/Header";
+import Input from "../components/common/Input";
 
-const Container = styled.div``;
-const ServiceIcon = styled.img``;
-const ServiceTitle = styled.div``;
-const LoginForm = styled.form``;
+const Container = styled.div`
+  background-color: #f2f2f2;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const ServiceIcon = styled.img`
+  width: 85px;
+
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: -110px;
+`;
+const LoginForm = styled.form`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+`;
 
 interface Props {}
 
@@ -28,29 +53,44 @@ const Login: React.FC<Props> = () => {
   }, [auth, history]);
 
   return (
-    <Container>
-      <ServiceIcon src="logo.png" />
-      <ServiceTitle>1 Question 1 Day</ServiceTitle>
-      <LoginForm onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="email">이메일</label>
-          <input id="email" name="email" type="email" onChange={onChange} />
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
+    <>
+      <Header transparent />
+      <Container>
+        <LoginForm onSubmit={onSubmit}>
+          <ServiceIcon src="logo.png" />
+
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="이메일"
+            onChange={onChange}
+          />
+          <Input
             id="password"
             name="password"
             type="password"
             onChange={onChange}
+            placeholder="비밀번호"
+            style={{ marginTop: "10px" }}
           />
-        </div>
-        <Button type="submit" variant="contained">
-          로그인
+          {/* <input id="autoLogin" type="checkBox" checked />
+          <label htmlFor="autoLogin">자동 로그인</label> */}
+          <Button
+            large
+            bgColor="blue"
+            type="submit"
+            variant="contained"
+            style={{ marginTop: "35px" }}
+          >
+            {auth?.isAuthenticating ? "로그인 중" : "로그인"}
+          </Button>
+        </LoginForm>
+        <Button large style={{ marginTop: "10px" }}>
+          google 계정으로 로그인
         </Button>
-        <Button variant="contained">이전 화면으로</Button>
-      </LoginForm>
-    </Container>
+      </Container>
+    </>
   );
 };
 

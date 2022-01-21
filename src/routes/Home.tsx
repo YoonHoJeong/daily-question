@@ -2,6 +2,7 @@ import { get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Button from "../components/common/Button";
 import Loader from "../components/Loader";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { Question } from "../model/interfaces";
@@ -24,16 +25,6 @@ const Title = styled.p`
 `;
 const KeywordList = styled.ul``;
 const Keyword = styled.li`
-  width: 178px;
-  height: 48px;
-
-  border-radius: 24px;
-  border: 1px solid #cccccc;
-
-  font-size: 18px;
-
-  background-color: white;
-
   margin-bottom: 5px;
 
   display: flex;
@@ -72,7 +63,9 @@ const Home: React.FC<Props> = () => {
       <KeywordList>
         {todayQuestions.map((q) => (
           <Keyword key={q.qid}>
-            <Link to={`/question/${q.qid}`}>{q.keyword}</Link>
+            <Link to={`/question/${q.qid}`}>
+              <Button small>{q.keyword}</Button>
+            </Link>
           </Keyword>
         ))}
       </KeywordList>
