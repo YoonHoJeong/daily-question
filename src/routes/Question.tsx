@@ -20,6 +20,7 @@ import { submitAnswer } from "../services/fireDB";
 const Container = styled.form`
   width: 100%;
   height: 100%;
+  padding: 0px 40px;
 
   display: flex;
   flex-direction: column;

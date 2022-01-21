@@ -9,11 +9,13 @@ import userClicked from "../assets/person1.png";
 import user from "../assets/person2.png";
 
 const Container = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
 
   width: 100%;
+
+  background-color: ${(props) => props.theme.palette.white};
 
   display: flex;
   justify-content: space-between;
@@ -60,10 +62,10 @@ const BottomNavigation: React.FC<Props> = () => {
         </SLink>
       </NavItem>
       <NavItem>
-        <Link to="/">
+        <Link to="/board">
           <Icon src={pathname === "/board" ? feedClicked : feed} alt="" />
         </Link>
-        <SLink to="/" current={pathname === "/board"}>
+        <SLink to="/board" current={pathname === "/board"}>
           게시판
         </SLink>
       </NavItem>

@@ -6,6 +6,7 @@ import { Header } from "../components/Header";
 import { Answers, Question, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "../routes/User";
+import Board from "./Board";
 
 const Container = styled.div`
   width: 100vw;
@@ -15,7 +16,6 @@ const Container = styled.div`
 
   box-sizing: border-box;
 
-  padding: 0px 40px;
   padding-top: 90px;
   padding-bottom: 70px;
 `;
@@ -32,6 +32,9 @@ const ClientRoutes: React.FC<Props> = () => {
         </Route>
         <Route path="/submit-done">
           <SubmitDone />
+        </Route>
+        <Route path="/board">
+          <Board />
         </Route>
         <Route path="/user">
           <User />

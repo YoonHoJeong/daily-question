@@ -9,6 +9,10 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: ${(props) => (props.large ? "300px" : "230px")};
   width: ${(props) => (props.small ? "178px" : "230px")};
   height: 45px;

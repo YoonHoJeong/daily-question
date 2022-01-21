@@ -25,6 +25,7 @@ const Title = styled.p`
 `;
 const KeywordList = styled.ul``;
 const Keyword = styled.li`
+  font-size: 18px;
   margin-bottom: 5px;
 
   display: flex;
@@ -64,7 +65,9 @@ const Home: React.FC<Props> = () => {
         {todayQuestions.map((q) => (
           <Keyword key={q.qid}>
             <Link to={`/question/${q.qid}`}>
-              <Button small>{q.keyword}</Button>
+              <Button small style={{ fontSize: "18px", fontWeight: 500 }}>
+                {q.keyword}
+              </Button>
             </Link>
           </Keyword>
         ))}

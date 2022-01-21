@@ -26,7 +26,6 @@ export function useFireDBFetch<T>(
           equalTo(filter.value)
         );
       }
-      console.log("dsaf");
 
       const snapshot = await get(dbRef);
       const fetched = snapshot.val();
