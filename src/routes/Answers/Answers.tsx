@@ -1,5 +1,5 @@
 import { CircularProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
 import { useFireDBFetch } from "../../hooks/useFireDBFetch";
@@ -56,7 +56,7 @@ const HelperText = styled.p`
   line-height: 26px;
 `;
 
-const DateIcons = styled.ul`
+const DateIconsContainer = styled.ul`
   width: 300px;
 
   display: flex;
@@ -110,6 +110,55 @@ const AnswerDateCount = styled.span`
   color: ${(props) => props.theme.palette.blue};
 `;
 
+type ViewFormat = "weekly" | "daily" | "monthly";
+
+interface DateFormatterProps {
+  viewFormat: ViewFormat;
+  setViewFormat: React.Dispatch<React.SetStateAction<ViewFormat>>;
+}
+
+const DateFormatter: React.FC<DateFormatterProps> = ({
+  viewFormat,
+  setViewFormat,
+}) => {
+  const [folded, setFolded] = useState<boolean>(true);
+
+  const onClick = (e: SyntheticEvent) => {
+    setFolded(false);
+  };
+
+  return (
+    <DateFormatPicker>
+      <DateFormat>주간</DateFormat>
+      <DateFormat>일간</DateFormat>
+      <DateFormat>월간</DateFormat>
+      <DateFormatIcon onClick={onClick}>
+        {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+      </DateFormatIcon>
+    </DateFormatPicker>
+  );
+};
+
+const DateIcons: React.FC = () => (
+  <DateIconsContainer>
+    <DateIconContainer>
+      <DateIcon src={BoxOpenedIcon} />
+    </DateIconContainer>
+    <DateIconContainer>
+      <DateIcon src={BoxOpenedIcon} />
+    </DateIconContainer>
+    <DateIconContainer>
+      <DateIcon src={BoxOpenedIcon} />
+    </DateIconContainer>
+    <DateIconContainer>
+      <DateIcon src={BoxClosedIcon} />
+    </DateIconContainer>
+    <DateIconContainer>
+      <DateIcon src={BoxOpenedIcon} />
+    </DateIconContainer>
+  </DateIconsContainer>
+);
+
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
@@ -121,6 +170,7 @@ const Answers: React.FC<Props> = () => {
   //   error,
   // } = useFireDBFetch<any>(`user-answers/${uid}`);
   const [selectedWeek, setSelectedWeek] = useState<string | undefined>();
+  const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");
 
   // useEffect(() => {
   //   setSelectedWeek(Object.keys(answers).pop());
@@ -132,15 +182,7 @@ const Answers: React.FC<Props> = () => {
 
   return (
     <Container>
-      <DateFormatPicker>
-        <DateFormat>일간</DateFormat>
-        <DateFormat>주간</DateFormat>
-        <DateFormat>월간</DateFormat>
-        <DateFormatIcon>
-          <KeyboardArrowDownIcon />
-        </DateFormatIcon>
-      </DateFormatPicker>
-
+      <DateFormatter viewFormat={viewFormat} setViewFormat={setViewFormat} />
       <WeekToggle>
         {/* {Object.keys(answers).map((week) => {
           const weekArr = week.replace("W", "-").split("-");
@@ -165,24 +207,8 @@ const Answers: React.FC<Props> = () => {
       <HelperText>
         5일 중 <AnswerDateCount>3일</AnswerDateCount> 대답했어요.
       </HelperText>
+      <DateIcons />
 
-      <DateIcons>
-        <DateIconContainer>
-          <DateIcon src={BoxOpenedIcon} />
-        </DateIconContainer>
-        <DateIconContainer>
-          <DateIcon src={BoxOpenedIcon} />
-        </DateIconContainer>
-        <DateIconContainer>
-          <DateIcon src={BoxOpenedIcon} />
-        </DateIconContainer>
-        <DateIconContainer>
-          <DateIcon src={BoxClosedIcon} />
-        </DateIconContainer>
-        <DateIconContainer>
-          <DateIcon src={BoxOpenedIcon} />
-        </DateIconContainer>
-      </DateIcons>
       <DailyAnswersList />
     </Container>
   );
