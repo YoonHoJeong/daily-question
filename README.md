@@ -121,6 +121,7 @@ components에 사용하는 비즈니스 로직 구성
     - [x] admin routes setting
 
 - 22.01.19
+
   - admin
     - [x] 질문 등록 및 관리
     - [ ] 답변 관리
@@ -129,3 +130,9 @@ components에 사용하는 비즈니스 로직 구성
     - [x] home
     - [x] question
     - [x] header
+
+- 22.01.23
+  - [ ] Answers
+    - [ ] 일간
+    - [x] 주간 화면 format
+    - [ ] 월간

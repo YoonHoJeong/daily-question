@@ -34,12 +34,14 @@ const SubmitDone: React.FC<Props> = () => {
       <MainText>내일의 질문도 기대해주세요.</MainText>
       <Button
         bgColor="blue"
-        style={{ marginBottom: "9px" }}
+        style={{ marginBottom: "9px", fontWeight: 500 }}
         onClick={moveToMain}
       >
         다른 질문도 보러가기
       </Button>
-      <Button onClick={moveToAnswers}>어제의 답변 돌아보기</Button>
+      <Button onClick={moveToAnswers} style={{ fontWeight: 500 }}>
+        어제의 답변 돌아보기
+      </Button>
     </Container>
   );
 };

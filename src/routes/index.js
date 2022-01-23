@@ -1,5 +1,5 @@
 import Admin from "./admin/Admin";
-import Answers from "./Answers";
+import Answers from "./Answers/Answers";
 import Keywords from "./Keywords";
 import Login from "./Login";
 import Home from "./Home";

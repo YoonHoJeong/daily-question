@@ -10,8 +10,9 @@ const palette = {
   white: "#FFFFFF",
   blue: "#515FA9",
   black: "#4D4D4D",
-  bgGrey: "#F2F2F2",
   grey: "#CCCCCC",
+  bgGrey: "#F2F2F2",
+  bgGrey2: "#E5E5E5",
   deepGrey: "#888888",
   red: "#FF7676",
 };

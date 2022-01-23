@@ -3,6 +3,7 @@ import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
     ${reset};
+    
     a{
         text-decoration:none;
         color:inherit;
@@ -10,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     *{
         font-family: 'Noto Sans KR', sans-serif;
         font-family: 'Roboto', sans-serif;
+        color: #4D4D4D;
         box-sizing:border-box;
     }
 `;
