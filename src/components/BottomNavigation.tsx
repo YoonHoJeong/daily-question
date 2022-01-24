@@ -7,6 +7,7 @@ import feedClicked from "../assets/feed1.png";
 import feed from "../assets/feed2.png";
 import userClicked from "../assets/person1.png";
 import user from "../assets/person2.png";
+import { Answer } from "../model/interfaces";
 
 const Container = styled.div`
   position: fixed;
@@ -25,11 +26,13 @@ const Container = styled.div`
   border-top: 4px solid white;
 `;
 
-const SLink = styled(Link)<{ current: boolean }>`
+const SLink = styled(Link)<{ current: string }>`
   font-size: 10px;
   margin-top: 5px;
   color: ${(props) =>
-    props.current ? props.theme.palette.blue : props.theme.palette.deepGrey};
+    props.current === "true"
+      ? props.theme.palette.blue
+      : props.theme.palette.deepGrey};
 `;
 
 const NavItem = styled.li`
@@ -57,7 +60,7 @@ const BottomNavigation: React.FC<Props> = () => {
         <Link to="/">
           <Icon src={pathname === "/" ? boxClicked : box} alt="" />
         </Link>
-        <SLink to="/" current={pathname === "/"}>
+        <SLink to="/" current={pathname === "/" ? "true" : "false"}>
           오늘의 질문
         </SLink>
       </NavItem>
@@ -65,7 +68,7 @@ const BottomNavigation: React.FC<Props> = () => {
         <Link to="/board">
           <Icon src={pathname === "/board" ? feedClicked : feed} alt="" />
         </Link>
-        <SLink to="/board" current={pathname === "/board"}>
+        <SLink to="/board" current={pathname === "/board" ? "true" : "false"}>
           게시판
         </SLink>
       </NavItem>
@@ -73,7 +76,7 @@ const BottomNavigation: React.FC<Props> = () => {
         <Link to="/user">
           <Icon src={pathname === "/user" ? userClicked : user} alt="" />
         </Link>
-        <SLink to="/user" current={pathname === "/user"}>
+        <SLink to="/user" current={pathname === "/user" ? "true" : "false"}>
           내 정보
         </SLink>
       </NavItem>

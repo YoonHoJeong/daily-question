@@ -132,7 +132,7 @@ components에 사용하는 비즈니스 로직 구성
     - [x] header
 
 - 22.01.23
-  - [ ] Answers
-    - [ ] 일간
+  - [x] Answers
+    - [x] 일간
     - [x] 주간 화면 format
-    - [ ] 월간
+    - [x] 월간

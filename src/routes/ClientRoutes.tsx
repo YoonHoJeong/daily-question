@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavigation from "../components/BottomNavigation";
@@ -27,9 +27,6 @@ const ClientRoutes: React.FC<Props> = () => {
     <Container>
       <Header />
       <Switch>
-        <Route path="/question/:qid">
-          <Question />
-        </Route>
         <Route path="/submit-done">
           <SubmitDone />
         </Route>
@@ -42,7 +39,7 @@ const ClientRoutes: React.FC<Props> = () => {
         <Route path="/answers">
           <Answers />
         </Route>
-        <Route exact path="/">
+        <Route path="/">
           <Home />
         </Route>
       </Switch>

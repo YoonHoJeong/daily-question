@@ -1,12 +1,13 @@
-import { get, getDatabase, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Loader from "../components/Loader";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
-import { Question } from "../model/interfaces";
+import { QuestionsObj } from "../model/interfaces";
 import { getToday } from "../services/DateManager";
+import { getTodayQuestions } from "../services/fireDB";
+import { Answers, Question, SubmitDone } from "../routes";
 
 const Container = styled.div`
   width: 100%;
@@ -36,43 +37,54 @@ const Keyword = styled.li`
 interface Props {}
 
 const Home: React.FC<Props> = () => {
-  // const { data: questions, loading } = useFireDBFetch<any>("questions");
+  const [questions, setQuestions] = useState<QuestionsObj>();
+  const [loading, setLoading] = useState(true);
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  useEffect(() => {
+    async function fetchData() {
+      const fetched = await getTodayQuestions();
+      setQuestions(fetched);
 
-  // const todayQuestions = Object.keys(questions)
-  //   .filter((qid) => questions[qid].publish_date === getToday())
-  //   .map((qid) => questions[qid]);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
 
-  // console.log(todayQuestions);
-
-  // if (loading) {
-  //   return <>loading...</>;
-  // }
-
-  const todayQuestions = [
-    { qid: 1, keyword: "과자", question: "ㅁㄴㅇ" },
-    { qid: 2, keyword: "자유", question: "ㅁㄴㅇ" },
-    { qid: 3, keyword: "여행", question: "ㅁㄴㅇ" },
-  ];
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
-    <Container>
-      <Title>키워드를 선택해주세요.</Title>
-      <KeywordList>
-        {todayQuestions.map((q) => (
-          <Keyword key={q.qid}>
-            <Link to={`/question/${q.qid}`}>
-              <Button small style={{ fontSize: "18px", fontWeight: 500 }}>
-                {q.keyword}
-              </Button>
-            </Link>
-          </Keyword>
-        ))}
-      </KeywordList>
-    </Container>
+    <Switch>
+      <Route path="/question/:qid">
+        <Question questions={questions} />
+      </Route>
+      <Route exact path="/">
+        <Container>
+          {questions ? (
+            <>
+              <Title>키워드를 선택해주세요.</Title>
+              <KeywordList>
+                {Object.keys(questions).map((qid) => (
+                  <Keyword key={qid}>
+                    <Link to={`/question/${qid}`}>
+                      <Button
+                        small
+                        style={{ fontSize: "18px", fontWeight: 500 }}
+                      >
+                        {questions[qid].keyword}
+                      </Button>
+                    </Link>
+                  </Keyword>
+                ))}
+              </KeywordList>
+            </>
+          ) : (
+            <Title>오늘은 질문이 없어요.</Title>
+          )}
+        </Container>
+      </Route>
+    </Switch>
   );
 };
 

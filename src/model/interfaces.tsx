@@ -8,6 +8,10 @@ export interface Question {
   rates?: Rate[];
 }
 
+export interface QuestionsObj {
+  [qid: string]: Question;
+}
+
 export interface Answer {
   aid: string;
   answer: string;

@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp } from "../services/firebase";
 
 interface Props {}
-interface Auth {
+export interface Auth {
   user: CustomUser | null;
   isAuthenticating: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -101,7 +101,6 @@ const useProviderAuth = () => {
       // name 설정
       formatUser(userCredential.user);
       console.log("가입 완료");
-      
 
       return true;
     } catch (e) {

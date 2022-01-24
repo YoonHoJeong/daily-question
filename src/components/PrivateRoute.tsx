@@ -7,7 +7,7 @@ interface Props extends RouteProps {}
 const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
 
-  if (auth?.isAuthenticating) {
+  if (auth!!.isAuthenticating) {
     return <>loading...</>;
   }
 
@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
     <Route
       {...rest}
       render={() =>
-        auth?.user !== null ? <>{children}</> : <Redirect to="/onboarding" />
+        auth?.user !== null ? children : <Redirect to="/onboarding" />
       }
     ></Route>
   );

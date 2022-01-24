@@ -13,9 +13,13 @@ import styled from "styled-components";
 import { useAuth } from "../hooks/useAuth";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { useForm } from "../hooks/useForm";
-import { Answer, Question } from "../model/interfaces";
+import { Answer, Question, QuestionsObj } from "../model/interfaces";
 import { firebaseApp } from "../services/firebase";
-import { submitAnswer } from "../services/fireDB";
+import {
+  getAnswerByUidQid,
+  getQuestionByQid,
+  submitAnswer,
+} from "../services/fireDB";
 
 const Container = styled.form`
   width: 100%;
@@ -69,24 +73,26 @@ const Button = styled.button`
   margin-top: 15px;
 `;
 
-interface Props {}
+interface Props {
+  questions: QuestionsObj | undefined;
+}
+interface QuestionScreenParams {
+  qid: string;
+}
 
-const QuestionScreen: React.FC<Props> = () => {
-  // const [loading, setLoading] = useState<boolean>(true);
+const QuestionScreen: React.FC<Props> = ({ questions }) => {
   const [editing, setEditing] = useState<boolean>(true);
-  // const params = useParams<{ qid: string }>();
-  // const auth = useAuth();
-  // const qid = params.qid || "";
-  // const uid = auth?.user?.uid || "";
-
+  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { form, setForm, onChange } = useForm({ answer: "" });
-  // const {
-  //   data: question,
-  //   loading: questionLoading,
-  //   error: qError,
-  // } = useFireDBFetch<Question>(`questions/${qid}`);
 
+  const params = useParams<QuestionScreenParams>();
+  const auth = useAuth();
+  const qid = params.qid;
+  const question = questions && questions[qid];
+
+  const uid = auth?.user?.uid || "";
+
+  const { form, setForm, onChange } = useForm({ answer: "" });
   const history = useHistory();
 
   const onSubmit = async (e: SyntheticEvent) => {
@@ -98,7 +104,7 @@ const QuestionScreen: React.FC<Props> = () => {
     }
 
     setSubmitting(true);
-    // await submitAnswer(uid, qid, form);
+    await submitAnswer(uid, qid, form);
     setSubmitting(false);
     history.push("/submit-done");
   };
@@ -108,41 +114,22 @@ const QuestionScreen: React.FC<Props> = () => {
     setEditing(true);
   };
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const answerSnapshot = await get(
-  //       query(
-  //         ref(getDatabase(firebaseApp), "answers"),
-  //         orderByChild("uid"),
-  //         equalTo(uid)
-  //       )
-  //     );
+  useEffect(() => {
+    async function fetchData() {
+      const answer = await getAnswerByUidQid(uid, qid);
+      if (answer) {
+        setEditing(false);
+        setForm({ answer: answer?.answer, aid: answer?.aid });
+      }
 
-  //     const userAnswers = answerSnapshot.val();
-  //     const userAnswerByQid: Answer = Object.keys(userAnswers)
-  //       .filter((aid) => userAnswers[aid].qid === qid)
-  //       .map((aid) => userAnswers[aid])
-  //       .pop();
+      setLoading(false);
+    }
+    fetchData();
+  }, [qid, uid, setForm]);
 
-  //     if (userAnswerByQid) {
-  //       setEditing(false);
-  //     }
-
-  //     setLoading(false);
-  //     setForm({ answer: userAnswerByQid?.answer, aid: userAnswerByQid?.aid });
-  //   }
-  //   fetchData();
-  // }, [qid, uid, setForm]);
-
-  // if (questionLoading || loading || submitting) {
-  //   return <>loading...</>;
-  // }
-
-  const question = {
-    qid: 1,
-    question:
-      "당신이 제일 좋아하는 과자는 무엇인가요? \n 그 과자에 얽힌 추억이 있다면 알려주세요.",
-  };
+  if (loading || submitting) {
+    return <>loading...</>;
+  }
 
   return (
     <Container onSubmit={onSubmit}>

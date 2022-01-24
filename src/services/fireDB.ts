@@ -1,6 +1,16 @@
 import { fireDB } from "./firebase";
-import { ref, child, push, update } from "@firebase/database";
-import { convertDate } from "./DateManager";
+import {
+  get,
+  query,
+  orderByChild,
+  equalTo,
+  ref,
+  child,
+  push,
+  update,
+} from "@firebase/database";
+import { convertDate, getToday } from "./DateManager";
+import { Answer, Question, QuestionsObj } from "../model/interfaces";
 
 export const submitAnswer = async (
   uid: string,
@@ -52,4 +62,37 @@ export const enrollQuestion = async (
     console.error(e);
     return false;
   }
+};
+
+export const getTodayQuestions = async () => {
+  const snapshot = await get(
+    query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      equalTo(getToday())
+    )
+  );
+  const questions = snapshot.val() as QuestionsObj;
+  return questions;
+};
+
+export const getAnswerByUidQid = async (uid: string, qid: string) => {
+  const answerSnapshot = await get(
+    query(ref(fireDB, "answers"), orderByChild("uid"), equalTo(uid))
+  );
+  const userAnswers = answerSnapshot.val();
+  const userAnswerByQid: Answer = Object.keys(userAnswers)
+    .filter((aid) => userAnswers[aid].qid === qid)
+    .map((aid) => userAnswers[aid])
+    .pop();
+
+  return userAnswerByQid;
+};
+
+export const getQuestionByQid = async (qid: string) => {
+  const snapshot = await get(
+    query(ref(fireDB, "questions"), orderByChild("qid"), equalTo(qid))
+  );
+  const question = snapshot.val();
+  return question;
 };

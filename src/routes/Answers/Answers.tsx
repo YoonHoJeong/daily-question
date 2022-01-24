@@ -1,13 +1,20 @@
-import { CircularProgress } from "@mui/material";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
 import { useFireDBFetch } from "../../hooks/useFireDBFetch";
-import BoxOpenedIcon from "../../assets/box_opened.png";
-import BoxClosedIcon from "../../assets/box_closed.png";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DailyAnswersList from "./DailyAnswersList";
+import {
+  Link,
+  Route,
+  Switch,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+import WeeklyAnswers from "./WeeklyAnswers";
+import MonthlyAnswers from "./MonthlyAnswers";
+import DailyAnswers from "./DailyAnswers";
 
 const Container = styled.div`
   position: relative;
@@ -21,54 +28,6 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const WeekToggle = styled.ul`
-  position: relative;
-
-  margin-top: 30px;
-`;
-const Week = styled.li`
-  &:not(:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
-const YearText = styled.p`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-
-  margin-bottom: 12px;
-`;
-const HelperText = styled.p`
-  margin-top: 14px;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
-
-const DateIconsContainer = styled.ul`
-  width: 300px;
-
-  display: flex;
-  justify-content: space-around;
-
-  margin-top: 18px;
-`;
-const FilledDateIcon = styled.li``;
-const DateIconContainer = styled.li``;
-const DateIcon = styled.img`
-  height: 40px;
-`;
 const DateFormatPicker = styled.ul`
   position: absolute;
   top: 12px;
@@ -103,10 +62,6 @@ const DateFormatIcon = styled.button`
   background-color: transparent;
 `;
 
-const AnswerDateCount = styled.span`
-  color: ${(props) => props.theme.palette.blue};
-`;
-
 type ViewFormat = "weekly" | "daily" | "monthly";
 
 interface DateFormatterProps {
@@ -114,64 +69,31 @@ interface DateFormatterProps {
   setViewFormat: React.Dispatch<React.SetStateAction<ViewFormat>>;
 }
 
-const DateFormatter: React.FC<DateFormatterProps> = ({
-  viewFormat,
-  setViewFormat,
-}) => {
-  const [folded, setFolded] = useState<boolean>(true);
-
-  const onClick = (e: SyntheticEvent) => {
-    setFolded((currentState) => !currentState);
-  };
-  const onClickViewFormat = (e: SyntheticEvent) => {
-    const vf = (e.target as HTMLButtonElement).name as ViewFormat;
-    setViewFormat(vf);
-    setFolded(true);
-  };
-
-  const viewFormats = { weekly: "주간", daily: "일간", monthly: "월간" };
-
-  return (
-    <DateFormatPicker>
-      <DateFormat key={viewFormat}>{viewFormats[viewFormat]}</DateFormat>
-      {Object.keys(viewFormats)
-        .filter((key) => key !== viewFormat)
-        .map((vf) => (
-          <DateFormat key={vf} style={{ display: folded ? "none" : "flex" }}>
-            <button name={vf} onClick={onClickViewFormat}>
-              {viewFormats[vf]}
-            </button>
-          </DateFormat>
-        ))}
-
-      <DateFormatIcon onClick={onClick}>
-        {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
-      </DateFormatIcon>
-    </DateFormatPicker>
-  );
-};
-
-const DateIcons: React.FC = () => (
-  <DateIconsContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxClosedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-  </DateIconsContainer>
-);
-
 interface Props {}
+
+const answers = [
+  {
+    aid: 1,
+    keyword: "과자",
+    question: "당신이 제일 좋아하는 과자는 무엇인가요?",
+    answer:
+      "제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는",
+  },
+  {
+    aid: 2,
+    keyword: "과자2",
+    question: "당신이 제일 좋아하는 과자는 무엇인가요?",
+    answer:
+      "제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는",
+  },
+  {
+    aid: 3,
+    keyword: "과자3",
+    question: "당신이 제일 좋아하는 과자는 무엇인가요?",
+    answer:
+      "제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는 과자는",
+  },
+];
 
 const Answers: React.FC<Props> = () => {
   const auth = useAuth();
@@ -182,8 +104,7 @@ const Answers: React.FC<Props> = () => {
   //   error,
   // } = useFireDBFetch<any>(`user-answers/${uid}`);
   const [selectedWeek, setSelectedWeek] = useState<string | undefined>();
-  const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");
-
+  const location = useLocation();
   // useEffect(() => {
   //   setSelectedWeek(Object.keys(answers).pop());
   // }, [answers]);
@@ -192,36 +113,50 @@ const Answers: React.FC<Props> = () => {
   //   return <>loading...</>;
   // }
 
+  const [folded, setFolded] = useState<boolean>(true);
+  const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");
+
+  const onClick = (e: SyntheticEvent) => {
+    setFolded((currentState) => !currentState);
+  };
+  const onClickViewFormat = (e: SyntheticEvent) => {
+    const vf = (e.target as HTMLButtonElement).name as ViewFormat;
+    setViewFormat(vf);
+    setFolded(true);
+  };
+  const viewFormats = { weekly: "주간", daily: "일간", monthly: "월간" };
+
+  const AnswersByVF = () => {
+    switch (viewFormat) {
+      case "weekly":
+        return <WeeklyAnswers answers={answers} />;
+      case "monthly":
+        return <MonthlyAnswers answers={answers} />;
+      case "daily":
+        return <DailyAnswers answers={answers} />;
+    }
+  };
+
   return (
     <Container>
-      <DateFormatter viewFormat={viewFormat} setViewFormat={setViewFormat} />
-      <WeekToggle>
-        {/* {Object.keys(answers).map((week) => {
-          const weekArr = week.replace("W", "-").split("-");
-          return (
-            <Week>{`${weekArr[0]}년 ${weekArr[1]}월 ${weekArr[2]}주차`}</Week>
-          );
-        })} */}
-        <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
-        </Week>
-        <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
-        </Week>
-        <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
-        </Week>
-      </WeekToggle>
+      <DateFormatPicker>
+        <DateFormat>{viewFormats[viewFormat]}</DateFormat>
+        {Object.keys(viewFormats)
+          .filter((key) => key !== viewFormat)
+          .map((vf) => (
+            <DateFormat key={vf} style={{ display: folded ? "none" : "flex" }}>
+              <button name={vf} onClick={onClickViewFormat}>
+                {viewFormats[vf]}
+              </button>
+            </DateFormat>
+          ))}
 
-      <HelperText>
-        5일 중 <AnswerDateCount>3일</AnswerDateCount> 대답했어요.
-      </HelperText>
-      <DateIcons />
+        <DateFormatIcon onClick={onClick}>
+          {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+        </DateFormatIcon>
+      </DateFormatPicker>
 
-      <DailyAnswersList />
+      {AnswersByVF()}
     </Container>
   );
 };
