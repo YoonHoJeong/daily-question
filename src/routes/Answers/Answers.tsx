@@ -85,10 +85,7 @@ const DateFormat = styled.li`
 
   background-color: ${(props) => props.theme.palette.white};
   &:not(:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+    display: none;
 
     background-color: ${(props) => props.theme.palette.bgGrey2};
     margin-top: 2px;
@@ -124,14 +121,29 @@ const DateFormatter: React.FC<DateFormatterProps> = ({
   const [folded, setFolded] = useState<boolean>(true);
 
   const onClick = (e: SyntheticEvent) => {
-    setFolded(false);
+    setFolded((currentState) => !currentState);
   };
+  const onClickViewFormat = (e: SyntheticEvent) => {
+    const vf = (e.target as HTMLButtonElement).name as ViewFormat;
+    setViewFormat(vf);
+    setFolded(true);
+  };
+
+  const viewFormats = { weekly: "주간", daily: "일간", monthly: "월간" };
 
   return (
     <DateFormatPicker>
-      <DateFormat>주간</DateFormat>
-      <DateFormat>일간</DateFormat>
-      <DateFormat>월간</DateFormat>
+      <DateFormat key={viewFormat}>{viewFormats[viewFormat]}</DateFormat>
+      {Object.keys(viewFormats)
+        .filter((key) => key !== viewFormat)
+        .map((vf) => (
+          <DateFormat key={vf} style={{ display: folded ? "none" : "flex" }}>
+            <button name={vf} onClick={onClickViewFormat}>
+              {viewFormats[vf]}
+            </button>
+          </DateFormat>
+        ))}
+
       <DateFormatIcon onClick={onClick}>
         {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
       </DateFormatIcon>
