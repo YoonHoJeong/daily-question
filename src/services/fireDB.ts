@@ -10,6 +10,7 @@ import {
   update,
   startAt,
   endBefore,
+  orderByKey,
 } from "@firebase/database";
 import { calcWeek, convertDate, getToday, pad } from "./DateManager";
 import { Answer, Question, QuestionsObj } from "../model/interfaces";
@@ -121,29 +122,27 @@ export const getQuestionByQid = async (qid: string) => {
 
 export const getUserAnswers = async (
   uid: string,
-  year: string,
-  month: string,
+  year: number,
+  month: number,
   week?: string
 ) => {
-  // 1. questions - publish_date -> year, month(, week) filter로 전부 가져오기
-  // 2. answers - uid인 것 전부 가져오기(query)
-  // 3. answers의 qid -> 1)에서 가져온 questions 중에서 찾기(year, month filter)
-  // year - month - week - date 별로 묶기
-  // answers year, month로 filter
+  const nextYearMonthObj = new Date(`${year}-${month}`);
+  nextYearMonthObj.setMonth(nextYearMonthObj.getMonth() + 1);
 
-  const nextMonth = new Date(`${year}-${month}`);
-  nextMonth.setMonth(nextMonth.getMonth() + 1);
+  const presentYearMonth = `${year}-${pad(month)}`;
+  const nextYearMonth = `${nextYearMonthObj.getFullYear()}-${pad(
+    nextYearMonthObj.getMonth() + 1
+  )}`;
 
-  const prevMonth = `${year}-${pad(parseInt(month))}`;
   const snapshot = await get(
     query(
-      ref(fireDB, "questions"),
-      orderByChild("publish_date"),
-      startAt(`${year}-${pad(parseInt(month))}`),
-      endBefore(`${nextMonth.getFullYear()}-${pad(nextMonth.getMonth() + 1)}`)
+      ref(fireDB, `user-answers/${uid}`),
+      orderByKey(),
+      startAt(presentYearMonth),
+      endBefore(nextYearMonth)
     )
   );
+  const answers = snapshot.val();
 
-  const questions = snapshot.val();
-  console.log(questions);
+  return answers;
 };

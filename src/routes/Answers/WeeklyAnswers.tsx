@@ -3,6 +3,8 @@ import styled from "styled-components";
 import BoxOpenedIcon from "../../assets/box_opened.png";
 import BoxClosedIcon from "../../assets/box_closed.png";
 import { Answer } from "../../model/interfaces";
+import { UserAnswers } from "./Answers";
+import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 
 export const YearText = styled.p`
   font-weight: 500;
@@ -110,94 +112,78 @@ const AnswerText = styled.p`
   margin-left: 5px;
 `;
 
-const DateIcons: React.FC = () => (
+interface DateIconsProps {
+  weekDates: any[];
+  weekAnswers: any;
+}
+
+const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   <DateIconsContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxClosedIcon} />
-    </DateIconContainer>
-    <DateIconContainer>
-      <DateIcon src={BoxOpenedIcon} />
-    </DateIconContainer>
+    {weekDates.map((date) => (
+      <DateIconContainer key={date}>
+        <DateIcon
+          src={
+            Object.keys(weekAnswers).includes(date)
+              ? BoxOpenedIcon
+              : BoxClosedIcon
+          }
+        />
+      </DateIconContainer>
+    ))}
   </DateIconsContainer>
 );
 
 interface Props {
-  answers: any[];
+  date: Date;
+  answers: UserAnswers | undefined;
 }
 
-const WeeklyAnswers: React.FC<Props> = () => {
+const WeeklyAnswers: React.FC<Props> = ({ date, answers }) => {
+  const yearMonthWeek = calcWeek(date);
+  const [year, monthStr, week] = yearMonthWeek.replace("W", "-").split("-");
+  const month = parseInt(monthStr);
+  const weekDates = getAllWeeklyDate(date);
+  const weekAnswers = answers && answers[yearMonthWeek];
+  const doneCnt = weekAnswers ? Object.keys(weekAnswers).length : 0;
+
   return (
     <>
       <WeekToggle>
-        {/* {Object.keys(answers).map((week) => {
-    const weekArr = week.replace("W", "-").split("-");
-    return (
-      <Week>{`${weekArr[0]}년 ${weekArr[1]}월 ${weekArr[2]}주차`}</Week>
-    );
-  })} */}
         <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
-        </Week>
-        <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
-        </Week>
-        <Week>
-          <YearText>2022년</YearText>
-          1월 3주차
+          <YearText>{year}년</YearText>
+          {month}월 {week}주차
         </Week>
       </WeekToggle>
 
       <HelperText>
-        5일 중 <AnswerDateCount>3일</AnswerDateCount> 대답했어요.
+        5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
       </HelperText>
-      <DateIcons />
+      <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
       <Container>
-        <DailyAnswersContainer>
-          <DayText>화요일</DayText>
-          <AnswerList>
-            <AnswerCard>
-              <KeywordText>과자</KeywordText>
-              <QuestionText>
-                Q. {"당신이 제일 좋아하는 과자는 무엇인가요?"}
-              </QuestionText>
-              <AnswerText>
-                A. 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는
-                과자는 제일 좋아하는 과자는
-              </AnswerText>
-            </AnswerCard>
-            <AnswerCard>
-              <KeywordText>과자</KeywordText>
-              <QuestionText>
-                Q. {"당신이 제일 좋아하는 과자는 무엇인가요?"}
-              </QuestionText>
-              <AnswerText>
-                A. 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는
-                과자는 제일 좋아하는 과자는
-              </AnswerText>
-            </AnswerCard>
-            <AnswerCard>
-              <KeywordText>과자</KeywordText>
-              <QuestionText>
-                Q. {"당신이 제일 좋아하는 과자는 무엇인가요?"}
-              </QuestionText>
-              <AnswerText>
-                A. 제일 좋아하는 과자는 제일 좋아하는 과자는 제일 좋아하는
-                과자는 제일 좋아하는 과자는
-              </AnswerText>
-            </AnswerCard>
-          </AnswerList>
-        </DailyAnswersContainer>
+        {weekAnswers ? (
+          <DailyAnswersContainer>
+            {Object.keys(weekAnswers).map((d) => (
+              <>
+                <DayText>{getDay(d)}</DayText>
+                <AnswerList>
+                  {Object.keys(weekAnswers[d]).map((aid) => (
+                    <AnswerCard>
+                      <KeywordText>
+                        {weekAnswers[d][aid].question.keyword}
+                      </KeywordText>
+                      <QuestionText>
+                        Q. {weekAnswers[d][aid].question.question}
+                      </QuestionText>
+                      <AnswerText>A. {weekAnswers[d][aid].answer}</AnswerText>
+                    </AnswerCard>
+                  ))}
+                </AnswerList>
+              </>
+            ))}
+          </DailyAnswersContainer>
+        ) : (
+          <>아직 작성을 안 하셨네요.</>
+        )}
       </Container>
     </>
   );

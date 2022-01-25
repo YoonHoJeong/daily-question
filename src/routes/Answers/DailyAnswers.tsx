@@ -1,12 +1,13 @@
 import React from "react";
 import AnswersByDay from "../../components/AnswersByDay";
 import UserProfile from "../../components/UserProfile";
+import { UserAnswers } from "./Answers";
 
 interface Props {
-  answers: any[];
+  answers: UserAnswers | undefined;
 }
 
-const DailyAnswers: React.FC<Props> = () => {
+const DailyAnswers: React.FC<Props> = ({ answers }) => {
   return (
     <div>
       <UserProfile />

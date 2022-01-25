@@ -7,12 +7,13 @@ import {
   YearText,
 } from "./WeeklyAnswers";
 import styles from "../../css/calendar.module.css";
+import { UserAnswers } from "./Answers";
 
 interface Props {
-  answers: any[];
+  answers: UserAnswers | undefined;
 }
 
-const MonthlyAnswers: React.FC<Props> = () => {
+const MonthlyAnswers: React.FC<Props> = ({ answers }) => {
   return (
     <>
       <WeekToggle>
