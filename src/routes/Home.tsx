@@ -57,7 +57,7 @@ const Home: React.FC<Props> = () => {
   return (
     <Switch>
       <Route path="/question/:qid">
-        <Question questions={questions} />
+        {questions ? <Question questions={questions} /> : <>server error</>}
       </Route>
       <Route exact path="/">
         <Container>

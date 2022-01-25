@@ -9,6 +9,7 @@ import {
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
+import Loader from "../components/Loader";
 // import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
@@ -74,7 +75,7 @@ const Button = styled.button`
 `;
 
 interface Props {
-  questions: QuestionsObj | undefined;
+  questions: QuestionsObj;
 }
 interface QuestionScreenParams {
   qid: string;
@@ -82,15 +83,14 @@ interface QuestionScreenParams {
 
 const QuestionScreen: React.FC<Props> = ({ questions }) => {
   const [editing, setEditing] = useState<boolean>(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const params = useParams<QuestionScreenParams>();
   const auth = useAuth();
   const qid = params.qid;
-  const question = questions && questions[qid];
-
   const uid = auth?.user?.uid || "";
+  const question = questions[qid];
 
   const { form, setForm, onChange } = useForm({ answer: "" });
   const history = useHistory();
@@ -102,11 +102,17 @@ const QuestionScreen: React.FC<Props> = ({ questions }) => {
       alert("답변을 작성해 주세요.");
       return;
     }
+    if (question) {
+      setSubmitting(true);
+      const success = await submitAnswer(uid, { ...question, qid }, form);
+      setSubmitting(false);
 
-    setSubmitting(true);
-    await submitAnswer(uid, qid, form);
-    setSubmitting(false);
-    history.push("/submit-done");
+      if (success) {
+        history.push("/submit-done");
+      } else {
+        alert("답변 제출에 실패했습니다.");
+      }
+    }
   };
 
   const onEdit = (e: SyntheticEvent) => {
@@ -128,7 +134,7 @@ const QuestionScreen: React.FC<Props> = ({ questions }) => {
   }, [qid, uid, setForm]);
 
   if (loading || submitting) {
-    return <>loading...</>;
+    return <Loader />;
   }
 
   return (

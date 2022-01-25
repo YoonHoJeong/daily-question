@@ -8,16 +8,19 @@ import {
   child,
   push,
   update,
+  startAt,
+  endBefore,
 } from "@firebase/database";
-import { convertDate, getToday } from "./DateManager";
+import { calcWeek, convertDate, getToday, pad } from "./DateManager";
 import { Answer, Question, QuestionsObj } from "../model/interfaces";
 
 export const submitAnswer = async (
   uid: string,
-  qid: string,
+  question: Question,
   formData: { answer: string; aid?: string }
 ) => {
   const aid = formData.aid || push(child(ref(fireDB), "answers")).key;
+  const week = calcWeek(new Date(question.publish_date));
 
   // TODO: validation check
   if (!uid) {
@@ -28,20 +31,38 @@ export const submitAnswer = async (
   const updates = {};
 
   const answerFormData = {
-    qid,
     aid,
-    uid,
     answer: formData.answer,
     created_at: convertDate(new Date()),
   };
-  updates["/answers/" + aid] = answerFormData;
+  console.log(question, answerFormData);
+
+  updates["/answers/" + aid] = {
+    ...answerFormData,
+    qid: question.qid,
+    uid,
+  };
   updates["/users/" + uid + "/answers/" + aid] = true;
-  updates["/questions/" + qid + "/answers/" + aid] = true;
+  updates[
+    "/user-answers/" +
+      uid +
+      "/" +
+      week +
+      "/" +
+      question.publish_date +
+      "/" +
+      aid
+  ] = { ...answerFormData, question };
+  updates["/questions/" + question.qid + "/answers/" + aid] = true;
+
+  console.log(updates);
 
   try {
     await update(ref(fireDB), updates);
+    return true;
   } catch (e) {
     console.error(e);
+    return false;
   }
 };
 
@@ -52,8 +73,9 @@ export const enrollQuestion = async (
 ) => {
   const updates = {};
   const newQid = push(child(ref(fireDB), "questions")).key;
+  const week = calcWeek(new Date(publish_date));
 
-  updates["/questions/" + newQid] = { keyword, question, publish_date };
+  updates["/questions/" + newQid] = { keyword, question, publish_date, week };
 
   try {
     await update(ref(fireDB), updates);
@@ -95,4 +117,33 @@ export const getQuestionByQid = async (qid: string) => {
   );
   const question = snapshot.val();
   return question;
+};
+
+export const getUserAnswers = async (
+  uid: string,
+  year: string,
+  month: string,
+  week?: string
+) => {
+  // 1. questions - publish_date -> year, month(, week) filter로 전부 가져오기
+  // 2. answers - uid인 것 전부 가져오기(query)
+  // 3. answers의 qid -> 1)에서 가져온 questions 중에서 찾기(year, month filter)
+  // year - month - week - date 별로 묶기
+  // answers year, month로 filter
+
+  const nextMonth = new Date(`${year}-${month}`);
+  nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+  const prevMonth = `${year}-${pad(parseInt(month))}`;
+  const snapshot = await get(
+    query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      startAt(`${year}-${pad(parseInt(month))}`),
+      endBefore(`${nextMonth.getFullYear()}-${pad(nextMonth.getMonth() + 1)}`)
+    )
+  );
+
+  const questions = snapshot.val();
+  console.log(questions);
 };

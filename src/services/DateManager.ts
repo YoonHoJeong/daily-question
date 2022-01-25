@@ -1,6 +1,22 @@
-function pad(num: Number): string {
+export const calcWeek = (dateObj: Date) => {
+  dateObj.setDate(dateObj.getDate() - dateObj.getDay() + 1);
+
+  const month = dateObj.getMonth() + 1; // 월
+  let week = 0;
+  // 주차 계산
+  const year = dateObj.getFullYear();
+
+  while (dateObj.getMonth() + 1 === month) {
+    week += 1;
+    dateObj.setDate(dateObj.getDate() - 7);
+  }
+
+  return `${year}-${month}W${week}`;
+};
+
+export const pad = (num: Number): string => {
   return num < 10 ? `0${num}` : `${num}`;
-}
+};
 
 export const convertDate = (date: Date) => {
   // convert Date instance into format yyyy-mm-ddThh:mm:ss

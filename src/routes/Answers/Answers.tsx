@@ -15,6 +15,7 @@ import {
 import WeeklyAnswers from "./WeeklyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
+import { getUserAnswers } from "../../services/fireDB";
 
 const Container = styled.div`
   position: relative;
@@ -98,11 +99,12 @@ const answers = [
 const Answers: React.FC<Props> = () => {
   const auth = useAuth();
   const uid = auth?.user?.uid || "";
-  // const {
-  //   data: answers,
-  //   loading,
-  //   error,
-  // } = useFireDBFetch<any>(`user-answers/${uid}`);
+
+  const {
+    data: answers,
+    loading,
+    error,
+  } = useFireDBFetch<any>(`user-answers/${uid}`);
   const [selectedWeek, setSelectedWeek] = useState<string | undefined>();
   const location = useLocation();
   // useEffect(() => {
