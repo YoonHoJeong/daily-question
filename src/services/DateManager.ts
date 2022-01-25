@@ -28,7 +28,32 @@ export const getAllWeeklyDate = (dateObj: Date) => {
   }
   return dates;
 };
-export const getAllMonthlyDate = () => {};
+export const getAllMonthlyDate = (dateObj: Date) => {
+  // 해당 월의 월, 화, 수, 목, 금 반환
+  // 5일 단위, 해당 월이 아닐 수도 있으므로 월도 표시.
+  const firstDate = new Date(dateObj);
+  firstDate.setDate(1);
+  const firstDateDay = firstDate.getDay() !== 0 ? firstDate.getDay() : 7;
+  firstDate.setDate(1 - firstDateDay + 1);
+
+  const lastDate = new Date(dateObj);
+  lastDate.setMonth(lastDate.getMonth() + 1);
+  lastDate.setDate(0);
+  const lastDateDay = lastDate.getDay() !== 0 ? lastDate.getDay() : 7;
+  lastDate.setDate(lastDate.getDate() - lastDateDay + 1);
+  const dates = [];
+
+  while (firstDate <= lastDate) {
+    const tmp = new Date(firstDate);
+    for (let i = 0; i < 5; i++) {
+      dates.push(convertDateUntilDay(tmp));
+      tmp.setDate(tmp.getDate() + 1);
+    }
+    firstDate.setDate(firstDate.getDate() + 7);
+  }
+
+  return dates;
+};
 export const pad = (num: Number): string => {
   return num < 10 ? `0${num}` : `${num}`;
 };

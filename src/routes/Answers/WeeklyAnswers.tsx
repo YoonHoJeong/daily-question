@@ -2,9 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import BoxOpenedIcon from "../../assets/box_opened.png";
 import BoxClosedIcon from "../../assets/box_closed.png";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { Answer } from "../../model/interfaces";
 import { UserAnswers } from "./Answers";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
+import Loader from "../../components/Loader";
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export const YearText = styled.p`
   font-weight: 500;
@@ -26,13 +39,12 @@ export const WeekToggle = styled.ul`
 
   margin-top: 30px;
 `;
+export const WeekToggleButton = styled.button<{ right?: boolean }>`
+  position: absolute;
+  bottom: -4px;
+  ${(props) => (props.right ? "right: -35px" : "left: -35px")};
+`;
 export const Week = styled.li`
-  &:not(:first-child) {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,20 +80,18 @@ const AnswerCard = styled.li`
   /* identical to box height */
 
   color: #515fa9;
-  &:first-child {
-    width: 300px;
-    background-color: ${(props) => props.theme.palette.white};
-  }
-  &:nth-child(2) {
+  width: 300px;
+  background-color: ${(props) => props.theme.palette.white};
+  /* &:nth-child(2) {
     width: 280px;
     background-color: ${(props) => props.theme.palette.bgGrey};
   }
   &:nth-child(3) {
     width: 260px;
     background-color: ${(props) => props.theme.palette.bgGrey2};
-  }
+  } */
 `;
-const Container = styled.ul``;
+const AnswersContainer = styled.ul``;
 const DailyAnswersContainer = styled.li`
   margin-top: 30px;
 `;
@@ -89,6 +99,7 @@ const DayText = styled.p`
   font-weight: 500;
 
   margin-left: 10px;
+  margin-bottom: 5px;
 `;
 
 const AnswerList = styled.ul`
@@ -102,14 +113,16 @@ const KeywordText = styled.p`
   font-size: 11px;
   color: ${(props) => props.theme.palette.deepGrey};
 `;
-const QuestionText = styled.p`
+const QuestionText = styled.div`
   font-size: 13px;
   color: ${(props) => props.theme.palette.blue};
+  display: flex;
 `;
-const AnswerText = styled.p`
+const AnswerText = styled.div`
   font-size: 11px;
   margin-top: 5px;
   margin-left: 5px;
+  display: flex;
 `;
 
 interface DateIconsProps {
@@ -134,58 +147,85 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
 );
 
 interface Props {
-  date: Date;
+  date: {
+    dateObj: Date;
+    year: number;
+    month: number;
+  };
   answers: UserAnswers | undefined;
+  changeWeek: (weekCnt: number) => void;
+  loading: boolean;
 }
 
-const WeeklyAnswers: React.FC<Props> = ({ date, answers }) => {
-  const yearMonthWeek = calcWeek(date);
+const WeeklyAnswers: React.FC<Props> = ({
+  date,
+  answers,
+  changeWeek,
+  loading,
+}) => {
+  const yearMonthWeek = calcWeek(date.dateObj);
   const [year, monthStr, week] = yearMonthWeek.replace("W", "-").split("-");
   const month = parseInt(monthStr);
-  const weekDates = getAllWeeklyDate(date);
-  const weekAnswers = answers && answers[yearMonthWeek];
+  const weekDates = getAllWeeklyDate(date.dateObj);
+  const weekAnswers = (answers && answers[yearMonthWeek]) || {};
   const doneCnt = weekAnswers ? Object.keys(weekAnswers).length : 0;
 
   return (
-    <>
+    <Container>
       <WeekToggle>
+        <WeekToggleButton onClick={() => changeWeek(-1)}>
+          <KeyboardArrowLeftIcon />
+        </WeekToggleButton>
         <Week>
           <YearText>{year}년</YearText>
           {month}월 {week}주차
         </Week>
+        <WeekToggleButton right onClick={() => changeWeek(1)}>
+          <KeyboardArrowRightIcon />
+        </WeekToggleButton>
       </WeekToggle>
 
-      <HelperText>
-        5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
-      </HelperText>
-      <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
-      <Container>
-        {weekAnswers ? (
-          <DailyAnswersContainer>
-            {Object.keys(weekAnswers).map((d) => (
-              <>
-                <DayText>{getDay(d)}</DayText>
-                <AnswerList>
-                  {Object.keys(weekAnswers[d]).map((aid) => (
-                    <AnswerCard>
-                      <KeywordText>
-                        {weekAnswers[d][aid].question.keyword}
-                      </KeywordText>
-                      <QuestionText>
-                        Q. {weekAnswers[d][aid].question.question}
-                      </QuestionText>
-                      <AnswerText>A. {weekAnswers[d][aid].answer}</AnswerText>
-                    </AnswerCard>
-                  ))}
-                </AnswerList>
-              </>
-            ))}
-          </DailyAnswersContainer>
-        ) : (
-          <>아직 작성을 안 하셨네요.</>
-        )}
-      </Container>
-    </>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <HelperText>
+            5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
+          </HelperText>
+          <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
+          <AnswersContainer>
+            {weekAnswers ? (
+              <DailyAnswersContainer>
+                {Object.keys(weekAnswers).map((d) => (
+                  <>
+                    <DayText>{getDay(d)}</DayText>
+                    <AnswerList>
+                      {Object.keys(weekAnswers[d]).map((aid) => (
+                        <AnswerCard>
+                          <KeywordText>
+                            {weekAnswers[d][aid].question.keyword}
+                          </KeywordText>
+                          <QuestionText>
+                            Q.
+                            <p>{weekAnswers[d][aid].question.question}</p>
+                          </QuestionText>
+                          <AnswerText>
+                            A.
+                            <p>{weekAnswers[d][aid].answer}</p>
+                          </AnswerText>
+                        </AnswerCard>
+                      ))}
+                    </AnswerList>
+                  </>
+                ))}
+              </DailyAnswersContainer>
+            ) : (
+              <>아직 작성을 안 하셨네요.</>
+            )}
+          </AnswersContainer>
+        </>
+      )}
+    </Container>
   );
 };
 

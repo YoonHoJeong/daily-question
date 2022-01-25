@@ -50,30 +50,66 @@ const Answers: React.FC<Props> = () => {
   const auth = useAuth();
   const uid = auth?.user?.uid || "";
   const location = useLocation();
-  const [date, setDate] = useState(new Date());
+  const dateObj = new Date();
+  const [date, setDate] = useState({
+    dateObj,
+    year: dateObj.getFullYear(),
+    month: dateObj.getMonth() + 1,
+  });
+  const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<UserAnswers>();
-  console.log(date);
-
   const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");
+
+  const changeWeek = (weekCnt: number) => {
+    const tmpDate = new Date(date.dateObj);
+    tmpDate.setDate(tmpDate.getDate() + 7 * weekCnt); // week ago date
+
+    setDate({
+      dateObj: tmpDate,
+      year: tmpDate.getFullYear(),
+      month: tmpDate.getMonth() + 1,
+    });
+  };
+  const changeMonth = (monthCnt: number) => {
+    const tmpDate = new Date(date.dateObj);
+    tmpDate.setMonth(tmpDate.getMonth() + 1 * monthCnt);
+
+    setDate({
+      dateObj: tmpDate,
+      year: tmpDate.getFullYear(),
+      month: tmpDate.getMonth() + 1,
+    });
+  };
 
   useEffect(() => {
     async function fetchData() {
-      const fetched = await getUserAnswers(
-        uid,
-        date.getFullYear(),
-        date.getMonth() + 1
-      );
+      setLoading(true);
+      const fetched = await getUserAnswers(uid, date.year, date.month);
       setAnswers(fetched);
+      setLoading(false);
     }
     fetchData();
-  }, [date, uid]);
+  }, [date.year, date.month, uid]);
 
   const AnswersByVF = () => {
     switch (viewFormat) {
       case "weekly":
-        return <WeeklyAnswers date={date} answers={answers} />;
+        return (
+          <WeeklyAnswers
+            loading={loading}
+            changeWeek={changeWeek}
+            date={date}
+            answers={answers}
+          />
+        );
       case "monthly":
-        return <MonthlyAnswers answers={answers} />;
+        return (
+          <MonthlyAnswers
+            date={date}
+            answers={answers || {}}
+            changeMonth={changeMonth}
+          />
+        );
       case "daily":
         return <DailyAnswers answers={answers} />;
     }
@@ -82,7 +118,6 @@ const Answers: React.FC<Props> = () => {
   return (
     <Container>
       <DateFormatPicker viewFormat={viewFormat} setViewFormat={setViewFormat} />
-
       {AnswersByVF()}
     </Container>
   );

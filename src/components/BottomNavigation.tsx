@@ -48,11 +48,17 @@ const Icon = styled.img`
   width: 35px;
 `;
 
+const hideRoutes = ["/answers"];
+
 interface Props {}
 
 const BottomNavigation: React.FC<Props> = () => {
   const location = useLocation();
   const pathname = location.pathname;
+
+  if (pathname.includes("/answers")) {
+    return null;
+  }
 
   return (
     <Container>
