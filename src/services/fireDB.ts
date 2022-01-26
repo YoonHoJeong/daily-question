@@ -88,22 +88,28 @@ export const enrollQuestion = async (
 };
 
 export const getTodayQuestions = async () => {
-  const snapshot = await get(
-    query(
-      ref(fireDB, "questions"),
-      orderByChild("publish_date"),
-      equalTo(getToday())
-    )
-  );
-  const questions = snapshot.val() as QuestionsObj;
-  return questions;
+  try {
+    const snapshot = await get(
+      query(
+        ref(fireDB, "questions"),
+        orderByChild("publish_date"),
+        equalTo(getToday())
+      )
+    );
+
+    const questions = snapshot.val() as QuestionsObj;
+    return questions;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const getAnswerByUidQid = async (uid: string, qid: string) => {
   const answerSnapshot = await get(
     query(ref(fireDB, "answers"), orderByChild("uid"), equalTo(uid))
   );
-  const userAnswers = answerSnapshot.val();
+  const userAnswers = answerSnapshot.val() || {};
+
   const userAnswerByQid: Answer = Object.keys(userAnswers)
     .filter((aid) => userAnswers[aid].qid === qid)
     .map((aid) => userAnswers[aid])

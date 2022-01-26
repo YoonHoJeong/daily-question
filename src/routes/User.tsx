@@ -3,11 +3,14 @@ import { useAuth } from "../hooks/useAuth";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserProfile from "../components/UserProfile";
-
+import BoxOpened from "../assets/box_opened.png";
+import Heart from "../assets/4_heart.svg";
 const Container = styled.div`
   width: 100vw;
 
   background-color: ${(props) => props.theme.palette.white};
+
+  padding: 40px 25px;
   padding-bottom: 20px;
 `;
 
@@ -23,13 +26,12 @@ const UserTab = styled.li`
   align-items: center;
 `;
 const UserTabIcon = styled.img`
-  width: 40px;
-  height: 40px;
-  background-color: lightgrey;
+  max-width: 45px;
+  height: 35px;
+  margin-bottom: 5px;
 `;
 
 const UserTabTitle = styled.span`
-  margin-top: 8px;
   font-size: 12px;
   font-weight: 400;
   color: ${({ theme }) => theme.palette.black};
@@ -46,19 +48,21 @@ const User: React.FC<Props> = () => {
       <UserTabs>
         <UserTab>
           <Link to="/answers">
-            <UserTabIcon />
+            <UserTabIcon src={BoxOpened} />
           </Link>
           <Link to="/answers">
             <UserTabTitle>나의 답변</UserTabTitle>
           </Link>
         </UserTab>
         <UserTab>
-          <Link to="/answers">
-            <UserTabIcon />
+          <UserTabIcon src={Heart} />
+          <UserTabTitle>마음함</UserTabTitle>
+          {/* <Link to="/answers">
+            <UserTabIcon src={Heart} />
           </Link>
           <Link to="/answers">
             <UserTabTitle>마음함</UserTabTitle>
-          </Link>
+          </Link> */}
         </UserTab>
       </UserTabs>
     </Container>

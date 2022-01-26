@@ -1,16 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { DayAnswers } from "../routes/Answers/Answers";
 
 const DateContainer = styled.ul`
+  width: 100%;
   padding: 30px;
-
   background-color: ${(props) => props.theme.palette.white};
-
   border-top: 4px solid ${(props) => props.theme.palette.bgGrey};
-`;
-const Header = styled.header`
+
   display: flex;
+`;
+const SideDateBar = styled.div`
+  display: flex;
+
+  width: 40px;
 `;
 const MonthDate = styled.div``;
 const Month = styled.div`
@@ -48,9 +52,7 @@ const Question = styled.div`
 const AnswerCard = styled.li`
   display: flex;
 
-  &:not(:first-child) {
-    margin-top: 30px;
-  }
+  margin-top: 17px;
 `;
 const Profile = styled.div``;
 const ProfileImg = styled.img`
@@ -80,77 +82,42 @@ const Answer = styled.p`
   white-space: pre-line;
 `;
 const AnswerContainer = styled.ul`
+  flex: 1;
   margin-top: 17px;
-
-  margin-left: 33px;
 `;
 
 interface Props {
   date: string;
-  answers: any[];
+  answers: DayAnswers;
 }
 
-const AnswersByDay: React.FC<Props> = ({ date }) => {
+const AnswersByDay: React.FC<Props> = ({ date, answers }) => {
   const [_, month, day] = date.split("-");
+
   return (
     <DateContainer>
-      <Header>
+      <SideDateBar>
         <MonthDate>
           <Month>{month}월</Month>
-          <Date>{day}</Date>
+          <Date>{parseInt(day)}</Date>
         </MonthDate>
-        <Question>
-          당신이 제일 좋아하는 과자는 무엇인가요? 그 과자에 얽힌 추억이 있다면
-          알려주세요.
-        </Question>
-      </Header>
-
+      </SideDateBar>
       <AnswerContainer>
-        <AnswerCard>
-          <Profile>
-            <ProfileImg></ProfileImg>
-            <ProfileName>새러</ProfileName>
-          </Profile>
-          <AnswerAndFav>
-            <Answer>
-              제일 좋아하는 과자는 아모래도... ??? 딱히 없네? 두루두루 좋아하는
-              편인 것 같다. 근데 마음의 고향은, 허니버터칩! 고등학교 때 처음
-              나왔을 때 구하기도 힘들었는데 그때 먹었던 맛과 이후가 왠지 달라진
-              것 같다고 많이들 그래도, 나는 계속 맛있었다.
-            </Answer>
-            <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
-          </AnswerAndFav>
-        </AnswerCard>
-        <AnswerCard>
-          <Profile>
-            <ProfileImg></ProfileImg>
-            <ProfileName>새러</ProfileName>
-          </Profile>
-          <AnswerAndFav>
-            <Answer>
-              제일 좋아하는 과자는 아모래도... ??? 딱히 없네? 두루두루 좋아하는
-              편인 것 같다. 근데 마음의 고향은, 허니버터칩! 고등학교 때 처음
-              나왔을 때 구하기도 힘들었는데 그때 먹었던 맛과 이후가 왠지 달라진
-              것 같다고 많이들 그래도, 나는 계속 맛있었다.
-            </Answer>
-            <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
-          </AnswerAndFav>
-        </AnswerCard>
-        <AnswerCard>
-          <Profile>
-            <ProfileImg></ProfileImg>
-            <ProfileName>새러</ProfileName>
-          </Profile>
-          <AnswerAndFav>
-            <Answer>
-              제일 좋아하는 과자는 아모래도... ??? 딱히 없네? 두루두루 좋아하는
-              편인 것 같다. 근데 마음의 고향은, 허니버터칩! 고등학교 때 처음
-              나왔을 때 구하기도 힘들었는데 그때 먹었던 맛과 이후가 왠지 달라진
-              것 같다고 많이들 그래도, 나는 계속 맛있었다.
-            </Answer>
-            <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
-          </AnswerAndFav>
-        </AnswerCard>
+        {Object.keys(answers).map((aid) => (
+          <>
+            <Question>{answers[aid].question.question}</Question>
+            <AnswerCard>
+              <Profile>
+                <ProfileImg></ProfileImg>
+                <ProfileName>새러</ProfileName>
+              </Profile>
+              <AnswerAndFav>
+                <Answer>{answers[aid].answer}</Answer>
+                <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
+              </AnswerAndFav>
+            </AnswerCard>
+          </>
+        ))}
       </AnswerContainer>
     </DateContainer>
   );

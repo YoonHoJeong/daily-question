@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 import { Header } from "../components/Header";
 import Input from "../components/common/Input";
+import BoxLogoGrey from "../assets/box_logo_grey.svg";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -26,7 +27,7 @@ const ServiceIcon = styled.img`
   left: 0;
   right: 0;
   text-align: center;
-  top: -110px;
+  top: -130px;
 `;
 const LoginForm = styled.form`
   position: relative;
@@ -58,7 +59,7 @@ const Login: React.FC<Props> = () => {
       <Header transparent />
       <Container>
         <LoginForm onSubmit={onSubmit}>
-          <ServiceIcon src="logo.png" />
+          <ServiceIcon src={BoxLogoGrey} />
 
           <Input
             id="email"

@@ -4,10 +4,11 @@ import BoxOpenedIcon from "../../assets/box_opened.png";
 import BoxClosedIcon from "../../assets/box_closed.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { Answer } from "../../model/interfaces";
 import { UserAnswers } from "./Answers";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Loader from "../../components/Loader";
+import Button from "../../components/common/Button";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -58,7 +59,8 @@ export const AnswerDateCount = styled.span`
 `;
 const DateIconContainer = styled.li``;
 const DateIcon = styled.img`
-  height: 40px;
+  max-width: 45px;
+  height: 35px;
 `;
 const DateIconsContainer = styled.ul`
   width: 300px;
@@ -91,9 +93,13 @@ const AnswerCard = styled.li`
     background-color: ${(props) => props.theme.palette.bgGrey2};
   } */
 `;
-const AnswersContainer = styled.ul``;
-const DailyAnswersContainer = styled.li`
+const AnswersContainer = styled.ul`
   margin-top: 30px;
+`;
+const DailyAnswersContainer = styled.li``;
+
+const DailyAnswers = styled.div`
+  margin-top: 10px;
 `;
 const DayText = styled.p`
   font-weight: 500;
@@ -190,14 +196,21 @@ const WeeklyAnswers: React.FC<Props> = ({
       ) : (
         <>
           <HelperText>
-            5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
+            {doneCnt > 0 ? (
+              <>
+                5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount>{" "}
+                대답했어요.
+              </>
+            ) : (
+              <>이번 주에는 아직 답변이 없네요...</>
+            )}
           </HelperText>
           <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
           <AnswersContainer>
-            {weekAnswers ? (
+            {doneCnt > 0 ? (
               <DailyAnswersContainer>
                 {Object.keys(weekAnswers).map((d) => (
-                  <>
+                  <DailyAnswers>
                     <DayText>{getDay(d)}</DayText>
                     <AnswerList>
                       {Object.keys(weekAnswers[d]).map((aid) => (
@@ -216,11 +229,15 @@ const WeeklyAnswers: React.FC<Props> = ({
                         </AnswerCard>
                       ))}
                     </AnswerList>
-                  </>
+                  </DailyAnswers>
                 ))}
               </DailyAnswersContainer>
             ) : (
-              <>아직 작성을 안 하셨네요.</>
+              <Link to="/">
+                <Button bgColor="blue" style={{ fontSize: "12px" }}>
+                  오늘의 재밌는 질문 대답하러 가기
+                </Button>
+              </Link>
             )}
           </AnswersContainer>
         </>

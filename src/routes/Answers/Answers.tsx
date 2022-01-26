@@ -24,14 +24,15 @@ const Container = styled.div`
 export type ViewFormat = "weekly" | "daily" | "monthly";
 
 export interface UserAnswers {
-  [week: string]: {
-    [date: string]: {
-      [aid: string]: {
-        aid: string;
-        answer: string;
-        created_at: string;
-        question: Question;
-      };
+  [week: string]: DayAnswers;
+}
+export interface DayAnswers {
+  [date: string]: {
+    [aid: string]: {
+      aid: string;
+      answer: string;
+      created_at: string;
+      question: Question;
     };
   };
 }
@@ -41,7 +42,6 @@ interface Props {}
 const Answers: React.FC<Props> = () => {
   const auth = useAuth();
   const uid = auth?.user?.uid || "";
-  const location = useLocation();
   const dateObj = new Date();
   const [date, setDate] = useState({
     dateObj,
@@ -96,7 +96,7 @@ const Answers: React.FC<Props> = () => {
             loading={loading}
             changeWeek={changeWeek}
             date={date}
-            answers={answers}
+            answers={answers || {}}
           />
         );
       case "monthly":
@@ -109,7 +109,7 @@ const Answers: React.FC<Props> = () => {
           />
         );
       case "daily":
-        return <DailyAnswers answers={answers} />;
+        return <DailyAnswers answers={answers || {}} />;
     }
   };
 

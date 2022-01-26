@@ -1,10 +1,10 @@
-import React, { SyntheticEvent, useEffect } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import { Header } from "../components/Header";
-import { useAuth } from "../hooks/useAuth";
+import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
 interface Props {}
@@ -33,6 +33,10 @@ const RegisterForm = styled.form`
 
   margin-top: 20px;
 `;
+const ErrorMsg = styled.p`
+  color: ${(props) => props.theme.palette.blue};
+  font-size: 12px;
+`;
 
 const Register: React.FC<Props> = () => {
   const auth = useAuth();
@@ -44,31 +48,22 @@ const Register: React.FC<Props> = () => {
     password: "",
     password2: "",
   });
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<CustomAuthError | null>();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    Object.keys(form).forEach((key) => {
-      switch (key) {
-        case "name":
-          // 동일한 닉네임 확인
-          break;
-        case "email":
-          // 동일한 이메일 확인
-          break;
-        case "password":
-          // 7자 이상
-          break;
-        case "password2":
-          // password 1과 같은지?
-          if (form["password"] !== form[key]) {
-            alert("비밀번호와 비밀번호 확인이 같은지 확인해주세요.");
-          }
-          break;
-      }
-    });
-    delete form["password2"];
-    await auth?.register(form);
+    setSubmitting(true);
+    const response = await auth!!.register(form);
+    if (response.status === true) {
+      // user register success
+    } else {
+      // user register fail
+      response.error && alert(response.error.message);
+      // setError(response.error);
+    }
+    setSubmitting(false);
   };
 
   useEffect(() => {
@@ -84,6 +79,7 @@ const Register: React.FC<Props> = () => {
         <MainTitle>회원가입</MainTitle>
         <RegisterForm onSubmit={onSubmit}>
           <Input
+            disabled={submitting}
             required
             name="name"
             onChange={onChange}
@@ -92,6 +88,7 @@ const Register: React.FC<Props> = () => {
             style={{ marginBottom: "10px" }}
           />
           <Input
+            disabled={submitting}
             required
             name="email"
             onChange={onChange}
@@ -100,6 +97,7 @@ const Register: React.FC<Props> = () => {
             style={{ marginBottom: "10px" }}
           />
           <Input
+            disabled={submitting}
             required
             name="password"
             onChange={onChange}
@@ -107,7 +105,9 @@ const Register: React.FC<Props> = () => {
             placeholder="비밀번호"
             style={{ marginBottom: "10px" }}
           />
+
           <Input
+            disabled={submitting}
             required
             name="password2"
             onChange={onChange}
@@ -115,11 +115,16 @@ const Register: React.FC<Props> = () => {
             placeholder="비밀번호 확인"
           />
 
-          <Button bgColor="blue" large style={{ marginTop: "20px" }}>
+          <Button
+            bgColor="blue"
+            large
+            style={{ marginTop: "20px" }}
+            disabled={submitting}
+          >
             가입하기
           </Button>
         </RegisterForm>
-        <Button large style={{ marginTop: "10px" }}>
+        <Button large style={{ marginTop: "10px" }} disabled={submitting}>
           google 계정으로 가입하기
         </Button>
       </Container>

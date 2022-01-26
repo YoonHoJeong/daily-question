@@ -43,8 +43,8 @@ const Home: React.FC<Props> = () => {
   useEffect(() => {
     async function fetchData() {
       const fetched = await getTodayQuestions();
-      setQuestions(fetched);
 
+      setQuestions(fetched);
       setLoading(false);
     }
     fetchData();
