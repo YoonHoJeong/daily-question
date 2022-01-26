@@ -53,7 +53,7 @@ const UserProfile: React.FC<Props> = () => {
         <UserAddress>
           {auth?.user?.email || "이메일을 등록해 주세요."}
         </UserAddress>
-        <UserIntro>힙하고 싶으면 힙해질 수 없음</UserIntro>
+        {/* <UserIntro>힙하고 싶으면 힙해질 수 없음</UserIntro> */}
       </UserInfo>
     </ProfileContainer>
   );

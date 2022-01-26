@@ -33,10 +33,6 @@ const RegisterForm = styled.form`
 
   margin-top: 20px;
 `;
-const ErrorMsg = styled.p`
-  color: ${(props) => props.theme.palette.blue};
-  font-size: 12px;
-`;
 
 const Register: React.FC<Props> = () => {
   const auth = useAuth();
@@ -49,7 +45,6 @@ const Register: React.FC<Props> = () => {
     password2: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [error, setError] = useState<CustomAuthError | null>();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();

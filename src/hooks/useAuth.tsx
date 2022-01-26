@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { ref, update } from "firebase/database";
+import { get, ref, update } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 
@@ -83,14 +83,33 @@ const useProviderAuth = () => {
 
   const formatUser = async (user: User | null) => {
     if (user) {
-      const token = await user.getIdTokenResult();
+      try {
+        const token = await user.getIdTokenResult();
+        const snapshot = await get(ref(fireDB, "users/" + user.uid));
+        const userData = snapshot.val();
 
-      setUser({
-        name: user.displayName || "undefined",
-        email: user.email,
-        uid: user.uid,
-        admin: token.claims.admin ? true : false,
-      });
+        setUser({
+          name: userData.name || "undefined",
+          email: user.email,
+          uid: user.uid,
+          admin: token.claims.admin ? true : false,
+        });
+        setIsAuthenticating(false);
+      } catch (e: any) {
+        const error = new Error(e);
+        let timeoutCnt = 0;
+        if (error.message.includes("offline")) {
+          setIsAuthenticating(true);
+          setTimeout(() => {
+            if (timeoutCnt > 10) {
+              return;
+            }
+            console.log(error.message);
+            formatUser(user);
+            timeoutCnt++;
+          }, 1000);
+        }
+      }
     } else {
       setUser(null);
     }
@@ -174,9 +193,6 @@ const useProviderAuth = () => {
     } catch (error: any) {
       const errorType = new Error(error).message.split(": ")[1];
 
-      console.log(error);
-      console.log("errorType", errorType);
-
       switch (errorType) {
         case "auth/weak-name":
         case "auth/short-password":
@@ -202,7 +218,7 @@ const useProviderAuth = () => {
 
       /* create user auth in firebase-database */
       const updates = {};
-      updates["/users/" + userCredential.user.uid] = {
+      updates[userCredential.user.uid] = {
         uid: userCredential.user.uid,
         name: form.name,
         email: form.email,

@@ -133,25 +133,27 @@ const QuestionScreen: React.FC<Props> = ({ questions }) => {
     fetchData();
   }, [qid, uid, setForm]);
 
-  if (loading || submitting) {
-    return <Loader />;
-  }
-
   return (
     <Container onSubmit={onSubmit}>
-      <QuestionText>{question?.question}</QuestionText>
-      <AnswerInput
-        name="answer"
-        value={form.answer}
-        disabled={!editing}
-        placeholder="답변"
-        rows={5}
-        onChange={onChange}
-      ></AnswerInput>
-      {editing ? (
-        <Button type="submit">오늘의 답변 기록하기</Button>
+      {loading || submitting ? (
+        <Loader />
       ) : (
-        <Button onClick={onEdit}>오늘의 답변 수정하기</Button>
+        <>
+          <QuestionText>{question?.question}</QuestionText>
+          <AnswerInput
+            name="answer"
+            value={form.answer}
+            disabled={!editing}
+            placeholder="답변"
+            rows={5}
+            onChange={onChange}
+          ></AnswerInput>
+          {editing ? (
+            <Button type="submit">오늘의 답변 기록하기</Button>
+          ) : (
+            <Button onClick={onEdit}>오늘의 답변 수정하기</Button>
+          )}
+        </>
       )}
     </Container>
   );

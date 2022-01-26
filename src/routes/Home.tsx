@@ -3,11 +3,9 @@ import { Link, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Loader from "../components/Loader";
-import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { QuestionsObj } from "../model/interfaces";
-import { getToday } from "../services/DateManager";
 import { getTodayQuestions } from "../services/fireDB";
-import { Answers, Question, SubmitDone } from "../routes";
+import { Question } from "../routes";
 
 const Container = styled.div`
   width: 100%;
@@ -50,10 +48,6 @@ const Home: React.FC<Props> = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <Switch>
       <Route path="/question/:qid">
@@ -61,26 +55,32 @@ const Home: React.FC<Props> = () => {
       </Route>
       <Route exact path="/">
         <Container>
-          {questions ? (
-            <>
-              <Title>키워드를 선택해주세요.</Title>
-              <KeywordList>
-                {Object.keys(questions).map((qid) => (
-                  <Keyword key={qid}>
-                    <Link to={`/question/${qid}`}>
-                      <Button
-                        small
-                        style={{ fontSize: "18px", fontWeight: 500 }}
-                      >
-                        {questions[qid].keyword}
-                      </Button>
-                    </Link>
-                  </Keyword>
-                ))}
-              </KeywordList>
-            </>
+          {loading ? (
+            <Loader />
           ) : (
-            <Title>오늘은 질문이 없어요.</Title>
+            <>
+              {questions ? (
+                <>
+                  <Title>키워드를 선택해주세요.</Title>
+                  <KeywordList>
+                    {Object.keys(questions).map((qid) => (
+                      <Keyword key={qid}>
+                        <Link to={`/question/${qid}`}>
+                          <Button
+                            small
+                            style={{ fontSize: "18px", fontWeight: 500 }}
+                          >
+                            {questions[qid].keyword}
+                          </Button>
+                        </Link>
+                      </Keyword>
+                    ))}
+                  </KeywordList>
+                </>
+              ) : (
+                <Title>오늘은 질문이 없어요.</Title>
+              )}
+            </>
           )}
         </Container>
       </Route>
