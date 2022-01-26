@@ -146,7 +146,10 @@ components에 사용하는 비즈니스 로직 구성
   - [x] weekly answers - data 연결
 
 - 22.01.26
+
   - [x] 월간 나의 답변
-  - [ ] 일간 나의 답변
+  - [x] 일간 나의 답변
+  - [x] 유저 DB 생성(user auth)
+  - [x] 유저 등록 + error handling
+
   - [ ] 유저 프로필 사진 설정
-  - [ ] 유저 DB 생성(user auth)
