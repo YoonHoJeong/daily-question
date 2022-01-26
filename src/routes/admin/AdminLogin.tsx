@@ -23,10 +23,9 @@ const AdminLogin: React.FC<Props> = () => {
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     await auth?.login(form.email, form.password);
-    console.log(auth);
   };
 
-  if (auth?.user) {
+  if (auth?.user?.admin) {
     history.push("/dqadmin");
     console.log("already logged in!");
   }

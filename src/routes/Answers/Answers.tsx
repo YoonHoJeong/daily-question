@@ -1,21 +1,13 @@
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
-import { useFireDBFetch } from "../../hooks/useFireDBFetch";
-import {
-  Link,
-  Route,
-  Switch,
-  useLocation,
-  useParams,
-  useRouteMatch,
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import WeeklyAnswers from "./WeeklyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import { getUserAnswers } from "../../services/fireDB";
 import DateFormatPicker from "./DateFormatPicker";
-import { Answer, Question } from "../../model/interfaces";
+import { Question } from "../../model/interfaces";
 
 const Container = styled.div`
   position: relative;
@@ -88,7 +80,12 @@ const Answers: React.FC<Props> = () => {
       setAnswers(fetched);
       setLoading(false);
     }
-    fetchData();
+    if (new Date(`${date.year}-${date.month}`) <= new Date()) {
+      // doesn't fetch next month data
+      fetchData();
+    } else {
+      setAnswers({});
+    }
   }, [date.year, date.month, uid]);
 
   const AnswersByVF = () => {
@@ -105,6 +102,7 @@ const Answers: React.FC<Props> = () => {
       case "monthly":
         return (
           <MonthlyAnswers
+            loading={loading}
             date={date}
             answers={answers || {}}
             changeMonth={changeMonth}

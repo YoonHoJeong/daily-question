@@ -9,11 +9,13 @@ import {
 } from "./WeeklyAnswers";
 import styles from "../../css/calendar.module.css";
 import { UserAnswers } from "./Answers";
-import { getAllMonthlyDate } from "../../services/DateManager";
+import { getAllMonthlyDate, getToday } from "../../services/DateManager";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import Loader from "../../components/Loader";
 
 interface Props {
+  loading: boolean;
   date: {
     dateObj: Date;
     year: number;
@@ -23,14 +25,39 @@ interface Props {
   changeMonth: (monthCnt: number) => void;
 }
 
-const MonthlyAnswers: React.FC<Props> = ({ date, answers, changeMonth }) => {
-  let answerCnt = 0;
+const cellStyleByLen = (monthAnswers: any, date: string) => {
+  const len = Object.keys(monthAnswers[date] || {}).length;
+  if (new Date(date) > new Date(getToday())) {
+    return styles.cellNonActive;
+  }
 
+  if (len === 0) {
+    return styles.cell0;
+  } else if (len === 1) {
+    return styles.cell1;
+  } else if (len === 2) {
+    return styles.cell2;
+  } else if (len >= 3) {
+    return styles.cell3;
+  }
+};
+
+const MonthlyAnswers: React.FC<Props> = ({
+  loading,
+  date,
+  answers,
+  changeMonth,
+}) => {
+  let answerCnt = 0;
+  let monthAnswers = {};
   Object.keys(answers).forEach((week) => {
     Object.keys(answers[week]).forEach((date) => {
+      monthAnswers = { ...monthAnswers, ...answers[week] };
       answerCnt += Object.keys(answers[week][date]).length;
     });
   });
+  console.log(monthAnswers);
+
   const dates = getAllMonthlyDate(date.dateObj);
   console.log(dates);
 
@@ -50,21 +77,29 @@ const MonthlyAnswers: React.FC<Props> = ({ date, answers, changeMonth }) => {
         </WeekToggleButton>
       </WeekToggle>
 
-      <HelperText>
-        이번 달 <AnswerDateCount>{answerCnt}개</AnswerDateCount>의 질문에
-        대답했어요.
-      </HelperText>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <HelperText>
+            이번 달 <AnswerDateCount>{answerCnt}개</AnswerDateCount>의 질문에
+            대답했어요.
+          </HelperText>
 
-      <ul className={styles.calendar}>
-        <li className={styles.day}>월</li>
-        <li className={styles.day}>화</li>
-        <li className={styles.day}>수</li>
-        <li className={styles.day}>목</li>
-        <li className={styles.day}>금</li>
-        {dates.map((date) => (
-          <li key={date}>{date}</li>
-        ))}
-      </ul>
+          <ul className={styles.calendar}>
+            <li className={styles.day}>월</li>
+            <li className={styles.day}>화</li>
+            <li className={styles.day}>수</li>
+            <li className={styles.day}>목</li>
+            <li className={styles.day}>금</li>
+            {dates.map((date) => (
+              <li key={date} className={cellStyleByLen(monthAnswers, date)}>
+                {parseInt(date.split("-")[2])}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </>
   );
 };

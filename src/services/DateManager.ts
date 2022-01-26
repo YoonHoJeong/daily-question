@@ -33,8 +33,9 @@ export const getAllMonthlyDate = (dateObj: Date) => {
   // 5일 단위, 해당 월이 아닐 수도 있으므로 월도 표시.
   const firstDate = new Date(dateObj);
   firstDate.setDate(1);
-  const firstDateDay = firstDate.getDay() !== 0 ? firstDate.getDay() : 7;
-  firstDate.setDate(1 - firstDateDay + 1);
+  while (firstDate.getDay() !== 1) {
+    firstDate.setDate(firstDate.getDate() + 1);
+  }
 
   const lastDate = new Date(dateObj);
   lastDate.setMonth(lastDate.getMonth() + 1);
