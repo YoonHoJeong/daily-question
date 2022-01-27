@@ -1,10 +1,12 @@
 import React from "react";
-import { useAuth } from "../hooks/useAuth";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserProfile from "../components/UserProfile";
 import BoxOpened from "../assets/box_opened.png";
+import UserIcon from "../assets/person2.png";
 import Heart from "../assets/4_heart.svg";
+import { usePreloadImages } from "../hooks/usePreloadImages";
+import Loader from "../components/Loader";
 const Container = styled.div`
   width: 100vw;
 
@@ -40,31 +42,37 @@ const UserTabTitle = styled.span`
 interface Props {}
 
 const User: React.FC<Props> = () => {
-  const auth = useAuth();
+  const { loading } = usePreloadImages([UserIcon, BoxOpened, Heart]);
 
   return (
     <Container>
-      <UserProfile />
-      <UserTabs>
-        <UserTab>
-          <Link to="/answers">
-            <UserTabIcon src={BoxOpened} />
-          </Link>
-          <Link to="/answers">
-            <UserTabTitle>나의 답변</UserTabTitle>
-          </Link>
-        </UserTab>
-        <UserTab>
-          <UserTabIcon src={Heart} />
-          <UserTabTitle>마음함</UserTabTitle>
-          {/* <Link to="/answers">
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <UserProfile />
+          <UserTabs>
+            <UserTab>
+              <Link to="/answers">
+                <UserTabIcon src={BoxOpened} />
+              </Link>
+              <Link to="/answers">
+                <UserTabTitle>나의 답변</UserTabTitle>
+              </Link>
+            </UserTab>
+            <UserTab>
+              <UserTabIcon src={Heart} />
+              <UserTabTitle>마음함</UserTabTitle>
+              {/* <Link to="/answers">
             <UserTabIcon src={Heart} />
           </Link>
           <Link to="/answers">
             <UserTabTitle>마음함</UserTabTitle>
           </Link> */}
-        </UserTab>
-      </UserTabs>
+            </UserTab>
+          </UserTabs>
+        </>
+      )}
     </Container>
   );
 };

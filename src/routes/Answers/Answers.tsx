@@ -75,7 +75,6 @@ const Answers: React.FC<Props> = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
       const fetched = await getUserAnswers(uid, date.year, date.month);
       setAnswers(fetched);
       setLoading(false);

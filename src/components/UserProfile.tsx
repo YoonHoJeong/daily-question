@@ -1,20 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import { Auth, useAuth } from "../hooks/useAuth";
-import PersonGrey from "../assets/person2.png";
+import { useAuth } from "../hooks/useAuth";
+import UserIcon from "../assets/person2.png";
 
 const ProfileContainer = styled.section`
   display: flex;
 
   width: 100%;
 `;
-const UserImg = styled.img`
+
+const UserImgContainer = styled.div`
   width: 60px;
   height: 60px;
-  padding: 12px;
+  padding: 10px;
 
   background-color: ${(props) => props.theme.palette.bgGrey2};
   border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const UserImg = styled.img`
+  width: 35px;
 `;
 const UserInfo = styled.div`
   width: 100%;
@@ -47,7 +55,9 @@ const UserProfile: React.FC<Props> = () => {
 
   return (
     <ProfileContainer>
-      <UserImg src={PersonGrey} />
+      <UserImgContainer>
+        <UserImg src={UserIcon} />
+      </UserImgContainer>
       <UserInfo>
         <UserName>{auth?.user?.name || "undefined"}</UserName>
         <UserAddress>

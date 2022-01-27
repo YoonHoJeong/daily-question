@@ -19,7 +19,7 @@ export interface Auth {
   register: (form: RegisterForm) => Promise<Response>;
 }
 
-interface CustomUser {
+export interface CustomUser {
   name: string;
   email?: string | null;
   uid: string;

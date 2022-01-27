@@ -7,7 +7,6 @@ import feedClicked from "../assets/feed1.png";
 import feed from "../assets/feed2.png";
 import userClicked from "../assets/person1.png";
 import user from "../assets/person2.png";
-import { Answer } from "../model/interfaces";
 
 const Container = styled.div`
   position: fixed;
@@ -21,7 +20,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 15px 40px;
   list-style: none;
   border-top: 4px solid white;
 `;
@@ -45,10 +44,8 @@ const NavItem = styled.li`
 `;
 
 const Icon = styled.img`
-  width: 35px;
+  width: 30px;
 `;
-
-const hideRoutes = ["/answers"];
 
 interface Props {}
 

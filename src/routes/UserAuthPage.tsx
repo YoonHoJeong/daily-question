@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useAuth } from "../hooks/useAuth";
 import BoxLogoBlueLine from "../assets/box_blue_line.png";
+import { useState } from "react";
+import Loader from "../components/Loader";
+import { usePreloadImages } from "../hooks/usePreloadImages";
 
 const Container = styled.div`
   width: 100vw;
@@ -43,6 +46,8 @@ const UserAuthPage: React.FC<Props> = () => {
     history.push("/register");
   };
 
+  const { loading } = usePreloadImages([BoxLogoBlueLine]);
+
   useEffect(() => {
     if (auth && auth.user) {
       history.push("/");
@@ -51,16 +56,22 @@ const UserAuthPage: React.FC<Props> = () => {
 
   return (
     <Container>
-      <ServiceIcon src={BoxLogoBlueLine} />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <ServiceIcon src={BoxLogoBlueLine} />
 
-      <Buttons>
-        <Button type="submit" variant="contained" onClick={moveToLogin}>
-          로그인하기
-        </Button>
-        <Button bgColor="blue" onClick={moveToRegister}>
-          회원가입
-        </Button>
-      </Buttons>
+          <Buttons>
+            <Button type="submit" variant="contained" onClick={moveToLogin}>
+              로그인하기
+            </Button>
+            <Button bgColor="blue" onClick={moveToRegister}>
+              회원가입
+            </Button>
+          </Buttons>
+        </>
+      )}
     </Container>
   );
 };

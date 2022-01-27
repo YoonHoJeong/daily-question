@@ -36,7 +36,6 @@ export const submitAnswer = async (
     answer: formData.answer,
     created_at: convertDate(new Date()),
   };
-  console.log(question, answerFormData);
 
   updates["/answers/" + aid] = {
     ...answerFormData,
@@ -55,8 +54,6 @@ export const submitAnswer = async (
       aid
   ] = { ...answerFormData, question };
   updates["/questions/" + question.qid + "/answers/" + aid] = true;
-
-  console.log(updates);
 
   try {
     await update(ref(fireDB), updates);

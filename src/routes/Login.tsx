@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
@@ -7,6 +7,8 @@ import { useForm } from "../hooks/useForm";
 import { Header } from "../components/Header";
 import Input from "../components/common/Input";
 import BoxLogoGrey from "../assets/box_logo_grey.svg";
+import Loader from "../components/Loader";
+import { usePreloadImages } from "../hooks/usePreloadImages";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -41,12 +43,17 @@ interface Props {}
 
 const Login: React.FC<Props> = () => {
   const { form, onChange } = useForm({ email: "", password: "" });
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const auth = useAuth();
   const history = useHistory();
+  const { loading } = usePreloadImages([BoxLogoGrey]);
+
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
+    setSubmitting(true);
     auth && (await auth.login(form.email, form.password));
+    setSubmitting(false);
   };
   useEffect(() => {
     if (auth && auth.user) {
@@ -58,39 +65,47 @@ const Login: React.FC<Props> = () => {
     <>
       <Header transparent />
       <Container>
-        <LoginForm onSubmit={onSubmit}>
-          <ServiceIcon src={BoxLogoGrey} />
+        {loading ? (
+          <Loader />
+        ) : (
+          <LoginForm onSubmit={onSubmit}>
+            <ServiceIcon src={BoxLogoGrey} />
 
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="이메일"
-            onChange={onChange}
-          />
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            onChange={onChange}
-            placeholder="비밀번호"
-            style={{ marginTop: "10px" }}
-          />
-          {/* <input id="autoLogin" type="checkBox" checked />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="이메일"
+              onChange={onChange}
+              disabled={submitting}
+            />
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              onChange={onChange}
+              placeholder="비밀번호"
+              style={{ marginTop: "10px" }}
+              disabled={submitting}
+            />
+            {/* <input id="autoLogin" type="checkBox" checked />
           <label htmlFor="autoLogin">자동 로그인</label> */}
-          <Button
-            large
-            bgColor="blue"
-            type="submit"
-            variant="contained"
-            style={{ marginTop: "35px" }}
-          >
-            {auth?.isAuthenticating ? "로그인 중" : "로그인"}
-          </Button>
-        </LoginForm>
-        <Button large style={{ marginTop: "10px" }}>
+            <Button
+              large
+              bgColor="blue"
+              type="submit"
+              variant="contained"
+              style={{ marginTop: "35px" }}
+              disabled={submitting}
+            >
+              {submitting ? <Loader /> : "로그인"}
+            </Button>
+          </LoginForm>
+        )}
+
+        {/* <Button large style={{ marginTop: "10px" }}>
           google 계정으로 로그인
-        </Button>
+        </Button> */}
       </Container>
     </>
   );

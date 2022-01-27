@@ -9,6 +9,7 @@ import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Loader from "../../components/Loader";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
+import { usePreloadImages } from "../../hooks/usePreloadImages";
 
 const Container = styled.div`
   width: 100vw;
@@ -167,7 +168,7 @@ const WeeklyAnswers: React.FC<Props> = ({
   date,
   answers,
   changeWeek,
-  loading,
+  loading: dataLoading,
 }) => {
   const yearMonthWeek = calcWeek(date.dateObj);
   const [year, monthStr, week] = yearMonthWeek.replace("W", "-").split("-");
@@ -175,6 +176,12 @@ const WeeklyAnswers: React.FC<Props> = ({
   const weekDates = getAllWeeklyDate(date.dateObj);
   const weekAnswers = (answers && answers[yearMonthWeek]) || {};
   const doneCnt = weekAnswers ? Object.keys(weekAnswers).length : 0;
+  const { loading: imageLoading } = usePreloadImages([
+    BoxOpenedIcon,
+    BoxClosedIcon,
+  ]);
+
+  const loading = dataLoading || imageLoading;
 
   return (
     <Container>
@@ -210,11 +217,11 @@ const WeeklyAnswers: React.FC<Props> = ({
             {doneCnt > 0 ? (
               <DailyAnswersContainer>
                 {Object.keys(weekAnswers).map((d) => (
-                  <DailyAnswers>
+                  <DailyAnswers key={d}>
                     <DayText>{getDay(d)}</DayText>
                     <AnswerList>
                       {Object.keys(weekAnswers[d]).map((aid) => (
-                        <AnswerCard>
+                        <AnswerCard key={aid}>
                           <KeywordText>
                             {weekAnswers[d][aid].question.keyword}
                           </KeywordText>

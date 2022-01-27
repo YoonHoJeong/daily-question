@@ -152,4 +152,18 @@ components에 사용하는 비즈니스 로직 구성
   - [x] 유저 DB 생성(user auth)
   - [x] 유저 등록 + error handling
 
+- 22.01.27
+
+  - [ ] admin page
+
+    - [ ] crud question
+
+      - [ ] create
+      - [ ] read
+      - [ ] update
+      - [ ] delete
+
+    - [ ] user managing
+    - [ ]
+
   - [ ] 유저 프로필 사진 설정

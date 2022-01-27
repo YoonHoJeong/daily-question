@@ -16,7 +16,7 @@ const Container = styled.div`
 
   box-sizing: border-box;
 
-  padding-top: 90px;
+  padding-top: 55px;
   padding-bottom: 70px;
 `;
 

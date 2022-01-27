@@ -1,15 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import UserIcon from "../assets/person2.png";
 import { DayAnswers } from "../routes/Answers/Answers";
 
-const DateContainer = styled.ul`
+const DateContainer = styled.li`
   width: 100%;
-  padding: 30px;
   background-color: ${(props) => props.theme.palette.white};
   border-top: 4px solid ${(props) => props.theme.palette.bgGrey};
 
   display: flex;
+
+  &:not(:first-child) {
+    margin-top: 30px;
+  }
 `;
 const SideDateBar = styled.div`
   display: flex;
@@ -47,18 +51,26 @@ const Question = styled.div`
   color: #515fa9;
   white-space: pre-line;
 
-  margin-left: 15px;
+  margin-left: 7px;
 `;
 const AnswerCard = styled.li`
+  &:not(:first-child) {
+    margin-top: 30px;
+  }
+`;
+const AnswerContainer = styled.div`
+  width: 100%;
   display: flex;
 
   margin-top: 17px;
 `;
-const Profile = styled.div``;
+const Profile = styled.div`
+  margin-right: 12px;
+`;
 const ProfileImg = styled.img`
   width: 28px;
   height: 28px;
-  background-color: grey;
+  padding: 5px;
 `;
 const ProfileName = styled.div`
   font-weight: bold;
@@ -69,9 +81,7 @@ const ProfileName = styled.div`
   color: #4d4d4d;
 `;
 
-const AnswerAndFav = styled.div`
-  margin-left: 12px;
-`;
+const AnswerAndFav = styled.div``;
 const Answer = styled.p`
   font-weight: normal;
   font-size: 12px;
@@ -81,9 +91,8 @@ const Answer = styled.p`
 
   white-space: pre-line;
 `;
-const AnswerContainer = styled.ul`
+const QuestionAnswerContainer = styled.ul`
   flex: 1;
-  margin-top: 17px;
 `;
 
 interface Props {
@@ -102,23 +111,23 @@ const AnswersByDay: React.FC<Props> = ({ date, answers }) => {
           <Date>{parseInt(day)}</Date>
         </MonthDate>
       </SideDateBar>
-      <AnswerContainer>
+      <QuestionAnswerContainer>
         {Object.keys(answers).map((aid) => (
-          <>
+          <AnswerCard key={aid}>
             <Question>{answers[aid].question.question}</Question>
-            <AnswerCard>
-              <Profile>
-                <ProfileImg></ProfileImg>
-                <ProfileName>새러</ProfileName>
-              </Profile>
+            <AnswerContainer>
+              {/* <Profile>
+                <ProfileImg src={UserIcon} />
+                <ProfileName>{answers[aid].uid}</ProfileName>
+              </Profile> */}
               <AnswerAndFav>
                 <Answer>{answers[aid].answer}</Answer>
                 <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
               </AnswerAndFav>
-            </AnswerCard>
-          </>
+            </AnswerContainer>
+          </AnswerCard>
         ))}
-      </AnswerContainer>
+      </QuestionAnswerContainer>
     </DateContainer>
   );
 };

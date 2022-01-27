@@ -14,6 +14,10 @@ const Container = styled.div`
 const UserProfileContainer = styled.div`
   padding: 40px 25px;
 `;
+const DailyAnswersList = styled.ul`
+  width: 100%;
+  padding: 30px;
+`;
 
 const DailyAnswers: React.FC<Props> = ({ answers }) => {
   let monthAnswers = {};
@@ -28,11 +32,13 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
       <UserProfileContainer>
         <UserProfile />
       </UserProfileContainer>
-      {Object.keys(monthAnswers)
-        .reverse()
-        .map((date) => (
-          <AnswersByDay key={date} date={date} answers={monthAnswers[date]} />
-        ))}
+      <DailyAnswersList>
+        {Object.keys(monthAnswers)
+          .reverse()
+          .map((date) => (
+            <AnswersByDay key={date} date={date} answers={monthAnswers[date]} />
+          ))}
+      </DailyAnswersList>
     </Container>
   );
 };

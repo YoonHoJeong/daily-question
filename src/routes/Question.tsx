@@ -35,7 +35,7 @@ const Container = styled.form`
 `;
 
 const QuestionText = styled.p`
-  font-size: 16px;
+  font-size: 18px;
 
   width: 100%;
   margin-bottom: 20px;
@@ -53,6 +53,7 @@ const QuestionText = styled.p`
 const AnswerInput = styled.textarea`
   width: 100%;
 
+  font-size: 14px;
   border: 1px solid #cccccc;
 
   padding: 12px 15px;
