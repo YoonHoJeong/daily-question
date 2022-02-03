@@ -56,10 +56,7 @@ const MonthlyAnswers: React.FC<Props> = ({
       answerCnt += Object.keys(answers[week][date]).length;
     });
   });
-  console.log(monthAnswers);
-
   const dates = getAllMonthlyDate(date.dateObj);
-  console.log(dates);
 
   return (
     <>

@@ -9,12 +9,16 @@ interface Props {
 const QuestionContainer = styled.li``;
 const QuestionText = styled.p``;
 const Keyword = styled.span``;
+const EditButton = styled.button``;
+const DeleteButton = styled.button``;
 
 const QuestionItem: React.FC<Props> = ({ question }) => {
   return (
     <QuestionContainer>
       <Keyword>{question.keyword}</Keyword>
       <QuestionText>{question.question}</QuestionText>
+      <EditButton>수정하기</EditButton>
+      <DeleteButton>삭제하기</DeleteButton>
     </QuestionContainer>
   );
 };

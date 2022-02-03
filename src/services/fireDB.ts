@@ -73,7 +73,13 @@ export const enrollQuestion = async (
   const newQid = push(child(ref(fireDB), "questions")).key;
   const week = calcWeek(new Date(publish_date));
 
-  updates["/questions/" + newQid] = { keyword, question, publish_date, week };
+  updates["/questions/" + newQid] = {
+    qid: newQid,
+    keyword,
+    question,
+    publish_date,
+    week,
+  };
 
   try {
     await update(ref(fireDB), updates);

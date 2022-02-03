@@ -6,14 +6,13 @@ import { DayAnswers } from "../routes/Answers/Answers";
 
 const DateContainer = styled.li`
   width: 100%;
+  padding: 17px 30px;
+
   background-color: ${(props) => props.theme.palette.white};
-  border-top: 4px solid ${(props) => props.theme.palette.bgGrey};
 
   display: flex;
 
-  &:not(:first-child) {
-    margin-top: 30px;
-  }
+  border-top: 4px solid ${(props) => props.theme.palette.bgGrey};
 `;
 const SideDateBar = styled.div`
   display: flex;
@@ -50,10 +49,9 @@ const Question = styled.div`
 
   color: #515fa9;
   white-space: pre-line;
-
-  margin-left: 7px;
 `;
 const AnswerCard = styled.li`
+  margin-left: 7px;
   &:not(:first-child) {
     margin-top: 30px;
   }

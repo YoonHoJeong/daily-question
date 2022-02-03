@@ -8,6 +8,7 @@ import DailyAnswers from "./DailyAnswers";
 import { getUserAnswers } from "../../services/fireDB";
 import DateFormatPicker from "./DateFormatPicker";
 import { Question } from "../../model/interfaces";
+import { convertDate, getToday } from "../../services/DateManager";
 
 const Container = styled.div`
   position: relative;
@@ -56,35 +57,38 @@ const Answers: React.FC<Props> = () => {
     const tmpDate = new Date(date.dateObj);
     tmpDate.setDate(tmpDate.getDate() + 7 * weekCnt); // week ago date
 
-    setDate({
-      dateObj: tmpDate,
-      year: tmpDate.getFullYear(),
-      month: tmpDate.getMonth() + 1,
-    });
+    if (tmpDate.getTime() < new Date().getTime()) {
+      setDate({
+        dateObj: tmpDate,
+        year: tmpDate.getFullYear(),
+        month: tmpDate.getMonth() + 1,
+      });
+    }
   };
   const changeMonth = (monthCnt: number) => {
     const tmpDate = new Date(date.dateObj);
     tmpDate.setMonth(tmpDate.getMonth() + 1 * monthCnt);
 
-    setDate({
-      dateObj: tmpDate,
-      year: tmpDate.getFullYear(),
-      month: tmpDate.getMonth() + 1,
-    });
+    if (tmpDate.getTime() < new Date().getTime()) {
+      setDate({
+        dateObj: tmpDate,
+        year: tmpDate.getFullYear(),
+        month: tmpDate.getMonth() + 1,
+      });
+    }
   };
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const fetched = await getUserAnswers(uid, date.year, date.month);
       setAnswers(fetched);
       setLoading(false);
     }
-    if (new Date(`${date.year}-${date.month}`) <= new Date()) {
-      // doesn't fetch next month data
-      fetchData();
-    } else {
-      setAnswers({});
-    }
+
+    fetchData();
+
+    return 
   }, [date.year, date.month, uid]);
 
   const AnswersByVF = () => {

@@ -104,7 +104,6 @@ const useProviderAuth = () => {
             if (timeoutCnt > 10) {
               return;
             }
-            console.log(error.message);
             formatUser(user);
             timeoutCnt++;
           }, 1000);

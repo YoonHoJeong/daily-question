@@ -154,16 +154,20 @@ components에 사용하는 비즈니스 로직 구성
 
 - 22.01.27
 
-  - [ ] admin page
+  - [x] add image preload hook
+  - [x] debug - fail to fetch answer data in answers page
 
-    - [ ] crud question
+- 22.02.03
 
-      - [ ] create
-      - [ ] read
-      - [ ] update
-      - [ ] delete
+  - admin questions page
+
+    - [x] create
+    - [x] read
+    - [ ] update
+    - [ ] delete
+
+  - admin users page
 
     - [ ] user managing
-    - [ ]
 
   - [ ] 유저 프로필 사진 설정

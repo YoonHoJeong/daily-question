@@ -10,6 +10,7 @@ const ProfileContainer = styled.section`
 `;
 
 const UserImgContainer = styled.div`
+  min-width: 60px;
   width: 60px;
   height: 60px;
   padding: 10px;

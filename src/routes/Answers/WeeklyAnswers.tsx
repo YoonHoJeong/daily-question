@@ -73,7 +73,8 @@ const DateIconsContainer = styled.ul`
 `;
 
 const AnswerCard = styled.li`
-  padding: 14px 16px;
+  padding: 10px 16px;
+  padding-bottom: 19px;
   margin-top: 4px;
 
   border: 1px solid ${(props) => props.theme.palette.grey};
@@ -82,17 +83,8 @@ const AnswerCard = styled.li`
   line-height: 19px;
   /* identical to box height */
 
-  color: #515fa9;
   width: 300px;
   background-color: ${(props) => props.theme.palette.white};
-  /* &:nth-child(2) {
-    width: 280px;
-    background-color: ${(props) => props.theme.palette.bgGrey};
-  }
-  &:nth-child(3) {
-    width: 260px;
-    background-color: ${(props) => props.theme.palette.bgGrey2};
-  } */
 `;
 const AnswersContainer = styled.ul`
   margin-top: 30px;
@@ -121,14 +113,16 @@ const KeywordText = styled.p`
   color: ${(props) => props.theme.palette.deepGrey};
 `;
 const QuestionText = styled.div`
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 4px;
   color: ${(props) => props.theme.palette.blue};
   display: flex;
 `;
 const AnswerText = styled.div`
-  font-size: 11px;
-  margin-top: 5px;
-  margin-left: 5px;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 4px;
   display: flex;
 `;
 
@@ -227,7 +221,7 @@ const WeeklyAnswers: React.FC<Props> = ({
                           </KeywordText>
                           <QuestionText>
                             Q.
-                            <p>{weekAnswers[d][aid].question.question}</p>
+                            <span>{weekAnswers[d][aid].question.question}</span>
                           </QuestionText>
                           <AnswerText>
                             A.

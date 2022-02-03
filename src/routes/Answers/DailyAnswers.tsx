@@ -16,7 +16,6 @@ const UserProfileContainer = styled.div`
 `;
 const DailyAnswersList = styled.ul`
   width: 100%;
-  padding: 30px;
 `;
 
 const DailyAnswers: React.FC<Props> = ({ answers }) => {

@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import styled from "styled-components";
 import QuestionItem from "../../components/QuestionItem";
 import { useFireDBFetch } from "../../hooks/useFireDBFetch";
@@ -22,6 +22,7 @@ const AdminQuestions: React.FC<Props> = () => {
     loading,
     refresh,
   } = useFireDBFetch<any>("questions");
+  const [currentDate, setCurrentDate] = useState(getToday());
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -43,31 +44,50 @@ const AdminQuestions: React.FC<Props> = () => {
 
   const todayDate = getToday();
   const todayQuestions = Object.keys(questions)
-    .filter((qid) => questions[qid].publish_date === todayDate)
-    .map((qid) => <QuestionItem key={qid} question={questions[qid]} />);
+    .filter((qid) => questions[qid].publish_date === currentDate)
+    .map((qid) => questions[qid]);
+  console.log(todayQuestions);
 
   return (
     <div>
-      <div>{todayDate}질문</div>
+      <input
+        type="date"
+        defaultValue={todayDate}
+        onChange={(e: SyntheticEvent) =>
+          setCurrentDate((e.target as HTMLInputElement).value)
+        }
+      />
       <TodayQuestions>
         {todayQuestions.length > 0 ? (
-          Object.keys(questions)
-            .filter((qid) => questions[qid].publish_date === todayDate)
-            .map((qid) => <QuestionItem key={qid} question={questions[qid]} />)
+          todayQuestions.map((question) => (
+            <QuestionItem key={question.qid} question={question} />
+          ))
         ) : (
           <span>오늘 등록된 질문이 없습니다.</span>
         )}
       </TodayQuestions>
       <QuestionForm onSubmit={onSubmit}>
         <span>질문 등록하기</span>
-        <input name="publish_date" type="date" onChange={onChange} />
         <input
+          required
+          name="publish_date"
+          type="date"
+          defaultValue={todayDate}
+          onChange={onChange}
+        />
+        <input
+          required
           name="keyword"
           type="text"
           placeholder="키워드"
           onChange={onChange}
         />
-        <textarea name="question" placeholder="질문" onChange={onChange} />
+        <textarea
+          required
+          name="question"
+          placeholder="질문"
+          onChange={onChange}
+        />
         <button type="submit">질문 등록</button>
       </QuestionForm>
     </div>
