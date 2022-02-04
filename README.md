@@ -166,6 +166,14 @@ components에 사용하는 비즈니스 로직 구성
     - [ ] update
     - [ ] delete
 
+- 22.02.04
+
+  - board page
+
+    - [x] getBoardAnswers logic 구현
+    - [ ] fireDB.ts - 기능별 module 구분하기
+    - [ ] DayAnswers interface 변경 필요, date - \[keyword\] - Answer 방식으로
+
   - admin users page
 
     - [ ] user managing
