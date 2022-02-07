@@ -22,9 +22,21 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
   let monthAnswers = {};
   Object.keys(answers).forEach((week) => {
     Object.keys(answers[week]).forEach((date) => {
-      monthAnswers = { ...monthAnswers, ...answers[week] };
+      if (!Object.keys(monthAnswers).includes(date)) monthAnswers[date] = {};
+      Object.keys(answers[week][date]).forEach((aid) => {
+        const answer = answers[week][date][aid];
+
+        if (!Object.keys(monthAnswers[date]).includes(answer.question.keyword))
+          monthAnswers[date][answer.question.qid] = {
+            ...answer.question,
+            answers: {},
+          };
+        monthAnswers[date][answer.question.qid].answers[aid] = { ...answer };
+      });
     });
   });
+
+  console.log(monthAnswers);
 
   return (
     <Container>
@@ -35,7 +47,12 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
         {Object.keys(monthAnswers)
           .reverse()
           .map((date) => (
-            <AnswersByDay key={date} date={date} answers={monthAnswers[date]} />
+            <AnswersByDay
+              key={date}
+              date={date}
+              answers={monthAnswers[date]}
+              profileOn={true}
+            />
           ))}
       </DailyAnswersList>
     </Container>

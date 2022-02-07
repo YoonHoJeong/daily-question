@@ -3,12 +3,12 @@ export interface Question {
   keyword: string;
   question: string;
   publish_date: string;
-  week?: string; // format - yyyy-mmWw
+  week: string; // format - yyyy-mmWw
   answers?: Answer[];
   rates?: Rate[];
 }
 
-export interface QuestionsObj {
+export interface FetchedQuestions {
   [qid: string]: Question;
 }
 
@@ -18,6 +18,9 @@ export interface Answer {
   created_at: string; // format - yyyy-mm-ddThh:mm:ss
   qid: string;
   uid: string;
+}
+export interface FetchedAnswers {
+  [aid: string]: Answer;
 }
 
 export interface Rate {

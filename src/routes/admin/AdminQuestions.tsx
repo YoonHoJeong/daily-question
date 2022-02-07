@@ -46,7 +46,6 @@ const AdminQuestions: React.FC<Props> = () => {
   const todayQuestions = Object.keys(questions)
     .filter((qid) => questions[qid].publish_date === currentDate)
     .map((qid) => questions[qid]);
-  console.log(todayQuestions);
 
   return (
     <div>

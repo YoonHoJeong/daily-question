@@ -196,16 +196,13 @@ const WeeklyAnswers: React.FC<Props> = ({
         <Loader />
       ) : (
         <>
-          <HelperText>
-            {doneCnt > 0 ? (
-              <>
-                5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount>{" "}
-                대답했어요.
-              </>
-            ) : (
-              <>이번 주에는 아직 답변이 없네요...</>
-            )}
-          </HelperText>
+          {doneCnt > 0 ? (
+            <HelperText>
+              5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
+            </HelperText>
+          ) : (
+            <HelperText>이번 주에는 아직 답변이 없네요...</HelperText>
+          )}
           <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
           <AnswersContainer>
             {doneCnt > 0 ? (

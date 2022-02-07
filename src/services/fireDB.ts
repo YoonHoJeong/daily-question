@@ -1,3 +1,4 @@
+import { FetchedAnswers } from "./../model/interfaces";
 import { fireDB } from "./firebase";
 import {
   get,
@@ -9,11 +10,19 @@ import {
   push,
   update,
   startAt,
+  endAt,
   endBefore,
   orderByKey,
+  limitToLast,
 } from "@firebase/database";
-import { calcWeek, convertDate, getToday, pad } from "./DateManager";
-import { Answer, Question, QuestionsObj } from "../model/interfaces";
+import {
+  calcWeek,
+  convertDate,
+  getToday,
+  getYearMonth,
+  pad,
+} from "./DateManager";
+import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 
 export const submitAnswer = async (
   uid: string,
@@ -100,11 +109,55 @@ export const getTodayQuestions = async () => {
       )
     );
 
-    const questions = snapshot.val() as QuestionsObj;
+    const questions = snapshot.val() as FetchedQuestions;
     return questions;
   } catch (e) {
     console.error(e);
   }
+};
+
+export const getBoardAnswers = async () => {
+  let answers: FetchedAnswers = (
+    await get(
+      query(ref(fireDB, "answers"), orderByChild("created_at"), limitToLast(30))
+    )
+  ).val();
+  let questions: FetchedQuestions = (await get(ref(fireDB, "questions"))).val();
+
+  const answersWithQuestion = {};
+
+  Object.keys(answers)
+    .sort((a, b) => (a > b ? 1 : -1))
+    .forEach((aid) => {
+      const answer = answers[aid];
+      const question = questions[answer.qid];
+
+      if (!Object.keys(answersWithQuestion).includes(question.publish_date)) {
+        answersWithQuestion[question.publish_date] = {};
+      }
+
+      if (
+        !Object.keys(answersWithQuestion[question.publish_date]).includes(
+          question.qid
+        )
+      ) {
+        answersWithQuestion[question.publish_date][question.qid] = {
+          ...question,
+          answers: {
+            [aid]: {
+              ...answer,
+            },
+          },
+        };
+      } else {
+        answersWithQuestion[question.publish_date][question.qid].answers[aid] =
+          {
+            ...answer,
+          };
+      }
+    });
+
+  return answersWithQuestion;
 };
 
 export const getAnswerByUidQid = async (uid: string, qid: string) => {
@@ -132,25 +185,20 @@ export const getQuestionByQid = async (qid: string) => {
 export const getUserAnswers = async (
   uid: string,
   year: number,
-  month: number,
-  week?: string
+  month: number
 ) => {
-  const nextYearMonthObj = new Date(`${year}-${month}`);
-  nextYearMonthObj.setMonth(nextYearMonthObj.getMonth() + 1);
-
-  const presentYearMonth = `${year}-${pad(month)}`;
-  const nextYearMonth = `${nextYearMonthObj.getFullYear()}-${pad(
-    nextYearMonthObj.getMonth() + 1
-  )}`;
+  const presentMonth = getYearMonth(year, month);
+  const nextMonth = getYearMonth(year, month + 1);
 
   const snapshot = await get(
     query(
       ref(fireDB, `user-answers/${uid}`),
       orderByKey(),
-      startAt(presentYearMonth),
-      endBefore(nextYearMonth)
+      startAt(presentMonth),
+      endBefore(nextMonth)
     )
   );
+
   const answers = snapshot.val();
 
   return answers;

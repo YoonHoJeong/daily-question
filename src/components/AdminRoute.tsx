@@ -6,6 +6,7 @@ interface Props extends RouteProps {}
 
 const AdminRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
+  console.log(auth);
 
   if (!auth) {
     return <>404 not found</>;
@@ -14,6 +15,7 @@ const AdminRoute: React.FC<Props> = ({ children, ...rest }) => {
   if (auth.isAuthenticating) {
     return <>loading...</>;
   }
+
   if (!auth.user?.admin) {
     return <Redirect to="/dqadmin/login" />;
   }

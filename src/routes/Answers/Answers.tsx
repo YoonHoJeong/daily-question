@@ -88,7 +88,7 @@ const Answers: React.FC<Props> = () => {
 
     fetchData();
 
-    return 
+    return;
   }, [date.year, date.month, uid]);
 
   const AnswersByVF = () => {

@@ -3,7 +3,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Loader from "../components/Loader";
-import { QuestionsObj } from "../model/interfaces";
+import { FetchedQuestions } from "../model/interfaces";
 import { getTodayQuestions } from "../services/fireDB";
 import { Question } from "../routes";
 
@@ -35,7 +35,7 @@ const Keyword = styled.li`
 interface Props {}
 
 const Home: React.FC<Props> = () => {
-  const [questions, setQuestions] = useState<QuestionsObj>();
+  const [questions, setQuestions] = useState<FetchedQuestions>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

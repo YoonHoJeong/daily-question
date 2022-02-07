@@ -19,6 +19,10 @@ const DateFormat = styled.li`
   align-items: center;
   z-index: 1;
 
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+
   background-color: ${(props) => props.theme.palette.white};
   &:not(:first-child) {
     display: none;

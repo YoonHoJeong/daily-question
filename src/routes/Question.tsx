@@ -14,7 +14,7 @@ import Loader from "../components/Loader";
 import { useAuth } from "../hooks/useAuth";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { useForm } from "../hooks/useForm";
-import { Answer, Question, QuestionsObj } from "../model/interfaces";
+import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 import { firebaseApp } from "../services/firebase";
 import {
   getAnswerByUidQid,
@@ -76,7 +76,7 @@ const Button = styled.button`
 `;
 
 interface Props {
-  questions: QuestionsObj;
+  questions: FetchedQuestions;
 }
 interface QuestionScreenParams {
   qid: string;

@@ -65,10 +65,20 @@ const AnswerContainer = styled.div`
 const Profile = styled.div`
   margin-right: 12px;
 `;
-const ProfileImg = styled.img`
+const ProfileImgContainer = styled.div`
   width: 28px;
   height: 28px;
-  padding: 5px;
+  padding: 7px;
+
+  background-color: ${(props) => props.theme.palette.bgGrey2};
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const ProfileImg = styled.img`
+  width: 16px;
 `;
 const ProfileName = styled.div`
   font-weight: bold;
@@ -95,10 +105,27 @@ const QuestionAnswerContainer = styled.ul`
 
 interface Props {
   date: string;
-  answers: DayAnswers;
+  answers: {
+    [date: string]: {
+      [qid: string]: {
+        keyword: string;
+        answers: {
+          [aid: string]: {
+            aid: string;
+            answer: string;
+            created_at: string;
+          };
+        };
+        publish_date: string;
+        qid: string;
+        question: string;
+      };
+    };
+  };
+  profileOn?: boolean;
 }
 
-const AnswersByDay: React.FC<Props> = ({ date, answers }) => {
+const AnswersByDay: React.FC<Props> = ({ date, answers, profileOn = true }) => {
   const [_, month, day] = date.split("-");
 
   return (
@@ -110,19 +137,25 @@ const AnswersByDay: React.FC<Props> = ({ date, answers }) => {
         </MonthDate>
       </SideDateBar>
       <QuestionAnswerContainer>
-        {Object.keys(answers).map((aid) => (
-          <AnswerCard key={aid}>
-            <Question>{answers[aid].question.question}</Question>
-            <AnswerContainer>
-              {/* <Profile>
-                <ProfileImg src={UserIcon} />
-                <ProfileName>{answers[aid].uid}</ProfileName>
-              </Profile> */}
-              <AnswerAndFav>
-                <Answer>{answers[aid].answer}</Answer>
-                <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
-              </AnswerAndFav>
-            </AnswerContainer>
+        {Object.keys(answers).map((qid) => (
+          <AnswerCard key={qid}>
+            <Question>{answers[qid].question}</Question>
+            {Object.keys(answers[qid].answers).map((aid) => (
+              <AnswerContainer key={aid}>
+                {profileOn && (
+                  <Profile>
+                    <ProfileImgContainer>
+                      <ProfileImg src={UserIcon} />
+                    </ProfileImgContainer>
+                    <ProfileName>{"익명"}</ProfileName>
+                  </Profile>
+                )}
+                <AnswerAndFav>
+                  <Answer>{answers[qid].answers[aid].answer}</Answer>
+                  <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
+                </AnswerAndFav>
+              </AnswerContainer>
+            ))}
           </AnswerCard>
         ))}
       </QuestionAnswerContainer>

@@ -1,25 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getBoardAnswers } from "../services/fireDB";
 import AnswersByDay from "../components/AnswersByDay";
+import Loader from "../components/Loader";
 interface Props {}
 
-const Container = styled.div`
+const Container = styled.ul`
   height: 100%;
 
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Board: React.FC<Props> = () => {
+  const [answers, setAnswers] = useState<any>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getBoardAnswers();
+      setAnswers(data);
+      setLoading(false);
+      console.log(data);
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Container>
-      아직 준비 중이에요.
-      {/* <AnswersByDay date={"2022-01-19"} answers={{}} />
-      <AnswersByDay date={"2022-01-18"} answers={{}} />
-      <AnswersByDay date={"2022-01-17"} answers={{}} /> */}
+      {Object.keys(answers).map((date) => (
+        <AnswersByDay key={date} date={date} answers={answers[date]} />
+      ))}
     </Container>
   );
 };

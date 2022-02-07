@@ -109,3 +109,11 @@ export const getDay = (date: string) => {
       return "토요일";
   }
 };
+
+export const getYearMonth = (year: number, month: number) => {
+  const yearMonthString = `${month <= 12 ? year : year + 1}-${pad(
+    month <= 12 ? month : month - 12
+  )}`;
+
+  return yearMonthString;
+};

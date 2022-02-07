@@ -171,11 +171,25 @@ components에 사용하는 비즈니스 로직 구성
   - board page
 
     - [x] getBoardAnswers logic 구현
-    - [ ] fireDB.ts - 기능별 module 구분하기
-    - [ ] DayAnswers interface 변경 필요, date - \[keyword\] - Answer 방식으로
 
-  - admin users page
+- 22.02.07
+  - [x] DayAnswers interface 변경 필요, date - \[keyword\] - Answer
+  - [x] Board page - load recently 30 answers
 
-    - [ ] user managing
+# Todo
 
-  - [ ] 유저 프로필 사진 설정
+- board page
+  - [ ] 유저 이름 변경(현재 익명으로 통일)
+- [ ] interface 구분, 통일시키기
+- [ ] backend logic 만들기(board, daily answers에서 data 형태)
+  - 현재는 client-side에서 data manipulating
+- [ ] services - 기능별 module 구분하기
+
+  - [ ] fireDB.ts
+  - [ ] dateService.ts
+
+- admin users page
+
+  - [ ] user managing
+
+- [ ] 유저 프로필 사진 설정
