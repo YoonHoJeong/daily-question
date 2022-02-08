@@ -69,15 +69,6 @@ components에 사용하는 비즈니스 로직 구성
 
 # Refactoring Log
 
-- [ ] night mode
-- [ ] 내 답변 / 질문 검색하기
-- [ ] 답변 엑셀로 내보내기
-- [ ] 게시판
-  - [ ] 내 질문 & 답변 공개 / 비공개 설정
-  - [ ] 하트
-- [ ] 하단 네비게이션 - 오늘 질문, 게시판, 내 정보
-- [ ] 페이지별 데이터 캐싱
-
 - 22.01.04
 
   - [x] file naming, function component convention
@@ -163,8 +154,6 @@ components에 사용하는 비즈니스 로직 구성
 
     - [x] create
     - [x] read
-    - [ ] update
-    - [ ] delete
 
 - 22.02.04
 
@@ -183,22 +172,50 @@ components에 사용하는 비즈니스 로직 구성
     - theme과 같이 context API를 통해 app 전역에서 사용할 수 있도록 설정
   - theme - sizes 추가
     - bottom navigation height, header height, global size 설정
+  - defaultUserImage 컴포넌트 분리(UserProfile, AnswersByDay, UserEdit에 재사용)
   - board page
+    - [x] 하트(담아두기) 기능 구현
     - [ ] 유저 이름 변경(현재 익명으로 통일)
-    - [ ] 하트(담아두기) 기능 구현
+  - 현재 AuthContext에 모든 user 정보
 
 # Todo
 
-- [ ] interface 구분, 통일시키기
-- [ ] backend logic 만들기(board, daily answers에서 data 형태)
-  - 현재는 client-side에서 data manipulating
-- [ ] services - 기능별 module 구분하기
+기능 구현
 
+- [ ] 페이지별 Fetched data caching
+
+Essential UI
+
+- Board(게시판)
+
+  - [ ] answer - private / public 설정
+  - [ ] keep button(realtime)
+    - 현재 클릭 후 하트 색상 바로 변경 안 됨.
+
+- admin questions page
+
+  - [ ] update
+  - [ ] delete
+
+- admin users page
+  - [ ] read
+
+For UX(Additional)
+
+- [ ] night mode
+- [ ] 내 답변 / 질문 검색
+- [ ] 답변 엑셀로 내보내기
+
+코드 가독성 / 관심사 분리
+
+- [ ] interface 구분, 통일시키기
+- [ ] services - 기능별 module 구분하기
   - [ ] fireDB.ts
   - [ ] dateService.ts
 
-- admin users page
+Backend
 
-  - [ ] user managing
-
-- [ ] 유저 프로필 사진 설정
+- data join logic 만들기(board, daily answers에서 data 형태)
+  - 현재는 client-side에서 data join
+- fireBase
+  - [ ] user-answers data flattening

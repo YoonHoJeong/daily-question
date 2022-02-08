@@ -1,9 +1,119 @@
 import React from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import UserIcon from "../assets/person2.png";
-import { DayAnswers } from "../routes/Answers/Answers";
 import UserImage from "./user/UserImage";
+import HeartColored from "../assets/4_heart.svg";
+import { useAuth } from "../hooks/useAuth";
+import { toggleKeep } from "../services/fireDB";
+import { Answer } from "../model/interfaces";
+
+interface AnswersWithQuestion {
+  keyword: string;
+  publish_date: string;
+  qid: string;
+  question: string;
+
+  answers: {
+    [aid: string]: Answer;
+  };
+}
+
+interface AnswersWithQuestions {
+  [qid: string]: AnswersWithQuestion;
+}
+
+interface Props {
+  date: string;
+  answers: AnswersWithQuestions;
+  profileOn?: boolean;
+}
+
+const AnswersByDay: React.FC<Props> = ({
+  date,
+  answers: answersWithQuestions,
+  profileOn = true,
+}) => {
+  const [_, month, day] = date.split("-");
+  const auth = useAuth();
+  const uid = auth?.user?.uid || "";
+  const handleKeep = async (answer: Answer) => {
+    const keepers = answer.keepers || {};
+    const res = await toggleKeep(uid, answer.aid, !keepers[uid]);
+  };
+  const userProfileComponent = (
+    <Profile>
+      <UserImage
+        style={{
+          display: profileOn ? "flex" : "none",
+          width: "28px",
+          height: "28px",
+        }}
+      />
+      <ProfileName>{"익명"}</ProfileName>
+    </Profile>
+  );
+
+  const AnswerCard: React.FC<{
+    answer: Answer;
+  }> = ({ answer }) => {
+    return (
+      <AnswerContainer>
+        {userProfileComponent}
+        <AnswerAndFav>
+          <AnswerText>{answer.answer}</AnswerText>
+          <button onClick={() => handleKeep(answer)}>
+            {Object.keys(answer.keepers || {}).includes(uid) ? (
+              <img src={HeartColored} style={{ width: "15px" }} />
+            ) : (
+              <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
+            )}
+          </button>
+        </AnswerAndFav>
+      </AnswerContainer>
+    );
+  };
+
+  return (
+    <DateContainer>
+      <SideDateBar>
+        <MonthDate>
+          <Month>{parseInt(month)}월</Month>
+          <Date>{parseInt(day)}</Date>
+        </MonthDate>
+      </SideDateBar>
+      <QuestionCards>
+        {Object.keys(answersWithQuestions).map((qid) => (
+          <QuestionCard
+            key={qid}
+            answersWithQuestion={answersWithQuestions[qid]}
+            AnswerCardComponent={AnswerCard}
+          />
+        ))}
+      </QuestionCards>
+    </DateContainer>
+  );
+};
+
+const QuestionCard: React.FC<{
+  answersWithQuestion: AnswersWithQuestion;
+  AnswerCardComponent: React.FC<{
+    answer: Answer;
+  }>;
+}> = ({ answersWithQuestion, AnswerCardComponent }) => {
+  return (
+    <QuestionCardContainer>
+      <Question>{answersWithQuestion.question}</Question>
+      <Answers>
+        {Object.keys(answersWithQuestion.answers).map((aid) => (
+          <AnswerCardComponent
+            key={aid}
+            answer={answersWithQuestion.answers[aid]}
+          />
+        ))}
+      </Answers>
+    </QuestionCardContainer>
+  );
+};
 
 const DateContainer = styled.li`
   width: 100%;
@@ -51,13 +161,17 @@ const Question = styled.div`
   color: #515fa9;
   white-space: pre-line;
 `;
-const AnswerCard = styled.li`
+const QuestionCardContainer = styled.li`
   margin-left: 7px;
   &:not(:first-child) {
     margin-top: 30px;
   }
 `;
-const AnswerContainer = styled.div`
+const Answers = styled.ul`
+  width: 100%;
+`;
+
+const AnswerContainer = styled.li`
   width: 100%;
   display: flex;
 
@@ -77,7 +191,7 @@ const ProfileName = styled.div`
 `;
 
 const AnswerAndFav = styled.div``;
-const Answer = styled.p`
+const AnswerText = styled.p`
   font-weight: normal;
   font-size: 12px;
   line-height: 17px;
@@ -86,66 +200,8 @@ const Answer = styled.p`
 
   white-space: pre-line;
 `;
-const QuestionAnswerContainer = styled.ul`
+const QuestionCards = styled.ul`
   flex: 1;
 `;
-
-interface Props {
-  date: string;
-  answers: {
-    [date: string]: {
-      [qid: string]: {
-        keyword: string;
-        answers: {
-          [aid: string]: {
-            aid: string;
-            answer: string;
-            created_at: string;
-          };
-        };
-        publish_date: string;
-        qid: string;
-        question: string;
-      };
-    };
-  };
-  profileOn?: boolean;
-}
-
-const AnswersByDay: React.FC<Props> = ({ date, answers, profileOn = true }) => {
-  const [_, month, day] = date.split("-");
-
-  return (
-    <DateContainer>
-      <SideDateBar>
-        <MonthDate>
-          <Month>{month}월</Month>
-          <Date>{parseInt(day)}</Date>
-        </MonthDate>
-      </SideDateBar>
-      <QuestionAnswerContainer>
-        {Object.keys(answers).map((qid) => (
-          <AnswerCard key={qid}>
-            <Question>{answers[qid].question}</Question>
-            {Object.keys(answers[qid].answers).map((aid) => (
-              <AnswerContainer key={aid}>
-                {profileOn && (
-                  <Profile>
-                    <UserImage style={{ width: "28px", height: "28px" }} />
-                    <ProfileName>{"익명"}</ProfileName>
-                  </Profile>
-                )}
-                <AnswerAndFav>
-                  <Answer>{answers[qid].answers[aid].answer}</Answer>
-                  <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
-                </AnswerAndFav>
-              </AnswerContainer>
-            ))}
-          </AnswerCard>
-        ))}
-      </QuestionAnswerContainer>
-    </DateContainer>
-  );
-};
 
 export default AnswersByDay;

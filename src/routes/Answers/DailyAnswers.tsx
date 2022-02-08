@@ -37,8 +37,6 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
     });
   });
 
-  console.log(monthAnswers);
-
   return (
     <Container>
       <UserProfileContainer>

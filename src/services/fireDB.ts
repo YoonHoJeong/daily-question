@@ -203,3 +203,37 @@ export const getUserAnswers = async (
 
   return answers;
 };
+
+export const toggleKeep = async (
+  uid: string | undefined,
+  aid: string,
+  value: boolean
+) => {
+  // update db
+  // 1. answers, 2. user-answers, 3. users
+
+  if (!uid) {
+    console.log("no uid");
+
+    return false;
+  }
+
+  const updates = {};
+
+  if (value) {
+    // updates['user-answers/' + uid + '/keeps/' + aid] = true;
+    updates["answers/" + aid + "/keepers/" + uid] = true;
+    updates["users/" + uid + "/keeps/" + aid] = true;
+  } else {
+    // updates['user-answers/' + uid + '/keeps/' + aid] = null;
+    updates["answers/" + aid + "/keepers/" + uid] = null;
+    updates["users/" + uid + "/keeps/" + aid] = null;
+  }
+
+  try {
+    await update(ref(fireDB), updates);
+    console.log(value ? "keep" : "unkeep");
+  } catch (e) {
+    console.log(e);
+  }
+};

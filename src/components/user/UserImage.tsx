@@ -22,6 +22,7 @@ const UserImg = styled.img`
 interface Props {
   imageUrl?: string;
   style: {
+    display?: "flex" | "block" | "none";
     width: string | number;
     height: string | number;
   };

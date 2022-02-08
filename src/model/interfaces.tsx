@@ -18,6 +18,9 @@ export interface Answer {
   created_at: string; // format - yyyy-mm-ddThh:mm:ss
   qid: string;
   uid: string;
+  keepers?: {
+    [uid: string]: boolean;
+  };
 }
 export interface FetchedAnswers {
   [aid: string]: Answer;
