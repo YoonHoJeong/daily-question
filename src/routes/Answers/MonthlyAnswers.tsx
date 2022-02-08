@@ -13,6 +13,7 @@ import { getAllMonthlyDate, getToday } from "../../services/DateManager";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Loader from "../../components/Loader";
+import styled from "styled-components";
 
 interface Props {
   loading: boolean;
@@ -59,7 +60,7 @@ const MonthlyAnswers: React.FC<Props> = ({
   const dates = getAllMonthlyDate(date.dateObj);
 
   return (
-    <>
+    <Container>
       <WeekToggle>
         <WeekToggleButton onClick={() => changeMonth(-1)}>
           <KeyboardArrowLeftIcon />
@@ -97,8 +98,18 @@ const MonthlyAnswers: React.FC<Props> = ({
           </ul>
         </>
       )}
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${(props) => props.theme.palette.white};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default MonthlyAnswers;

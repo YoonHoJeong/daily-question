@@ -6,9 +6,9 @@ import Loader from "../components/Loader";
 interface Props {}
 
 const Container = styled.ul`
-  height: 100%;
-
   background-color: white;
+
+  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
 `;
 
 const Board: React.FC<Props> = () => {
@@ -31,9 +31,15 @@ const Board: React.FC<Props> = () => {
 
   return (
     <Container>
-      {Object.keys(answers).map((date) => (
-        <AnswersByDay key={date} date={date} answers={answers[date]} />
-      ))}
+      {loading ? (
+        <Loader />
+      ) : (
+        Object.keys(answers)
+          .sort((a, b) => (a > b ? -1 : 1))
+          .map((date) => (
+            <AnswersByDay key={date} date={date} answers={answers[date]} />
+          ))
+      )}
     </Container>
   );
 };

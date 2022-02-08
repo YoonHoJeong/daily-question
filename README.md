@@ -173,13 +173,22 @@ components에 사용하는 비즈니스 로직 구성
     - [x] getBoardAnswers logic 구현
 
 - 22.02.07
+
   - [x] DayAnswers interface 변경 필요, date - \[keyword\] - Answer
   - [x] Board page - load recently 30 answers
 
+- 22.02.08
+  - global variables
+    - bottom navigation, header 등, 공통적으로 사용하는 변수명 관리
+    - theme과 같이 context API를 통해 app 전역에서 사용할 수 있도록 설정
+  - theme - sizes 추가
+    - bottom navigation height, header height, global size 설정
+  - board page
+    - [ ] 유저 이름 변경(현재 익명으로 통일)
+    - [ ] 하트(담아두기) 기능 구현
+
 # Todo
 
-- board page
-  - [ ] 유저 이름 변경(현재 익명으로 통일)
 - [ ] interface 구분, 통일시키기
 - [ ] backend logic 만들기(board, daily answers에서 data 형태)
   - 현재는 client-side에서 data manipulating

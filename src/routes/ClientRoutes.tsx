@@ -1,12 +1,13 @@
-import React, { createContext } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavigation from "../components/BottomNavigation";
 import { Header } from "../components/Header";
-import { Answers, Question, SubmitDone } from "../routes";
+import { Answers, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "../routes/User";
 import Board from "./Board";
+import UserEdit from "./UserEdit";
 
 const Container = styled.div`
   width: 100vw;
@@ -16,8 +17,8 @@ const Container = styled.div`
 
   box-sizing: border-box;
 
-  padding-top: 55px;
-  padding-bottom: 70px;
+  padding-top: ${({ theme }) => theme.sizes.headerHeight};
+  padding-bottom: ${({ theme }) => theme.sizes.bottomNavHeight};
 `;
 
 interface Props {}
@@ -33,7 +34,10 @@ const ClientRoutes: React.FC<Props> = () => {
         <Route path="/board">
           <Board />
         </Route>
-        <Route path="/user">
+        <Route path="/user/edit">
+          <UserEdit />
+        </Route>
+        <Route exact path="/user">
           <User />
         </Route>
         <Route path="/answers">

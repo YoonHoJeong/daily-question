@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import UserIcon from "../assets/person2.png";
 import { DayAnswers } from "../routes/Answers/Answers";
+import UserImage from "./user/UserImage";
 
 const DateContainer = styled.li`
   width: 100%;
@@ -65,21 +66,7 @@ const AnswerContainer = styled.div`
 const Profile = styled.div`
   margin-right: 12px;
 `;
-const ProfileImgContainer = styled.div`
-  width: 28px;
-  height: 28px;
-  padding: 7px;
 
-  background-color: ${(props) => props.theme.palette.bgGrey2};
-  border-radius: 50%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const ProfileImg = styled.img`
-  width: 16px;
-`;
 const ProfileName = styled.div`
   font-weight: bold;
   font-size: 10px;
@@ -144,9 +131,7 @@ const AnswersByDay: React.FC<Props> = ({ date, answers, profileOn = true }) => {
               <AnswerContainer key={aid}>
                 {profileOn && (
                   <Profile>
-                    <ProfileImgContainer>
-                      <ProfileImg src={UserIcon} />
-                    </ProfileImgContainer>
+                    <UserImage style={{ width: "28px", height: "28px" }} />
                     <ProfileName>{"익명"}</ProfileName>
                   </Profile>
                 )}

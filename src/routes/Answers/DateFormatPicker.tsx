@@ -21,9 +21,14 @@ const DateFormat = styled.li`
 
   font-weight: 500;
   font-size: 16px;
-  line-height: 23px;
+  padding: 4px 0px;
 
   background-color: ${(props) => props.theme.palette.white};
+  & > button {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
   &:not(:first-child) {
     display: none;
 

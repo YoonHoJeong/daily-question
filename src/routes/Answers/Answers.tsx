@@ -8,14 +8,13 @@ import DailyAnswers from "./DailyAnswers";
 import { getUserAnswers } from "../../services/fireDB";
 import DateFormatPicker from "./DateFormatPicker";
 import { Question } from "../../model/interfaces";
-import { convertDate, getToday } from "../../services/DateManager";
 
 const Container = styled.div`
   position: relative;
 
   width: 100vw;
   height: 100vh;
-  background-color: ${(props) => props.theme.palette.white};
+  background-color: ${(props) => props.theme.palette.bgGrey};
 
   display: flex;
   flex-direction: column;

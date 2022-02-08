@@ -11,121 +11,6 @@ import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 100px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const YearText = styled.p`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-
-  margin-bottom: 12px;
-`;
-export const HelperText = styled.p`
-  margin-top: 14px;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
-
-export const WeekToggle = styled.ul`
-  position: relative;
-
-  margin-top: 30px;
-`;
-export const WeekToggleButton = styled.button<{ right?: boolean }>`
-  position: absolute;
-  bottom: -4px;
-  ${(props) => (props.right ? "right: -35px" : "left: -35px")};
-`;
-export const Week = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
-export const AnswerDateCount = styled.span`
-  color: ${(props) => props.theme.palette.blue};
-`;
-const DateIconContainer = styled.li``;
-const DateIcon = styled.img`
-  max-width: 45px;
-  height: 35px;
-`;
-const DateIconsContainer = styled.ul`
-  width: 300px;
-
-  display: flex;
-  justify-content: space-around;
-
-  margin-top: 18px;
-`;
-
-const AnswerCard = styled.li`
-  padding: 10px 16px;
-  padding-bottom: 19px;
-  margin-top: 4px;
-
-  border: 1px solid ${(props) => props.theme.palette.grey};
-  border-radius: 10px;
-
-  line-height: 19px;
-  /* identical to box height */
-
-  width: 300px;
-  background-color: ${(props) => props.theme.palette.white};
-`;
-const AnswersContainer = styled.ul`
-  margin-top: 30px;
-`;
-const DailyAnswersContainer = styled.li``;
-
-const DailyAnswers = styled.div`
-  margin-top: 10px;
-`;
-const DayText = styled.p`
-  font-weight: 500;
-
-  margin-left: 10px;
-  margin-bottom: 5px;
-`;
-
-const AnswerList = styled.ul`
-  position: relative;
-
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-`;
-const KeywordText = styled.p`
-  font-size: 11px;
-  color: ${(props) => props.theme.palette.deepGrey};
-`;
-const QuestionText = styled.div`
-  font-size: 14px;
-  line-height: 20px;
-  margin-top: 4px;
-  color: ${(props) => props.theme.palette.blue};
-  display: flex;
-`;
-const AnswerText = styled.div`
-  font-size: 12px;
-  margin-top: 4px;
-  margin-left: 4px;
-  display: flex;
-`;
-
 interface DateIconsProps {
   weekDates: any[];
   weekAnswers: any;
@@ -243,5 +128,122 @@ const WeeklyAnswers: React.FC<Props> = ({
     </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 100px;
+
+  background-color: ${(props) => props.theme.palette.white};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const YearText = styled.p`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+
+  margin-bottom: 12px;
+`;
+export const HelperText = styled.p`
+  margin-top: 14px;
+
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+`;
+
+export const WeekToggle = styled.ul`
+  position: relative;
+
+  margin-top: 30px;
+`;
+export const WeekToggleButton = styled.button<{ right?: boolean }>`
+  position: absolute;
+  bottom: -4px;
+  ${(props) => (props.right ? "right: -35px" : "left: -35px")};
+`;
+export const Week = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+`;
+export const AnswerDateCount = styled.span`
+  color: ${(props) => props.theme.palette.blue};
+`;
+const DateIconContainer = styled.li``;
+const DateIcon = styled.img`
+  max-width: 45px;
+  height: 35px;
+`;
+const DateIconsContainer = styled.ul`
+  width: 300px;
+
+  display: flex;
+  justify-content: space-around;
+
+  margin-top: 18px;
+`;
+
+const AnswerCard = styled.li`
+  padding: 10px 16px;
+  padding-bottom: 19px;
+  margin-top: 4px;
+
+  border: 1px solid ${(props) => props.theme.palette.grey};
+  border-radius: 10px;
+
+  line-height: 19px;
+  /* identical to box height */
+
+  width: 300px;
+  background-color: ${(props) => props.theme.palette.white};
+`;
+const AnswersContainer = styled.ul`
+  margin-top: 30px;
+`;
+const DailyAnswersContainer = styled.li``;
+
+const DailyAnswers = styled.div`
+  margin-top: 10px;
+`;
+const DayText = styled.p`
+  font-weight: 500;
+
+  margin-left: 10px;
+  margin-bottom: 5px;
+`;
+
+const AnswerList = styled.ul`
+  position: relative;
+
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+`;
+const KeywordText = styled.p`
+  font-size: 11px;
+  color: ${(props) => props.theme.palette.deepGrey};
+`;
+const QuestionText = styled.div`
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 4px;
+  color: ${(props) => props.theme.palette.blue};
+  display: flex;
+`;
+const AnswerText = styled.div`
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: flex;
+`;
 
 export default WeeklyAnswers;

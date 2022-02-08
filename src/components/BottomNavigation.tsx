@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import boxClicked from "../assets/Qbox1.png";
@@ -7,6 +7,7 @@ import feedClicked from "../assets/feed1.png";
 import feed from "../assets/feed2.png";
 import userClicked from "../assets/person1.png";
 import user from "../assets/person2.png";
+import { VariablesContext } from "../App";
 
 const Container = styled.div`
   position: fixed;
@@ -14,6 +15,7 @@ const Container = styled.div`
   left: 0;
 
   width: 100%;
+  height: ${(props) => props.theme.sizes.bottomNavHeight};
 
   background-color: ${(props) => props.theme.palette.white};
 
@@ -52,8 +54,9 @@ interface Props {}
 const BottomNavigation: React.FC<Props> = () => {
   const location = useLocation();
   const pathname = location.pathname;
+  const globalVariables = useContext(VariablesContext);
 
-  if (pathname.includes("/answers")) {
+  if (pathname.includes("/answers") || pathname.includes("/user/edit")) {
     return null;
   }
 
@@ -64,7 +67,7 @@ const BottomNavigation: React.FC<Props> = () => {
           <Icon src={pathname === "/" ? boxClicked : box} alt="" />
         </Link>
         <SLink to="/" current={pathname === "/" ? "true" : "false"}>
-          오늘의 질문
+          {globalVariables.todayQuestions}
         </SLink>
       </NavItem>
       <NavItem>
@@ -72,7 +75,7 @@ const BottomNavigation: React.FC<Props> = () => {
           <Icon src={pathname === "/board" ? feedClicked : feed} alt="" />
         </Link>
         <SLink to="/board" current={pathname === "/board" ? "true" : "false"}>
-          게시판
+          {globalVariables.board}
         </SLink>
       </NavItem>
       <NavItem>
@@ -80,7 +83,7 @@ const BottomNavigation: React.FC<Props> = () => {
           <Icon src={pathname === "/user" ? userClicked : user} alt="" />
         </Link>
         <SLink to="/user" current={pathname === "/user" ? "true" : "false"}>
-          내 정보
+          {globalVariables.user}
         </SLink>
       </NavItem>
     </Container>
