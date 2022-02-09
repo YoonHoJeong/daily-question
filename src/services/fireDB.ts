@@ -235,17 +235,22 @@ export const unKeep = async (uid: string | undefined, aid: string) => {
   }
 };
 
-export const getUserKeeps = async (uid: string) => {
-  const userKeepsAid: FetchedAnswers = (
+export const getUserKeepsAids = async (uid: string) => {
+  const userKeepsAids = (
     await get(ref(fireDB, "users/" + uid + "/keeps"))
   ).val();
+  return userKeepsAids;
+};
+
+export const getUserKeeps = async (uid: string) => {
+  const userKeepsAids = await getUserKeepsAids(uid);
   const questions: FetchedQuestions = (
     await get(ref(fireDB, "questions"))
   ).val();
   const userKeeps = {};
 
-  for (let i = 0; i < Object.keys(userKeepsAid).length; i++) {
-    const aid = Object.keys(userKeepsAid)[i];
+  for (let i = 0; i < Object.keys(userKeepsAids).length; i++) {
+    const aid = Object.keys(userKeepsAids)[i];
     const snapshot = await get(ref(fireDB, "answers/" + aid));
     const userKeepAnswer = snapshot.val() as Answer;
 

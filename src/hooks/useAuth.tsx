@@ -38,9 +38,6 @@ export interface CustomUser {
   email?: string | null;
   uid: string;
   admin: boolean;
-  keeps: {
-    [aid: string]: boolean;
-  };
 }
 
 interface RegisterForm {
@@ -139,7 +136,6 @@ const useProviderAuth = () => {
           uid: user.uid,
           admin: token.claims.admin ? true : false,
           name: userData.name || "익명",
-          keeps: userData.keeps || {},
         });
 
         setIsAuthenticating(false);

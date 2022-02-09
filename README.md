@@ -202,6 +202,11 @@ components에 사용하는 비즈니스 로직 구성
   - user keeps 페이지 구현
     - [x] 기본 UI
     - [x] unkeep시 카드 disappear
+    - [x] preload images
+  - AnswersByDay
+    - [x] preload images
+    - [x] add keeps state / isFetching
+  - [x] user keeps, AnswersByDay 동기화
 
 # Todo
 

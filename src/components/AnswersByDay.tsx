@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import UserImage from "./user/UserImage";
 import HeartColored from "../assets/4_heart.svg";
+import HeartUnColored from "../assets/4_heart2.svg";
 import { useAuth } from "../hooks/useAuth";
-import { keep, unKeep } from "../services/fireDB";
+import { getUserKeepsAids, keep, unKeep } from "../services/fireDB";
 import {
   Answer,
   AnswersWithQuestion,
   AnswersWithQuestions,
 } from "../model/interfaces";
+import { usePreloadImages } from "../hooks/usePreloadImages";
+import Loader from "./Loader";
 
 interface Props {
   date: string;
@@ -31,6 +33,20 @@ const AnswersByDay: React.FC<Props> = ({
   const [_, month, day] = date.split("-");
   const auth = useAuth();
   const uid = auth.user?.uid || "";
+  const [keeps, setKeeps] = useState<{ [aid: string]: boolean }>({});
+  const [isFetching, setIsFetching] = useState(true);
+  const { loading: imageLoading } = usePreloadImages([
+    HeartColored,
+    HeartUnColored,
+  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getUserKeepsAids(auth.user!!.uid);
+      setKeeps(data);
+      setIsFetching(false);
+    };
+    fetchData();
+  }, []);
 
   const userProfileComponent = (
     <Profile>
@@ -47,14 +63,17 @@ const AnswersByDay: React.FC<Props> = ({
 
   const AnswerCard: React.FC<AnswerCardProps> = ({ answer }) => {
     const [isKept, setIsKept] = useState<boolean>(
-      auth.user?.keeps[answer.aid] ? true : false
+      keeps[answer.aid] ? true : false
     );
+
     const handleClickKeep = () => {
       setIsKept(!isKept);
 
       if (isKept) {
+        setKeeps({ ...keeps, [answer.aid]: false });
         unKeep(uid, answer.aid);
       } else {
+        setKeeps({ ...keeps, [answer.aid]: true });
         keep(uid, answer.aid);
       }
     };
@@ -68,17 +87,21 @@ const AnswersByDay: React.FC<Props> = ({
         {userProfileComponent}
         <AnswerAndFav>
           <AnswerText>{answer.answer}</AnswerText>
-          <button onClick={handleClickKeep}>
+          <KeepButton onClick={handleClickKeep}>
             {isKept ? (
               <img src={HeartColored} style={{ width: "15px" }} />
             ) : (
-              <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
+              <img src={HeartUnColored} style={{ width: "15px" }} />
             )}
-          </button>
+          </KeepButton>
         </AnswerAndFav>
       </AnswerContainer>
     );
   };
+
+  if (isFetching || imageLoading) {
+    return <Loader />;
+  }
 
   return (
     <DateContainer>
@@ -207,6 +230,10 @@ const AnswerText = styled.p`
 `;
 const QuestionCards = styled.ul`
   flex: 1;
+`;
+
+const KeepButton = styled.button`
+  margin-top: 5px;
 `;
 
 export default AnswersByDay;
