@@ -5,33 +5,28 @@ import UserImage from "./user/UserImage";
 import HeartColored from "../assets/4_heart.svg";
 import { useAuth } from "../hooks/useAuth";
 import { keep, unKeep } from "../services/fireDB";
-import { Answer } from "../model/interfaces";
-
-interface AnswersWithQuestion {
-  keyword: string;
-  publish_date: string;
-  qid: string;
-  question: string;
-
-  answers: {
-    [aid: string]: Answer;
-  };
-}
-
-interface AnswersWithQuestions {
-  [qid: string]: AnswersWithQuestion;
-}
+import {
+  Answer,
+  AnswersWithQuestion,
+  AnswersWithQuestions,
+} from "../model/interfaces";
 
 interface Props {
   date: string;
   answers: AnswersWithQuestions;
   profileOn?: boolean;
+  unKeepDisappear?: boolean;
+}
+
+interface AnswerCardProps {
+  answer: Answer;
 }
 
 const AnswersByDay: React.FC<Props> = ({
   date,
   answers: answersWithQuestions,
   profileOn = true,
+  unKeepDisappear = false,
 }) => {
   const [_, month, day] = date.split("-");
   const auth = useAuth();
@@ -50,9 +45,7 @@ const AnswersByDay: React.FC<Props> = ({
     </Profile>
   );
 
-  const AnswerCard: React.FC<{
-    answer: Answer;
-  }> = ({ answer }) => {
+  const AnswerCard: React.FC<AnswerCardProps> = ({ answer }) => {
     const [isKept, setIsKept] = useState<boolean>(
       auth.user?.keeps[answer.aid] ? true : false
     );
@@ -65,6 +58,10 @@ const AnswersByDay: React.FC<Props> = ({
         keep(uid, answer.aid);
       }
     };
+
+    if (unKeepDisappear && !isKept) {
+      return null;
+    }
 
     return (
       <AnswerContainer>
@@ -106,9 +103,7 @@ const AnswersByDay: React.FC<Props> = ({
 
 const QuestionCard: React.FC<{
   answersWithQuestion: AnswersWithQuestion;
-  AnswerCardComponent: React.FC<{
-    answer: Answer;
-  }>;
+  AnswerCardComponent: React.FC<AnswerCardProps>;
 }> = ({ answersWithQuestion, AnswerCardComponent }) => {
   return (
     <QuestionCardContainer>

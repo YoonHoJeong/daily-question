@@ -19,6 +19,7 @@ const palette = {
 
 const sizes = {
   headerHeight: "60px",
+  headerBorder: "4px",
   bottomNavHeight: "84px",
 };
 
@@ -29,6 +30,7 @@ const globalVariables = {
   keeps: "담아두기",
   myAnswers: "나의 답변",
   userEdit: "프로필 편집",
+  userKeeps: "담아두기",
 };
 
 interface GlobalVariables {
@@ -38,6 +40,7 @@ interface GlobalVariables {
   keeps: string;
   myAnswers: string;
   userEdit: string;
+  userKeeps: string;
 }
 
 export const VariablesContext = createContext<GlobalVariables>(globalVariables);

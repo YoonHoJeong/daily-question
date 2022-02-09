@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import styled from "styled-components";
-import UserImage from "../components/user/UserImage";
-import { useForm } from "../hooks/useForm";
+import UserImage from "../../components/user/UserImage";
+import { useForm } from "../../hooks/useForm";
 
 interface Props {}
 

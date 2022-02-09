@@ -1,4 +1,7 @@
-import { FetchedAnswers } from "./../model/interfaces";
+import {
+  DailyAnswersWithQuestions,
+  FetchedAnswers,
+} from "./../model/interfaces";
 import { fireDB } from "./firebase";
 import {
   get,
@@ -18,6 +21,7 @@ import {
 import {
   calcWeek,
   convertDate,
+  convertDateUntilDay,
   getToday,
   getYearMonth,
   pad,
@@ -204,7 +208,7 @@ export const getUserAnswers = async (
   return answers;
 };
 
-const toggleKeep = async (uid: string, aid: string, value: boolean) => {
+const toggleKeep = async (uid: string, aid: string, value: true | null) => {
   const updates = {};
 
   // updates['user-answers/' + uid + '/keeps/' + aid] = true;
@@ -227,6 +231,40 @@ export const keep = async (uid: string | undefined, aid: string) => {
 };
 export const unKeep = async (uid: string | undefined, aid: string) => {
   if (uid) {
-    toggleKeep(uid, aid, false);
+    toggleKeep(uid, aid, null);
   }
+};
+
+export const getUserKeeps = async (uid: string) => {
+  const userKeepsAid: FetchedAnswers = (
+    await get(ref(fireDB, "users/" + uid + "/keeps"))
+  ).val();
+  const questions: FetchedQuestions = (
+    await get(ref(fireDB, "questions"))
+  ).val();
+  const userKeeps = {};
+
+  for (let i = 0; i < Object.keys(userKeepsAid).length; i++) {
+    const aid = Object.keys(userKeepsAid)[i];
+    const snapshot = await get(ref(fireDB, "answers/" + aid));
+    const userKeepAnswer = snapshot.val() as Answer;
+
+    const date = convertDateUntilDay(new Date(userKeepAnswer.created_at));
+    const question = questions[userKeepAnswer.qid];
+
+    if (!userKeeps[date]) {
+      userKeeps[date] = {};
+    }
+
+    if (!userKeeps[date][question.qid]) {
+      userKeeps[date][question.qid] = {
+        ...question,
+        answers: {},
+      };
+    }
+
+    userKeeps[date][question.qid].answers[aid] = userKeepAnswer;
+  }
+
+  return userKeeps as DailyAnswersWithQuestions;
 };

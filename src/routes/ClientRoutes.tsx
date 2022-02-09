@@ -5,9 +5,10 @@ import BottomNavigation from "../components/BottomNavigation";
 import { Header } from "../components/Header";
 import { Answers, SubmitDone } from "../routes";
 import Home from "../routes/Home";
-import User from "../routes/User";
+import User from "./User/User";
 import Board from "./Board";
-import UserEdit from "./UserEdit";
+import UserKeeps from "./User/UserKeeps";
+import UserEdit from "./User/UserEdit";
 
 const Container = styled.div`
   width: 100vw;
@@ -36,6 +37,9 @@ const ClientRoutes: React.FC<Props> = () => {
         </Route>
         <Route path="/user/edit">
           <UserEdit />
+        </Route>
+        <Route path="/user/keeps">
+          <UserKeeps />
         </Route>
         <Route exact path="/user">
           <User />

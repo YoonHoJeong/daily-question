@@ -2,22 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import AnswersByDay from "../../components/AnswersByDay";
 import UserProfile from "../../components/UserProfile";
-import { UserAnswers } from "./Answers";
+import { UserAnswers } from "../../model/interfaces";
 
 interface Props {
   answers: UserAnswers;
 }
-
-const Container = styled.div`
-  width: 100%;
-`;
-const UserProfileContainer = styled.div`
-  background-color: ${(props) => props.theme.palette.white};
-  padding: 40px 25px;
-`;
-const DailyAnswersList = styled.ul`
-  width: 100%;
-`;
 
 const DailyAnswers: React.FC<Props> = ({ answers }) => {
   let monthAnswers = {};
@@ -57,5 +46,16 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
     </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100%;
+`;
+const UserProfileContainer = styled.div`
+  background-color: ${(props) => props.theme.palette.white};
+  padding: 40px 25px;
+`;
+const DailyAnswersList = styled.ul`
+  width: 100%;
+`;
 
 export default DailyAnswers;

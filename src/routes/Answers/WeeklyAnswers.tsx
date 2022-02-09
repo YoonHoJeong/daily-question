@@ -4,12 +4,12 @@ import BoxOpenedIcon from "../../assets/box_opened.png";
 import BoxClosedIcon from "../../assets/box_closed.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { UserAnswers } from "./Answers";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Loader from "../../components/Loader";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
+import { UserAnswers } from "../../model/interfaces";
 
 interface DateIconsProps {
   weekDates: any[];

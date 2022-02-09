@@ -7,7 +7,7 @@ import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import { getUserAnswers } from "../../services/fireDB";
 import DateFormatPicker from "./DateFormatPicker";
-import { Question } from "../../model/interfaces";
+import { Question, UserAnswers } from "../../model/interfaces";
 
 const Container = styled.div`
   position: relative;
@@ -22,20 +22,6 @@ const Container = styled.div`
 `;
 
 export type ViewFormat = "weekly" | "daily" | "monthly";
-
-export interface UserAnswers {
-  [week: string]: DayAnswers;
-}
-export interface DayAnswers {
-  [date: string]: {
-    [aid: string]: {
-      aid: string;
-      answer: string;
-      created_at: string;
-      question: Question;
-    };
-  };
-}
 
 interface Props {}
 

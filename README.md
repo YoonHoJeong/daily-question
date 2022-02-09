@@ -182,8 +182,8 @@ components에 사용하는 비즈니스 로직 구성
 
 - 22.02.09
 
-  - [ ] useAuth -> 반환되는 auth 객체가 null인 경우 처리 (defaultValue 설정)
-  - [ ] keep button(realtime)
+  - [x] useAuth -> 반환되는 auth 객체가 null인 경우 처리 (defaultValue 설정)
+  - [x] keep button(realtime)
 
     - 현재 클릭 후 하트 색상 바로 변경 안 됨.
 
@@ -197,14 +197,17 @@ components에 사용하는 비즈니스 로직 구성
 
     - 빠르게 색상 전환 가능(UX)
     - 실패했을 경우, 에러 핸들링
+    - instagram 참고, 누르자마자 아이콘 변경 & /like or /unlike request
 
-    - 아직 에러 핸들링이 감이 안 잡혀서 일단 1번으로, 이후 2번으로 구현
-    -
+  - user keeps 페이지 구현
+    - [x] 기본 UI
+    - [x] unkeep시 카드 disappear
 
 # Todo
 
 기능 구현
 
+- [ ] 일별로 답변을 구분할 때, 생성 일자로 구분할 지, publish_date로 구분할 지
 - [ ] 페이지별 Fetched data caching
 - [ ] Auth - login 여부에 따라 필요로 하는 함수가 달라서, interface 2개 구분해서 사용
 

@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import UserProfile from "../components/UserProfile";
-import BoxOpened from "../assets/4_box1.svg";
-import UserIcon from "../assets/person2.png";
-import Heart from "../assets/4_heart.svg";
-import { usePreloadImages } from "../hooks/usePreloadImages";
-import Loader from "../components/Loader";
-import { VariablesContext } from "../App";
+import { Link, useLocation } from "react-router-dom";
+import UserProfile from "../../components/UserProfile";
+import BoxOpened from "../../assets/4_box1.svg";
+import UserIcon from "../../assets/person2.png";
+import Heart from "../../assets/4_heart.svg";
+import { usePreloadImages } from "../../hooks/usePreloadImages";
+import Loader from "../../components/Loader";
+import { VariablesContext } from "../../App";
 const Container = styled.div`
   width: 100vw;
 
@@ -45,6 +45,7 @@ interface Props {}
 const User: React.FC<Props> = () => {
   const { loading } = usePreloadImages([UserIcon, BoxOpened, Heart]);
   const globalVariables = useContext(VariablesContext);
+  const { pathname } = useLocation();
 
   if (loading) {
     return <Loader />;
@@ -63,14 +64,12 @@ const User: React.FC<Props> = () => {
           </Link>
         </UserTab>
         <UserTab>
-          <UserTabIcon src={Heart} />
-          <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
-          {/* <Link to="/answers">
+          <Link to={`${pathname}/keeps`}>
             <UserTabIcon src={Heart} />
           </Link>
-          <Link to="/answers">
+          <Link to={`${pathname}/keeps`}>
             <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
-          </Link> */}
+          </Link>
         </UserTab>
       </UserTabs>
     </Container>

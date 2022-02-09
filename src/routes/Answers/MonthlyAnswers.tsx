@@ -8,12 +8,12 @@ import {
   YearText,
 } from "./WeeklyAnswers";
 import styles from "../../css/calendar.module.css";
-import { UserAnswers } from "./Answers";
 import { getAllMonthlyDate, getToday } from "../../services/DateManager";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Loader from "../../components/Loader";
 import styled from "styled-components";
+import { UserAnswers } from "../../model/interfaces";
 
 interface Props {
   loading: boolean;

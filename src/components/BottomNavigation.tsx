@@ -49,6 +49,8 @@ const Icon = styled.img`
   width: 30px;
 `;
 
+const exceptPathnames = ["/answers", "/user/edit", "/user/keeps"];
+
 interface Props {}
 
 const BottomNavigation: React.FC<Props> = () => {
@@ -56,7 +58,7 @@ const BottomNavigation: React.FC<Props> = () => {
   const pathname = location.pathname;
   const globalVariables = useContext(VariablesContext);
 
-  if (pathname.includes("/answers") || pathname.includes("/user/edit")) {
+  if (exceptPathnames.includes(pathname)) {
     return null;
   }
 
