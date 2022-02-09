@@ -213,7 +213,6 @@ const toggleKeep = async (uid: string, aid: string, value: boolean) => {
 
   try {
     await update(ref(fireDB), updates);
-    console.log(value ? "keep" : "unkeep");
     return true;
   } catch (e) {
     console.log(e);

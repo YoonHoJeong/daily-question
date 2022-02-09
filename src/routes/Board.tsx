@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { getBoardAnswers } from "../services/fireDB";
 import AnswersByDay from "../components/AnswersByDay";
 import Loader from "../components/Loader";
-interface Props {}
 
 const Container = styled.ul`
   background-color: white;
 
   padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
 `;
+
+interface Props {}
 
 const Board: React.FC<Props> = () => {
   const [answers, setAnswers] = useState<any>({});
@@ -20,7 +21,6 @@ const Board: React.FC<Props> = () => {
       const data = await getBoardAnswers();
       setAnswers(data);
       setLoading(false);
-      console.log(data);
     }
     fetchData();
   }, []);
