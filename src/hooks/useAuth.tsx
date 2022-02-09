@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { get, ref, update } from "firebase/database";
+import { get, onValue, ref, update } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 
@@ -14,8 +14,23 @@ interface Props {}
 export interface Auth {
   user: CustomUser | null;
   isAuthenticating: boolean;
-  login: (email: string, password: string) => Promise<Response>;
+  syncUserData: () => Promise<void>;
+  login: (email: string, password: string) => Promise<Response> | null;
+  logout: () => Promise<Response> | null;
+  register: (form: RegisterForm) => Promise<Response>;
+}
+
+interface AuthLogin {
+  user: CustomUser;
+  isAuthenticating: boolean;
+  syncUserData: () => Promise<void>;
   logout: () => Promise<Response>;
+}
+
+interface AuthLogout {
+  user: null;
+  isAuthenticating: boolean;
+  login: (email: string, password: string) => Promise<Response>;
   register: (form: RegisterForm) => Promise<Response>;
 }
 
@@ -72,7 +87,22 @@ const authErrorMsgs = {
   },
 };
 
-export const AuthContext = React.createContext<Auth | null>(null);
+const defaultAuth = {
+  user: null,
+  isAuthenticating: false,
+  syncUserData: async () => {},
+  login: async (email: string, password: string) => {
+    return { status: false };
+  },
+  logout: async () => {
+    return { status: false };
+  },
+  register: async (form: RegisterForm) => {
+    return { status: false };
+  },
+} as Auth;
+
+export const AuthContext = React.createContext<Auth>(defaultAuth);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const auth = useProviderAuth();
 
@@ -84,20 +114,47 @@ const useProviderAuth = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
 
+  useEffect(() => {
+    const unsubAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // log in
+        formatUser(user);
+      } else {
+        // log out.
+        formatUser(null);
+      }
+    });
+    const unsub = () => unsubAuth();
+
+    return () => unsub();
+  }, [auth]);
+
+  const syncUserData = async () => {
+    if (user) {
+      const snapshot = await get(ref(fireDB, "users/" + user.uid));
+      const userData = snapshot.val();
+      setUser({
+        ...user,
+        name: userData.name || "익명",
+        keeps: userData.keeps || {},
+      });
+    }
+  };
+
   const formatUser = async (user: User | null) => {
     if (user) {
       try {
         const token = await user.getIdTokenResult();
-        const snapshot = await get(ref(fireDB, "users/" + user.uid));
-        const userData = snapshot.val();
 
         setUser({
-          name: userData.name || "undefined",
+          name: "익명",
           email: user.email,
           uid: user.uid,
           admin: token.claims.admin ? true : false,
-          keeps: userData.keeps || {},
+          keeps: {},
         });
+        await syncUserData();
+
         setIsAuthenticating(false);
       } catch (e: any) {
         const error = new Error(e);
@@ -249,21 +306,7 @@ const useProviderAuth = () => {
     }
   };
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // log in
-        formatUser(user);
-      } else {
-        // log out.
-        formatUser(null);
-      }
-    });
-
-    return () => unsub();
-  }, [auth]);
-
-  return { user, isAuthenticating, login, logout, register };
+  return { user, isAuthenticating, syncUserData, login, logout, register };
 };
 
 export const useAuth = () => {
