@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
-import { useLocation } from "react-router-dom";
 import WeeklyAnswers from "./WeeklyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import { getUserAnswers } from "../../services/fireDB";
 import DateFormatPicker from "./DateFormatPicker";
-import { Question, UserAnswers } from "../../model/interfaces";
+import { UserAnswers } from "../../model/interfaces";
 
 const Container = styled.div`
   position: relative;

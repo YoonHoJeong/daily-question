@@ -26,7 +26,7 @@ const sizes = {
 const globalVariables = {
   board: "둘러보기",
   todayQuestions: "오늘의 질문",
-  user: "내 정보",
+  user: "나의 묻다",
   keeps: "담아두기",
   myAnswers: "나의 답변",
   userEdit: "프로필 편집",

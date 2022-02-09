@@ -49,7 +49,7 @@ const Icon = styled.img`
   width: 30px;
 `;
 
-const exceptPathnames = ["/answers", "/user/edit", "/user/keeps"];
+const exceptPathnames = ["/user/edit", "/user/keeps"];
 
 interface Props {}
 
