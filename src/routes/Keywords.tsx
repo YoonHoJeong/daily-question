@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Question } from "../model/interfaces";
-import { getDatabase } from "firebase/database";
-import { firebaseApp } from "../services/firebase";
 import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { getToday } from "../services/DateManager";
-import Loader from "../components/Loader";
+import Loader from "../components/common/Loader";
 
 const Container = styled.div`
   width: 100%;

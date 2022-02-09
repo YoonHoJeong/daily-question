@@ -11,7 +11,7 @@ import {
   AnswersWithQuestions,
 } from "../model/interfaces";
 import { usePreloadImages } from "../hooks/usePreloadImages";
-import Loader from "./Loader";
+import Loader from "./common/Loader";
 
 interface Props {
   date: string;

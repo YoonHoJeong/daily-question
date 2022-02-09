@@ -7,37 +7,9 @@ import { useForm } from "../hooks/useForm";
 import { Header } from "../components/Header";
 import Input from "../components/common/Input";
 import BoxLogoGrey from "../assets/box_logo_grey.svg";
-import Loader from "../components/Loader";
+import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
-
-const Container = styled.div`
-  background-color: #f2f2f2;
-
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const ServiceIcon = styled.img`
-  width: 85px;
-
-  position: absolute;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-  top: -130px;
-`;
-const LoginForm = styled.form`
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import { Spinner } from "../components/common/Spinner";
 
 interface Props {}
 
@@ -98,7 +70,7 @@ const Login: React.FC<Props> = () => {
               style={{ marginTop: "35px" }}
               disabled={submitting}
             >
-              {submitting ? <Loader /> : "로그인"}
+              {submitting ? <Spinner /> : "로그인"}
             </Button>
           </LoginForm>
         )}
@@ -110,5 +82,34 @@ const Login: React.FC<Props> = () => {
     </>
   );
 };
+
+const Container = styled.div`
+  background-color: #f2f2f2;
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const ServiceIcon = styled.img`
+  width: 85px;
+
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: -130px;
+`;
+const LoginForm = styled.form`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default Login;

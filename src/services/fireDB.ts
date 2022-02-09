@@ -239,7 +239,7 @@ export const getUserKeepsAids = async (uid: string) => {
   const userKeepsAids = (
     await get(ref(fireDB, "users/" + uid + "/keeps"))
   ).val();
-  return userKeepsAids;
+  return userKeepsAids || {};
 };
 
 export const getUserKeeps = async (uid: string) => {

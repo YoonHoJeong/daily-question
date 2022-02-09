@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import Loader from "../components/Loader";
+import Loader from "../components/common/Loader";
 import { FetchedQuestions } from "../model/interfaces";
 import { getTodayQuestions } from "../services/fireDB";
 import { Question } from "../routes";

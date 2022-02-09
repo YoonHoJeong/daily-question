@@ -11,7 +11,7 @@ import styles from "../../css/calendar.module.css";
 import { getAllMonthlyDate, getToday } from "../../services/DateManager";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import Loader from "../../components/Loader";
+import Loader from "../../components/common/Loader";
 import styled from "styled-components";
 import { UserAnswers } from "../../model/interfaces";
 

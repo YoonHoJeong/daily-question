@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AnswersByDay from "../../components/AnswersByDay";
 import { useAuth } from "../../hooks/useAuth";
-import {
-  DailyAnswersWithQuestions,
-  AnswersWithQuestions,
-  UserAnswers,
-} from "../../model/interfaces";
+import { DailyAnswersWithQuestions } from "../../model/interfaces";
 import { getUserKeeps } from "../../services/fireDB";
 
 interface Props {}
@@ -17,7 +13,6 @@ const UserKeeps: React.FC<Props> = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getUserKeeps(auth.user!!.uid);
-      console.log(data);
 
       setKeeps(data);
     };

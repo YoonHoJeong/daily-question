@@ -5,11 +5,11 @@ import BoxClosedIcon from "../../assets/box_closed.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
-import Loader from "../../components/Loader";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
 import { UserAnswers } from "../../model/interfaces";
+import Loader from "../../components/common/Loader";
 
 interface DateIconsProps {
   weekDates: any[];

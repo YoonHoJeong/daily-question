@@ -1,14 +1,13 @@
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import Loader from "./Loader";
 
 interface Props extends RouteProps {}
 
 const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
 
-  if (auth!!.isAuthenticating) {
+  if (auth.isAuthenticating) {
     return null;
   }
 

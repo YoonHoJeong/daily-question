@@ -6,7 +6,7 @@ import BoxOpened from "../../assets/4_box1.svg";
 import UserIcon from "../../assets/person2.png";
 import Heart from "../../assets/4_heart.svg";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-import Loader from "../../components/Loader";
+import Loader from "../../components/common/Loader";
 import { VariablesContext } from "../../App";
 const Container = styled.div`
   width: 100vw;

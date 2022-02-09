@@ -4,8 +4,7 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useAuth } from "../hooks/useAuth";
 import BoxLogoBlueLine from "../assets/box_blue_line.png";
-import { useState } from "react";
-import Loader from "../components/Loader";
+import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
 
 const Container = styled.div`

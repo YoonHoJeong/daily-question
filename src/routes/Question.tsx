@@ -1,26 +1,12 @@
-import {
-  equalTo,
-  get,
-  getDatabase,
-  orderByChild,
-  query,
-  ref,
-} from "firebase/database";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Loader from "../components/Loader";
+import Loader from "../components/common/Loader";
 // import Button from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
-import { useFireDBFetch } from "../hooks/useFireDBFetch";
 import { useForm } from "../hooks/useForm";
-import { Answer, Question, FetchedQuestions } from "../model/interfaces";
-import { firebaseApp } from "../services/firebase";
-import {
-  getAnswerByUidQid,
-  getQuestionByQid,
-  submitAnswer,
-} from "../services/fireDB";
+import { FetchedQuestions } from "../model/interfaces";
+import { getAnswerByUidQid, submitAnswer } from "../services/fireDB";
 
 const Container = styled.form`
   width: 100%;

@@ -1,23 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-const BackGround = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100vw;
-  height: 100vh;
-
-  z-index: 9999;
-
-  background-color: rgba(0, 0, 0, 0.05);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const rotate360 = keyframes`
   from {
     transform: rotate(0deg);
@@ -27,7 +10,7 @@ const rotate360 = keyframes`
   }
 `;
 
-const Spinner = styled.div`
+export const Spinner = styled.div`
   animation: ${rotate360} 1s linear infinite;
   transform: translateZ(0);
 
@@ -40,15 +23,3 @@ const Spinner = styled.div`
   height: 24px;
   border-radius: 50%;
 `;
-
-interface Props {}
-
-const Loader: React.FC<Props> = () => {
-  return (
-    <BackGround>
-      <Spinner />
-    </BackGround>
-  );
-};
-
-export default Loader;
