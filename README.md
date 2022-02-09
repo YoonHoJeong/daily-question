@@ -167,6 +167,7 @@ components에 사용하는 비즈니스 로직 구성
   - [x] Board page - load recently 30 answers
 
 - 22.02.08
+
   - global variables
     - bottom navigation, header 등, 공통적으로 사용하는 변수명 관리
     - theme과 같이 context API를 통해 app 전역에서 사용할 수 있도록 설정
@@ -175,22 +176,44 @@ components에 사용하는 비즈니스 로직 구성
   - defaultUserImage 컴포넌트 분리(UserProfile, AnswersByDay, UserEdit에 재사용)
   - board page
     - [x] 하트(담아두기) 기능 구현
-    - [ ] 유저 이름 변경(현재 익명으로 통일)
   - 현재 AuthContext에 모든 user 정보
+  - [x] loader background + z-index: 9999 (loading 중 클릭 불가)
+    - 한 페이지에서 fetching 도중(state 변경 중)에 다른 페이지로 이동하는 것 방지
+
+- 22.02.09
+
+  - [ ] useAuth -> 반환되는 auth 객체가 null인 경우 처리 (defaultValue 설정)
+  - [ ] keep button(realtime)
+
+    - 현재 클릭 후 하트 색상 바로 변경 안 됨.
+
+    방안
+
+    1. realtime DB 연결, answers state <-> firebase DB 실시간 동기화
+
+    - 클릭과 색상 변경 사이에 약간의 텀 예상
+
+    2. like 누르자마자 state 변경, DB update가 실패하면 state 다시 변경
+
+    - 빠르게 색상 전환 가능(UX)
+    - 실패했을 경우, 에러 핸들링
+
+    - 아직 에러 핸들링이 감이 안 잡혀서 일단 1번으로, 이후 2번으로 구현
+    -
 
 # Todo
 
 기능 구현
 
 - [ ] 페이지별 Fetched data caching
+- [ ] Auth - login 여부에 따라 필요로 하는 함수가 달라서, interface 2개 구분해서 사용
 
 Essential UI
 
 - Board(게시판)
 
+  - [ ] 유저 이름 변경(현재 익명으로 통일)
   - [ ] answer - private / public 설정
-  - [ ] keep button(realtime)
-    - 현재 클릭 후 하트 색상 바로 변경 안 됨.
 
 - admin questions page
 

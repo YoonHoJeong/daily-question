@@ -204,36 +204,30 @@ export const getUserAnswers = async (
   return answers;
 };
 
-export const toggleKeep = async (
-  uid: string | undefined,
-  aid: string,
-  value: boolean
-) => {
-  // update db
-  // 1. answers, 2. user-answers, 3. users
-
-  if (!uid) {
-    console.log("no uid");
-
-    return false;
-  }
-
+const toggleKeep = async (uid: string, aid: string, value: boolean) => {
   const updates = {};
 
-  if (value) {
-    // updates['user-answers/' + uid + '/keeps/' + aid] = true;
-    updates["answers/" + aid + "/keepers/" + uid] = true;
-    updates["users/" + uid + "/keeps/" + aid] = true;
-  } else {
-    // updates['user-answers/' + uid + '/keeps/' + aid] = null;
-    updates["answers/" + aid + "/keepers/" + uid] = null;
-    updates["users/" + uid + "/keeps/" + aid] = null;
-  }
+  // updates['user-answers/' + uid + '/keeps/' + aid] = true;
+  updates["answers/" + aid + "/keepers/" + uid] = value;
+  updates["users/" + uid + "/keeps/" + aid] = value;
 
   try {
     await update(ref(fireDB), updates);
     console.log(value ? "keep" : "unkeep");
+    return true;
   } catch (e) {
     console.log(e);
+    return false;
+  }
+};
+
+export const keep = async (uid: string | undefined, aid: string) => {
+  if (uid) {
+    toggleKeep(uid, aid, true);
+  }
+};
+export const unKeep = async (uid: string | undefined, aid: string) => {
+  if (uid) {
+    toggleKeep(uid, aid, false);
   }
 };

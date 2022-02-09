@@ -14,7 +14,6 @@ interface Props {}
 export interface Auth {
   user: CustomUser | null;
   isAuthenticating: boolean;
-  syncUserData: () => Promise<void>;
   login: (email: string, password: string) => Promise<Response> | null;
   logout: () => Promise<Response> | null;
   register: (form: RegisterForm) => Promise<Response>;
@@ -90,7 +89,6 @@ const authErrorMsgs = {
 const defaultAuth = {
   user: null,
   isAuthenticating: false,
-  syncUserData: async () => {},
   login: async (email: string, password: string) => {
     return { status: false };
   },
@@ -129,31 +127,20 @@ const useProviderAuth = () => {
     return () => unsub();
   }, [auth]);
 
-  const syncUserData = async () => {
-    if (user) {
-      const snapshot = await get(ref(fireDB, "users/" + user.uid));
-      const userData = snapshot.val();
-      setUser({
-        ...user,
-        name: userData.name || "익명",
-        keeps: userData.keeps || {},
-      });
-    }
-  };
-
   const formatUser = async (user: User | null) => {
     if (user) {
       try {
         const token = await user.getIdTokenResult();
+        const snapshot = await get(ref(fireDB, "users/" + user.uid));
+        const userData = snapshot.val();
 
         setUser({
-          name: "익명",
           email: user.email,
           uid: user.uid,
           admin: token.claims.admin ? true : false,
-          keeps: {},
+          name: userData.name || "익명",
+          keeps: userData.keeps || {},
         });
-        await syncUserData();
 
         setIsAuthenticating(false);
       } catch (e: any) {
@@ -306,7 +293,7 @@ const useProviderAuth = () => {
     }
   };
 
-  return { user, isAuthenticating, syncUserData, login, logout, register };
+  return { user, isAuthenticating, login, logout, register };
 };
 
 export const useAuth = () => {

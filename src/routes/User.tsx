@@ -46,35 +46,33 @@ const User: React.FC<Props> = () => {
   const { loading } = usePreloadImages([UserIcon, BoxOpened, Heart]);
   const globalVariables = useContext(VariablesContext);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Container>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <UserProfile />
-          <UserTabs>
-            <UserTab>
-              <Link to="/answers">
-                <UserTabIcon src={BoxOpened} />
-              </Link>
-              <Link to="/answers">
-                <UserTabTitle>{globalVariables.myAnswers}</UserTabTitle>
-              </Link>
-            </UserTab>
-            <UserTab>
-              <UserTabIcon src={Heart} />
-              <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
-              {/* <Link to="/answers">
+      <UserProfile />
+      <UserTabs>
+        <UserTab>
+          <Link to="/answers">
+            <UserTabIcon src={BoxOpened} />
+          </Link>
+          <Link to="/answers">
+            <UserTabTitle>{globalVariables.myAnswers}</UserTabTitle>
+          </Link>
+        </UserTab>
+        <UserTab>
+          <UserTabIcon src={Heart} />
+          <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
+          {/* <Link to="/answers">
             <UserTabIcon src={Heart} />
           </Link>
           <Link to="/answers">
             <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
           </Link> */}
-            </UserTab>
-          </UserTabs>
-        </>
-      )}
+        </UserTab>
+      </UserTabs>
     </Container>
   );
 };

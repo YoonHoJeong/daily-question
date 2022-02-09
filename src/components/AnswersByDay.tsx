@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import UserImage from "./user/UserImage";
 import HeartColored from "../assets/4_heart.svg";
 import { useAuth } from "../hooks/useAuth";
-import { toggleKeep } from "../services/fireDB";
+import { keep, unKeep } from "../services/fireDB";
 import { Answer } from "../model/interfaces";
 
 interface AnswersWithQuestion {
@@ -35,11 +35,8 @@ const AnswersByDay: React.FC<Props> = ({
 }) => {
   const [_, month, day] = date.split("-");
   const auth = useAuth();
-  const uid = auth?.user?.uid || "";
-  const handleKeep = async (answer: Answer) => {
-    const keepers = answer.keepers || {};
-    const res = await toggleKeep(uid, answer.aid, !keepers[uid]);
-  };
+  const uid = auth.user?.uid || "";
+
   const userProfileComponent = (
     <Profile>
       <UserImage
@@ -56,13 +53,26 @@ const AnswersByDay: React.FC<Props> = ({
   const AnswerCard: React.FC<{
     answer: Answer;
   }> = ({ answer }) => {
+    const [isKept, setIsKept] = useState<boolean>(
+      auth.user?.keeps[answer.aid] ? true : false
+    );
+    const handleClickKeep = () => {
+      setIsKept(!isKept);
+
+      if (isKept) {
+        unKeep(uid, answer.aid);
+      } else {
+        keep(uid, answer.aid);
+      }
+    };
+
     return (
       <AnswerContainer>
         {userProfileComponent}
         <AnswerAndFav>
           <AnswerText>{answer.answer}</AnswerText>
-          <button onClick={() => handleKeep(answer)}>
-            {Object.keys(answer.keepers || {}).includes(uid) ? (
+          <button onClick={handleClickKeep}>
+            {isKept ? (
               <img src={HeartColored} style={{ width: "15px" }} />
             ) : (
               <FavoriteIcon sx={{ width: "15px" }} color="disabled" />
