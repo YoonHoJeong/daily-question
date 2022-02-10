@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { get, onValue, ref, update } from "firebase/database";
+import { get, onValue, ref, Unsubscribe, update } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 
@@ -17,6 +17,7 @@ export interface Auth {
   login: (email: string, password: string) => Promise<Response> | null;
   logout: () => Promise<Response> | null;
   register: (form: RegisterForm) => Promise<Response>;
+  updateUserProfile: (key: string, value: any) => Promise<void>;
 }
 
 interface AuthLogin {
@@ -110,18 +111,54 @@ const useProviderAuth = () => {
   const auth = getAuth(firebaseApp);
 
   useEffect(() => {
+    const unsubs: Unsubscribe[] = [];
+
     const unsubAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
         // log in
         formatUser(user);
+
+        const unsubDB = onValue(
+          ref(fireDB, "users/" + user.uid + "/name"),
+          (snapshot) => {
+            console.log("user name changed");
+            formatUser(user);
+          }
+        );
+        unsubs.push(unsubDB);
       } else {
         // log out.
+        while (unsubs) {
+          const unsub = unsubs.pop();
+          unsub && unsub();
+        }
+
         formatUser(null);
       }
     });
-    const unsub = () => unsubAuth();
 
-    return () => unsub();
+    return () => {
+      while (unsubs) {
+        const unsub = unsubs.pop();
+        unsub && unsub();
+      }
+      unsubAuth();
+    };
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.currentUser && user) {
+      const unsub = onValue(
+        ref(fireDB, "users/" + user?.uid + "/name"),
+        (snapshot) => {
+          console.log("user name changed");
+
+          const userData = snapshot.val();
+          setUser({ ...user, name: userData.name });
+        }
+      );
+      return () => unsub();
+    }
   }, [auth]);
 
   const formatUser = async (user: User | null) => {
@@ -289,7 +326,15 @@ const useProviderAuth = () => {
     }
   };
 
-  return { user, isAuthenticating, login, logout, register };
+  const updateUserProfile = async (key: string, value: any) => {
+    const updates = {};
+    updates["users/" + user?.uid + "/" + key] = value;
+    console.log(updates);
+
+    await update(ref(fireDB), updates);
+  };
+
+  return { user, isAuthenticating, login, logout, register, updateUserProfile };
 };
 
 export const useAuth = () => {

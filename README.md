@@ -206,7 +206,7 @@ components에 사용하는 비즈니스 로직 구성
   - AnswersByDay
     - [x] preload images
     - [x] add keeps state / isFetching
-  - [x] user keeps, AnswersByDay 동기화
+  - [x] user keeps, board page 데이터 동기화
 
 # Todo
 
@@ -215,6 +215,7 @@ components에 사용하는 비즈니스 로직 구성
 - [ ] 일별로 답변을 구분할 때, 생성 일자로 구분할 지, publish_date로 구분할 지
 - [ ] 페이지별 Fetched data caching
 - [ ] Auth - login 여부에 따라 필요로 하는 함수가 달라서, interface 2개 구분해서 사용
+- [ ] user board
 
 Essential UI
 

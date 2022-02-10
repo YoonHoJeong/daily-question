@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import UserProfile from "../../components/UserProfile";
-import BoxOpened from "../../assets/4_box1.svg";
+import BoxOpened from "../../assets/box_opened.png";
 import UserIcon from "../../assets/person2.png";
 import Heart from "../../assets/4_heart.svg";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
