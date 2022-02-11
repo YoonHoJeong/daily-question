@@ -13,7 +13,6 @@ import {
   push,
   update,
   startAt,
-  endAt,
   endBefore,
   orderByKey,
   limitToLast,
@@ -24,7 +23,6 @@ import {
   convertDateUntilDay,
   getToday,
   getYearMonth,
-  pad,
 } from "./DateManager";
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 
@@ -128,7 +126,7 @@ export const getBoardAnswers = async () => {
   ).val();
   let questions: FetchedQuestions = (await get(ref(fireDB, "questions"))).val();
 
-  const answersWithQuestion = {};
+  const answersWithQuestion: DailyAnswersWithQuestions = {};
 
   Object.keys(answers)
     .sort((a, b) => (a > b ? 1 : -1))

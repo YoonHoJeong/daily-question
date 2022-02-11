@@ -28,7 +28,9 @@ const Login: React.FC<Props> = () => {
     setSubmitting(true);
     const response = await auth.login(form.email, form.password);
     setError(response?.error);
-    setSubmitting(false);
+    if (response?.error) {
+      setSubmitting(false);
+    }
   };
   useEffect(() => {
     if (auth && auth.user) {

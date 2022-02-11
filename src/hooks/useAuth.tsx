@@ -169,11 +169,11 @@ const useProviderAuth = () => {
         const userProfileData = await fetchUserDB(user.uid, "profile");
 
         setCustomUser({
-          email: user.email || "인증되지 않은 이메일",
+          email: user.email || "",
           uid: user.uid,
           admin: token.claims.admin ? true : false,
-          name: userProfileData?.name || "익명",
-          intro: userProfileData?.intro || "내 소개를 입력해주세요",
+          name: userProfileData?.name,
+          intro: userProfileData?.intro,
         });
 
         setIsAuthenticating(false);
@@ -266,23 +266,17 @@ const useProviderAuth = () => {
       });
     };
 
-    let error = {};
+    let error;
 
     /* validate error handling */
     try {
       validate();
     } catch (error: any) {
       const errorType = new Error(error).message.split(": ")[1];
-
-      switch (errorType) {
-        case "auth/weak-name":
-        case "auth/short-password":
-        case "auth/different-password":
-          error = authErrorMsgs[errorType];
-          break;
-        default:
-          error = authErrorMsgs["default"];
-          break;
+      if (authErrorMsgs[errorType]) {
+        error = authErrorMsgs[errorType];
+      } else {
+        error = authErrorMsgs["default"];
       }
       formatUser(null);
       return { status: false, error };

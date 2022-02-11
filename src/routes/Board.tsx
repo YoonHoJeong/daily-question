@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getBoardAnswers } from "../services/fireDB";
 import AnswersByDay from "../components/AnswersByDay";
-import Loader from "../components/common/Loader";
+import { DailyAnswersWithQuestions } from "../model/interfaces";
 
 const Container = styled.ul`
   background-color: white;
@@ -13,7 +13,7 @@ const Container = styled.ul`
 interface Props {}
 
 const Board: React.FC<Props> = () => {
-  const [answers, setAnswers] = useState<any>({});
+  const [answers, setAnswers] = useState<DailyAnswersWithQuestions>({});
 
   useEffect(() => {
     async function fetchData() {

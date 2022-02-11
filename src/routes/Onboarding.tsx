@@ -7,34 +7,9 @@ import BoxLogoBlueLine from "../assets/box_blue_line.png";
 import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #515fa9;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const ServiceIcon = styled.img`
-  height: 150px;
-`;
-
-const Buttons = styled.div`
-  position: absolute;
-
-  bottom: 70px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 interface Props {}
 
-const UserAuthPage: React.FC<Props> = () => {
+const Onboarding: React.FC<Props> = () => {
   const auth = useAuth();
   const history = useHistory();
 
@@ -75,4 +50,32 @@ const UserAuthPage: React.FC<Props> = () => {
   );
 };
 
-export default UserAuthPage;
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #515fa9;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const ServiceIcon = styled.img`
+  height: 150px;
+
+  position: relative;
+  top: -30px;
+`;
+
+const Buttons = styled.div`
+  position: absolute;
+
+  bottom: 70px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export default Onboarding;
