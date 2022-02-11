@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
-import { get, onValue, ref, Unsubscribe, update } from "firebase/database";
+import { get, ref, update } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 
@@ -19,7 +19,6 @@ export interface Auth {
   logout: () => Promise<Response> | null;
   register: (form: RegisterForm) => Promise<Response>;
   updateUserProfile: (userProfileData: UserProfileData) => Promise<void>;
-  refreshCustomUser: () => Promise<void>;
 }
 interface UserProfileData {
   [key: string]: string | number;
@@ -62,6 +61,13 @@ interface Response {
   status: boolean;
   error?: CustomAuthError;
 }
+interface ResponseFail extends Response {
+  status: false;
+  error: CustomAuthError;
+}
+interface ResponseSuccess extends Response {
+  status: true;
+}
 
 const authErrorMsgs = {
   "auth/user-not-found": {
@@ -84,9 +90,17 @@ const authErrorMsgs = {
     field: "name",
     message: "이미 사용 중인 이메일입니다.",
   },
+  "auth/wrong-password": {
+    field: "password",
+    message: "비밀번호가 일치하지 않습니다.",
+  },
+  "auth/too-many-requests": {
+    field: "password",
+    message: "로그인 횟수가 초과되었습니다. \n잠시 뒤 다시 시도해주세요.",
+  },
   default: {
     field: "default",
-    message: "오류가 발생했습니다. 다시 시도해주세요.",
+    message: "오류가 발생했습니다. 잠시 뒤 다시 시도해주세요.",
   },
 };
 
@@ -129,6 +143,7 @@ const useProviderAuth = () => {
 
     return () => unsubAuth();
   }, [auth]);
+
   const fetchUserDB = async (uid: string, path: string) => {
     const snapshot = await get(ref(fireDB, `users/${uid}/${path}`));
     return snapshot.val();
@@ -194,15 +209,13 @@ const useProviderAuth = () => {
       return { status: true };
     } catch (e) {
       const firebaseError = e as FirebaseError;
+
       let error;
 
-      switch (firebaseError.code) {
-        case "auth/user-not-found":
-          error = authErrorMsgs[firebaseError.code];
-          break;
-        default:
-          error = authErrorMsgs["default"];
-          break;
+      if (authErrorMsgs[firebaseError.code]) {
+        error = authErrorMsgs[firebaseError.code];
+      } else {
+        error = authErrorMsgs["default"];
       }
 
       setCustomUser(null);
@@ -298,14 +311,12 @@ const useProviderAuth = () => {
       return { status: true };
     } catch (e) {
       const firebaseError = e as FirebaseError;
+      let error;
 
-      switch (firebaseError.code) {
-        case "auth/email-already-in-use":
-          error = authErrorMsgs[firebaseError.code];
-          break;
-        default:
-          error = authErrorMsgs["default"];
-          break;
+      if (authErrorMsgs[firebaseError.code]) {
+        error = authErrorMsgs[firebaseError.code];
+      } else {
+        error = authErrorMsgs["default"];
       }
       formatUser(null);
 
@@ -343,7 +354,6 @@ const useProviderAuth = () => {
     logout,
     register,
     updateUserProfile,
-    refreshCustomUser,
   };
 };
 

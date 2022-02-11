@@ -2,37 +2,13 @@ import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
+import ErrorMessage from "../components/common/ErrorMessage";
 import Input from "../components/common/Input";
 import { Header } from "../components/Header";
 import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
 interface Props {}
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #f2f2f2;
-`;
-const MainTitle = styled.p`
-  font-weight: bold;
-  font-size: 20px;
-`;
-const RegisterForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 20px;
-`;
 
 const Register: React.FC<Props> = () => {
   const auth = useAuth();
@@ -45,19 +21,14 @@ const Register: React.FC<Props> = () => {
     password2: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<CustomAuthError>();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     setSubmitting(true);
-    const response = await auth!!.register(form);
-    if (response.status === true) {
-      // user register success
-    } else {
-      // user register fail
-      response.error && alert(response.error.message);
-      // setError(response.error);
-    }
+    const response = await auth.register(form);
+    setError(response.error);
     setSubmitting(false);
   };
 
@@ -118,13 +89,37 @@ const Register: React.FC<Props> = () => {
           >
             가입하기
           </Button>
+          <ErrorMessage error={error} />
         </RegisterForm>
-        <Button large style={{ marginTop: "10px" }} disabled={submitting}>
-          google 계정으로 가입하기
-        </Button>
       </Container>
     </>
   );
 };
 
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #f2f2f2;
+`;
+const MainTitle = styled.p`
+  font-weight: bold;
+  font-size: 20px;
+`;
+const RegisterForm = styled.form`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 20px;
+`;
 export default Register;

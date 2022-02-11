@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
-import { useAuth } from "../hooks/useAuth";
+import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 import { Header } from "../components/Header";
 import Input from "../components/common/Input";
@@ -10,11 +10,13 @@ import BoxLogoGrey from "../assets/box_logo_grey.svg";
 import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
 import { Spinner } from "../components/common/Spinner";
+import ErrorMessage from "../components/common/ErrorMessage";
 
 interface Props {}
 
 const Login: React.FC<Props> = () => {
   const { form, onChange } = useForm({ email: "", password: "" });
+  const [error, setError] = useState<CustomAuthError>();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const auth = useAuth();
   const history = useHistory();
@@ -24,7 +26,8 @@ const Login: React.FC<Props> = () => {
     e.preventDefault();
 
     setSubmitting(true);
-    auth && (await auth.login(form.email, form.password));
+    const response = await auth.login(form.email, form.password);
+    setError(response?.error);
     setSubmitting(false);
   };
   useEffect(() => {
@@ -72,12 +75,9 @@ const Login: React.FC<Props> = () => {
             >
               {submitting ? <Spinner /> : "로그인"}
             </Button>
+            <ErrorMessage error={error} />
           </LoginForm>
         )}
-
-        {/* <Button large style={{ marginTop: "10px" }}>
-          google 계정으로 로그인
-        </Button> */}
       </Container>
     </>
   );
