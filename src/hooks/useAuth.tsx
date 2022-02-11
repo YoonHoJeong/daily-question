@@ -11,13 +11,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 
 interface Props {}
+
 export interface Auth {
   user: CustomUser | null;
   isAuthenticating: boolean;
   login: (email: string, password: string) => Promise<Response> | null;
   logout: () => Promise<Response> | null;
   register: (form: RegisterForm) => Promise<Response>;
-  updateUserProfile: (key: string, value: any) => Promise<void>;
+  updateUserProfile: (userProfileData: UserProfileData) => Promise<void>;
+  refreshCustomUser: () => Promise<void>;
+}
+interface UserProfileData {
+  [key: string]: string | number;
 }
 
 interface AuthLogin {
@@ -35,10 +40,11 @@ interface AuthLogout {
 }
 
 export interface CustomUser {
-  name: string;
-  email?: string | null;
   uid: string;
   admin: boolean;
+  name?: string;
+  email?: string;
+  intro?: string;
 }
 
 interface RegisterForm {
@@ -106,73 +112,53 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 };
 
 const useProviderAuth = () => {
-  const [user, setUser] = useState<CustomUser | null>(null);
+  const [customUser, setCustomUser] = useState<CustomUser | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
 
   useEffect(() => {
-    const unsubs: Unsubscribe[] = [];
-
     const unsubAuth = onAuthStateChanged(auth, (user) => {
       if (user) {
         // log in
         formatUser(user);
-
-        const unsubDB = onValue(
-          ref(fireDB, "users/" + user.uid + "/name"),
-          (snapshot) => {
-            console.log("user name changed");
-            formatUser(user);
-          }
-        );
-        unsubs.push(unsubDB);
       } else {
         // log out.
-        while (unsubs) {
-          const unsub = unsubs.pop();
-          unsub && unsub();
-        }
-
         formatUser(null);
       }
     });
 
-    return () => {
-      while (unsubs) {
-        const unsub = unsubs.pop();
-        unsub && unsub();
-      }
-      unsubAuth();
-    };
+    return () => unsubAuth();
   }, [auth]);
+  const fetchUserDB = async (uid: string, path: string) => {
+    const snapshot = await get(ref(fireDB, `users/${uid}/${path}`));
+    return snapshot.val();
+  };
 
-  useEffect(() => {
-    if (auth.currentUser && user) {
-      const unsub = onValue(
-        ref(fireDB, "users/" + user?.uid + "/name"),
-        (snapshot) => {
-          console.log("user name changed");
-
-          const userData = snapshot.val();
-          setUser({ ...user, name: userData.name });
-        }
-      );
-      return () => unsub();
+  const refreshCustomUser = async () => {
+    if (customUser) {
+      const userProfileData = await fetchUserDB(customUser.uid, "profile");
+      setCustomUser({
+        ...customUser,
+        name: userProfileData?.name || "익명",
+        intro: userProfileData?.intro || "내 소개를 입력해주세요",
+      });
+    } else {
+      throw new Error("user not logged in");
     }
-  }, [auth]);
+  };
 
   const formatUser = async (user: User | null) => {
     if (user) {
       try {
         const token = await user.getIdTokenResult();
-        const snapshot = await get(ref(fireDB, "users/" + user.uid));
-        const userData = snapshot.val();
+        const userProfileData = await fetchUserDB(user.uid, "profile");
 
-        setUser({
-          email: user.email,
+        setCustomUser({
+          email: user.email || "인증되지 않은 이메일",
           uid: user.uid,
           admin: token.claims.admin ? true : false,
-          name: userData.name || "익명",
+          name: userProfileData?.name || "익명",
+          intro: userProfileData?.intro || "내 소개를 입력해주세요",
         });
 
         setIsAuthenticating(false);
@@ -188,10 +174,12 @@ const useProviderAuth = () => {
             formatUser(user);
             timeoutCnt++;
           }, 1000);
+        } else {
+          throw new Error(e);
         }
       }
     } else {
-      setUser(null);
+      setCustomUser(null);
     }
 
     setIsAuthenticating(false);
@@ -217,7 +205,7 @@ const useProviderAuth = () => {
           break;
       }
 
-      setUser(null);
+      setCustomUser(null);
       return { status: false, error };
     }
   };
@@ -297,13 +285,12 @@ const useProviderAuth = () => {
       );
 
       /* create user auth in firebase-database */
-      const updates = {};
-      updates[userCredential.user.uid] = {
+      const userDBData = {
         uid: userCredential.user.uid,
-        name: form.name,
-        email: form.email,
+        "profile/name": form.name,
+        "profile/email": form.email,
       };
-      await update(ref(fireDB, "users"), updates);
+      await updateUserDB(userCredential.user.uid, userDBData);
 
       /* update 'user' state */
       formatUser(userCredential.user);
@@ -326,15 +313,38 @@ const useProviderAuth = () => {
     }
   };
 
-  const updateUserProfile = async (key: string, value: any) => {
-    const updates = {};
-    updates["users/" + user?.uid + "/" + key] = value;
-    console.log(updates);
+  const updateUserDB = async (uid: string, userData: UserProfileData) => {
+    const updates = Object.keys(userData).reduce(
+      (userProfile, key) => ({
+        ...userProfile,
+        [`users/${uid}/${key}`]: userData[key],
+      }),
+      {}
+    );
 
     await update(ref(fireDB), updates);
+    await refreshCustomUser();
+  };
+  const updateUserProfile = async (userProfileData: UserProfileData) => {
+    const userData = Object.keys(userProfileData).reduce(
+      (userData, key) => ({
+        ...userData,
+        [`profile/${key}`]: userProfileData[key],
+      }),
+      {}
+    );
+    await updateUserDB(customUser!!.uid, userData);
   };
 
-  return { user, isAuthenticating, login, logout, register, updateUserProfile };
+  return {
+    user: customUser,
+    isAuthenticating,
+    login,
+    logout,
+    register,
+    updateUserProfile,
+    refreshCustomUser,
+  };
 };
 
 export const useAuth = () => {

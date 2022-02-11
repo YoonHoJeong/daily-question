@@ -18,22 +18,27 @@ const UserEdit: React.FC<Props> = () => {
   const handleEditButton = (e: SyntheticEvent) => {
     e.preventDefault();
     const key = (e.currentTarget as HTMLButtonElement).name;
-    setPopupValues({ key, defaultValue: auth.user?.name || "" });
+    setPopupValues({ key, defaultValue: auth.user!![key] || "" });
     setShowPopup(true);
   };
+
   const closePopup = () => {
     setShowPopup(false);
   };
 
+  const submitUserProfile = async (key: string, value: number | string) => {
+    await auth.updateUserProfile({ [key]: value });
+  };
+
   return (
     <>
-      {showPopup && (
-        <EditorPopup
-          keyname={popupValues.key}
-          defaultValue={popupValues.defaultValue}
-          closePopup={closePopup}
-        />
-      )}
+      <EditorPopup
+        show={showPopup}
+        keyname={popupValues.key}
+        defaultValue={popupValues.defaultValue}
+        closePopup={closePopup}
+        submitPopup={submitUserProfile}
+      />
       <div>
         <ProfileImageEditor>
           <UserImage style={{ width: "96px", height: "96px" }} />
@@ -49,8 +54,8 @@ const UserEdit: React.FC<Props> = () => {
           </InputRow>
           <InputRow>
             <InputLabel>소개</InputLabel>
-            <Field>{"내 소개를 입력해주세요."}</Field>
-            <EditButton name="intro" onClick={handleEditButton} disabled>
+            <Field>{auth.user?.intro || "내 소개를 입력해주세요."}</Field>
+            <EditButton name="intro" onClick={handleEditButton}>
               <EditIcon src={EditIconUrl} />
             </EditButton>
           </InputRow>
@@ -65,36 +70,47 @@ const UserEdit: React.FC<Props> = () => {
 };
 
 interface EditorPopupProps {
+  show: boolean;
   keyname: string;
   defaultValue: string;
   closePopup: () => void;
+  submitPopup: (key: string, value: number | string) => Promise<void>;
 }
 
 const EditorPopup: React.FC<EditorPopupProps> = ({
+  show,
   keyname,
   defaultValue,
   closePopup,
+  submitPopup,
 }) => {
   const { form, onChange } = useForm({ [keyname]: defaultValue });
   const [submitting, setSubmitting] = useState(false);
-  const auth = useAuth();
 
   const submitUserProfile = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     setSubmitting(true);
-    await auth.updateUserProfile(keyname, form[keyname]);
+    await submitPopup(keyname, form[keyname]);
     setSubmitting(false);
     closePopup();
   };
 
+  const handleCancel = (e: SyntheticEvent) => {
+    e.preventDefault();
+    closePopup();
+  };
+
+  if (!show) {
+    return null;
+  }
+
   return (
-    <EditorContainer>
+    <EditorContainer onSubmit={submitUserProfile}>
       <EditorHeader>
-        <button onClick={closePopup} disabled={submitting}>
+        <button onClick={handleCancel} disabled={submitting}>
           취소
         </button>
-        <span>{keyname}</span>
         <button onClick={submitUserProfile} disabled={submitting}>
           확인
         </button>
