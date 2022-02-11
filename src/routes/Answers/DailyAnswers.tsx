@@ -29,7 +29,7 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
   return (
     <Container>
       <UserProfileContainer>
-        <UserProfile />
+        <UserProfile editable={false} showEmail={false} />
       </UserProfileContainer>
       <DailyAnswersList>
         {Object.keys(monthAnswers)

@@ -208,6 +208,26 @@ components에 사용하는 비즈니스 로직 구성
     - [x] add keeps state / isFetching
   - [x] user keeps, board page 데이터 동기화
 
+- 22.02.10
+  - [x] userEdit page 제작
+    - useAuth에 user/name listener 생성
+- 22.02.11
+  - UserEdit page
+    - [x] popup - EditorPopup Component 추상화
+      - UserEdit Component에서 무슨 컴포넌트인지 알 수 있도록 show, submitPopup props 추가
+    - [x] useAuth - user DB Listener 삭제(onValue)
+      - 잦은 변경이 없는 데이터, 수정되는 함수마다 userData Refreshing
+    - [x] user DB 구조 변경
+      - user profile 데이터만 분리, 1개 이상의 데이터가 포함되어서(name, intro, ...)
+      - profile user/:uid/profile
+  - [x] add useAuth user profile update 함수
+    - CustomUser에 들어가는 데이터가 2개의 fetch를 기다려야 하는 상황
+    - 2개의 fetch를 각 함수로 나누고, 그 함수 내에서 setState를 하면, 비동기 처리에 의해 둘 중 하나는 덮어씌워짐.
+    - solution) fetch하는 함수만 나누고, setState는 한 군데서 진행.
+  - UserProfile
+    - [x] make 'move to userEdit' icon optional(add props)
+    - [x] make email field optional(add props)
+
 # Todo
 
 기능 구현

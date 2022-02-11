@@ -13,36 +13,46 @@ const ProfileContainer = styled.section`
   background-color: ${(props) => props.theme.palette.white};
 `;
 
-const UserInfo = styled.div`
+const UserInfo = styled.ul`
   width: 100%;
-  height: 60px;
+  max-height: 60px;
   margin-left: 15px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+
+  & > li:not(:first-child) {
+    margin-top: 5px;
+  }
 `;
-const UserName = styled.p`
+const UserName = styled.li`
   font-weight: 700;
   color: ${({ theme }) => theme.palette.black};
 `;
 
-const UserAddress = styled.p`
+const UserAddress = styled.li`
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => theme.palette.black};
 `;
-const UserIntro = styled.p`
+const UserIntro = styled.li`
   font-size: 14px;
   font-weight: 400;
   color: ${({ theme }) => theme.palette.black};
 `;
-interface Props {}
+interface Props {
+  editable?: boolean;
+  showEmail?: boolean;
+}
 
-const UserProfile: React.FC<Props> = () => {
+const UserProfile: React.FC<Props> = ({
+  editable = true,
+  showEmail = true,
+}) => {
   const auth = useAuth();
   const history = useHistory();
-  const moveToProfileEdit = () => {
+  const moveToUserEdit = () => {
     history.push("/user/edit");
   };
 
@@ -50,16 +60,36 @@ const UserProfile: React.FC<Props> = () => {
     <ProfileContainer>
       <UserImage style={{ width: "60px", height: "60px" }} />
       <UserInfo>
-        <UserName>{auth?.user?.name || "이름을 등록해주세요."}</UserName>
-        <UserAddress>
-          {auth?.user?.email || "이메일을 등록해주세요."}
-        </UserAddress>
-        {/* <UserIntro>힙하고 싶으면 힙해질 수 없음</UserIntro> */}
+        <UserName>{auth?.user?.name}</UserName>
+        <UserIntro>{auth?.user?.intro}</UserIntro>
+        {showEmail && (
+          <UserAddress>
+            {auth?.user?.email || "이메일을 등록해주세요."}
+          </UserAddress>
+        )}
       </UserInfo>
-      <button onClick={moveToProfileEdit}>
-        <ChevronRightIcon sx={{ height: "24px" }} />
-      </button>
+      <MoveToUserEditButton show={editable} moveToUserEdit={moveToUserEdit} />
     </ProfileContainer>
+  );
+};
+
+interface MoveToUserEditButtonProps {
+  show: boolean;
+  moveToUserEdit: () => void;
+}
+
+const MoveToUserEditButton: React.FC<MoveToUserEditButtonProps> = ({
+  show,
+  moveToUserEdit,
+}) => {
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <button onClick={moveToUserEdit}>
+      <ChevronRightIcon sx={{ height: "24px" }} />
+    </button>
   );
 };
 

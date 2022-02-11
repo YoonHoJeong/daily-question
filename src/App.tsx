@@ -19,6 +19,7 @@ const palette = {
 
 const sizes = {
   headerHeight: "60px",
+  headerPadding: "20px",
   headerBorder: "4px",
   bottomNavHeight: "84px",
 };
