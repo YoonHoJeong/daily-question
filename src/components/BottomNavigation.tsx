@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import boxClicked from "../assets/Qbox1.png";
-import box from "../assets/Qbox2.png";
-import feedClicked from "../assets/feed1.png";
-import feed from "../assets/feed2.png";
-import userClicked from "../assets/person1.png";
-import user from "../assets/person2.png";
+import BoxClickedIconUrl from "../assets/Qbox1.png";
+import BoxIconUrl from "../assets/Qbox2.png";
+import BoardClickedIconUrl from "../assets/feed1.png";
+import BoardIconUrl from "../assets/feed2.png";
+import UserClickedIconUrl from "../assets/person1.png";
+import UserIconUrl from "../assets/person2.png";
 import { VariablesContext } from "../App";
 
 const Container = styled.div`
@@ -51,6 +51,33 @@ const Icon = styled.img`
 
 const exceptPathnames = ["/user/edit", "/user/keeps"];
 
+interface Navigation {
+  pathname: string;
+  iconsUrl: {
+    default: string;
+    clicked: string;
+  };
+}
+
+const Navigations: Navigation[] = [
+  {
+    pathname: "/",
+    iconsUrl: { clicked: BoxClickedIconUrl, default: BoxIconUrl },
+  },
+  {
+    pathname: "/board",
+    iconsUrl: { clicked: BoardClickedIconUrl, default: BoardIconUrl },
+  },
+  {
+    pathname: "/answers",
+    iconsUrl: { clicked: BoxClickedIconUrl, default: BoxIconUrl },
+  },
+  {
+    pathname: "/user",
+    iconsUrl: { clicked: UserClickedIconUrl, default: UserIconUrl },
+  },
+];
+
 interface Props {}
 
 const BottomNavigation: React.FC<Props> = () => {
@@ -64,9 +91,29 @@ const BottomNavigation: React.FC<Props> = () => {
 
   return (
     <Container>
-      <NavItem>
+      {Navigations.map((navigation) => (
+        <NavItem>
+          <Link to={navigation.pathname}>
+            <Icon
+              src={
+                pathname === navigation.pathname
+                  ? navigation.iconsUrl.clicked
+                  : navigation.iconsUrl.default
+              }
+              alt=""
+            />
+          </Link>
+          <SLink
+            to={navigation.pathname}
+            current={pathname === navigation.pathname ? "true" : "false"}
+          >
+            {globalVariables.pathnames[navigation.pathname]}
+          </SLink>
+        </NavItem>
+      ))}
+      {/* <NavItem>
         <Link to="/">
-          <Icon src={pathname === "/" ? boxClicked : box} alt="" />
+          <Icon src={pathname === "/" ? BoxClickedIconUrl : BoxIconUrl} alt="" />
         </Link>
         <SLink to="/" current={pathname === "/" ? "true" : "false"}>
           {globalVariables.todayQuestions}
@@ -74,7 +121,7 @@ const BottomNavigation: React.FC<Props> = () => {
       </NavItem>
       <NavItem>
         <Link to="/board">
-          <Icon src={pathname === "/board" ? feedClicked : feed} alt="" />
+          <Icon src={pathname === "/board" ? BoardClickedIconUrl : BoardIconUrl} alt="" />
         </Link>
         <SLink to="/board" current={pathname === "/board" ? "true" : "false"}>
           {globalVariables.board}
@@ -82,12 +129,12 @@ const BottomNavigation: React.FC<Props> = () => {
       </NavItem>
       <NavItem>
         <Link to="/user">
-          <Icon src={pathname === "/user" ? userClicked : user} alt="" />
+          <Icon src={pathname === "/user" ? UserClickedIconUrl : UserIconUrl} alt="" />
         </Link>
         <SLink to="/user" current={pathname === "/user" ? "true" : "false"}>
           {globalVariables.user}
         </SLink>
-      </NavItem>
+      </NavItem> */}
     </Container>
   );
 };
