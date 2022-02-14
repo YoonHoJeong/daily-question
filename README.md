@@ -228,8 +228,13 @@ components에 사용하는 비즈니스 로직 구성
     - [x] make 'move to userEdit' icon optional(add props)
     - [x] make email field optional(add props)
 - 22.02.12
+
   - [x] bottom navigation - 돌아보기(/ansewrs) 탭 추가
   - [x] globalVariables - pathnames 변수 추가
+
+- 22.02.14
+  - (admin) question CRUD
+    - [x] question Create
 
 # Todo
 

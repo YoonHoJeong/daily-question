@@ -11,41 +11,42 @@ export function useFireDBFetch<T>(
   error: any;
   refresh: () => Promise<void>;
 } {
+  console.log("useFireDBFetch");
+
   const [data, setData] = useState<T>({} as T);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState();
 
   const fetchData = useCallback(async () => {
-    try {
-      let dbRef = query(ref(fireDB, path));
+    console.log("fetchData");
 
-      if (filter) {
-        dbRef = query(
-          ref(fireDB, path),
-          orderByChild(filter.by),
-          equalTo(filter.value)
-        );
-      }
-      
-      const snapshot = await get(dbRef);
-      const fetched = snapshot.val();
-      console.log(fetched);
+    let dbRef = query(ref(fireDB, path));
 
-      setData(fetched);
-    } catch (e: any) {
-      console.error(e);
-
-      setError(e);
-    } finally {
-      setLoading(false);
+    if (filter) {
+      dbRef = query(
+        ref(fireDB, path),
+        orderByChild(filter.by),
+        equalTo(filter.value)
+      );
     }
+
+    setLoading(true);
+    const snapshot = await get(dbRef);
+    const data = snapshot.val();
+    setData(data || {});
   }, [path, filter]);
 
   const refresh = () => fetchData();
 
   useEffect(() => {
-    fetchData();
-  }, [path, filter, fetchData]);
+    try {
+      fetchData();
+    } catch (e: any) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchData]);
 
   return { data, loading, error, refresh };
 }

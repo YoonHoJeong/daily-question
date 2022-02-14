@@ -75,32 +75,6 @@ export const submitAnswer = async (
   }
 };
 
-export const enrollQuestion = async (
-  keyword: string,
-  question: string,
-  publish_date: string
-) => {
-  const updates = {};
-  const newQid = push(child(ref(fireDB), "questions")).key;
-  const week = calcWeek(new Date(publish_date));
-
-  updates["/questions/" + newQid] = {
-    qid: newQid,
-    keyword,
-    question,
-    publish_date,
-    week,
-  };
-
-  try {
-    await update(ref(fireDB), updates);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
-};
-
 export const getTodayQuestions = async () => {
   try {
     const snapshot = await get(
@@ -220,6 +194,20 @@ const toggleKeep = async (uid: string, aid: string, value: true | null) => {
     console.log(e);
     return false;
   }
+};
+export const fetchFireDBData = async (
+  path: string,
+  filter: { by: string; value: string | number }
+) => {
+  const dataRef = query(
+    ref(fireDB, path),
+    orderByChild(filter.by),
+    equalTo(filter.value)
+  );
+
+  const data = (await get(dataRef)).val();
+
+  return data;
 };
 
 export const keep = async (uid: string | undefined, aid: string) => {
