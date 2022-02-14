@@ -12,13 +12,35 @@ import { calcWeek } from "./DateManager";
 import { fireDB } from "./firebase";
 import { fetchFireDBData } from "./fireDB";
 
-export interface QuestionUpdateForm {
+export interface QuestionInputsForm {
+  qid?: string;
   keyword: string;
   question: string;
   publish_date: string;
 }
 
-const enrollQuestion = async (questionUpdateForm: QuestionUpdateForm) => {
+const updateQuestion = async (qid: string, questionUpdateForm: {}) => {
+  let updates = {};
+
+  updates = Object.keys(questionUpdateForm).reduce(
+    (res, field) => ({
+      ...res,
+      ["questions/" + qid + "/" + field]: questionUpdateForm[field],
+    }),
+    updates
+  );
+
+  await update(ref(fireDB), updates);
+};
+
+const deleteQuestion = async (qid: string) => {
+  const updates = {};
+  updates["questions/" + qid] = null;
+
+  await update(ref(fireDB), updates);
+};
+
+const enrollQuestion = async (questionUpdateForm: QuestionInputsForm) => {
   const isValid = () => {
     Object.keys(questionUpdateForm).forEach((field) => {
       if (!questionUpdateForm[field]) {
@@ -36,16 +58,10 @@ const enrollQuestion = async (questionUpdateForm: QuestionUpdateForm) => {
   let questionData = {
     qid: newQid,
     week,
+    ...questionUpdateForm,
   };
 
-  questionData = Object.keys(questionUpdateForm).reduce(
-    (res, field) => ({ ...res, [field]: questionUpdateForm[field] }),
-    questionData
-  );
-
-  const updates = { ["/questions/" + newQid]: questionData };
-
-  await update(ref(fireDB), updates);
+  newQid && (await updateQuestion(newQid, questionData));
 };
 
 const getfilteredByDate = async (date: string) => {
@@ -53,7 +69,6 @@ const getfilteredByDate = async (date: string) => {
     by: "publish_date",
     value: date,
   });
-  console.log(questions || {});
 
   return questions || {};
 };
@@ -61,6 +76,8 @@ const getfilteredByDate = async (date: string) => {
 const AdminApi = {
   question: {
     enroll: enrollQuestion,
+    update: updateQuestion,
+    delete: deleteQuestion,
     getfilteredByDate,
   },
 };

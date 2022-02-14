@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export const useForm = (initialValue?: any) => {
-  const [form, setForm] = useState({ ...initialValue });
+export function useForm<S>(initialValue: S | (() => S)) {
+  const [form, setForm] = useState<S>(initialValue);
 
   return {
     form,
@@ -11,5 +11,6 @@ export const useForm = (initialValue?: any) => {
     ) => {
       setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
     },
+    reset: () => setForm(initialValue),
   };
-};
+}

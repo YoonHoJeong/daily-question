@@ -4,6 +4,8 @@ import { Question } from "../model/interfaces";
 
 interface Props {
   question: Question;
+  onQuestionDelete: (qid: string) => Promise<void>;
+  onQuestionEdit: (question: Question) => void;
 }
 
 const QuestionContainer = styled.li``;
@@ -12,13 +14,29 @@ const Keyword = styled.span``;
 const EditButton = styled.button``;
 const DeleteButton = styled.button``;
 
-const QuestionItem: React.FC<Props> = ({ question }) => {
+const QuestionItem: React.FC<Props> = ({
+  question,
+  onQuestionDelete,
+  onQuestionEdit,
+}) => {
   return (
     <QuestionContainer>
       <Keyword>{question.keyword}</Keyword>
       <QuestionText>{question.question}</QuestionText>
-      <EditButton>수정하기</EditButton>
-      <DeleteButton>삭제하기</DeleteButton>
+      <EditButton
+        onClick={() => {
+          onQuestionEdit(question);
+        }}
+      >
+        수정하기
+      </EditButton>
+      <DeleteButton
+        onClick={() => {
+          onQuestionDelete(question.qid);
+        }}
+      >
+        삭제하기
+      </DeleteButton>
     </QuestionContainer>
   );
 };

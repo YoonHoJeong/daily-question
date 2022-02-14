@@ -79,7 +79,7 @@ const QuestionScreen: React.FC<Props> = ({ questions }) => {
   const uid = auth?.user?.uid || "";
   const question = questions[qid];
 
-  const { form, setForm, onChange } = useForm({ answer: "" });
+  const { form, setForm, onChange } = useForm({ answer: "", aid: "" });
   const history = useHistory();
 
   const onSubmit = async (e: SyntheticEvent) => {

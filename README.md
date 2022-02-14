@@ -235,6 +235,8 @@ components에 사용하는 비즈니스 로직 구성
 - 22.02.14
   - (admin) question CRUD
     - [x] question Create
+    - [x] question Update
+    - [x] question Delete
 
 # Todo
 
