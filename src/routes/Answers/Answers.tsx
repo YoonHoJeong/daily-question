@@ -12,6 +12,7 @@ const Container = styled.div`
   position: relative;
 
   width: 100vw;
+  height: 100vh;
 
   background-color: ${(props) => props.theme.palette.white};
 
@@ -101,7 +102,7 @@ const Answers: React.FC<Props> = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ height: "calc(100vh - 84px)" }}>
       <DateFormatPicker viewFormat={viewFormat} setViewFormat={setViewFormat} />
       {AnswersByVF()}
     </Container>
