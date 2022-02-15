@@ -233,10 +233,22 @@ components에 사용하는 비즈니스 로직 구성
   - [x] globalVariables - pathnames 변수 추가
 
 - 22.02.14
+
   - (admin) question CRUD
     - [x] question Create
     - [x] question Update
     - [x] question Delete
+
+- 22.02.15
+  - AnswersByDay Code Refactoring
+    - 컴포넌트 합성(Composition)으로 props 전달 최소화
+      - keep/unkeep
+      - userProfileComponent
+      - unKeepDisappear
+    - loading state 삭제
+      - Board, DailyAnswers, UserKeeps loading state 추가
+    - 공통으로 사용되는 keeps 데이터 state 추가
+  - [x] userEdit popup 열렸을 때 input focus
 
 # Todo
 

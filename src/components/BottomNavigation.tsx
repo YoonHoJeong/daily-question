@@ -17,12 +17,13 @@ const Container = styled.div`
   width: 100%;
   height: ${(props) => props.theme.sizes.bottomNavHeight};
 
-  background-color: ${(props) => props.theme.palette.white};
+  background-color: ${(props) => props.theme.palette.bgGrey};
+  border-top: 4px solid ${(props) => props.theme.palette.white};
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
+  padding: 15px 30px;
   list-style: none;
   border-top: 4px solid white;
 `;

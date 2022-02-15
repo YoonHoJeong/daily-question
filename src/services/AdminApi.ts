@@ -1,13 +1,5 @@
 import { FetchedQuestions } from "./../model/interfaces";
-import {
-  child,
-  equalTo,
-  orderByChild,
-  push,
-  query,
-  ref,
-  update,
-} from "firebase/database";
+import { child, push, ref, update } from "firebase/database";
 import { calcWeek } from "./DateManager";
 import { fireDB } from "./firebase";
 import { fetchFireDBData } from "./fireDB";

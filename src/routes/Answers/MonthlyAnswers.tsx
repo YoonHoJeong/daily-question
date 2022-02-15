@@ -60,7 +60,7 @@ const MonthlyAnswers: React.FC<Props> = ({
   const dates = getAllMonthlyDate(date.dateObj);
 
   return (
-    <Container>
+    <Container style={{ height: "calc(100vh - 84px)" }}>
       <WeekToggle>
         <WeekToggleButton onClick={() => changeMonth(-1)}>
           <KeyboardArrowLeftIcon />
@@ -104,7 +104,6 @@ const MonthlyAnswers: React.FC<Props> = ({
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
   background-color: ${(props) => props.theme.palette.white};
 
   display: flex;

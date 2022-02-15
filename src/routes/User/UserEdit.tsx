@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import UserImage from "../../components/user/UserImage";
 import EditIconUrl from "../../assets/pencil.png";
@@ -13,9 +13,10 @@ const UserEdit: React.FC<Props> = () => {
     key: "",
     defaultValue: "",
   });
+  const popupInputRef = useRef<HTMLInputElement>(null);
 
   const auth = useAuth();
-  const handleEditButton = (e: SyntheticEvent) => {
+  const handleOpenPopup = (e: SyntheticEvent) => {
     e.preventDefault();
     const key = (e.currentTarget as HTMLButtonElement).name;
     setPopupValues({ key, defaultValue: auth.user!![key] || "" });
@@ -30,6 +31,10 @@ const UserEdit: React.FC<Props> = () => {
     await auth.updateUserProfile({ [key]: value });
   };
 
+  useEffect(() => {
+    popupInputRef.current?.focus();
+  }, [showPopup]);
+
   return (
     <>
       <EditorPopup
@@ -38,6 +43,7 @@ const UserEdit: React.FC<Props> = () => {
         defaultValue={popupValues.defaultValue}
         closePopup={closePopup}
         submitPopup={submitUserProfile}
+        popupInputRef={popupInputRef}
       />
       <div>
         <ProfileImageEditor>
@@ -48,14 +54,14 @@ const UserEdit: React.FC<Props> = () => {
           <InputRow>
             <InputLabel>닉네임</InputLabel>
             <Field>{auth.user?.name || "이름을 입력해주세요."}</Field>
-            <EditButton name="name" onClick={handleEditButton}>
+            <EditButton name="name" onClick={handleOpenPopup}>
               <EditIcon src={EditIconUrl} />
             </EditButton>
           </InputRow>
           <InputRow>
             <InputLabel>소개</InputLabel>
             <Field>{auth.user?.intro || "내 소개를 입력해주세요."}</Field>
-            <EditButton name="intro" onClick={handleEditButton}>
+            <EditButton name="intro" onClick={handleOpenPopup}>
               <EditIcon src={EditIconUrl} />
             </EditButton>
           </InputRow>
@@ -75,6 +81,7 @@ interface EditorPopupProps {
   defaultValue: string;
   closePopup: () => void;
   submitPopup: (key: string, value: number | string) => Promise<void>;
+  popupInputRef: React.RefObject<HTMLInputElement>;
 }
 
 const EditorPopup: React.FC<EditorPopupProps> = ({
@@ -83,6 +90,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({
   defaultValue,
   closePopup,
   submitPopup,
+  popupInputRef,
 }) => {
   const { form, onChange } = useForm({ [keyname]: defaultValue });
   const [submitting, setSubmitting] = useState(false);
@@ -121,6 +129,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({
         onChange={onChange}
         contentEditable={!submitting}
         autoComplete="off"
+        ref={popupInputRef}
       />
     </EditorContainer>
   );

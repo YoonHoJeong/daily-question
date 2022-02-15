@@ -49,6 +49,8 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
 
 const Container = styled.div`
   width: 100%;
+
+  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
 `;
 const UserProfileContainer = styled.div`
   background-color: ${(props) => props.theme.palette.white};

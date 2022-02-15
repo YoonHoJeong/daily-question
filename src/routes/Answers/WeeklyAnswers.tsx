@@ -131,8 +131,7 @@ const WeeklyAnswers: React.FC<Props> = ({
 
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
-  padding-bottom: 100px;
+  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
 
   background-color: ${(props) => props.theme.palette.white};
 
