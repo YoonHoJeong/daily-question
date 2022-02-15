@@ -33,13 +33,13 @@ const globalVariables = {
   userEdit: "프로필 편집",
   userKeeps: "담아두기",
   pathnames: {
-    "/": "오늘의 질문",
     "/board": "둘러보기",
     "/user/keeps": "마음함",
     "/user/edit": "프로필 편집",
     "/user": "나의 묻다",
     "/answers": "돌아보기",
     "/questions": "오늘의 질문",
+    "/": "오늘의 질문",
   },
 };
 

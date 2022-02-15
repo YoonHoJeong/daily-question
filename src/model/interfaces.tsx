@@ -67,3 +67,7 @@ export interface DayAnswers {
     };
   };
 }
+
+export interface UserKeeps {
+  [aid: string]: boolean;
+}

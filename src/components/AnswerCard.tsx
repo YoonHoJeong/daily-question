@@ -1,24 +1,75 @@
 import React from "react";
 import styled from "styled-components";
 import { Answer } from "../model/interfaces";
-
-const Container = styled.li``;
-const KeywordText = styled.p``;
-const QuestionText = styled.p``;
-const AnswerText = styled.p``;
+import HeartColored from "../assets/4_heart.svg";
+import HeartUnColored from "../assets/4_heart2.svg";
 
 interface Props {
   answer: Answer;
+  keptByUser: boolean;
+
+  userProfileComponent: JSX.Element;
+  unKeepDisappear?: boolean;
+  handleKeep: (answer: Answer) => void;
+  handleUnkeep: (answer: Answer) => void;
 }
 
-const AnswerCard: React.FC<Props> = ({ answer }) => {
+const AnswerCard: React.FC<Props> = ({
+  answer,
+  keptByUser,
+  userProfileComponent,
+  unKeepDisappear = false,
+  handleUnkeep,
+  handleKeep,
+}) => {
+  if (unKeepDisappear && !keptByUser) {
+    return null;
+  }
+
   return (
-    <Container>
-      <KeywordText>{answer.qid}</KeywordText>
-      <QuestionText>Q. {answer.qid}</QuestionText>
-      <AnswerText>{answer.answer}</AnswerText>
-    </Container>
+    <AnswerContainer>
+      {userProfileComponent}
+      <AnswerAndFav>
+        <AnswerText>{answer.answer}</AnswerText>
+        <KeepButton
+          onClick={() => {
+            if (keptByUser) {
+              handleUnkeep(answer);
+            } else {
+              handleKeep(answer);
+            }
+          }}
+        >
+          {keptByUser ? (
+            <img src={HeartColored} style={{ width: "15px" }} />
+          ) : (
+            <img src={HeartUnColored} style={{ width: "15px" }} />
+          )}
+        </KeepButton>
+      </AnswerAndFav>
+    </AnswerContainer>
   );
 };
+
+const AnswerContainer = styled.li`
+  width: 100%;
+  display: flex;
+
+  margin-top: 17px;
+`;
+
+const AnswerAndFav = styled.div``;
+const AnswerText = styled.p`
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+
+  color: #4d4d4d;
+
+  white-space: pre-line;
+`;
+const KeepButton = styled.button`
+  margin-top: 5px;
+`;
 
 export default AnswerCard;
