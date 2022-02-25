@@ -8,7 +8,8 @@ import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-import { UserAnswers } from "../../model/interfaces";
+import { WeekDateAnswers } from "../../model/interfaces";
+import { Spinner } from "../../components/common/Spinner";
 import Loader from "../../components/common/Loader";
 
 interface DateIconsProps {
@@ -38,7 +39,7 @@ interface Props {
     year: number;
     month: number;
   };
-  answers: UserAnswers | undefined;
+  answers: WeekDateAnswers | undefined;
   changeWeek: (weekCnt: number) => void;
   loading: boolean;
 }
@@ -64,23 +65,22 @@ const WeeklyAnswers: React.FC<Props> = ({
 
   return (
     <Container>
-      <WeekToggle>
-        <WeekToggleButton onClick={() => changeWeek(-1)}>
-          <KeyboardArrowLeftIcon />
-        </WeekToggleButton>
-        <Week>
-          <YearText>{year}년</YearText>
-          {month}월 {week}주차
-        </Week>
-        <WeekToggleButton right onClick={() => changeWeek(1)}>
-          <KeyboardArrowRightIcon />
-        </WeekToggleButton>
-      </WeekToggle>
-
       {loading ? (
         <Loader />
       ) : (
         <>
+          <WeekToggle>
+            <WeekToggleButton onClick={() => changeWeek(-1)}>
+              <KeyboardArrowLeftIcon />
+            </WeekToggleButton>
+            <Week>
+              <YearText>{year}년</YearText>
+              {month}월 {week}주차
+            </Week>
+            <WeekToggleButton right onClick={() => changeWeek(1)}>
+              <KeyboardArrowRightIcon />
+            </WeekToggleButton>
+          </WeekToggle>
           {doneCnt > 0 ? (
             <HelperText>
               5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.

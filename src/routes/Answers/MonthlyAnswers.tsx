@@ -13,7 +13,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Loader from "../../components/common/Loader";
 import styled from "styled-components";
-import { UserAnswers } from "../../model/interfaces";
+import { WeekDateAnswers } from "../../model/interfaces";
 
 interface Props {
   loading: boolean;
@@ -22,7 +22,7 @@ interface Props {
     year: number;
     month: number;
   };
-  answers: UserAnswers;
+  answers: WeekDateAnswers;
   changeMonth: (monthCnt: number) => void;
 }
 
@@ -60,7 +60,7 @@ const MonthlyAnswers: React.FC<Props> = ({
   const dates = getAllMonthlyDate(date.dateObj);
 
   return (
-    <Container style={{ height: "calc(100vh - 84px)" }}>
+    <Container>
       <WeekToggle>
         <WeekToggleButton onClick={() => changeMonth(-1)}>
           <KeyboardArrowLeftIcon />

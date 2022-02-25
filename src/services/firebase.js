@@ -2,15 +2,17 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBZkKQu5Q0uweMFST5MeVDX7Z54o5xAvxw",
-  authDomain: "daily-question-31c05.firebaseapp.com",
-  databaseURL: "https://daily-question-31c05-default-rtdb.firebaseio.com",
-  projectId: "daily-question-31c05",
-  storageBucket: "daily-question-31c05.appspot.com",
-  messagingSenderId: "997423654687",
-  appId: "1:997423654687:web:4875aa710da194bf87b22a",
-  measurementId: "G-MJG5XVRZ8R",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
+
+console.log(process.env);
 
 export const firebaseApp = initializeApp(firebaseConfig);
 export const fireDB = getDatabase(firebaseApp);

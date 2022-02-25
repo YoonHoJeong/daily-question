@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import AnswersByDay from "../../components/AnswersByDay";
 import UserProfile from "../../components/UserProfile";
-import { UserAnswers } from "../../model/interfaces";
+import { WeekDateAnswers } from "../../model/interfaces";
 
 interface Props {
-  answers: UserAnswers;
+  answers: WeekDateAnswers;
 }
 
 const DailyAnswers: React.FC<Props> = ({ answers }) => {

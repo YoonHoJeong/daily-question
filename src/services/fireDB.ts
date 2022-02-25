@@ -1,7 +1,4 @@
-import {
-  DailyAnswersWithQuestions,
-  FetchedAnswers,
-} from "./../model/interfaces";
+import { DateQuestionsAndAnswers, FetchedAnswers } from "./../model/interfaces";
 import { fireDB } from "./firebase";
 import {
   get,
@@ -12,9 +9,6 @@ import {
   child,
   push,
   update,
-  startAt,
-  endBefore,
-  orderByKey,
   limitToLast,
 } from "@firebase/database";
 import {
@@ -22,7 +16,6 @@ import {
   convertDate,
   convertDateUntilDay,
   getToday,
-  getYearMonth,
 } from "./DateManager";
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 
@@ -89,6 +82,7 @@ export const getTodayQuestions = async () => {
     return questions;
   } catch (e) {
     console.error(e);
+    return {};
   }
 };
 
@@ -100,7 +94,7 @@ export const getBoardAnswers = async () => {
   ).val();
   let questions: FetchedQuestions = (await get(ref(fireDB, "questions"))).val();
 
-  const answersWithQuestion: DailyAnswersWithQuestions = {};
+  const answersWithQuestion: DateQuestionsAndAnswers = {};
 
   Object.keys(answers)
     .sort((a, b) => (a > b ? 1 : -1))
@@ -150,6 +144,14 @@ export const getAnswerByUidQid = async (uid: string, qid: string) => {
   return userAnswerByQid;
 };
 
+export async function getUserAnswers(uid: string) {
+  const answers = (
+    await get(query(ref(fireDB, "answers"), orderByChild("uid"), equalTo(uid)))
+  ).val();
+
+  return answers as FetchedAnswers;
+}
+
 export const getQuestionByQid = async (qid: string) => {
   const snapshot = await get(
     query(ref(fireDB, "questions"), orderByChild("qid"), equalTo(qid))
@@ -158,24 +160,8 @@ export const getQuestionByQid = async (qid: string) => {
   return question;
 };
 
-export const getUserAnswers = async (
-  uid: string,
-  year: number,
-  month: number
-) => {
-  const presentMonth = getYearMonth(year, month);
-  const nextMonth = getYearMonth(year, month + 1);
-
-  const snapshot = await get(
-    query(
-      ref(fireDB, `user-answers/${uid}`),
-      orderByKey(),
-      startAt(presentMonth),
-      endBefore(nextMonth)
-    )
-  );
-
-  const answers = snapshot.val();
+export const getMonthlyUserAnswers = async (uid: string) => {
+  const answers = (await get(ref(fireDB, `user-answers/${uid}`))).val();
 
   return answers;
 };
@@ -228,34 +214,44 @@ export const getUserKeepsAids = async (uid: string) => {
   return userKeepsAids || {};
 };
 
-export const getUserKeeps = async (uid: string) => {
+export const getAllQuestions = async () => {
+  const questions = (await get(ref(fireDB, "questions"))).val();
+
+  return questions;
+};
+async function getAnswerByAid(aid: string) {
+  const answer = (await get(ref(fireDB, "answers/" + aid))).val();
+
+  return answer;
+}
+export async function getUserKeptAnswers(uid: string) {
   const userKeepsAids = await getUserKeepsAids(uid);
-  const questions: FetchedQuestions = (
-    await get(ref(fireDB, "questions"))
-  ).val();
-  const userKeeps = {};
+  const questions: FetchedQuestions = await getAllQuestions();
+  const promises = Object.keys(userKeepsAids).map((aid) => getAnswerByAid(aid));
+  const userKeptAnswersList = await Promise.all(promises);
 
-  for (let i = 0; i < Object.keys(userKeepsAids).length; i++) {
-    const aid = Object.keys(userKeepsAids)[i];
-    const snapshot = await get(ref(fireDB, "answers/" + aid));
-    const userKeepAnswer = snapshot.val() as Answer;
+  const userKeptAnswers: DateQuestionsAndAnswers = {};
 
-    const date = convertDateUntilDay(new Date(userKeepAnswer.created_at));
-    const question = questions[userKeepAnswer.qid];
+  // convert into object
+  for (let answer of userKeptAnswersList) {
+    if (!answer) console.log("null");
 
-    if (!userKeeps[date]) {
-      userKeeps[date] = {};
+    const date = convertDateUntilDay(new Date(answer.created_at));
+    const question = questions[answer.qid];
+
+    if (!userKeptAnswers[date]) {
+      userKeptAnswers[date] = {};
     }
 
-    if (!userKeeps[date][question.qid]) {
-      userKeeps[date][question.qid] = {
+    if (!userKeptAnswers[date][question.qid]) {
+      userKeptAnswers[date][question.qid] = {
         ...question,
         answers: {},
       };
     }
 
-    userKeeps[date][question.qid].answers[aid] = userKeepAnswer;
+    userKeptAnswers[date][question.qid].answers[answer.aid] = answer;
   }
 
-  return userKeeps as DailyAnswersWithQuestions;
-};
+  return userKeptAnswers;
+}

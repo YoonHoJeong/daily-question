@@ -58,6 +58,7 @@ const AnswersByDay: React.FC<Props> = ({
 
   const answerCardComponent = (answer: Answer, keptByUser: boolean) => (
     <AnswerCard
+      key={answer.aid}
       handleUnkeep={handleUnkeep}
       handleKeep={handleKeep}
       answer={answer}

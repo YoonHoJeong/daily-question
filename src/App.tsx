@@ -3,6 +3,8 @@ import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
 import { Router } from "./components/Router";
 import GlobalStyle from "./css/GlobalStyle";
+import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const Container = styled.div``;
 
@@ -60,9 +62,11 @@ export const VariablesContext = createContext<GlobalVariables>(globalVariables);
 
 interface Props {}
 
+const queryClient = new QueryClient();
+
 const App: React.FC<Props> = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={{ palette, sizes }}>
         <GlobalStyle />
         <VariablesContext.Provider value={globalVariables}>
@@ -73,7 +77,7 @@ const App: React.FC<Props> = () => {
           </AuthProvider>
         </VariablesContext.Provider>
       </ThemeProvider>
-    </>
+    </QueryClientProvider>
   );
 };
 

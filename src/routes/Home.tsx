@@ -1,11 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import Loader from "../components/common/Loader";
-import { FetchedQuestions } from "../model/interfaces";
-import { getTodayQuestions } from "../services/fireDB";
-import { Question } from "../routes";
+import { useFetchQuestions } from "../hooks/customUseQueries";
+
+interface Props {}
+
+const Home: React.FC<Props> = () => {
+  const { data: questions, isLoading, isError } = useFetchQuestions();
+
+  if (isError) return <>error</>;
+
+  return (
+    <Container>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          {questions ? (
+            <>
+              <Title>키워드를 선택해주세요.</Title>
+              <KeywordList>
+                {Object.keys(questions).map((qid) => (
+                  <Keyword key={qid}>
+                    <Link to={`/question/${qid}`}>
+                      <Button
+                        small
+                        style={{ fontSize: "18px", fontWeight: 500 }}
+                      >
+                        {questions[qid].keyword}
+                      </Button>
+                    </Link>
+                  </Keyword>
+                ))}
+              </KeywordList>
+            </>
+          ) : (
+            <Title>오늘은 질문이 없어요.</Title>
+          )}
+        </>
+      )}
+    </Container>
+  );
+};
 
 const Container = styled.div`
   width: 100%;
@@ -31,61 +69,5 @@ const Keyword = styled.li`
   justify-content: center;
   align-items: center;
 `;
-
-interface Props {}
-
-const Home: React.FC<Props> = () => {
-  const [questions, setQuestions] = useState<FetchedQuestions>();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      const fetched = await getTodayQuestions();
-
-      setQuestions(fetched);
-      setLoading(false);
-    }
-    fetchData();
-  }, []);
-
-  return (
-    <Switch>
-      <Route path="/question/:qid">
-        {questions ? <Question questions={questions} /> : <>server error</>}
-      </Route>
-      <Route exact path="/">
-        <Container>
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              {questions ? (
-                <>
-                  <Title>키워드를 선택해주세요.</Title>
-                  <KeywordList>
-                    {Object.keys(questions).map((qid) => (
-                      <Keyword key={qid}>
-                        <Link to={`/question/${qid}`}>
-                          <Button
-                            small
-                            style={{ fontSize: "18px", fontWeight: 500 }}
-                          >
-                            {questions[qid].keyword}
-                          </Button>
-                        </Link>
-                      </Keyword>
-                    ))}
-                  </KeywordList>
-                </>
-              ) : (
-                <Title>오늘은 질문이 없어요.</Title>
-              )}
-            </>
-          )}
-        </Container>
-      </Route>
-    </Switch>
-  );
-};
 
 export default Home;

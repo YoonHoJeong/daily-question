@@ -9,47 +9,6 @@ import UserClickedIconUrl from "../assets/person1.png";
 import UserIconUrl from "../assets/person2.png";
 import { VariablesContext } from "../App";
 
-const Container = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-
-  width: 100%;
-  height: ${(props) => props.theme.sizes.bottomNavHeight};
-
-  background-color: ${(props) => props.theme.palette.bgGrey};
-  border-top: 4px solid ${(props) => props.theme.palette.white};
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  list-style: none;
-  border-top: 4px solid white;
-`;
-
-const SLink = styled(Link)<{ current: string }>`
-  font-size: 10px;
-  margin-top: 5px;
-  color: ${(props) =>
-    props.current === "true"
-      ? props.theme.palette.blue
-      : props.theme.palette.deepGrey};
-`;
-
-const NavItem = styled.li`
-  width: 50px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Icon = styled.img`
-  width: 30px;
-`;
-
 const exceptPathnames = ["/user/edit", "/user/keeps"];
 
 interface Navigation {
@@ -90,54 +49,74 @@ const BottomNavigation: React.FC<Props> = () => {
     return null;
   }
 
+  const NavigationItem = (navigation: Navigation) => (
+    <NavItem key={navigation.pathname}>
+      <Link to={navigation.pathname}>
+        <Icon
+          src={
+            pathname === navigation.pathname
+              ? navigation.iconsUrl.clicked
+              : navigation.iconsUrl.default
+          }
+          alt=""
+        />
+      </Link>
+      <SLink
+        to={navigation.pathname}
+        current={pathname === navigation.pathname ? "true" : "false"}
+      >
+        {globalVariables.pathnames[navigation.pathname]}
+      </SLink>
+    </NavItem>
+  );
+
   return (
-    <Container>
-      {Navigations.map((navigation) => (
-        <NavItem>
-          <Link to={navigation.pathname}>
-            <Icon
-              src={
-                pathname === navigation.pathname
-                  ? navigation.iconsUrl.clicked
-                  : navigation.iconsUrl.default
-              }
-              alt=""
-            />
-          </Link>
-          <SLink
-            to={navigation.pathname}
-            current={pathname === navigation.pathname ? "true" : "false"}
-          >
-            {globalVariables.pathnames[navigation.pathname]}
-          </SLink>
-        </NavItem>
-      ))}
-      {/* <NavItem>
-        <Link to="/">
-          <Icon src={pathname === "/" ? BoxClickedIconUrl : BoxIconUrl} alt="" />
-        </Link>
-        <SLink to="/" current={pathname === "/" ? "true" : "false"}>
-          {globalVariables.todayQuestions}
-        </SLink>
-      </NavItem>
-      <NavItem>
-        <Link to="/board">
-          <Icon src={pathname === "/board" ? BoardClickedIconUrl : BoardIconUrl} alt="" />
-        </Link>
-        <SLink to="/board" current={pathname === "/board" ? "true" : "false"}>
-          {globalVariables.board}
-        </SLink>
-      </NavItem>
-      <NavItem>
-        <Link to="/user">
-          <Icon src={pathname === "/user" ? UserClickedIconUrl : UserIconUrl} alt="" />
-        </Link>
-        <SLink to="/user" current={pathname === "/user" ? "true" : "false"}>
-          {globalVariables.user}
-        </SLink>
-      </NavItem> */}
-    </Container>
+    <Navigator>
+      {Navigations.map((navigation) => NavigationItem(navigation))}
+    </Navigator>
   );
 };
+
+const Navigator = styled.ul`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: ${(props) => props.theme.sizes.bottomNavHeight};
+
+  background-color: ${(props) => props.theme.palette.bgGrey};
+  border-top: 4px solid ${(props) => props.theme.palette.white};
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  list-style: none;
+  border-top: 4px solid white;
+`;
+
+const SLink = styled(Link)<{ current: string }>`
+  font-size: 10px;
+  margin-top: 5px;
+  color: ${(props) =>
+    props.current === "true"
+      ? props.theme.palette.blue
+      : props.theme.palette.deepGrey};
+`;
+
+const NavItem = styled.li`
+  width: 50px;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const Icon = styled.img`
+  width: 30px;
+`;
 
 export default BottomNavigation;

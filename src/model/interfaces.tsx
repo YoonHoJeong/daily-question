@@ -46,18 +46,18 @@ export interface AnswersWithQuestion {
   };
 }
 
-export interface DailyAnswersWithQuestions {
+export interface DateQuestionsAndAnswers {
   [date: string]: AnswersWithQuestions;
 }
 export interface AnswersWithQuestions {
   [qid: string]: AnswersWithQuestion;
 }
 
-export interface UserAnswers {
-  [week: string]: DayAnswers;
+export interface WeekDateAnswers {
+  [week: string]: DateAnswers;
 }
 
-export interface DayAnswers {
+export interface DateAnswers {
   [date: string]: {
     [aid: string]: {
       aid: string;
