@@ -2,70 +2,17 @@
 
 # File Structure
 
-1. 컴포넌트를 기능별로 구분
+파일들을 기능별로 구분
 
-   1. routes
-   1. components
-   1. hooks
-   1. services
+1. routes  
+   하나의 route에 사용되는 page templates
 
-1. named export 사용
-
-## src/routes
-
-routing에 사용되는 page templates
-
-1. admin (/yadmin)
-1. Login (/login)
-1. Menu (/)
-1. Keywords (/keywords)
-1. Question (/question)
-1. Rating (/rating)
-1. SubmitDone (/submit-done)
-1. Answers (/answers)
-
-## src/components
-
-page template에 들어가는 재사용 가능한 components
-
-1. Input
-   - props
-     1. type
-     1. lines
-1. Button
-   - props
-     1. fullWidth - Boolean
-     1. color - "blue" / "green" / "skyblue" / "purple"
-     1. variant - "normal"(default) / "outlined" / "contained"
-1. Keyword
-   - props
-     1. value
-     1. onClick
-1. KeyWordList
-   - props
-     1. keywords
-1. MainHeader
-   - props
-     1. activeHistoryBack
-1. AnswerCard
-   - props
-     1. question
-     1. answer
-1. CircularDate
-   - props
-     1. contained - Boolean
-     1. onClick
-1. Dates
-   - props
-     1. children(list of CircularDate)
-
-## src/hooks
-
-components에 사용하는 비즈니스 로직 구성
-
-## src/services
-
-외부 서비스 자원과 통신하는 로직
+1. components  
+   재사용 가능한 components
+1. hooks  
+   2개 이상의 컴포넌트에서 사용하는 비즈니스 로직을 hook으로 구현.
+1. services  
+   외부 서비스 자원과 통신하는 로직
 
 # Refactoring Log
 
@@ -249,7 +196,7 @@ components에 사용하는 비즈니스 로직 구성
     - 공통으로 사용되는 keeps 데이터 state 추가
   - [x] userEdit popup 열렸을 때 input focus
 
-- 22.02.04
+- 22.02.24
   - react query 도입.
     - remove deplicated boiler plate code(loading, useEffect, error, data) when fetching data from server
     - server state caching
@@ -264,42 +211,34 @@ components에 사용하는 비즈니스 로직 구성
 
 기능 구현
 
-- [ ] 일별로 답변을 구분할 때, 생성 일자로 구분할 지, publish_date로 구분할 지
-- [ ] 페이지별 Fetched data caching
-- [ ] Auth - login 여부에 따라 필요로 하는 함수가 달라서, interface 2개 구분해서 사용
-- [ ] user board
+- 일별로 답변을 구분할 때, 생성 일자로 구분할 지, publish_date로 구분할 지
+- Auth - login 여부에 따라 필요로 하는 함수가 달라서, interface 2개 구분해서 사용
+- user board
 
 Essential UI
 
 - Board(게시판)
 
-  - [ ] 유저 이름 변경(현재 익명으로 통일)
-  - [ ] answer - private / public 설정
+  - 유저 이름 변경(현재 익명으로 통일)
+  - answer - private / public 설정
 
 - admin questions page
 
-  - [ ] update
-  - [ ] delete
+  - update
+  - delete
 
 - admin users page
-  - [ ] read
+  - read
 
 For UX(Additional)
 
-- [ ] night mode
-- [ ] 내 답변 / 질문 검색
-- [ ] 답변 엑셀로 내보내기
+- night mode
+- 내 답변 / 질문 검색
+- 답변 엑셀로 내보내기
 
 코드 가독성 / 관심사 분리
 
-- [ ] interface 구분, 통일시키기
-- [ ] services - 기능별 module 구분하기
-  - [ ] fireDB.ts
-  - [ ] dateService.ts
-
-Backend
-
-- data join logic 만들기(board, daily answers에서 data 형태)
-  - 현재는 client-side에서 data join
-- fireBase
-  - [ ] user-answers data flattening
+- interface 구분, 통일시키기
+- services - 기능별 module 구분하기
+  - fireDB.ts
+  - dateService.ts
