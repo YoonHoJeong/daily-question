@@ -34,7 +34,7 @@ const Answers: React.FC<Props> = () => {
     month: dateObj.getMonth() + 1,
   });
 
-  const { data, isLoading, isError } = useFetchUserWeekDateAnswers(uid);
+  const { data, isLoading } = useFetchUserWeekDateAnswers(uid);
   const answers = data ?? {};
 
   const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");

@@ -115,8 +115,6 @@ components에 사용하는 비즈니스 로직 구성
 
   - admin
     - [x] 질문 등록 및 관리
-    - [ ] 답변 관리
-    - [ ] 회원 정보 관리
   - styling
     - [x] home
     - [x] question
@@ -260,6 +258,7 @@ components에 사용하는 비즈니스 로직 구성
       - user data
     - customUseQueries 파일 생성
       - global하게 사용하는 server state에 대한 1) 데이터 타입, 2) queryKey를 추상화
+  - image preload
 
 # Todo
 

@@ -9,7 +9,6 @@ import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
 import { WeekDateAnswers } from "../../model/interfaces";
-import { Spinner } from "../../components/common/Spinner";
 import Loader from "../../components/common/Loader";
 
 interface DateIconsProps {
