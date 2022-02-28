@@ -31,7 +31,8 @@
 
 # Reflection
 
-프로젝트를 진행하면서 고려했던 점들을 정리합니다.
+프로젝트를 진행하면서 고려했던 점들을 정리합니다.  
+[Refactoring Log](https://github.com/YoonHoJeong/daily-question/blob/master/refactoring-log.md)
 
 ## State Management
 
