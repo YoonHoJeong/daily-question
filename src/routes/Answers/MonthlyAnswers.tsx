@@ -1,19 +1,11 @@
 import React from "react";
-import {
-  AnswerDateCount,
-  HelperText,
-  Week,
-  WeekToggle,
-  WeekToggleButton,
-  YearText,
-} from "./WeeklyAnswers";
+import { AnswerDateCount, HelperText } from "./WeeklyAnswers";
 import styles from "../../css/calendar.module.css";
 import { getAllMonthlyDate, getToday } from "../../services/DateManager";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import Loader from "../../components/common/Loader";
 import styled from "styled-components";
 import { WeekDateAnswers } from "../../model/interfaces";
+import WeekToggle from "./WeekToggle";
 
 interface Props {
   loading: boolean;
@@ -61,26 +53,20 @@ const MonthlyAnswers: React.FC<Props> = ({
 
   return (
     <Container>
-      <WeekToggle>
-        <WeekToggleButton onClick={() => changeMonth(-1)}>
-          <KeyboardArrowLeftIcon />
-        </WeekToggleButton>
-
-        <Week>
-          <YearText>{date.year}년</YearText>
-          {date.month}월
-        </Week>
-        <WeekToggleButton right onClick={() => changeMonth(1)}>
-          <KeyboardArrowRightIcon />
-        </WeekToggleButton>
-      </WeekToggle>
+      <WeekToggle
+        date={{
+          year: date.year,
+          month: date.month,
+        }}
+        changeWeekOrMonth={changeMonth}
+      />
 
       {loading ? (
         <Loader />
       ) : (
         <>
           <HelperText>
-            이번 달 <AnswerDateCount>{answerCnt}개</AnswerDateCount>의 질문에
+            <AnswerDateCount>{answerCnt}개</AnswerDateCount>의 질문에
             대답했어요.
           </HelperText>
 
@@ -104,6 +90,7 @@ const MonthlyAnswers: React.FC<Props> = ({
 
 const Container = styled.div`
   width: 100vw;
+  padding-top: 24px;
   background-color: ${(props) => props.theme.palette.white};
 
   display: flex;

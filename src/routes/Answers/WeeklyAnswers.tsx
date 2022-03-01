@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import BoxOpenedIcon from "../../assets/box_opened.png";
 import BoxClosedIcon from "../../assets/box_closed.png";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
 import { WeekDateAnswers } from "../../model/interfaces";
 import Loader from "../../components/common/Loader";
+import WeekToggle from "./WeekToggle";
 
 interface DateIconsProps {
   weekDates: any[];
@@ -50,8 +49,7 @@ const WeeklyAnswers: React.FC<Props> = ({
   loading: dataLoading,
 }) => {
   const yearMonthWeek = calcWeek(date.dateObj);
-  const [year, monthStr, week] = yearMonthWeek.replace("W", "-").split("-");
-  const month = parseInt(monthStr);
+  const [year, month, week] = yearMonthWeek.replace("W", "-").split("-");
   const weekDates = getAllWeeklyDate(date.dateObj);
   const weekAnswers = (answers && answers[yearMonthWeek]) || {};
   const doneCnt = weekAnswers ? Object.keys(weekAnswers).length : 0;
@@ -68,18 +66,14 @@ const WeeklyAnswers: React.FC<Props> = ({
         <Loader />
       ) : (
         <>
-          <WeekToggle>
-            <WeekToggleButton onClick={() => changeWeek(-1)}>
-              <KeyboardArrowLeftIcon />
-            </WeekToggleButton>
-            <Week>
-              <YearText>{year}년</YearText>
-              {month}월 {week}주차
-            </Week>
-            <WeekToggleButton right onClick={() => changeWeek(1)}>
-              <KeyboardArrowRightIcon />
-            </WeekToggleButton>
-          </WeekToggle>
+          <WeekToggle
+            date={{
+              year: parseInt(year),
+              month: parseInt(month),
+              week: parseInt(week),
+            }}
+            changeWeekOrMonth={changeWeek}
+          />
           {doneCnt > 0 ? (
             <HelperText>
               5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
@@ -130,6 +124,7 @@ const WeeklyAnswers: React.FC<Props> = ({
 
 const Container = styled.div`
   width: 100vw;
+  padding-top: 24px;
   padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
 
   background-color: ${(props) => props.theme.palette.white};
@@ -139,13 +134,6 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const YearText = styled.p`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-
-  margin-bottom: 12px;
-`;
 export const HelperText = styled.p`
   margin-top: 14px;
 
@@ -154,25 +142,6 @@ export const HelperText = styled.p`
   line-height: 26px;
 `;
 
-export const WeekToggle = styled.ul`
-  position: relative;
-
-  margin-top: 30px;
-`;
-export const WeekToggleButton = styled.button<{ right?: boolean }>`
-  position: absolute;
-  bottom: -4px;
-  ${(props) => (props.right ? "right: -35px" : "left: -35px")};
-`;
-export const Week = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
 export const AnswerDateCount = styled.span`
   color: ${(props) => props.theme.palette.blue};
 `;

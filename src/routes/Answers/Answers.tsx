@@ -6,6 +6,7 @@ import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserWeekDateAnswers } from "../../hooks/customUseQueries";
+import { Route } from "react-router-dom";
 
 const Container = styled.div`
   position: relative;
@@ -37,8 +38,6 @@ const Answers: React.FC<Props> = () => {
   const { data, isLoading } = useFetchUserWeekDateAnswers(uid);
   const answers = data ?? {};
 
-  const [viewFormat, setViewFormat] = useState<ViewFormat>("weekly");
-
   const changeWeek = (weekCnt: number) => {
     const tmpDate = new Date(date.dateObj);
     tmpDate.setDate(tmpDate.getDate() + 7 * weekCnt); // week ago date
@@ -65,35 +64,37 @@ const Answers: React.FC<Props> = () => {
     }
   };
 
-  const AnswersByViewFormat = () => {
-    switch (viewFormat) {
-      case "weekly":
-        return (
-          <WeeklyAnswers
-            loading={isLoading}
-            changeWeek={changeWeek}
-            date={date}
-            answers={answers}
-          />
-        );
-      case "monthly":
-        return (
-          <MonthlyAnswers
-            loading={isLoading}
-            date={date}
-            answers={answers}
-            changeMonth={changeMonth}
-          />
-        );
-      case "daily":
-        return <DailyAnswers answers={answers} />;
-    }
-  };
-
   return (
     <Container style={{ height: "calc(100vh - 84px)" }}>
-      <DateFormatPicker viewFormat={viewFormat} setViewFormat={setViewFormat} />
-      {AnswersByViewFormat()}
+      <DateFormatPicker />
+      <Route path="/answers/monthly">
+        <MonthlyAnswers
+          loading={isLoading}
+          date={date}
+          answers={answers}
+          changeMonth={changeMonth}
+        />
+      </Route>
+      <Route path="/answers/daily">
+        <DailyAnswers answers={answers} />;
+      </Route>
+
+      <Route path="/answers/weekly">
+        <WeeklyAnswers
+          loading={isLoading}
+          changeWeek={changeWeek}
+          date={date}
+          answers={answers}
+        />
+      </Route>
+      <Route exact path="/answers">
+        <WeeklyAnswers
+          loading={isLoading}
+          changeWeek={changeWeek}
+          date={date}
+          answers={answers}
+        />
+      </Route>
     </Container>
   );
 };

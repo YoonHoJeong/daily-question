@@ -33,7 +33,7 @@ export const Router: React.FC<Props> = () => {
         <PrivateRoute path="/">
           <ClientRoutes />
         </PrivateRoute>
-        <Route path="*">
+        <Route path="/*">
           <div>404 Not Found</div>
         </Route>
       </Switch>
