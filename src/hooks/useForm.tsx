@@ -9,7 +9,16 @@ export function useForm<S>(initialValue: S | (() => S)) {
     onChange: (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-      setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
+      if (e.currentTarget.type === "checkbox") {
+        console.log("checkbox");
+
+        setForm({
+          ...form,
+          [e.currentTarget.name]: (e.currentTarget as HTMLInputElement).checked,
+        });
+      } else {
+        setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
+      }
     },
     reset: () => setForm(initialValue),
   };

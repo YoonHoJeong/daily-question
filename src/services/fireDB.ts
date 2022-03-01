@@ -22,7 +22,12 @@ import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 export const submitAnswer = async (
   uid: string,
   question: Question,
-  formData: { answer: string; aid?: string }
+  formData: {
+    answer: string;
+    aid?: string;
+    isAnonymous: boolean;
+    isPublic: boolean;
+  }
 ) => {
   const aid = formData.aid || push(child(ref(fireDB), "answers")).key;
   const week = calcWeek(new Date(question.publish_date));
@@ -38,7 +43,10 @@ export const submitAnswer = async (
   const answerFormData = {
     aid,
     answer: formData.answer,
+    isAnonymous: formData.isAnonymous,
+    isPublic: formData.isPublic,
     created_at: convertDate(new Date()),
+    week,
   };
 
   updates["/answers/" + aid] = {
@@ -59,24 +67,28 @@ export const submitAnswer = async (
   ] = { ...answerFormData, question };
   updates["/questions/" + question.qid + "/answers/" + aid] = true;
 
-  try {
-    await update(ref(fireDB), updates);
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  }
+  await update(ref(fireDB), updates);
 };
 
 export const getTodayQuestions = async () => {
-  try {
-    const snapshot = await get(
-      query(
-        ref(fireDB, "questions"),
-        orderByChild("publish_date"),
-        equalTo(getToday())
-      )
+  let queryForQuestions;
+
+  if (process.env.NODE_ENV === "development") {
+    queryForQuestions = query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      limitToLast(3)
     );
+  } else {
+    queryForQuestions = query(
+      ref(fireDB, "questions"),
+      orderByChild("publish_date"),
+      equalTo(getToday())
+    );
+  }
+
+  try {
+    const snapshot = await get(queryForQuestions);
 
     const questions = snapshot.val() as FetchedQuestions;
     return questions;
@@ -97,6 +109,7 @@ export const getBoardAnswers = async () => {
   const answersWithQuestion: DateQuestionsAndAnswers = {};
 
   Object.keys(answers)
+    .filter((aid) => answers[aid].isPublic)
     .sort((a, b) => (a > b ? 1 : -1))
     .forEach((aid) => {
       const answer = answers[aid];
@@ -234,8 +247,6 @@ export async function getUserKeptAnswers(uid: string) {
 
   // convert into object
   for (let answer of userKeptAnswersList) {
-    if (!answer) console.log("null");
-
     const date = convertDateUntilDay(new Date(answer.created_at));
     const question = questions[answer.qid];
 

@@ -236,6 +236,9 @@ const QuestionText = styled.div`
   margin-top: 4px;
   color: ${(props) => props.theme.palette.blue};
   display: flex;
+  & > span {
+    color: ${(props) => props.theme.palette.blue};
+  }
 `;
 const AnswerText = styled.div`
   font-size: 12px;

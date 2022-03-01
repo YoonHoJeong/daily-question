@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import BottomNavigation from "../components/BottomNavigation";
-import { Header } from "../components/Header";
+import Header from "../components/common/Header";
 import { Answers, Question, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "./User/User";

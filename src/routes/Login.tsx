@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
-import { Header } from "../components/Header";
+import Header from "../components/common/Header";
 import Input from "../components/common/Input";
 import BoxLogoGrey from "../assets/box_logo_grey.svg";
 import Loader from "../components/common/Loader";

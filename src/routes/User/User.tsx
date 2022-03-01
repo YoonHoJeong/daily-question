@@ -9,37 +9,6 @@ import Loader from "../../components/common/Loader";
 import { VariablesContext } from "../../App";
 import { useAuth } from "../../hooks/useAuth";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-const Container = styled.div`
-  width: 100vw;
-
-  background-color: ${(props) => props.theme.palette.white};
-
-  padding: 40px 25px;
-  padding-bottom: 20px;
-`;
-
-const UserTabs = styled.ul`
-  display: flex;
-  justify-content: space-around;
-
-  margin-top: 30px;
-`;
-const UserTab = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const UserTabIcon = styled.img`
-  max-width: 45px;
-  height: 31px;
-  margin-bottom: 5px;
-`;
-
-const UserTabTitle = styled.span`
-  font-size: 12px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.palette.black};
-`;
 
 interface Props {}
 
@@ -64,7 +33,7 @@ const User: React.FC<Props> = () => {
     <>
       <Container>
         <UserProfile />
-        <UserTabs>
+        {/* <UserTabs>
           <UserTab>
             <Link to="/answers">
               <UserTabIcon src={BoxOpened} />
@@ -81,7 +50,7 @@ const User: React.FC<Props> = () => {
               <UserTabTitle>{globalVariables.keeps}</UserTabTitle>
             </Link>
           </UserTab>
-        </UserTabs>
+        </UserTabs> */}
       </Container>
       <UserMenues>
         <UserMenu>
@@ -91,6 +60,37 @@ const User: React.FC<Props> = () => {
     </>
   );
 };
+
+const Container = styled.div`
+  width: 100vw;
+
+  background-color: ${(props) => props.theme.palette.white};
+
+  padding: 40px 25px;
+`;
+
+const UserTabs = styled.ul`
+  display: flex;
+  justify-content: space-around;
+
+  margin-top: 30px;
+`;
+const UserTab = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const UserTabIcon = styled.img`
+  max-width: 45px;
+  height: 31px;
+  margin-bottom: 5px;
+`;
+
+const UserTabTitle = styled.span`
+  font-size: 12px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.palette.black};
+`;
 
 const UserMenues = styled.ul`
   width: 100%;

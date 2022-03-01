@@ -14,7 +14,7 @@ interface Props {
   unKeepDisappear?: boolean;
 }
 
-const AnswersByDay: React.FC<Props> = ({
+const DateAnswersCard: React.FC<Props> = ({
   date,
   answers: answersWithQuestions,
   profileOn = true,
@@ -43,27 +43,18 @@ const AnswersByDay: React.FC<Props> = ({
     fetchData();
   }, [uid]);
 
-  const userProfileComponent = (
-    <Profile>
-      <UserImage
-        style={{
-          display: profileOn ? "flex" : "none",
-          width: "28px",
-          height: "28px",
-        }}
-      />
-      <ProfileName>{"익명"}</ProfileName>
-    </Profile>
-  );
-
-  const answerCardComponent = (answer: Answer, keptByUser: boolean) => (
+  const answerCardComponent = (
+    answer: Answer,
+    keptByUser: boolean,
+    profileOn: boolean
+  ) => (
     <AnswerCard
       key={answer.aid}
       handleUnkeep={handleUnkeep}
       handleKeep={handleKeep}
       answer={answer}
       keptByUser={keptByUser}
-      userProfileComponent={userProfileComponent}
+      profileOn={profileOn}
       unKeepDisappear={unKeepDisappear}
     />
   );
@@ -80,9 +71,9 @@ const AnswersByDay: React.FC<Props> = ({
         {Object.keys(answersWithQuestions).map((qid) => (
           <QuestionCard
             key={qid}
+            profileOn={true}
             answersWithQuestion={answersWithQuestions[qid]}
             keeps={keeps}
-            userProfileComponent={userProfileComponent}
             answerCardComponent={answerCardComponent}
           />
         ))}
@@ -130,21 +121,8 @@ const Date = styled.div`
   color: #4d4d4d;
 `;
 
-const Profile = styled.div`
-  margin-right: 12px;
-`;
-
-const ProfileName = styled.div`
-  font-weight: bold;
-  font-size: 10px;
-  line-height: 14px;
-  text-align: center;
-
-  color: #4d4d4d;
-`;
-
 const QuestionCards = styled.ul`
   flex: 1;
 `;
 
-export default AnswersByDay;
+export default DateAnswersCard;

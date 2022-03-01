@@ -19,9 +19,9 @@ const QuestionScreen: React.FC<Props> = () => {
 
   const [submitting, setSubmitting] = useState(false);
   const { data: questions } = useFetchQuestions();
-  const { data: answers, isLoading } = useFetchUserAnswers(uid);
-
   const question = questions && questions[qid];
+
+  const { data: answers, isLoading } = useFetchUserAnswers(uid);
   const answer =
     answers &&
     Object.keys(answers)
@@ -30,13 +30,16 @@ const QuestionScreen: React.FC<Props> = () => {
       .pop();
 
   const { form, onChange } = useForm({
-    answer: answer?.answer || "",
-    aid: "",
+    answer: answer?.answer ?? "",
+    aid: answer?.aid ?? "",
+    isPublic: answer?.isPublic ?? false,
+    isAnonymous: answer?.isAnonymous ?? false,
   });
   const history = useHistory();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log("onSubmit");
 
     if (!form.answer) {
       alert("답변을 작성해 주세요.");
@@ -44,13 +47,13 @@ const QuestionScreen: React.FC<Props> = () => {
     }
     if (question) {
       setSubmitting(true);
-      const success = await submitAnswer(uid, { ...question, qid }, form);
-      setSubmitting(false);
-
-      if (success) {
+      try {
+        await submitAnswer(uid, { ...question, qid }, form);
+        setSubmitting(false);
         history.push("/submit-done");
-      } else {
-        alert("답변 제출에 실패했습니다.");
+      } catch (e) {
+        alert("기록에 실패했습니다. 다시 시도해주세요.");
+        setSubmitting(false);
       }
     }
   };
@@ -70,6 +73,22 @@ const QuestionScreen: React.FC<Props> = () => {
             onChange={onChange}
             disabled={submitting}
           ></AnswerInput>
+          <input
+            id="isAnonymous"
+            name="isAnonymous"
+            type="checkbox"
+            checked={form.isAnonymous}
+            onChange={onChange}
+          />
+          <label htmlFor="isAnonymous">익명</label>
+          <input
+            id="isPublic"
+            name="isPublic"
+            type="checkbox"
+            checked={form.isPublic}
+            onChange={onChange}
+          />
+          <label htmlFor="isPublic">공개</label>
           <Button type="submit">오늘의 답변 기록하기</Button>
         </>
       )}

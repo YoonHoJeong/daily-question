@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Answer } from "../model/interfaces";
+import UserImage from "./user/UserImage";
+
 import HeartColored from "../assets/4_heart.svg";
 import HeartUnColored from "../assets/4_heart2.svg";
 
@@ -8,7 +10,7 @@ interface Props {
   answer: Answer;
   keptByUser: boolean;
 
-  userProfileComponent: JSX.Element;
+  profileOn: boolean;
   unKeepDisappear?: boolean;
   handleKeep: (answer: Answer) => void;
   handleUnkeep: (answer: Answer) => void;
@@ -17,7 +19,7 @@ interface Props {
 const AnswerCard: React.FC<Props> = ({
   answer,
   keptByUser,
-  userProfileComponent,
+  profileOn,
   unKeepDisappear = false,
   handleUnkeep,
   handleKeep,
@@ -28,10 +30,19 @@ const AnswerCard: React.FC<Props> = ({
 
   return (
     <AnswerContainer>
-      {userProfileComponent}
+      <Profile>
+        <UserImage
+          style={{
+            display: profileOn ? "flex" : "none",
+            width: "28px",
+            height: "28px",
+          }}
+        />
+        <ProfileName>{answer.isAnonymous ? "익명" : "실명"}</ProfileName>
+      </Profile>
       <AnswerAndFav>
         <AnswerText>{answer.answer}</AnswerText>
-        <KeepButton
+        {/* <KeepButton
           onClick={() => {
             if (keptByUser) {
               handleUnkeep(answer);
@@ -45,11 +56,24 @@ const AnswerCard: React.FC<Props> = ({
           ) : (
             <img src={HeartUnColored} style={{ width: "15px" }} />
           )}
-        </KeepButton>
+        </KeepButton> */}
       </AnswerAndFav>
     </AnswerContainer>
   );
 };
+
+const Profile = styled.div`
+  margin-right: 12px;
+`;
+
+const ProfileName = styled.div`
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+
+  color: #4d4d4d;
+`;
 
 const AnswerContainer = styled.li`
   width: 100%;

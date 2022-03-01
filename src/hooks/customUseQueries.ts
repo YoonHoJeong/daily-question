@@ -15,8 +15,9 @@ import {
 
 const config = { initialData: {} };
 
-export const useFetchQuestions = () =>
-  useQuery<FetchedQuestions>("questions", getTodayQuestions, config);
+export const useFetchQuestions = () => {
+  return useQuery<FetchedQuestions>("questions", getTodayQuestions, config);
+};
 
 export const useFetchUserAnswers = (uid: string) =>
   useQuery<FetchedAnswers>("my-answers", () => getUserAnswers(uid), config);

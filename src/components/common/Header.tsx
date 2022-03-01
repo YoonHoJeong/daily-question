@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "styled-components";
 import { useHistory, useLocation } from "react-router";
-import { useAuth } from "../hooks/useAuth";
+import { VariablesContext } from "../../App";
 
 interface ButtonProps {
   position: string;
@@ -16,6 +16,7 @@ const Container = styled.header<Props>`
   z-index: 99;
 
   width: 100%;
+  min-height: 61px;
   padding: 20px;
 
   display: flex;
@@ -43,39 +44,20 @@ const HeaderTitle = styled.span`
   font-weight: bold;
 `;
 
-const HeaderName = (pathname: string) => {
-  switch (pathname) {
-    case "/":
-    case "/submit-done":
-      return "오늘의 질문";
-    case "/user":
-      return "내 정보";
-    case "/answers":
-      return "나의 답변";
-    case "/board":
-      return "게시판";
-    default:
-      if (pathname.includes("/question")) {
-        return "오늘의 질문";
-      }
-      return "";
-  }
-};
-
 const backDisabledRoutes = ["/", "/board", "/user"];
 
 interface Props {
   transparent?: boolean;
 }
 
-export const Header: React.FC<Props> = ({ transparent = false }) => {
+const Header: React.FC<Props> = ({ transparent = false }) => {
   const history = useHistory();
-  const location = useLocation();
-  const auth = useAuth();
+  const { pathname } = useLocation();
+  const { pathnames } = useContext(VariablesContext);
 
   return (
     <Container transparent={transparent}>
-      {!backDisabledRoutes.includes(location.pathname) && (
+      {!backDisabledRoutes.includes(pathname) && (
         <ButtonContainer
           position="left"
           aria-label="back"
@@ -86,20 +68,9 @@ export const Header: React.FC<Props> = ({ transparent = false }) => {
           <ArrowBackIcon sx={{ width: 22, height: 22 }} />
         </ButtonContainer>
       )}
-      <HeaderTitle>{HeaderName(location.pathname)}</HeaderTitle>
-
-      {auth?.user && (
-        <ButtonContainer
-          position="right"
-          aria-label="profile"
-          onClick={() => {
-            auth?.logout();
-          }}
-        >
-          로그아웃
-          {/* <PersonOutline sx={{ width: 22, height: 22 }} /> */}
-        </ButtonContainer>
-      )}
+      <HeaderTitle>{pathnames[pathname]}</HeaderTitle>
     </Container>
   );
 };
+
+export default Header;

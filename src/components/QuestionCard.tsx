@@ -4,19 +4,19 @@ import { Answer, AnswersWithQuestion, UserKeeps } from "../model/interfaces";
 interface Props {
   answersWithQuestion: AnswersWithQuestion;
   keeps: UserKeeps;
-  userProfileComponent: JSX.Element;
+  profileOn: boolean;
   answerCardComponent: (
     answer: Answer,
     keptByUser: boolean,
-    userProfileComponent: JSX.Element
+    profileOn: boolean
   ) => JSX.Element;
 }
 
 const QuestionCard: React.FC<Props> = ({
   answersWithQuestion,
   keeps,
-  userProfileComponent,
   answerCardComponent,
+  profileOn,
 }) => {
   return (
     <QuestionCardContainer>
@@ -26,7 +26,7 @@ const QuestionCard: React.FC<Props> = ({
           answerCardComponent(
             answersWithQuestion.answers[aid],
             keeps[aid] ? true : false,
-            userProfileComponent
+            profileOn
           )
         )}
       </Answers>

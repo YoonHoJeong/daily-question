@@ -18,6 +18,8 @@ export interface Answer {
   created_at: string; // format - yyyy-mm-ddThh:mm:ss
   qid: string;
   uid: string;
+  isAnonymous?: boolean;
+  isPublic?: boolean;
   keepers?: {
     [uid: string]: boolean;
   };

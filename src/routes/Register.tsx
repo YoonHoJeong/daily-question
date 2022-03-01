@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "../components/common/Button";
 import ErrorMessage from "../components/common/ErrorMessage";
 import Input from "../components/common/Input";
-import { Header } from "../components/Header";
+import Header from "../components/common/Header";
 import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 

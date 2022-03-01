@@ -7,9 +7,9 @@ import BoardClickedIconUrl from "../assets/feed1.png";
 import BoardIconUrl from "../assets/feed2.png";
 import UserClickedIconUrl from "../assets/person1.png";
 import UserIconUrl from "../assets/person2.png";
+import AnswersIconUrl from "../assets/my_answers_icon_grey.svg";
+import AnswersIconClickedUrl from "../assets/my_answers_icon_blue.svg";
 import { VariablesContext } from "../App";
-
-const exceptPathnames = ["/user/edit", "/user/keeps"];
 
 interface Navigation {
   pathname: string;
@@ -30,7 +30,7 @@ const Navigations: Navigation[] = [
   },
   {
     pathname: "/answers",
-    iconsUrl: { clicked: BoxClickedIconUrl, default: BoxIconUrl },
+    iconsUrl: { clicked: AnswersIconClickedUrl, default: AnswersIconUrl },
   },
   {
     pathname: "/user",
@@ -40,12 +40,24 @@ const Navigations: Navigation[] = [
 
 interface Props {}
 
+function hasNotBottomNavigation(pathname: string) {
+  const exceptPathnames = ["/user/edit", "/user/keeps", "/question"];
+
+  for (const exceptPathname of exceptPathnames) {
+    if (pathname.includes(exceptPathname)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const BottomNavigation: React.FC<Props> = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const globalVariables = useContext(VariablesContext);
 
-  if (exceptPathnames.includes(pathname)) {
+  if (hasNotBottomNavigation(pathname)) {
     return null;
   }
 
