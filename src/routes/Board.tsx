@@ -28,28 +28,11 @@ const Board: React.FC<Props> = () => {
         <Loader />
       ) : (
         descendingDates.map((date) => (
-          <>
-            <DateAnswersCard
-              key={date}
-              date={date}
-              answers={answers[date] || {}}
-            />
-            <DateAnswersCard
-              key={date}
-              date={date}
-              answers={answers[date] || {}}
-            />
-            <DateAnswersCard
-              key={date}
-              date={date}
-              answers={answers[date] || {}}
-            />
-            <DateAnswersCard
-              key={date}
-              date={date}
-              answers={answers[date] || {}}
-            />
-          </>
+          <DateAnswersCard
+            key={date}
+            date={date}
+            answers={answers[date] || {}}
+          />
         ))
       )}
     </ViewWindow>
@@ -57,8 +40,6 @@ const Board: React.FC<Props> = () => {
 };
 
 const ViewWindow = styled.ul`
-  background-color: white;
-
   overflow-y: scroll;
   height: 100%;
 `;

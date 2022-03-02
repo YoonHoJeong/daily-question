@@ -119,6 +119,7 @@ const cellStyleByAnswerCnt = (monthAnswers: Answer[], date: string) => {
 
 const Container = styled.div`
   width: 100vw;
+  height: 100%;
   padding-top: 24px;
   background-color: ${(props) => props.theme.palette.white};
 

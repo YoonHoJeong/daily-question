@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import UserImage from "./user/UserImage";
 import { Answer, AnswersWithQuestions, UserKeeps } from "../model/interfaces";
 import QuestionCard from "./QuestionCard";
 import AnswerCard from "./AnswerCard";
@@ -123,6 +122,13 @@ const Date = styled.div`
 
 const QuestionCards = styled.ul`
   flex: 1;
+
+  & > li {
+    margin-left: 7px;
+  }
+  & > li:not(:first-child) {
+    margin-top: 30px;
+  }
 `;
 
 export default DateAnswersCard;

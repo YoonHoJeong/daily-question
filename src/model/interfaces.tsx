@@ -61,13 +61,16 @@ export interface WeekDateAnswers {
 
 export interface DateAnswers {
   [date: string]: {
-    [aid: string]: {
-      aid: string;
-      answer: string;
-      created_at: string;
-      question: Question;
-    };
+    [aid: string]: AnswerWithQuestion;
   };
+}
+export interface AnswerWithQuestion {
+  aid: string;
+  answer: string;
+  created_at: string;
+  question: Question;
+  isPublic?: boolean;
+  isAnonymous?: boolean;
 }
 
 export interface UserKeeps {

@@ -78,8 +78,6 @@ const ProfileName = styled.div`
 const AnswerContainer = styled.li`
   width: 100%;
   display: flex;
-
-  margin-top: 17px;
 `;
 
 const AnswerAndFav = styled.div``;

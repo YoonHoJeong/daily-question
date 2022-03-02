@@ -100,8 +100,6 @@ const Container = styled.div`
   height: 100%;
   overflow-y: scroll;
 
-  background-color: ${(props) => props.theme.palette.white};
-
   display: flex;
   flex-direction: column;
   align-items: center;
