@@ -38,9 +38,9 @@ const ClientRoutes: React.FC<Props> = () => {
         <Route path="/user/edit">
           <UserEdit />
         </Route>
-        <Route path="/user/keeps">
+        {/* <Route path="/user/keeps">
           <UserKeeps />
-        </Route>
+        </Route> */}
         <Route exact path="/user">
           <User />
         </Route>

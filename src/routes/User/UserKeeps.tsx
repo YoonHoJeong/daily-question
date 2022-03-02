@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import AnswersByDay from "../../components/AnswersByDay";
+import DateAnswersCard from "../../components/DateAnswersCard";
 import Loader from "../../components/common/Loader";
 import { useFetchUserKeptAnswers } from "../../hooks/customUseQueries";
 import { useAuth } from "../../hooks/useAuth";
@@ -14,13 +14,13 @@ const UserKeeps: React.FC<Props> = () => {
 
   return (
     <KeepsContainer>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Loader />
       ) : (
         Object.keys(userKeptAnswers)
           .reverse()
           .map((date) => (
-            <AnswersByDay
+            <DateAnswersCard
               key={date}
               date={date}
               answers={userKeptAnswers[date]}
@@ -28,7 +28,7 @@ const UserKeeps: React.FC<Props> = () => {
               unKeepDisappear={true}
             />
           ))
-      )}
+      )} */}
     </KeepsContainer>
   );
 };

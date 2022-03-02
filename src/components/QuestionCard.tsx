@@ -1,32 +1,39 @@
 import styled from "styled-components";
-import { Answer, AnswersWithQuestion, UserKeeps } from "../model/interfaces";
+import {
+  Answer,
+  AnswersWithQuestion,
+  FetchedAnswers,
+  UserKeeps,
+} from "../model/interfaces";
 
 interface Props {
-  answersWithQuestion: AnswersWithQuestion;
-  keeps: UserKeeps;
+  answers: Answer[];
   profileOn: boolean;
+  // keeps: UserKeeps;
   answerCardComponent: (
     answer: Answer,
-    keptByUser: boolean,
     profileOn: boolean
+    // keptByUser: boolean,
   ) => JSX.Element;
 }
 
 const QuestionCard: React.FC<Props> = ({
-  answersWithQuestion,
-  keeps,
+  answers,
   answerCardComponent,
   profileOn,
+  // keeps,
 }) => {
+  const question = answers[0].question;
+
   return (
     <QuestionCardContainer>
-      <QuestionText>{answersWithQuestion.question}</QuestionText>
+      <QuestionText>{question.question}</QuestionText>
       <Answers>
-        {Object.keys(answersWithQuestion.answers).map((aid) =>
+        {answers.map((answer) =>
           answerCardComponent(
-            answersWithQuestion.answers[aid],
-            keeps[aid] ? true : false,
+            answer,
             profileOn
+            // keeps[aid] ? true : false,
           )
         )}
       </Answers>

@@ -30,7 +30,7 @@ export const useFetchUserWeekDateAnswers = (uid: string) =>
   );
 
 export const useFetchRecentAnswers = () =>
-  useQuery<DateQuestionsAndAnswers>("recent-answers", getBoardAnswers, config);
+  useQuery<FetchedAnswers>("recent-answers", getBoardAnswers, config);
 
 export const useFetchUserKeptAnswers = (uid: string) =>
   useQuery<DateQuestionsAndAnswers>(

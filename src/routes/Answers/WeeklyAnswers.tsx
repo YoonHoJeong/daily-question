@@ -6,11 +6,7 @@ import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-import {
-  AnswerWithQuestion,
-  DateAnswers,
-  WeekDateAnswers,
-} from "../../model/interfaces";
+import { AnswerWithQuestion, WeekDateAnswers } from "../../model/interfaces";
 import Loader from "../../components/common/Loader";
 import WeekToggle from "./WeekToggle";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
@@ -43,51 +39,49 @@ const WeeklyAnswers: React.FC<Props> = ({
   ]);
 
   const loading = dataLoading || imageLoading;
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <Container>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <WeekToggle
-            date={{
-              year: parseInt(year),
-              month: parseInt(month),
-              week: parseInt(week),
-            }}
-            changeWeekOrMonth={changeWeek}
-          />
-          <HelperText>
-            {doneCnt > 0 ? (
-              <>
-                5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount>{" "}
-                대답했어요.
-              </>
-            ) : (
-              <>이번 주에는 아직 답변이 없네요...</>
-            )}
-          </HelperText>
-          <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
+      <>
+        <WeekToggle
+          date={{
+            year: parseInt(year),
+            month: parseInt(month),
+            week: parseInt(week),
+          }}
+          changeWeekOrMonth={changeWeek}
+        />
+        <HelperText>
           {doneCnt > 0 ? (
-            <DailyAnswersList>
-              {Object.keys(weekAnswers).map((date) => (
-                <DailyAnswers
-                  key={date}
-                  date={date}
-                  answers={weekAnswers[date]}
-                />
-              ))}
-            </DailyAnswersList>
+            <>
+              5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
+            </>
           ) : (
-            <Link to="/">
-              <Button bgColor="blue" style={{ fontSize: "12px" }}>
-                오늘의 재밌는 질문 대답하러 가기
-              </Button>
-            </Link>
+            <>이번 주에는 아직 답변이 없네요...</>
           )}
-        </>
-      )}
+        </HelperText>
+        <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
+        {doneCnt > 0 ? (
+          <DailyAnswersList>
+            {Object.keys(weekAnswers).map((date) => (
+              <DailyAnswers
+                key={date}
+                date={date}
+                answers={weekAnswers[date]}
+              />
+            ))}
+          </DailyAnswersList>
+        ) : (
+          <Link to="/">
+            <Button bgColor="blue" style={{ fontSize: "12px" }}>
+              오늘의 재밌는 질문 대답하러 가기
+            </Button>
+          </Link>
+        )}
+      </>
     </Container>
   );
 };

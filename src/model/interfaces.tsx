@@ -19,6 +19,7 @@ export interface Answer {
   qid: string;
   uid: string;
   week: string;
+  question: Question;
   isAnonymous?: boolean;
   isPublic?: boolean;
   keepers?: {
@@ -66,14 +67,20 @@ export interface DateAnswers {
   };
 }
 export interface AnswerWithQuestion {
-  aid: string;
-  qid: string;
-  answer: string;
-  created_at: string;
   question: Question;
+
+  // interface Answer properties
+  aid: string;
+  answer: string;
+  created_at: string; // format - yyyy-mm-ddThh:mm:ss
+  qid: string;
+  uid: string;
   week: string;
-  isPublic?: boolean;
   isAnonymous?: boolean;
+  isPublic?: boolean;
+  keepers?: {
+    [uid: string]: boolean;
+  };
 }
 
 export interface UserKeeps {

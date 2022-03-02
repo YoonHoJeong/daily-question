@@ -47,14 +47,13 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
     if (response === true) {
       setProperty(elem.name, !currentValue);
       await updateAnswer(
-        { uid: auth.user!!.uid, ...answer },
+        { ...answer, uid: auth.user!!.uid },
         { [elem.name]: !currentValue }
       );
       await myAnswersRefetch();
       await boardAnswersRefetch();
     }
   };
-  console.log(answer);
 
   return (
     <Container>

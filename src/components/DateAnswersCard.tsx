@@ -8,54 +8,59 @@ import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   date: string;
-  answers: AnswersWithQuestions;
+  answers: Answer[];
   profileOn?: boolean;
   unKeepDisappear?: boolean;
 }
 
 const DateAnswersCard: React.FC<Props> = ({
   date,
-  answers: answersWithQuestions,
+  answers,
   profileOn = true,
   unKeepDisappear = false,
 }) => {
-  const [keeps, setKeeps] = useState<UserKeeps>({});
+  // const [keeps, setKeeps] = useState<UserKeeps>({});
   const auth = useAuth();
   const uid = auth.user!!.uid;
   const [_, month, day] = date.split("-");
 
-  const handleUnkeep = (answer: Answer) => {
-    setKeeps({ ...keeps, [answer.aid]: false });
-    unKeep(uid, answer.aid);
-  };
-  const handleKeep = (answer: Answer) => {
-    setKeeps({ ...keeps, [answer.aid]: true });
-    keep(uid, answer.aid);
-  };
+  // const handleUnkeep = (answer: Answer) => {
+  //   setKeeps({ ...keeps, [answer.aid]: false });
+  //   unKeep(uid, answer.aid);
+  // };
+  // const handleKeep = (answer: Answer) => {
+  //   setKeeps({ ...keeps, [answer.aid]: true });
+  //   keep(uid, answer.aid);
+  // };
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = await getUserKeepsAids(uid);
-      setKeeps(data);
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const data = await getUserKeepsAids(uid);
+  //     setKeeps(data);
+  //   }
 
-    fetchData();
-  }, [uid]);
+  //   fetchData();
+  // }, [uid]);
 
   const answerCardComponent = (
     answer: Answer,
-    keptByUser: boolean,
     profileOn: boolean
+    // keptByUser: boolean,
   ) => (
     <AnswerCard
       key={answer.aid}
-      handleUnkeep={handleUnkeep}
-      handleKeep={handleKeep}
       answer={answer}
-      keptByUser={keptByUser}
       profileOn={profileOn}
-      unKeepDisappear={unKeepDisappear}
+      // keptByUser={keptByUser}
+      // handleUnkeep={handleUnkeep}
+      // handleKeep={handleKeep}
+      // unKeepDisappear={unKeepDisappear}
     />
+  );
+
+  const qids = answers.reduce(
+    (obj, answer) => ({ ...obj, [answer.qid]: true }),
+    {}
   );
 
   return (
@@ -67,13 +72,13 @@ const DateAnswersCard: React.FC<Props> = ({
         </MonthDate>
       </SideDateBar>
       <QuestionCards>
-        {Object.keys(answersWithQuestions).map((qid) => (
+        {Object.keys(qids).map((qid) => (
           <QuestionCard
             key={qid}
             profileOn={true}
-            answersWithQuestion={answersWithQuestions[qid]}
-            keeps={keeps}
+            answers={answers.filter((answer) => answer.qid === qid)}
             answerCardComponent={answerCardComponent}
+            // keeps={keeps}
           />
         ))}
       </QuestionCards>

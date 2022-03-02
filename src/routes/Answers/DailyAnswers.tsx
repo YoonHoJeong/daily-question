@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import DateAnswersCard from "../../components/AnswersByDay";
+import DateAnswersCard from "../../components/DateAnswersCard";
 import UserProfile from "../../components/UserProfile";
 import { WeekDateAnswers } from "../../model/interfaces";
 

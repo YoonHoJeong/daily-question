@@ -8,25 +8,25 @@ import HeartUnColored from "../assets/4_heart2.svg";
 
 interface Props {
   answer: Answer;
-  keptByUser: boolean;
-
   profileOn: boolean;
-  unKeepDisappear?: boolean;
-  handleKeep: (answer: Answer) => void;
-  handleUnkeep: (answer: Answer) => void;
+
+  // keptByUser: boolean;
+  // unKeepDisappear?: boolean;
+  // handleKeep: (answer: Answer) => void;
+  // handleUnkeep: (answer: Answer) => void;
 }
 
 const AnswerCard: React.FC<Props> = ({
   answer,
-  keptByUser,
   profileOn,
-  unKeepDisappear = false,
-  handleUnkeep,
-  handleKeep,
+  // keptByUser,
+  // unKeepDisappear = false,
+  // handleUnkeep,
+  // handleKeep,
 }) => {
-  if (unKeepDisappear && !keptByUser) {
-    return null;
-  }
+  // if (unKeepDisappear && !keptByUser) {
+  //   return null;
+  // }
 
   return (
     <AnswerContainer>
