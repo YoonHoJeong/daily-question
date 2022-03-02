@@ -54,6 +54,7 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
       await boardAnswersRefetch();
     }
   };
+  console.log(answer);
 
   return (
     <Container>

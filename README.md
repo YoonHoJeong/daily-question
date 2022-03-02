@@ -7,7 +7,7 @@
 
 **22.01.01 ~ 현재**
 
-[묻다 서비스 링크](https://daily-question.netlify.app/)
+[묻다 서비스 링크](https://asking-diary.netlify.app/)
 
 - 디자인 수정 : UI/UX 디자이너와 서비스 리디자인 작업 (진행중)
 - 리팩토링 : 프로토타입에 사용되었던 코드 정리 (진행중)
