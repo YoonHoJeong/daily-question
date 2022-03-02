@@ -124,8 +124,9 @@ const WeeklyAnswers: React.FC<Props> = ({
 
 const Container = styled.div`
   width: 100vw;
-  padding-top: 24px;
-  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
+  height: 100%;
+  overflow-y: scroll;
+  padding: 24px 0px;
 
   background-color: ${(props) => props.theme.palette.white};
 

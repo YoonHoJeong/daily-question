@@ -12,7 +12,7 @@ import DiaryIcon from "../assets/icons/diary_gray.png";
 import { VariablesContext } from "../App";
 
 interface Navigation {
-  pathname: string;
+  pathnames: string[];
   iconsUrl: {
     default: string;
     clicked: string;
@@ -21,19 +21,24 @@ interface Navigation {
 
 const Navigations: Navigation[] = [
   {
-    pathname: "/",
+    pathnames: ["/"],
     iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
   },
   {
-    pathname: "/board",
+    pathnames: ["/board"],
     iconsUrl: { clicked: FeedClickedIcon, default: FeedIcon },
   },
   {
-    pathname: "/answers",
+    pathnames: [
+      "/answers",
+      "/answers/weekly",
+      "/answers/daily",
+      "/answers/monthly",
+    ],
     iconsUrl: { clicked: DiaryClickedIcon, default: DiaryIcon },
   },
   {
-    pathname: "/user",
+    pathnames: ["/user"],
     iconsUrl: { clicked: PersonClickedIcon, default: PersonIcon },
   },
 ];
@@ -62,11 +67,11 @@ const BottomNavigation: React.FC<Props> = () => {
   }
 
   const NavigationItem = (navigation: Navigation) => (
-    <NavItem key={navigation.pathname}>
-      <Link to={navigation.pathname}>
+    <NavItem key={navigation.pathnames[0]}>
+      <Link to={navigation.pathnames[0]}>
         <Icon
           src={
-            pathname === navigation.pathname
+            navigation.pathnames.includes(pathname)
               ? navigation.iconsUrl.clicked
               : navigation.iconsUrl.default
           }
@@ -74,10 +79,10 @@ const BottomNavigation: React.FC<Props> = () => {
         />
       </Link>
       <SLink
-        to={navigation.pathname}
-        current={pathname === navigation.pathname ? "true" : "false"}
+        to={navigation.pathnames[0]}
+        current={navigation.pathnames.includes(pathname) ? "true" : "false"}
       >
-        {globalVariables.pathnames[navigation.pathname]}
+        {globalVariables.pathnames[navigation.pathnames[0]]}
       </SLink>
     </NavItem>
   );

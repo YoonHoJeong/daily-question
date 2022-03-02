@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import AnswersByDay from "../../components/AnswersByDay";
+import DateAnswersCard from "../../components/AnswersByDay";
 import UserProfile from "../../components/UserProfile";
 import { WeekDateAnswers } from "../../model/interfaces";
 
@@ -35,7 +35,7 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
         {Object.keys(monthAnswers)
           .reverse()
           .map((date) => (
-            <AnswersByDay
+            <DateAnswersCard
               key={date}
               date={date}
               answers={monthAnswers[date]}
@@ -49,8 +49,8 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
 
 const Container = styled.div`
   width: 100%;
-
-  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
+  height: 100%;
+  overflow-y: scroll;
 `;
 const UserProfileContainer = styled.div`
   background-color: ${(props) => props.theme.palette.white};

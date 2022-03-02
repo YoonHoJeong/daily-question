@@ -59,7 +59,7 @@ const Answers: React.FC<Props> = () => {
   };
 
   return (
-    <Container style={{ height: "calc(100vh - 84px)" }}>
+    <Container>
       <DateFormatPicker />
       <Route path="/answers/monthly">
         <MonthlyAnswers
@@ -70,7 +70,7 @@ const Answers: React.FC<Props> = () => {
         />
       </Route>
       <Route path="/answers/daily">
-        <DailyAnswers answers={answers} />;
+        <DailyAnswers answers={answers} />
       </Route>
 
       <Route path="/answers/weekly">
