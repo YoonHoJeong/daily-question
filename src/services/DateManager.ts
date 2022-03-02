@@ -28,29 +28,63 @@ export const getAllWeeklyDate = (dateObj: Date) => {
   }
   return dates;
 };
-export const getAllMonthlyDate = (dateObj: Date) => {
-  // 해당 월의 월, 화, 수, 목, 금 반환
-  // 5일 단위, 해당 월이 아닐 수도 있으므로 월도 표시.
-  const firstDate = new Date(dateObj);
-  firstDate.setDate(1);
-  while (firstDate.getDay() !== 1) {
-    firstDate.setDate(firstDate.getDate() + 1);
+
+function getFirstMondayOfMonth(date: Date) {
+  // date가 토, 일요일이면, 다음 주 월요일부터
+  const tmpDate = new Date(date);
+  tmpDate.setDate(1);
+
+  if (tmpDate.getDay() === 6) {
+    // 1일이 토요일인 경우 다음 주 월요일로 설정.
+    tmpDate.setDate(3);
+  } else if (tmpDate.getDay() === 0) {
+    // 1일이 일요일인 경우 다음 주 월요일로 설정.
+    tmpDate.setDate(2);
+  }
+  while (tmpDate.getDay() !== 1) {
+    tmpDate.setDate(tmpDate.getDate() - 1);
   }
 
-  const lastDate = new Date(dateObj);
-  lastDate.setMonth(lastDate.getMonth() + 1);
-  lastDate.setDate(0);
-  const lastDateDay = lastDate.getDay() !== 0 ? lastDate.getDay() : 7;
-  lastDate.setDate(lastDate.getDate() - lastDateDay + 1);
-  const dates = [];
+  const firstDateOfMonth = tmpDate;
 
-  while (firstDate <= lastDate) {
-    const tmp = new Date(firstDate);
+  return firstDateOfMonth;
+}
+
+function getLastMondayOfMonth(date: Date) {
+  // 1. get the last day of the month
+  const tmpDate = new Date(date);
+  tmpDate.setMonth(tmpDate.getMonth() + 1);
+  tmpDate.setDate(0);
+
+  // 2. calculate the last week's monday
+  while (tmpDate.getDay() !== 1) {
+    tmpDate.setDate(tmpDate.getDate() - 1);
+  }
+
+  const lastMondayOfMonth = tmpDate;
+
+  return lastMondayOfMonth;
+}
+
+export const getAllDatesOfMonth = (dateObj: Date) => {
+  // 해당 월의 월, 화, 수, 목, 금 반환
+  // 5일 단위, 해당 월이 아닐 수도 있으므로 월도 표시.
+  const firstMondayOfMonth = getFirstMondayOfMonth(dateObj);
+  const lastMondayOfMonth = getLastMondayOfMonth(dateObj);
+
+  const dates = [];
+  const pivotDate = new Date(firstMondayOfMonth);
+
+  while (pivotDate <= lastMondayOfMonth) {
+    // push all dates except for weekend
     for (let i = 0; i < 5; i++) {
-      dates.push(convertDateUntilDay(tmp));
-      tmp.setDate(tmp.getDate() + 1);
+      const tmpDate = new Date(pivotDate);
+      tmpDate.setDate(tmpDate.getDate() + i);
+      dates.push(convertDateUntilDay(tmpDate));
     }
-    firstDate.setDate(firstDate.getDate() + 7);
+
+    // next week
+    pivotDate.setDate(pivotDate.getDate() + 7);
   }
 
   return dates;
