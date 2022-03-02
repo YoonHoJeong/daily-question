@@ -5,23 +5,13 @@ import WeeklyAnswers from "./WeeklyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
-import { useFetchUserWeekDateAnswers } from "../../hooks/customUseQueries";
+import {
+  useFetchUserAnswers,
+  useFetchUserWeekDateAnswers,
+} from "../../hooks/customUseQueries";
 import { Route } from "react-router-dom";
 
-const Container = styled.div`
-  position: relative;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: ${(props) => props.theme.palette.white};
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export type ViewFormat = "weekly" | "daily" | "monthly";
+type ViewFormat = "weekly" | "daily" | "monthly";
 
 interface Props {}
 
@@ -37,6 +27,10 @@ const Answers: React.FC<Props> = () => {
 
   const { data, isLoading } = useFetchUserWeekDateAnswers(uid);
   const answers = data ?? {};
+
+  const { data: rawAnswersData, isLoading: isRawAnswersLoading } =
+    useFetchUserAnswers(uid);
+  const rawAnswers = rawAnswersData ?? {};
 
   const changeWeek = (weekCnt: number) => {
     const tmpDate = new Date(date.dateObj);
@@ -69,9 +63,9 @@ const Answers: React.FC<Props> = () => {
       <DateFormatPicker />
       <Route path="/answers/monthly">
         <MonthlyAnswers
-          loading={isLoading}
+          loading={isRawAnswersLoading}
           date={date}
-          answers={answers}
+          answers={rawAnswers}
           changeMonth={changeMonth}
         />
       </Route>
@@ -98,5 +92,19 @@ const Answers: React.FC<Props> = () => {
     </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+
+  width: 100vw;
+  height: 100%;
+  overflow-y: scroll;
+
+  background-color: ${(props) => props.theme.palette.white};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default Answers;

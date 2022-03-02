@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import BoxClickedIconUrl from "../assets/Qbox1.png";
-import BoxIconUrl from "../assets/Qbox2.png";
-import BoardClickedIconUrl from "../assets/feed1.png";
-import BoardIconUrl from "../assets/feed2.png";
-import UserClickedIconUrl from "../assets/person1.png";
-import UserIconUrl from "../assets/person2.png";
-import AnswersIconUrl from "../assets/my_answers_icon_grey.svg";
-import AnswersIconClickedUrl from "../assets/my_answers_icon_blue.svg";
+import BoxClickedIcon from "../assets/icons/box_blue.png";
+import BoxIcon from "../assets/icons/box_gray.png";
+import FeedClickedIcon from "../assets/icons/feed_blue.png";
+import FeedIcon from "../assets/icons/feed_gray.png";
+import PersonClickedIcon from "../assets/icons/person_blue.png";
+import PersonIcon from "../assets/icons/person_gray.png";
+import DiaryClickedIcon from "../assets/icons/diary_blue.png";
+import DiaryIcon from "../assets/icons/diary_gray.png";
 import { VariablesContext } from "../App";
 
 interface Navigation {
@@ -22,19 +22,19 @@ interface Navigation {
 const Navigations: Navigation[] = [
   {
     pathname: "/",
-    iconsUrl: { clicked: BoxClickedIconUrl, default: BoxIconUrl },
+    iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
   },
   {
     pathname: "/board",
-    iconsUrl: { clicked: BoardClickedIconUrl, default: BoardIconUrl },
+    iconsUrl: { clicked: FeedClickedIcon, default: FeedIcon },
   },
   {
     pathname: "/answers",
-    iconsUrl: { clicked: AnswersIconClickedUrl, default: AnswersIconUrl },
+    iconsUrl: { clicked: DiaryClickedIcon, default: DiaryIcon },
   },
   {
     pathname: "/user",
-    iconsUrl: { clicked: UserClickedIconUrl, default: UserIconUrl },
+    iconsUrl: { clicked: PersonClickedIcon, default: PersonIcon },
   },
 ];
 

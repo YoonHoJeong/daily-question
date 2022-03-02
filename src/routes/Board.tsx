@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import AnswersByDay from "../components/AnswersByDay";
+import DateAnswersCard from "../components/AnswersByDay";
 import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
 import HeartColored from "../assets/4_heart.svg";
@@ -23,22 +23,44 @@ const Board: React.FC<Props> = () => {
   if (isError) return <>Error</>;
 
   return (
-    <Container>
+    <ViewWindow>
       {isLoading || imageLoading ? (
         <Loader />
       ) : (
         descendingDates.map((date) => (
-          <AnswersByDay key={date} date={date} answers={answers[date] || {}} />
+          <>
+            <DateAnswersCard
+              key={date}
+              date={date}
+              answers={answers[date] || {}}
+            />
+            <DateAnswersCard
+              key={date}
+              date={date}
+              answers={answers[date] || {}}
+            />
+            <DateAnswersCard
+              key={date}
+              date={date}
+              answers={answers[date] || {}}
+            />
+            <DateAnswersCard
+              key={date}
+              date={date}
+              answers={answers[date] || {}}
+            />
+          </>
         ))
       )}
-    </Container>
+    </ViewWindow>
   );
 };
 
-const Container = styled.ul`
+const ViewWindow = styled.ul`
   background-color: white;
 
-  padding-bottom: ${(props) => props.theme.sizes.bottomNavHeight};
+  overflow-y: scroll;
+  height: 100%;
 `;
 
 export default Board;
