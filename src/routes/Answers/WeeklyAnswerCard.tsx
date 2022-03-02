@@ -1,14 +1,59 @@
 import styled from "styled-components";
 import { AnswerWithQuestion } from "../../model/interfaces";
 import { useForm } from "../../hooks/useForm";
+import AnswerOptionCheckBoxes from "../../components/AnswerOptionCheckBoxes";
+import { SyntheticEvent } from "react";
+import { updateAnswer } from "../../services/fireDB";
+import {
+  useFetchRecentAnswers,
+  useFetchUserWeekDateAnswers,
+} from "../../hooks/customUseQueries";
+import { useAuth } from "../../hooks/useAuth";
+
+const ConvertPublicMessage = "공개 글로 전환하시겠어요?";
+const ConvertPrivateMessage = "비공개 글로 전환하시겠어요?";
+const ConvertAnonymousMessage = "익명 글로 전환하시겠어요?";
+const ConvertRealnameMessage = "실명 글로 전환하시겠어요?";
+const ConfirmMessages = {
+  isPublic: {
+    true: ConvertPrivateMessage,
+    false: ConvertPublicMessage,
+  },
+  isAnonymous: {
+    true: ConvertRealnameMessage,
+    false: ConvertAnonymousMessage,
+  },
+};
 
 const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
   answer,
 }) => {
-  const { form, onChange } = useForm({
-    isPublic: answer.isPublic,
-    isAnonymous: answer.isAnonymous,
+  const { form, setProperty } = useForm({
+    isPublic: answer.isPublic ?? false,
+    isAnonymous: answer.isAnonymous ?? false,
   });
+  const auth = useAuth();
+  const { refetch: myAnswersRefetch } = useFetchUserWeekDateAnswers(
+    auth.user!!.uid
+  );
+  const { refetch: boardAnswersRefetch } = useFetchRecentAnswers();
+  const onClickCheckbox = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    const elem = e.currentTarget as HTMLInputElement;
+    const currentValue = form[elem.name] ?? false;
+    const confirmMessage = ConfirmMessages[elem.name][currentValue];
+
+    const response = window.confirm(confirmMessage);
+    if (response === true) {
+      setProperty(elem.name, !currentValue);
+      await updateAnswer(
+        { uid: auth.user!!.uid, ...answer },
+        { [elem.name]: !currentValue }
+      );
+      await myAnswersRefetch();
+      await boardAnswersRefetch();
+    }
+  };
 
   return (
     <Container>
@@ -21,28 +66,7 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
           A.<p>{answer.answer}</p>
         </AnswerText>
       </CardContainer>
-      <Options>
-        <Option>
-          <input
-            id="isAnonymous"
-            name="isAnonymous"
-            checked={form.isAnonymous}
-            onChange={onChange}
-            type="checkbox"
-          />
-          <label htmlFor="isAnonymous">익명</label>
-        </Option>
-        <Option>
-          <input
-            id="isPublic"
-            name="isPublic"
-            checked={form.isPublic}
-            onChange={onChange}
-            type="checkbox"
-          />
-          <label htmlFor="isPublic">공개</label>
-        </Option>
-      </Options>
+      <AnswerOptionCheckBoxes form={form} onClickCheckbox={onClickCheckbox} />
     </Container>
   );
 };
@@ -67,39 +91,26 @@ const KeywordText = styled.p`
   font-size: 12px;
   color: ${(props) => props.theme.palette.deepGrey};
 `;
-const QuestionText = styled.p`
+const QuestionText = styled.div`
   font-size: 16px;
   line-height: 20px;
   margin-top: 4px;
   color: ${(props) => props.theme.palette.blue};
   display: flex;
-  & > span {
+  & > p {
     color: ${(props) => props.theme.palette.blue};
+    margin-left: 4px;
   }
 `;
-const AnswerText = styled.p`
+const AnswerText = styled.div`
   font-size: 14px;
   margin-top: 10px;
   margin-left: 2px;
   display: flex;
-`;
 
-const Options = styled.ul`
-  width: 100%;
-  display: flex;
-  justify-content: end;
-
-  & > li:not(:first-child) {
-    margin-left: 19px;
+  & > p {
+    margin-left: 4px;
   }
-
-  margin-top: 5px;
-`;
-const Option = styled.li`
-  display: flex;
-  align-items: center;
-
-  font-size: 12px;
 `;
 
 export default WeeklyAnswerCard;

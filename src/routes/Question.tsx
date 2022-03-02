@@ -1,6 +1,7 @@
 import React, { SyntheticEvent, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
+import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
 import Loader from "../components/common/Loader";
 import {
   useFetchUserAnswers,
@@ -29,7 +30,7 @@ const QuestionScreen: React.FC<Props> = () => {
       .map((aid) => answers[aid])
       .pop();
 
-  const { form, onChange } = useForm({
+  const { form, onChange, setProperty } = useForm({
     answer: answer?.answer ?? "",
     aid: answer?.aid ?? "",
     isPublic: answer?.isPublic ?? false,
@@ -57,7 +58,12 @@ const QuestionScreen: React.FC<Props> = () => {
       }
     }
   };
-
+  const onClickCheckbox = (e: SyntheticEvent) => {
+    const elem = e.currentTarget as HTMLInputElement;
+    const key = elem.name;
+    const value = elem.checked;
+    setProperty(key, value);
+  };
   return (
     <Container onSubmit={onSubmit}>
       {isLoading || submitting ? (
@@ -73,22 +79,10 @@ const QuestionScreen: React.FC<Props> = () => {
             onChange={onChange}
             disabled={submitting}
           ></AnswerInput>
-          <input
-            id="isAnonymous"
-            name="isAnonymous"
-            type="checkbox"
-            checked={form.isAnonymous}
-            onChange={onChange}
+          <AnswerOptionCheckBoxes
+            form={form}
+            onClickCheckbox={onClickCheckbox}
           />
-          <label htmlFor="isAnonymous">익명</label>
-          <input
-            id="isPublic"
-            name="isPublic"
-            type="checkbox"
-            checked={form.isPublic}
-            onChange={onChange}
-          />
-          <label htmlFor="isPublic">공개</label>
           <Button type="submit">오늘의 답변 기록하기</Button>
         </>
       )}

@@ -21,7 +21,7 @@ interface Navigation {
 
 const Navigations: Navigation[] = [
   {
-    pathnames: ["/"],
+    pathnames: ["/", "/submit-done"],
     iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
   },
   {

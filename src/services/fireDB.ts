@@ -19,6 +19,38 @@ import {
 } from "./DateManager";
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 
+export const updateAnswer = async (
+  answer: Answer,
+  form: { [key: string | number]: any }
+) => {
+  const updates = {};
+  const convertedDate = convertDateUntilDay(new Date(answer.created_at));
+  const week = answer.week ?? calcWeek(new Date(answer.created_at));
+  Object.keys(form).forEach((key) => {
+    updates[`answers/${answer.aid}/${key}`] = form[key];
+    updates[
+      `user-answers/${answer.uid}/${week}/${convertedDate}/${answer.aid}/${key}`
+    ] = form[key];
+  });
+
+  console.log(updates);
+
+  await update(ref(fireDB), updates);
+};
+
+export const setAnswerPublic = async (answer: Answer) => {
+  await updateAnswer(answer, { isPulic: true });
+};
+export const setAnswerPrivate = async (answer: Answer) => {
+  await updateAnswer(answer, { isPulic: false });
+};
+export const setAnswerAnonymous = async (answer: Answer) => {
+  await updateAnswer(answer, { isAnonymous: true });
+};
+export const setAnswerRealname = async (answer: Answer) => {
+  await updateAnswer(answer, { isAnonymous: false });
+};
+
 export const submitAnswer = async (
   uid: string,
   question: Question,
@@ -100,9 +132,7 @@ export const getTodayQuestions = async () => {
 
 export const getBoardAnswers = async () => {
   let answers: FetchedAnswers = (
-    await get(
-      query(ref(fireDB, "answers"), orderByChild("created_at"), limitToLast(30))
-    )
+    await get(query(ref(fireDB, "answers"), orderByChild("isPublic")))
   ).val();
   let questions: FetchedQuestions = (await get(ref(fireDB, "questions"))).val();
 

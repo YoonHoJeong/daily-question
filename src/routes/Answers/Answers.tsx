@@ -11,8 +11,6 @@ import {
 } from "../../hooks/customUseQueries";
 import { Route } from "react-router-dom";
 
-type ViewFormat = "weekly" | "daily" | "monthly";
-
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
