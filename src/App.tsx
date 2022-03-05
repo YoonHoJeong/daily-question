@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
 import { Router } from "./components/Router";
-import GlobalStyle from "./css/GlobalStyle";
+import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const Container = styled.div``;

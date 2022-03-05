@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import UserProfile from "../../components/UserProfile";
-import BoxOpened from "../../assets/box_opened.png";
-import UserIcon from "../../assets/person2.png";
-import Heart from "../../assets/4_heart.svg";
 import Loader from "../../components/common/Loader";
 import { useAuth } from "../../hooks/useAuth";
+
 import { usePreloadImages } from "../../hooks/usePreloadImages";
+import BoxOpenedIcon from "../../assets/icons/box_opened.png";
+import UserIcon from "../../assets/icons/person_gray.png";
 
 interface Props {}
 
 const User: React.FC<Props> = () => {
-  const { loading } = usePreloadImages([UserIcon, BoxOpened, Heart]);
+  const { loading } = usePreloadImages([UserIcon, BoxOpenedIcon]);
 
   if (loading) {
     return <Loader />;

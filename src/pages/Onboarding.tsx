@@ -3,9 +3,10 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useAuth } from "../hooks/useAuth";
-import BoxLogoBlueLine from "../assets/box_blue_line.png";
 import Loader from "../components/common/Loader";
+
 import { usePreloadImages } from "../hooks/usePreloadImages";
+import BoxBlueLineLogo from "../assets/icons/box_blue_line.png";
 
 interface Props {}
 
@@ -20,7 +21,7 @@ const Onboarding: React.FC<Props> = () => {
     history.push("/register");
   };
 
-  const { loading } = usePreloadImages([BoxLogoBlueLine]);
+  const { loading } = usePreloadImages([BoxBlueLineLogo]);
 
   useEffect(() => {
     if (auth && auth.user) {
@@ -34,7 +35,7 @@ const Onboarding: React.FC<Props> = () => {
         <Loader />
       ) : (
         <>
-          <ServiceIcon src={BoxLogoBlueLine} />
+          <ServiceIcon src={BoxBlueLineLogo} />
 
           <Buttons>
             <Button type="submit" variant="contained" onClick={moveToLogin}>

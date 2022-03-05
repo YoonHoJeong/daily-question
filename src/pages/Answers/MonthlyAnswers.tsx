@@ -1,8 +1,8 @@
 import React from "react";
 import { AnswerDateCount, HelperText } from "./WeeklyAnswers";
-import styles from "../../css/calendar.module.css";
 import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
 import Loader from "../../components/common/Loader";
+import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
 import {
   Answer,
@@ -79,6 +79,17 @@ const MonthlyAnswers: React.FC<Props> = ({
   );
 };
 
+const Container = styled.div`
+  width: 100vw;
+  height: 100%;
+  padding-top: 24px;
+  background-color: ${(props) => props.theme.palette.white};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 interface CalendarProps {
   dateObj: Date;
   monthAnswers: DateQidAnswers;
@@ -141,16 +152,5 @@ const cellStyleByAnswerCnt = (dateAnswers?: {
 
   return cellStyle;
 };
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100%;
-  padding-top: 24px;
-  background-color: ${(props) => props.theme.palette.white};
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 export default MonthlyAnswers;

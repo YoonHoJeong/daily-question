@@ -1,8 +1,8 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
-import BottomNavigation from "../components/BottomNavigation";
-import Header from "../components/common/Header";
+import BottomNavigation from "../layouts/BottomNavigation";
+import Header from "../layouts/Header";
 import { Answers, Question, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "./User/User";
@@ -37,9 +37,7 @@ const ClientRoutes: React.FC<Props> = () => {
         <Route path="/user/edit">
           <UserEdit />
         </Route>
-        {/* <Route path="/user/keeps">
-          <UserKeeps />
-        </Route> */}
+
         <Route exact path="/user">
           <User />
         </Route>

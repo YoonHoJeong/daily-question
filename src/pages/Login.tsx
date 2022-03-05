@@ -6,11 +6,12 @@ import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 import Header from "../components/common/Header";
 import Input from "../components/common/Input";
-import BoxLogoGrey from "../assets/box_logo_grey.svg";
 import Loader from "../components/common/Loader";
-import { usePreloadImages } from "../hooks/usePreloadImages";
 import { Spinner } from "../components/common/Spinner";
 import ErrorMessage from "../components/common/ErrorMessage";
+
+import { usePreloadImages } from "../hooks/usePreloadImages";
+import BoxLogoGreyLogo from "../assets/icons/box_logo_grey.svg";
 
 interface Props {}
 
@@ -20,7 +21,7 @@ const Login: React.FC<Props> = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const auth = useAuth();
   const history = useHistory();
-  const { loading } = usePreloadImages([BoxLogoGrey]);
+  const { loading } = usePreloadImages([BoxLogoGreyLogo]);
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ const Login: React.FC<Props> = () => {
           <Loader />
         ) : (
           <LoginForm onSubmit={onSubmit}>
-            <ServiceIcon src={BoxLogoGrey} />
+            <ServiceIcon src={BoxLogoGreyLogo} />
 
             <Input
               id="email"

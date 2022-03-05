@@ -2,19 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../components/DateAnswersCard";
 import Loader from "../components/common/Loader";
-import { usePreloadImages } from "../hooks/usePreloadImages";
-import HeartColored from "../assets/4_heart.svg";
-import HeartUnColored from "../assets/4_heart2.svg";
 import { useFetchBoardAnswers } from "../hooks/customUseQueries";
 
 interface Props {}
 
 const Board: React.FC<Props> = () => {
-  const { loading: imageLoading } = usePreloadImages([
-    HeartColored,
-    HeartUnColored,
-  ]);
-
   const { data, isLoading, isError } = useFetchBoardAnswers();
   const answers = data ?? {};
 
@@ -24,7 +16,7 @@ const Board: React.FC<Props> = () => {
 
   return (
     <ViewWindow>
-      {isLoading || imageLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         descendingDates.map((date) => (

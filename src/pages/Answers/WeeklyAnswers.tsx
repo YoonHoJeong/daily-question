@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import BoxOpenedIcon from "../../assets/box_opened.png";
-import BoxClosedIcon from "../../assets/box_closed.png";
 import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
-import { usePreloadImages } from "../../hooks/usePreloadImages";
 import { Answer, FetchedAnswers, Question } from "../../model/interfaces";
 import Loader from "../../components/common/Loader";
 import WeekToggle from "./WeekToggle";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
 import { formatAnswersToDateQidAnswers } from "../../services/utils";
+
+import { usePreloadImages } from "../../hooks/usePreloadImages";
+import BoxOpenedIcon from "../../assets/icons/box_opened.png";
+import BoxClosedIcon from "../../assets/icons/box_closed.png";
 
 interface Props {
   isLoading: boolean;

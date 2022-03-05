@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { VariablesContext } from "../App";
+
 import BoxClickedIcon from "../assets/icons/box_blue.png";
 import BoxIcon from "../assets/icons/box_gray.png";
 import FeedClickedIcon from "../assets/icons/feed_blue.png";
@@ -9,7 +11,6 @@ import PersonClickedIcon from "../assets/icons/person_blue.png";
 import PersonIcon from "../assets/icons/person_gray.png";
 import DiaryClickedIcon from "../assets/icons/diary_blue.png";
 import DiaryIcon from "../assets/icons/diary_gray.png";
-import { VariablesContext } from "../App";
 
 interface Navigation {
   pathnames: string[];

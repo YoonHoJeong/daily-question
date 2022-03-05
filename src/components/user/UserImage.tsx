@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import UserIcon from "../../assets/person2.png";
+import UserIcon from "../../assets/icons/person_gray.png";
 
 const UserImgContainer = styled.div<{ imageUrl?: string }>`
   min-width: 60px;
   width: 60px;
   height: 60px;
 
-  background-color: ${(props) => props.theme.palette.bgGrey2};
+  background-color: ${(props) => props.theme.palette.bgGrey};
   background-image: ${(props) => props.imageUrl};
   border-radius: 50%;
 

@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import UserImage from "../../components/user/UserImage";
-import EditIconUrl from "../../assets/pencil.png";
+import EditIcon from "../../assets/icons/pencil.png";
 import { useForm } from "../../hooks/useForm";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -55,7 +55,7 @@ const UserEdit: React.FC<Props> = () => {
             <InputLabel>닉네임</InputLabel>
             <Field>{auth.user?.profile.name || "이름을 입력해주세요."}</Field>
             <EditButton name="name" onClick={handleOpenPopup}>
-              <EditIcon src={EditIconUrl} />
+              <EditIconImg src={EditIcon} />
             </EditButton>
           </InputRow>
           <InputRow>
@@ -64,7 +64,7 @@ const UserEdit: React.FC<Props> = () => {
               {auth.user?.profile.intro || "내 소개를 입력해주세요."}
             </Field>
             <EditButton name="intro" onClick={handleOpenPopup}>
-              <EditIcon src={EditIconUrl} />
+              <EditIconImg src={EditIcon} />
             </EditButton>
           </InputRow>
           <InputRow>
@@ -239,7 +239,7 @@ const Field = styled.p`
 `;
 
 const EditButton = styled.button``;
-const EditIcon = styled.img`
+const EditIconImg = styled.img`
   width: 11px;
   height: 11px;
 `;
