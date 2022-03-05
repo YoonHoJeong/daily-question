@@ -7,6 +7,44 @@ import { Link, useLocation } from "react-router-dom";
 
 interface Props {}
 
+const DateFormatPicker: React.FC<Props> = () => {
+  const [folded, setFolded] = useState<boolean>(true);
+
+  const { pathname } = useLocation();
+  const currentViewFormat = getAnswerFormatFromPath(pathname);
+  const othersViewFormat = Object.keys(viewFormats).filter(
+    (key) => key !== currentViewFormat
+  );
+
+  useEffect(() => {
+    setFolded(true);
+  }, [pathname]);
+
+  const onClick = (e: SyntheticEvent) => {
+    setFolded((currentState) => !currentState);
+  };
+
+  return (
+    <Container>
+      <DateFormatList>
+        <CurrentDateFormat>{viewFormats[currentViewFormat]}</CurrentDateFormat>
+        {othersViewFormat.map((viewFormat) => (
+          <DateFormat
+            key={viewFormat}
+            style={{ display: folded ? "none" : "flex" }}
+          >
+            <Link to={`/answers/${viewFormat}`}>{viewFormats[viewFormat]}</Link>
+          </DateFormat>
+        ))}
+      </DateFormatList>
+
+      <DateFormatToggleButton onClick={onClick}>
+        {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+      </DateFormatToggleButton>
+    </Container>
+  );
+};
+
 const viewFormats = { weekly: "주간", daily: "일간", monthly: "월간" };
 function getAnswerFormatFromPath(pathname: string) {
   const viewFormatsWithPathname = {
@@ -19,46 +57,13 @@ function getAnswerFormatFromPath(pathname: string) {
   return viewFormatsWithPathname[pathname];
 }
 
-const DateFormatPicker: React.FC<Props> = () => {
-  const [folded, setFolded] = useState<boolean>(true);
-
-  const { pathname } = useLocation();
-  const currentViewFormat = getAnswerFormatFromPath(pathname);
-
-  useEffect(() => {
-    setFolded(true);
-  }, [pathname]);
-
-  const onClick = (e: SyntheticEvent) => {
-    setFolded((currentState) => !currentState);
-  };
-
-  return (
-    <Container>
-      <CurrentDateFormat>{viewFormats[currentViewFormat]}</CurrentDateFormat>
-      {Object.keys(viewFormats)
-        .filter((key) => key !== currentViewFormat)
-        .map((viewFormat) => (
-          <DateFormat
-            key={viewFormat}
-            style={{ display: folded ? "none" : "flex" }}
-          >
-            <Link to={`/answers/${viewFormat}`}>{viewFormats[viewFormat]}</Link>
-          </DateFormat>
-        ))}
-
-      <DateFormatIcon onClick={onClick}>
-        {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
-      </DateFormatIcon>
-    </Container>
-  );
-};
-
-const Container = styled.ul`
+const Container = styled.div`
   position: absolute;
   top: 12px;
-  right: 48px;
-
+  right: 40px;
+  z-index: 100;
+`;
+const DateFormatList = styled.ul`
   & > li {
     width: 44px;
     height: 26px;
@@ -66,7 +71,6 @@ const Container = styled.ul`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
 
     font-weight: 500;
     font-size: 16px;
@@ -77,18 +81,21 @@ const Container = styled.ul`
 const CurrentDateFormat = styled.li`
   display: none;
   background-color: ${(props) => props.theme.palette.white};
-  margin-top: 2px;
 `;
 const DateFormat = styled.li`
   background-color: ${(props) => props.theme.palette.bgGrey2};
 `;
 
-const DateFormatIcon = styled.button`
+const DateFormatToggleButton = styled.button`
   position: absolute;
   top: 0px;
-  right: -30px;
+  right: -24px;
 
+  height: 100%;
   padding: 0;
+
+  display: flex;
+  align-items: center;
 
   border: none;
   background-color: transparent;
