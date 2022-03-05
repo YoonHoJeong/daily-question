@@ -64,20 +64,12 @@ export const getDateQuestionAnswers = async () => {
 };
 
 export const updateAnswer = async (
-  answer: AnswerWithQuestion,
+  answer: Answer,
   form: { [key: string | number]: any }
 ) => {
   const updates = {};
-  const convertedDate = convertDateUntilDay(
-    new Date(answer.question.publish_date)
-  );
-  const week = answer.week ?? calcWeek(new Date(answer.question.publish_date));
-
   Object.keys(form).forEach((key) => {
     updates[`answers/${answer.aid}/${key}`] = form[key];
-    updates[
-      `user-answers/${answer.uid}/${week}/${convertedDate}/${answer.aid}/${key}`
-    ] = form[key];
     updates[`user-answers/${answer.uid}/${answer.aid}/${key}`] = form[key];
   });
 

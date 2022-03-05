@@ -14,8 +14,12 @@ interface Props {}
 
 const LogOutButton: React.FC<Props> = () => {
   const auth = useAuth();
+  const confirmMessage = "로그아웃 하시겠어요?";
   const handleLogout = () => {
-    auth.logout();
+    const response = window.confirm(confirmMessage);
+    if (response === true) {
+      auth.logout();
+    }
   };
 
   return <Button onClick={handleLogout}>로그아웃</Button>;

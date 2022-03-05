@@ -4,8 +4,8 @@ import styled from "styled-components";
 import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
 import Loader from "../components/common/Loader";
 import {
-  useFetchUserAnswers,
   useFetchQuestions,
+  useFetchUserAnswers,
 } from "../hooks/customUseQueries";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
@@ -23,17 +23,17 @@ const QuestionScreen: React.FC<Props> = () => {
   const question = questions && questions[qid];
 
   const {
-    data: answers,
+    data,
     isLoading,
     refetch: userAnswersRefetch,
   } = useFetchUserAnswers(user!!.uid);
+
   const { refetch: questionsRefetch } = useFetchQuestions();
-  const answer =
-    answers &&
-    Object.keys(answers)
-      .filter((aid) => answers[aid].qid === qid)
-      .map((aid) => answers[aid])
-      .pop();
+  const userAnswers = data ?? {};
+  const answer = Object.keys(userAnswers)
+    .filter((aid) => userAnswers[aid].qid === qid)
+    .map((aid) => userAnswers[aid])
+    .pop();
 
   const { form, onChange, setProperty } = useForm({
     answer: answer?.answer ?? "",

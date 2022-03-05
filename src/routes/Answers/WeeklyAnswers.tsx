@@ -135,8 +135,6 @@ interface DailyAnswersProps {
   date: string;
 }
 const DailyAnswers: React.FC<DailyAnswersProps> = ({ answers, date }) => {
-  console.log(answers);
-
   return (
     <DailyAnswersContainer>
       <DayText>{getDay(date)}</DayText>

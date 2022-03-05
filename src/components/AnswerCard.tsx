@@ -23,7 +23,7 @@ const AnswerCard: React.FC<Props> = ({ answer, profileOn }) => {
           }}
         />
         <ProfileName>
-          {answer.isAnonymous ? "익명" : answer.user.profile.name || "묻이"}
+          {answer.isAnonymous ? "익명" : answer.user.profile.name || "묻다"}
         </ProfileName>
       </Profile>
       <AnswerAndFav>

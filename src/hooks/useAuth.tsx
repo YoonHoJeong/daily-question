@@ -9,6 +9,7 @@ import {
 import { get, ref, update } from "firebase/database";
 import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
+import { getUserAnswers } from "../services/fireDB";
 
 interface Props {}
 
@@ -147,8 +148,8 @@ const useProviderAuth = () => {
   }, [auth]);
 
   const fetchUserDB = async (uid: string, path: string) => {
-    const snapshot = await get(ref(fireDB, `users/${uid}/${path}`));
-    return snapshot.val();
+    const userData = (await get(ref(fireDB, `users/${uid}/${path}`))).val();
+    return userData;
   };
 
   const refreshCustomUser = async () => {
@@ -157,6 +158,7 @@ const useProviderAuth = () => {
       setCustomUser({
         ...customUser,
         profile: {
+          email: userProfileData.email || "이메일을 등록해주세요.",
           name: userProfileData?.name || "익명",
           intro: userProfileData?.intro || "내 소개를 입력해주세요",
         },
@@ -325,13 +327,16 @@ const useProviderAuth = () => {
   };
 
   const updateUserDB = async (uid: string, userData: UserProfileData) => {
-    const updates = Object.keys(userData).reduce(
-      (userProfile, key) => ({
-        ...userProfile,
-        [`users/${uid}/${key}`]: userData[key],
-      }),
-      {}
-    );
+    const userAnswers = await getUserAnswers(uid);
+    const updates = Object.keys(userData).reduce((userProfile, key) => {
+      Object.keys(userAnswers).forEach((aid) => {
+        userProfile[`user-answers/${uid}/${aid}/user/${key}`] = userData[key];
+        userProfile[`answers/${aid}/user/${key}`] = userData[key];
+      });
+      userProfile[`users/${uid}/${key}`] = userData[key];
+
+      return userProfile;
+    }, {});
 
     await update(ref(fireDB), updates);
     await refreshCustomUser();
