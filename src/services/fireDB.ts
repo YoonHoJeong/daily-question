@@ -24,6 +24,52 @@ import {
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 import AdminAnswers from "../routes/admin/AdminAnswers";
 
+const getAllAnswers = async (size?: number) => {
+  const answers: FetchedAnswers = (await get(ref(fireDB, "answers"))).val();
+  return answers;
+};
+
+interface DateQidAnswers {
+  [date: string]: {
+    [qid: string]: {
+      question: Question;
+      answers: {
+        [aid: string]: Answer;
+      };
+    };
+  };
+}
+export const getDateQuestionAnswers = async () => {
+  const answers = await getAllAnswers();
+
+  // formatting
+  const dateQidAnswers: DateQidAnswers = Object.keys(answers).reduce(
+    (prev, tmpAid) => {
+      const answer = answers[tmpAid];
+      const {
+        question,
+        question: { publish_date },
+        qid,
+        aid,
+      } = answer;
+
+      if (!prev[publish_date]) {
+        prev[publish_date] = {};
+      }
+      if (!prev[publish_date][qid]) {
+        prev[publish_date][qid] = { question, answers: {} };
+      }
+
+      prev[publish_date][qid].answers[aid] = answer;
+
+      return prev;
+    },
+    {}
+  );
+
+  console.log(dateQidAnswers);
+};
+
 export const updateAnswer = async (
   answer: AnswerWithQuestion,
   form: { [key: string | number]: any }

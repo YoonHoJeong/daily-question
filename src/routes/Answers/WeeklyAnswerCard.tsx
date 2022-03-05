@@ -60,7 +60,7 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
       <CardContainer>
         <KeywordText>{answer.question.keyword}</KeywordText>
         <QuestionText>
-          Q.<p>{answer.question.question}</p>
+        Q.<p>{answer.question.question}</p>
         </QuestionText>
         <AnswerText>
           A.<p>{answer.answer}</p>

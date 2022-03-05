@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Answer, AnswersWithQuestions, UserKeeps } from "../model/interfaces";
+import {
+  Answer,
+  AnswersWithQuestions,
+  DateAnswers,
+  UserKeeps,
+} from "../model/interfaces";
 import QuestionCard from "./QuestionCard";
 import AnswerCard from "./AnswerCard";
-import { getUserKeepsAids, keep, unKeep } from "../services/fireDB";
+import {
+  getDateQuestionAnswers,
+  getUserKeepsAids,
+  keep,
+  unKeep,
+} from "../services/fireDB";
 import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   date: string;
-  answers: Answer[];
+  answers: DateAnswers;
   profileOn?: boolean;
   unKeepDisappear?: boolean;
 }
@@ -58,31 +68,27 @@ const DateAnswersCard: React.FC<Props> = ({
     />
   );
 
-  const qids = answers.reduce(
-    (obj, answer) => ({ ...obj, [answer.qid]: true }),
-    {}
-  );
-
   return (
-    <DateContainer>
-      <SideDateBar>
-        <MonthDate>
-          <Month>{parseInt(month)}월</Month>
-          <Date>{parseInt(day)}</Date>
-        </MonthDate>
-      </SideDateBar>
-      <QuestionCards>
-        {Object.keys(qids).map((qid) => (
-          <QuestionCard
-            key={qid}
-            profileOn={true}
-            answers={answers.filter((answer) => answer.qid === qid)}
-            answerCardComponent={answerCardComponent}
-            // keeps={keeps}
-          />
-        ))}
-      </QuestionCards>
-    </DateContainer>
+    <>loading</>
+    // <DateContainer>
+    //   <SideDateBar>
+    //     <MonthDate>
+    //       <Month>{parseInt(month)}월</Month>
+    //       <Date>{parseInt(day)}</Date>
+    //     </MonthDate>
+    //   </SideDateBar>
+    //   <QuestionCards>
+    //     {Object.keys(qids).map((qid) => (
+    //       <QuestionCard
+    //         key={qid}
+    //         profileOn={true}
+    //         answers={answers.filter((answer) => answer.qid === qid)}
+    //         answerCardComponent={answerCardComponent}
+    //         // keeps={keeps}
+    //       />
+    //     ))}
+    //   </QuestionCards>
+    // </DateContainer>
   );
 };
 

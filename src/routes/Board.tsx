@@ -7,6 +7,7 @@ import HeartColored from "../assets/4_heart.svg";
 import HeartUnColored from "../assets/4_heart2.svg";
 import { useFetchRecentAnswers } from "../hooks/customUseQueries";
 import { FetchedAnswers } from "../model/interfaces";
+import { getDateQuestionAnswers } from "../services/fireDB";
 
 interface Props {}
 
@@ -36,7 +37,10 @@ const Board: React.FC<Props> = () => {
 
   if (isError) return <>Error</>;
 
-  console.log(answers);
+  async function fetchData() {
+    await getDateQuestionAnswers();
+  }
+  fetchData();
 
   return (
     <ViewWindow>
@@ -44,13 +48,7 @@ const Board: React.FC<Props> = () => {
         <Loader />
       ) : (
         descendingDates.map((date) => (
-          <DateAnswersCard
-            key={date}
-            date={date}
-            answers={Object.keys(answers)
-              .filter((aid) => answers[aid].question.publish_date === date)
-              .map((aid) => answers[aid])}
-          />
+          <DateAnswersCard key={date} date={date} answers={{}} />
         ))
       )}
     </ViewWindow>
