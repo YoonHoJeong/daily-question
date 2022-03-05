@@ -25,20 +25,6 @@ interface UserProfileData {
   [key: string]: string | number;
 }
 
-interface AuthLogin {
-  user: CustomUser;
-  isAuthenticating: boolean;
-  syncUserData: () => Promise<void>;
-  logout: () => Promise<Response>;
-}
-
-interface AuthLogout {
-  user: null;
-  isAuthenticating: boolean;
-  login: (email: string, password: string) => Promise<Response>;
-  register: (form: RegisterForm) => Promise<Response>;
-}
-
 export interface CustomUser {
   uid: string;
   admin: boolean;
@@ -63,13 +49,6 @@ export interface CustomAuthError {
 interface Response {
   status: boolean;
   error?: CustomAuthError;
-}
-interface ResponseFail extends Response {
-  status: false;
-  error: CustomAuthError;
-}
-interface ResponseSuccess extends Response {
-  status: true;
 }
 
 const authErrorMsgs = {
@@ -248,37 +227,13 @@ const useProviderAuth = () => {
 
   const register = async (formData: RegisterForm) => {
     const form = { ...formData };
-    const validate = () => {
-      Object.keys(form).forEach((key) => {
-        switch (key) {
-          case "name":
-            // 동일한 닉네임 확인
-            // 2글자 이상
-            if (form[key].length < 2) {
-              throw new Error("auth/weak-name");
-            }
-            break;
-          case "password":
-            // password should be at least 6 characters.
-            if (form[key].length < 6) {
-              throw new Error("auth/short-password");
-            }
-            break;
-          case "password2":
-            // password double check
-            if (form["password"] !== form[key]) {
-              throw new Error("auth/different-password");
-            }
-            break;
-        }
-      });
-    };
 
     let error;
+    let status = true;
 
     /* validate error handling */
     try {
-      validate();
+      formValidation(form);
     } catch (error: any) {
       const errorType = new Error(error).message.split(": ")[1];
       if (authErrorMsgs[errorType]) {
@@ -287,7 +242,9 @@ const useProviderAuth = () => {
         error = authErrorMsgs["default"];
       }
       formatUser(null);
-      return { status: false, error };
+      status = false;
+
+      return { status, error };
     }
 
     /* firebase auth error handling */
@@ -326,6 +283,17 @@ const useProviderAuth = () => {
     }
   };
 
+  const updateUserProfile = async (userProfileData: UserProfileData) => {
+    const userData = Object.keys(userProfileData).reduce(
+      (userData, key) => ({
+        ...userData,
+        [`profile/${key}`]: userProfileData[key],
+      }),
+      {}
+    );
+    await updateUserDB(customUser!!.uid, userData);
+  };
+
   const updateUserDB = async (uid: string, userData: UserProfileData) => {
     const userAnswers = await getUserAnswers(uid);
     const updates = Object.keys(userData).reduce((userProfile, key) => {
@@ -341,16 +309,6 @@ const useProviderAuth = () => {
     await update(ref(fireDB), updates);
     await refreshCustomUser();
   };
-  const updateUserProfile = async (userProfileData: UserProfileData) => {
-    const userData = Object.keys(userProfileData).reduce(
-      (userData, key) => ({
-        ...userData,
-        [`profile/${key}`]: userProfileData[key],
-      }),
-      {}
-    );
-    await updateUserDB(customUser!!.uid, userData);
-  };
 
   return {
     user: customUser,
@@ -364,4 +322,30 @@ const useProviderAuth = () => {
 
 export const useAuth = () => {
   return useContext(AuthContext);
+};
+
+const formValidation = (form: RegisterForm) => {
+  Object.keys(form).forEach((key) => {
+    switch (key) {
+      case "name":
+        // 동일한 닉네임 확인
+        // 2글자 이상
+        if (form[key].length < 2) {
+          throw new Error("auth/weak-name");
+        }
+        break;
+      case "password":
+        // password should be at least 6 characters.
+        if (form[key].length < 6) {
+          throw new Error("auth/short-password");
+        }
+        break;
+      case "password2":
+        // password double check
+        if (form["password"] !== form[key]) {
+          throw new Error("auth/different-password");
+        }
+        break;
+    }
+  });
 };
