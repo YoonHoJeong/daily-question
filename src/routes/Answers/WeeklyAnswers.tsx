@@ -34,7 +34,6 @@ const WeeklyAnswers: React.FC<Props> = ({
   const weekAnswers = Object.keys(dateQidAnswers)
     .filter((date) => calcWeek(new Date(date)) === selectedWeekStr)
     .reduce((obj, date) => ({ ...obj, [date]: dateQidAnswers[date] }), {});
-  console.log(weekAnswers);
 
   const [year, month, week] = selectedWeekStr.replace("W", "-").split("-");
   const weekDates = getAllWeeklyDate(date.dateObj);

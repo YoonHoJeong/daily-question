@@ -1,5 +1,4 @@
 import {
-  AnswerWithQuestion,
   DateQidAnswers,
   DateQuestionsAndAnswers,
   FetchedAnswers,
@@ -24,7 +23,6 @@ import {
   getToday,
 } from "./DateManager";
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
-import AdminAnswers from "../routes/admin/AdminAnswers";
 import { formatAnswersToDateQidAnswers } from "./utils";
 
 const getAllAnswers = async (size?: number) => {

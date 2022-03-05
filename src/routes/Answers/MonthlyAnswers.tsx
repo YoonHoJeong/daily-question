@@ -33,7 +33,7 @@ const MonthlyAnswers: React.FC<Props> = ({
   const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
   const monthAnswers: DateQidAnswers = Object.keys(dateQidAnswers).reduce(
     (obj, tmpDate) => {
-      const [tmpYear, tmpMonth, _] = tmpDate.split("-");
+      const [tmpYear, tmpMonth] = tmpDate.split("-");
       if (
         parseInt(tmpYear) === date.year &&
         parseInt(tmpMonth) === date.month

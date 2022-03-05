@@ -7,7 +7,6 @@ import { Answers, Question, SubmitDone } from "../routes";
 import Home from "../routes/Home";
 import User from "./User/User";
 import Board from "./Board";
-import UserKeeps from "./User/UserKeeps";
 import UserEdit from "./User/UserEdit";
 
 const Container = styled.div`

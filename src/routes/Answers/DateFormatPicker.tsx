@@ -91,7 +91,7 @@ const DateFormatToggleButton = styled.button`
   top: 0px;
   right: -24px;
 
-  height: 100%;
+  height: 26px;
   padding: 0;
 
   display: flex;

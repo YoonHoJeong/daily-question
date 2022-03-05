@@ -3,7 +3,6 @@ import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
 import { Router } from "./components/Router";
 import GlobalStyle from "./css/GlobalStyle";
-import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const Container = styled.div``;

@@ -7,7 +7,7 @@ import {
   User,
 } from "firebase/auth";
 import { get, ref, update } from "firebase/database";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { firebaseApp, fireDB } from "../services/firebase";
 import { getUserAnswers } from "../services/fireDB";
 
@@ -112,42 +112,7 @@ const useProviderAuth = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
 
-  useEffect(() => {
-    const unsubAuth = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // log in
-        formatUser(user);
-      } else {
-        // log out.
-        formatUser(null);
-      }
-    });
-
-    return () => unsubAuth();
-  }, [auth]);
-
-  const fetchUserDB = async (uid: string, path: string) => {
-    const userData = (await get(ref(fireDB, `users/${uid}/${path}`))).val();
-    return userData;
-  };
-
-  const refreshCustomUser = async () => {
-    if (customUser) {
-      const userProfileData = await fetchUserDB(customUser.uid, "profile");
-      setCustomUser({
-        ...customUser,
-        profile: {
-          email: userProfileData.email || "이메일을 등록해주세요.",
-          name: userProfileData?.name || "익명",
-          intro: userProfileData?.intro || "내 소개를 입력해주세요",
-        },
-      });
-    } else {
-      throw new Error("user not logged in");
-    }
-  };
-
-  const formatUser = async (user: User | null) => {
+  const formatUser = useCallback(async (user: User | null) => {
     if (user) {
       try {
         const token = await user.getIdTokenResult();
@@ -185,6 +150,41 @@ const useProviderAuth = () => {
     }
 
     setIsAuthenticating(false);
+  }, []);
+
+  useEffect(() => {
+    const unsubAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // log in
+        formatUser(user);
+      } else {
+        // log out.
+        formatUser(null);
+      }
+    });
+
+    return () => unsubAuth();
+  }, [auth, formatUser]);
+
+  const fetchUserDB = async (uid: string, path: string) => {
+    const userData = (await get(ref(fireDB, `users/${uid}/${path}`))).val();
+    return userData;
+  };
+
+  const refreshCustomUser = async () => {
+    if (customUser) {
+      const userProfileData = await fetchUserDB(customUser.uid, "profile");
+      setCustomUser({
+        ...customUser,
+        profile: {
+          email: userProfileData.email || "이메일을 등록해주세요.",
+          name: userProfileData?.name || "익명",
+          intro: userProfileData?.intro || "내 소개를 입력해주세요",
+        },
+      });
+    } else {
+      throw new Error("user not logged in");
+    }
   };
 
   const login = async (email: string, password: string) => {
@@ -234,7 +234,7 @@ const useProviderAuth = () => {
     /* validate error handling */
     try {
       formValidation(form);
-    } catch (error: any) {
+    } catch (e: any) {
       const errorType = new Error(error).message.split(": ")[1];
       if (authErrorMsgs[errorType]) {
         error = authErrorMsgs[errorType];

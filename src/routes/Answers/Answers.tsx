@@ -49,6 +49,10 @@ const Answers: React.FC<Props> = () => {
     }
   };
 
+  if (isError) {
+    <>Error Page</>;
+  }
+
   return (
     <Container>
       <DateFormatPicker />
@@ -89,7 +93,6 @@ const Container = styled.div`
 
   width: 100vw;
   height: 100%;
-  overflow-y: scroll;
 
   display: flex;
   flex-direction: column;

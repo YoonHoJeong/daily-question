@@ -18,7 +18,7 @@ export const usePreloadImages = (images: string[]) => {
       setLoading(false);
     };
     preloadImages(images);
-  }, []);
+  }, [images]);
 
   return { loading };
 };
