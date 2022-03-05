@@ -1,94 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import {
-  Answer,
-  AnswersWithQuestions,
-  DateAnswers,
-  UserKeeps,
-} from "../model/interfaces";
+import { Answer, Question } from "../model/interfaces";
 import QuestionCard from "./QuestionCard";
-import AnswerCard from "./AnswerCard";
-import {
-  getDateQuestionAnswers,
-  getUserKeepsAids,
-  keep,
-  unKeep,
-} from "../services/fireDB";
-import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   date: string;
-  answers: DateAnswers;
+  questionsWithAnswers: {
+    [qid: string]: {
+      question: Question;
+      answers: {
+        [aid: string]: Answer;
+      };
+    };
+  };
   profileOn?: boolean;
-  unKeepDisappear?: boolean;
 }
 
 const DateAnswersCard: React.FC<Props> = ({
   date,
-  answers,
+  questionsWithAnswers,
   profileOn = true,
-  unKeepDisappear = false,
 }) => {
-  // const [keeps, setKeeps] = useState<UserKeeps>({});
-  const auth = useAuth();
-  const uid = auth.user!!.uid;
   const [_, month, day] = date.split("-");
 
-  // const handleUnkeep = (answer: Answer) => {
-  //   setKeeps({ ...keeps, [answer.aid]: false });
-  //   unKeep(uid, answer.aid);
-  // };
-  // const handleKeep = (answer: Answer) => {
-  //   setKeeps({ ...keeps, [answer.aid]: true });
-  //   keep(uid, answer.aid);
-  // };
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const data = await getUserKeepsAids(uid);
-  //     setKeeps(data);
-  //   }
-
-  //   fetchData();
-  // }, [uid]);
-
-  const answerCardComponent = (
-    answer: Answer,
-    profileOn: boolean
-    // keptByUser: boolean,
-  ) => (
-    <AnswerCard
-      key={answer.aid}
-      answer={answer}
-      profileOn={profileOn}
-      // keptByUser={keptByUser}
-      // handleUnkeep={handleUnkeep}
-      // handleKeep={handleKeep}
-      // unKeepDisappear={unKeepDisappear}
-    />
-  );
-
   return (
-    <>loading</>
-    // <DateContainer>
-    //   <SideDateBar>
-    //     <MonthDate>
-    //       <Month>{parseInt(month)}월</Month>
-    //       <Date>{parseInt(day)}</Date>
-    //     </MonthDate>
-    //   </SideDateBar>
-    //   <QuestionCards>
-    //     {Object.keys(qids).map((qid) => (
-    //       <QuestionCard
-    //         key={qid}
-    //         profileOn={true}
-    //         answers={answers.filter((answer) => answer.qid === qid)}
-    //         answerCardComponent={answerCardComponent}
-    //         // keeps={keeps}
-    //       />
-    //     ))}
-    //   </QuestionCards>
-    // </DateContainer>
+    <DateContainer>
+      <SideDateBar>
+        <MonthDate>
+          <Month>{parseInt(month)}월</Month>
+          <Date>{parseInt(day)}</Date>
+        </MonthDate>
+      </SideDateBar>
+      <QuestionCards>
+        {Object.keys(questionsWithAnswers).map((qid) => (
+          <QuestionCard
+            key={qid}
+            question={questionsWithAnswers[qid].question}
+            answers={questionsWithAnswers[qid].answers}
+            profileOn={profileOn}
+          />
+        ))}
+      </QuestionCards>
+    </DateContainer>
   );
 };
 

@@ -1,7 +1,9 @@
 import {
   AnswerWithQuestion,
+  DateQidAnswers,
   DateQuestionsAndAnswers,
   FetchedAnswers,
+  User,
 } from "./../model/interfaces";
 import { fireDB } from "./firebase";
 import {
@@ -23,22 +25,13 @@ import {
 } from "./DateManager";
 import { Answer, Question, FetchedQuestions } from "../model/interfaces";
 import AdminAnswers from "../routes/admin/AdminAnswers";
+import { formatAnswersToDateQidAnswers } from "./utils";
 
 const getAllAnswers = async (size?: number) => {
   const answers: FetchedAnswers = (await get(ref(fireDB, "answers"))).val();
   return answers;
 };
 
-interface DateQidAnswers {
-  [date: string]: {
-    [qid: string]: {
-      question: Question;
-      answers: {
-        [aid: string]: Answer;
-      };
-    };
-  };
-}
 export const getDateQuestionAnswers = async () => {
   const answers = await getAllAnswers();
 
@@ -80,8 +73,6 @@ export const updateAnswer = async (
   );
   const week = answer.week ?? calcWeek(new Date(answer.question.publish_date));
 
-  console.log(convertedDate, week);
-
   Object.keys(form).forEach((key) => {
     updates[`answers/${answer.aid}/${key}`] = form[key];
     updates[
@@ -89,8 +80,6 @@ export const updateAnswer = async (
     ] = form[key];
     updates[`user-answers/${answer.uid}/${answer.aid}/${key}`] = form[key];
   });
-
-  // console.log(updates);
 
   await update(ref(fireDB), updates);
 };
@@ -109,7 +98,7 @@ export const updateAnswer = async (
 // };
 
 export const submitAnswer = async (
-  uid: string,
+  userData: User,
   question: Question,
   formData: {
     answer: string;
@@ -121,7 +110,7 @@ export const submitAnswer = async (
   const aid = formData.aid || push(child(ref(fireDB), "answers")).key;
   const week = calcWeek(new Date(question.publish_date));
   // TODO: validation check
-  if (!uid) {
+  if (!userData.uid) {
     alert("로그인 후 이용해주세요.");
     return;
   }
@@ -129,37 +118,29 @@ export const submitAnswer = async (
     throw new Error("unknown error");
   }
   const updates = {};
-  const answerFormData = {
+  const answerData: Answer = {
     aid,
     answer: formData.answer,
-    isAnonymous: formData.isAnonymous,
-    isPublic: formData.isPublic,
     created_at: convertDate(new Date()),
     week,
-  };
-  const answerData: Answer = {
-    ...answerFormData,
     qid: question.qid,
-    question,
-    uid,
+    uid: userData.uid,
+    user: userData,
+    question: {
+      ...question,
+      answers: {
+        [aid]: true,
+      },
+    },
+    isAnonymous: formData.isAnonymous,
+    isPublic: formData.isPublic,
   };
-  const answerWithQuestionData: AnswerWithQuestion = {
-    ...answerData,
-    question,
-  };
-  updates["/answers/" + aid] = answerData;
-  updates["/users/" + uid + "/answers/" + aid] = true;
-  updates[
-    "/user-answers/" +
-      uid +
-      "/" +
-      week +
-      "/" +
-      question.publish_date +
-      "/" +
-      aid
-  ] = answerWithQuestionData;
-  updates["/questions/" + question.qid + "/answers/" + aid] = true;
+
+  updates["answers/" + aid] = answerData;
+  updates["users/" + userData.uid + "/answers/" + aid] = true;
+  updates["user-answers/" + userData.uid + "/" + aid] = answerData;
+  updates["questions/" + question.qid + "/answers/" + aid] = true;
+
   await update(ref(fireDB), updates);
 };
 
@@ -190,57 +171,26 @@ export const getTodayQuestions = async () => {
     return {};
   }
 };
+
 export const getBoardAnswers = async () => {
   const answers: FetchedAnswers = (
     await get(
       query(ref(fireDB, "answers"), orderByChild("isPublic"), equalTo(true))
     )
   ).val();
-  return answers;
+
+  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
+
+  return dateQidAnswers;
 };
 
-// export const getBoardAnswers = async () => {
-//   let answers: FetchedAnswers = (
-//     await get(query(ref(fireDB, "answers"), orderByChild("isPublic")))
-//   ).val();
-//   let questions: FetchedQuestions = (await get(ref(fireDB, "questions"))).val();
+export const getUserAnswers = async (uid: string) => {
+  const userAnswers: FetchedAnswers = (
+    await get(query(ref(fireDB, `user-answers/${uid}`)))
+  ).val();
 
-//   const answersWithQuestion: DateQuestionsAndAnswers = {};
-
-//   Object.keys(answers)
-//     .filter((aid) => answers[aid].isPublic)
-//     .sort((a, b) => (a > b ? 1 : -1))
-//     .forEach((aid) => {
-//       const answer = answers[aid];
-//       const question = questions[answer.qid];
-
-//       if (!Object.keys(answersWithQuestion).includes(question.publish_date)) {
-//         answersWithQuestion[question.publish_date] = {};
-//       }
-
-//       if (
-//         !Object.keys(answersWithQuestion[question.publish_date]).includes(
-//           question.qid
-//         )
-//       ) {
-//         answersWithQuestion[question.publish_date][question.qid] = {
-//           ...question,
-//           answers: {
-//             [aid]: {
-//               ...answer,
-//             },
-//           },
-//         };
-//       } else {
-//         answersWithQuestion[question.publish_date][question.qid].answers[aid] =
-//           {
-//             ...answer,
-//           };
-//       }
-//     });
-
-//   return answersWithQuestion;
-// };
+  return userAnswers;
+};
 
 export const getAnswerByUidQid = async (uid: string, qid: string) => {
   const answerSnapshot = await get(
@@ -255,14 +205,6 @@ export const getAnswerByUidQid = async (uid: string, qid: string) => {
 
   return userAnswerByQid;
 };
-
-export async function getUserAnswers(uid: string) {
-  const answers = (
-    await get(query(ref(fireDB, "answers"), orderByChild("uid"), equalTo(uid)))
-  ).val();
-
-  return answers as FetchedAnswers;
-}
 
 export const getQuestionByQid = async (qid: string) => {
   const snapshot = await get(

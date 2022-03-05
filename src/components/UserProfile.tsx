@@ -60,11 +60,11 @@ const UserProfile: React.FC<Props> = ({
     <ProfileContainer>
       <UserImage style={{ width: "60px", height: "60px" }} />
       <UserInfo>
-        <UserName>{auth?.user?.name}</UserName>
-        <UserIntro>{auth?.user?.intro}</UserIntro>
+        <UserName>{auth?.user?.profile.name}</UserName>
+        <UserIntro>{auth?.user?.profile.intro}</UserIntro>
         {showEmail && (
           <UserAddress>
-            {auth?.user?.email || "이메일을 등록해주세요."}
+            {auth?.user?.profile.email || "이메일을 등록해주세요."}
           </UserAddress>
         )}
       </UserInfo>

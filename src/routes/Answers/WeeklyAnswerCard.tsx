@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { AnswerWithQuestion } from "../../model/interfaces";
+import { Answer } from "../../model/interfaces";
 import { useForm } from "../../hooks/useForm";
 import AnswerOptionCheckBoxes from "../../components/AnswerOptionCheckBoxes";
 import { SyntheticEvent } from "react";
 import { updateAnswer } from "../../services/fireDB";
 import {
-  useFetchRecentAnswers,
-  useFetchUserWeekDateAnswers,
+  useFetchBoardAnswers,
+  useFetchUserAnswers,
 } from "../../hooks/customUseQueries";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -25,18 +25,21 @@ const ConfirmMessages = {
   },
 };
 
-const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
-  answer,
-}) => {
+interface Props {
+  answers: { [aid: string]: Answer };
+}
+
+const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
+  const answer = Object.values(answers)[0];
   const { form, setProperty } = useForm({
     isPublic: answer.isPublic ?? false,
     isAnonymous: answer.isAnonymous ?? false,
   });
   const auth = useAuth();
-  const { refetch: myAnswersRefetch } = useFetchUserWeekDateAnswers(
-    auth.user!!.uid
-  );
-  const { refetch: boardAnswersRefetch } = useFetchRecentAnswers();
+
+  const { refetch: userAnswersRefetch } = useFetchUserAnswers(auth.user!!.uid);
+  const { refetch: boardAnswersRefetch } = useFetchBoardAnswers();
+
   const onClickCheckbox = async (e: SyntheticEvent) => {
     e.preventDefault();
     const elem = e.currentTarget as HTMLInputElement;
@@ -50,7 +53,7 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
         { ...answer, uid: auth.user!!.uid },
         { [elem.name]: !currentValue }
       );
-      await myAnswersRefetch();
+      await userAnswersRefetch();
       await boardAnswersRefetch();
     }
   };
@@ -60,7 +63,7 @@ const WeeklyAnswerCard: React.FC<{ answer: AnswerWithQuestion }> = ({
       <CardContainer>
         <KeywordText>{answer.question.keyword}</KeywordText>
         <QuestionText>
-        Q.<p>{answer.question.question}</p>
+          Q.<p>{answer.question.question}</p>
         </QuestionText>
         <AnswerText>
           A.<p>{answer.answer}</p>

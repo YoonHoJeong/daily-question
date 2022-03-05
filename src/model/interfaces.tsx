@@ -1,24 +1,11 @@
-export interface Question {
-  qid: string;
-  keyword: string;
-  question: string;
-  publish_date: string;
-  week: string; // format - yyyy-mmWw
-  answers?: Answer[];
-  rates?: Rate[];
-}
-
-export interface FetchedQuestions {
-  [qid: string]: Question;
-}
-
 export interface Answer {
   aid: string;
   answer: string;
   created_at: string; // format - yyyy-mm-ddThh:mm:ss
+  week: string;
   qid: string;
   uid: string;
-  week: string;
+  user: User;
   question: Question;
   isAnonymous?: boolean;
   isPublic?: boolean;
@@ -26,6 +13,50 @@ export interface Answer {
     [uid: string]: boolean;
   };
 }
+
+export interface User {
+  uid: string;
+  profile: {
+    intro?: string;
+    phone?: string;
+    email?: string;
+    name?: string;
+  };
+}
+
+export interface FecthedUserAnswers {
+  [uid: string]: {
+    [aid: string]: Answer;
+  };
+}
+
+export interface DateQidAnswers {
+  [date: string]: {
+    [qid: string]: {
+      question: Question;
+      answers: {
+        [aid: string]: Answer;
+      };
+    };
+  };
+}
+
+export interface Question {
+  qid: string;
+  keyword: string;
+  question: string;
+  publish_date: string;
+  week: string; // format - yyyy-mmWw
+  answers?: {
+    [aid: string]: boolean;
+  };
+  rates?: Rate[];
+}
+
+export interface FetchedQuestions {
+  [qid: string]: Question;
+}
+
 export interface FetchedAnswers {
   [aid: string]: Answer;
 }

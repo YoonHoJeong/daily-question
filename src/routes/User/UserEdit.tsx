@@ -53,21 +53,25 @@ const UserEdit: React.FC<Props> = () => {
         <ProfileInfoForm>
           <InputRow>
             <InputLabel>닉네임</InputLabel>
-            <Field>{auth.user?.name || "이름을 입력해주세요."}</Field>
+            <Field>{auth.user?.profile.name || "이름을 입력해주세요."}</Field>
             <EditButton name="name" onClick={handleOpenPopup}>
               <EditIcon src={EditIconUrl} />
             </EditButton>
           </InputRow>
           <InputRow>
             <InputLabel>소개</InputLabel>
-            <Field>{auth.user?.intro || "내 소개를 입력해주세요."}</Field>
+            <Field>
+              {auth.user?.profile.intro || "내 소개를 입력해주세요."}
+            </Field>
             <EditButton name="intro" onClick={handleOpenPopup}>
               <EditIcon src={EditIconUrl} />
             </EditButton>
           </InputRow>
           <InputRow>
             <InputLabel>이메일</InputLabel>
-            <Field>{auth.user?.email || "이메일을 입력해주세요."}</Field>
+            <Field>
+              {auth.user?.profile.email || "이메일을 입력해주세요."}
+            </Field>
           </InputRow>
         </ProfileInfoForm>
       </div>

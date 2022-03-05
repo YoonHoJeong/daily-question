@@ -16,13 +16,18 @@ interface Props {}
 const QuestionScreen: React.FC<Props> = () => {
   const { qid } = useParams<{ qid: string }>();
   const auth = useAuth();
-  const uid = auth?.user?.uid || "";
+  const user = auth?.user;
 
   const [submitting, setSubmitting] = useState(false);
   const { data: questions } = useFetchQuestions();
   const question = questions && questions[qid];
 
-  const { data: answers, isLoading } = useFetchUserAnswers(uid);
+  const {
+    data: answers,
+    isLoading,
+    refetch: userAnswersRefetch,
+  } = useFetchUserAnswers(user!!.uid);
+  const { refetch: questionsRefetch } = useFetchQuestions();
   const answer =
     answers &&
     Object.keys(answers)
@@ -40,7 +45,6 @@ const QuestionScreen: React.FC<Props> = () => {
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log("onSubmit");
 
     if (!form.answer) {
       alert("답변을 작성해 주세요.");
@@ -49,10 +53,18 @@ const QuestionScreen: React.FC<Props> = () => {
     if (question) {
       setSubmitting(true);
       try {
-        await submitAnswer(uid, { ...question, qid }, form);
+        await submitAnswer(
+          { uid: user!!.uid, profile: user!!.profile },
+          question,
+          form
+        );
+        await userAnswersRefetch();
+        await questionsRefetch();
         setSubmitting(false);
         history.push("/submit-done");
       } catch (e) {
+        console.log(e);
+
         alert("기록에 실패했습니다. 다시 시도해주세요.");
         setSubmitting(false);
       }

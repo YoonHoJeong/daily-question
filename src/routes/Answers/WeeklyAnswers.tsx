@@ -6,33 +6,51 @@ import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-import { AnswerWithQuestion, WeekDateAnswers } from "../../model/interfaces";
+import { Answer, FetchedAnswers, Question } from "../../model/interfaces";
 import Loader from "../../components/common/Loader";
 import WeekToggle from "./WeekToggle";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
+import { formatAnswersToDateQidAnswers } from "../../services/utils";
 
 interface Props {
+  isLoading: boolean;
   date: {
     dateObj: Date;
     year: number;
     month: number;
   };
-  answers: WeekDateAnswers | undefined;
+  answers: FetchedAnswers;
   changeWeek: (weekCnt: number) => void;
-  loading: boolean;
 }
 
 const WeeklyAnswers: React.FC<Props> = ({
+  isLoading: dataLoading,
   date,
   answers,
   changeWeek,
-  loading: dataLoading,
 }) => {
-  const yearMonthWeek = calcWeek(date.dateObj);
-  const [year, month, week] = yearMonthWeek.replace("W", "-").split("-");
+  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
+  const selectedWeekStr = calcWeek(date.dateObj);
+  const weekAnswers = Object.keys(dateQidAnswers)
+    .filter((date) => calcWeek(new Date(date)) === selectedWeekStr)
+    .reduce((obj, date) => ({ ...obj, [date]: dateQidAnswers[date] }), {});
+  console.log(weekAnswers);
+
+  const [year, month, week] = selectedWeekStr.replace("W", "-").split("-");
   const weekDates = getAllWeeklyDate(date.dateObj);
-  const weekAnswers = (answers && answers[yearMonthWeek]) || {};
-  const doneCnt = weekAnswers ? Object.keys(weekAnswers).length : 0;
+  const totalWeekAnswerCnt = Object.keys(weekAnswers).reduce(
+    (weekAcc, date) => {
+      const dateCnt = Object.keys(weekAnswers[date]).reduce(
+        (dateAcc, qid) =>
+          dateAcc + Object.keys(weekAnswers[date][qid].answers).length,
+        0
+      );
+      return weekAcc + dateCnt;
+    },
+    0
+  );
+  const answeredDateCnt = Object.keys(weekAnswers).length;
+
   const { loading: imageLoading } = usePreloadImages([
     BoxOpenedIcon,
     BoxClosedIcon,
@@ -55,16 +73,17 @@ const WeeklyAnswers: React.FC<Props> = ({
           changeWeekOrMonth={changeWeek}
         />
         <HelperText>
-          {doneCnt > 0 ? (
+          {totalWeekAnswerCnt > 0 ? (
             <>
-              5일 중 <AnswerDateCount>{doneCnt}일</AnswerDateCount> 대답했어요.
+              5일 중 <AnswerDateCount>{answeredDateCnt}일</AnswerDateCount>{" "}
+              대답했어요.
             </>
           ) : (
             <>이번 주에는 아직 답변이 없네요...</>
           )}
         </HelperText>
         <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
-        {doneCnt > 0 ? (
+        {totalWeekAnswerCnt > 0 ? (
           <DailyAnswersList>
             {Object.keys(weekAnswers).map((date) => (
               <DailyAnswers
@@ -106,16 +125,24 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   </DateIconsContainer>
 );
 
-const DailyAnswers: React.FC<{
-  answers: { [aid: string]: AnswerWithQuestion };
+interface DailyAnswersProps {
+  answers: {
+    [qid: string]: {
+      question: Question;
+      answers: { [aid: string]: Answer };
+    };
+  };
   date: string;
-}> = ({ answers, date }) => {
+}
+const DailyAnswers: React.FC<DailyAnswersProps> = ({ answers, date }) => {
+  console.log(answers);
+
   return (
     <DailyAnswersContainer>
       <DayText>{getDay(date)}</DayText>
       <AnswerList>
-        {Object.keys(answers).map((aid) => (
-          <WeeklyAnswerCard key={aid} answer={answers[aid]} />
+        {Object.keys(answers).map((qid) => (
+          <WeeklyAnswerCard key={qid} answers={answers[qid].answers} />
         ))}
       </AnswerList>
     </DailyAnswersContainer>

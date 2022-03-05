@@ -3,67 +3,43 @@ import styled from "styled-components";
 import { Answer } from "../model/interfaces";
 import UserImage from "./user/UserImage";
 
-import HeartColored from "../assets/4_heart.svg";
-import HeartUnColored from "../assets/4_heart2.svg";
-
 interface Props {
   answer: Answer;
   profileOn: boolean;
-
-  // keptByUser: boolean;
-  // unKeepDisappear?: boolean;
-  // handleKeep: (answer: Answer) => void;
-  // handleUnkeep: (answer: Answer) => void;
 }
 
-const AnswerCard: React.FC<Props> = ({
-  answer,
-  profileOn,
-  // keptByUser,
-  // unKeepDisappear = false,
-  // handleUnkeep,
-  // handleKeep,
-}) => {
-  // if (unKeepDisappear && !keptByUser) {
-  //   return null;
-  // }
-
+const AnswerCard: React.FC<Props> = ({ answer, profileOn }) => {
   return (
     <AnswerContainer>
-      <Profile>
+      <Profile
+        style={{
+          display: profileOn ? "flex" : "none",
+        }}
+      >
         <UserImage
           style={{
-            display: profileOn ? "flex" : "none",
             width: "28px",
             height: "28px",
           }}
         />
-        <ProfileName>{answer.isAnonymous ? "익명" : "실명"}</ProfileName>
+        <ProfileName>
+          {answer.isAnonymous ? "익명" : answer.user.profile.name || "묻이"}
+        </ProfileName>
       </Profile>
       <AnswerAndFav>
         <AnswerText>{answer.answer}</AnswerText>
-        {/* <KeepButton
-          onClick={() => {
-            if (keptByUser) {
-              handleUnkeep(answer);
-            } else {
-              handleKeep(answer);
-            }
-          }}
-        >
-          {keptByUser ? (
-            <img src={HeartColored} style={{ width: "15px" }} />
-          ) : (
-            <img src={HeartUnColored} style={{ width: "15px" }} />
-          )}
-        </KeepButton> */}
       </AnswerAndFav>
     </AnswerContainer>
   );
 };
 
 const Profile = styled.div`
+  width: 28px;
   margin-right: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ProfileName = styled.div`
@@ -71,6 +47,7 @@ const ProfileName = styled.div`
   font-size: 10px;
   line-height: 14px;
   text-align: center;
+  margin-top: 2px;
 
   color: #4d4d4d;
 `;
@@ -89,9 +66,6 @@ const AnswerText = styled.p`
   color: #4d4d4d;
 
   white-space: pre-line;
-`;
-const KeepButton = styled.button`
-  margin-top: 5px;
 `;
 
 export default AnswerCard;

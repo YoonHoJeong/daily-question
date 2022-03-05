@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
 import Loader from "../../components/common/Loader";
-import { useFetchUserKeptAnswers } from "../../hooks/customUseQueries";
+// import { useFetchUserKeptAnswers } from "../../hooks/customUseQueries";
 import { useAuth } from "../../hooks/useAuth";
 
 interface Props {}
 
 const UserKeeps: React.FC<Props> = () => {
-  const auth = useAuth();
-  const { data, isLoading } = useFetchUserKeptAnswers(auth.user?.uid || "");
-  const userKeptAnswers = data ?? {};
+  // const auth = useAuth();
+  // const { data, isLoading } = useFetchUserKeptAnswers(auth.user?.uid || "");
+  // const userKeptAnswers = data ?? {};
 
   return (
     <KeepsContainer>

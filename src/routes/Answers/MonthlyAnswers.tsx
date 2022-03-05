@@ -1,18 +1,20 @@
 import React from "react";
 import { AnswerDateCount, HelperText } from "./WeeklyAnswers";
 import styles from "../../css/calendar.module.css";
-import {
-  convertDateUntilDay,
-  getAllDatesOfMonth,
-  getToday,
-} from "../../services/DateManager";
+import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
 import Loader from "../../components/common/Loader";
 import styled from "styled-components";
-import { Answer, FetchedAnswers } from "../../model/interfaces";
+import {
+  Answer,
+  DateQidAnswers,
+  FetchedAnswers,
+  Question,
+} from "../../model/interfaces";
 import WeekToggle from "./WeekToggle";
+import { formatAnswersToDateQidAnswers } from "../../services/utils";
 
 interface Props {
-  loading: boolean;
+  isLoading: boolean;
   date: {
     dateObj: Date;
     year: number;
@@ -23,26 +25,34 @@ interface Props {
 }
 
 const MonthlyAnswers: React.FC<Props> = ({
-  loading,
+  isLoading,
   date,
   answers,
   changeMonth,
 }) => {
-  console.log(answers);
+  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
+  const monthAnswers: DateQidAnswers = Object.keys(dateQidAnswers).reduce(
+    (obj, tmpDate) => {
+      const [tmpYear, tmpMonth, _] = tmpDate.split("-");
+      if (
+        parseInt(tmpYear) === date.year &&
+        parseInt(tmpMonth) === date.month
+      ) {
+        obj[tmpDate] = dateQidAnswers[tmpDate];
+      }
 
-  const monthAnswers = Object.keys(answers)
-    .filter((aid) => {
-      const answeredDateObj = new Date(answers[aid].created_at);
-      const answeredYear = answeredDateObj.getFullYear();
-      const answeredMonth = answeredDateObj.getMonth() + 1;
-
-      const selectedYear = date.year;
-      const selectedMonth = date.month;
-      console.log(answeredYear, answeredMonth, selectedYear, selectedMonth);
-
-      return answeredYear === selectedYear && answeredMonth === selectedMonth;
-    })
-    .map((aid) => answers[aid]);
+      return obj;
+    },
+    {}
+  );
+  const totalAnswerCnt = Object.keys(monthAnswers).reduce((monthAcc, date) => {
+    const dateCnt = Object.keys(monthAnswers[date]).reduce(
+      (dateAcc, qid) =>
+        dateAcc + Object.keys(monthAnswers[date][qid].answers).length,
+      0
+    );
+    return monthAcc + dateCnt;
+  }, 0);
 
   return (
     <Container>
@@ -53,29 +63,32 @@ const MonthlyAnswers: React.FC<Props> = ({
         }}
         changeWeekOrMonth={changeMonth}
       />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
           <HelperText>
-            <AnswerDateCount>
-              {Object.keys(monthAnswers).length}개
-            </AnswerDateCount>
-            의 질문에 대답했어요.
+            <AnswerDateCount> {totalAnswerCnt}개</AnswerDateCount>의 질문에
+            대답했어요.
           </HelperText>
 
-          <Calendar date={date.dateObj} monthAnswers={monthAnswers} />
+          <Calendar dateObj={date.dateObj} monthAnswers={monthAnswers} />
         </>
       )}
     </Container>
   );
 };
 
-const Calendar: React.FC<{ date: Date; monthAnswers: Answer[] }> = ({
-  date,
-  monthAnswers,
-}) => {
-  const dates = getAllDatesOfMonth(date);
+interface CalendarProps {
+  dateObj: Date;
+  monthAnswers: DateQidAnswers;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
+  const dates = getAllDatesOfMonth(dateObj);
+  const todayDateObj = new Date(getToday());
+  const isActiveDate = (compareDate: string) =>
+    new Date(compareDate) < todayDateObj ? true : false;
 
   return (
     <ul className={styles.calendar}>
@@ -85,7 +98,14 @@ const Calendar: React.FC<{ date: Date; monthAnswers: Answer[] }> = ({
       <li className={styles.day}>목</li>
       <li className={styles.day}>금</li>
       {dates.map((date) => (
-        <li key={date} className={cellStyleByAnswerCnt(monthAnswers, date)}>
+        <li
+          key={date}
+          className={
+            isActiveDate(date)
+              ? cellStyleByAnswerCnt(monthAnswers[date])
+              : styles.cellNonActive
+          }
+        >
           {new Date(date).getDate()}
         </li>
       ))}
@@ -93,20 +113,25 @@ const Calendar: React.FC<{ date: Date; monthAnswers: Answer[] }> = ({
   );
 };
 
-const cellStyleByAnswerCnt = (monthAnswers: Answer[], date: string) => {
-  if (new Date(date) > new Date(getToday())) {
-    return styles.cellNonActive;
+const cellStyleByAnswerCnt = (dateAnswers?: {
+  [qid: string]: {
+    question: Question;
+    answers: {
+      [aid: string]: Answer;
+    };
+  };
+}) => {
+  if (!dateAnswers) {
+    return styles.cell0;
   }
 
-  const dateAnswers = monthAnswers.filter(
-    (answer) => convertDateUntilDay(new Date(answer.created_at)) === date
+  const answerCnt = Object.keys(dateAnswers).reduce(
+    (acc, qid) => acc + Object.keys(dateAnswers[qid].answers).length,
+    0
   );
 
-  const answerCnt = dateAnswers.length;
   let cellStyle;
-  if (answerCnt === 0) {
-    cellStyle = styles.cell0;
-  } else if (answerCnt === 1) {
+  if (answerCnt === 1) {
     cellStyle = styles.cell1;
   } else if (answerCnt === 2) {
     cellStyle = styles.cell2;

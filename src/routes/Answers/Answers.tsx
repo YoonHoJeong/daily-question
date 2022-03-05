@@ -1,41 +1,34 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
-import WeeklyAnswers from "./WeeklyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import DailyAnswers from "./DailyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
-import {
-  useFetchUserAnswers,
-  useFetchUserWeekDateAnswers,
-} from "../../hooks/customUseQueries";
+import { useFetchUserAnswers } from "../../hooks/customUseQueries";
 import { Route } from "react-router-dom";
+import WeeklyAnswers from "./WeeklyAnswers";
 
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
   const auth = useAuth();
   const uid = auth?.user?.uid || "";
-  const dateObj = new Date();
-  const [date, setDate] = useState({
-    dateObj,
-    year: dateObj.getFullYear(),
-    month: dateObj.getMonth() + 1,
+  const presentDateObj = new Date();
+  const [selectedDate, setSelectedDate] = useState({
+    dateObj: presentDateObj,
+    year: presentDateObj.getFullYear(),
+    month: presentDateObj.getMonth() + 1,
   });
 
-  const { data, isLoading } = useFetchUserWeekDateAnswers(uid);
+  const { data, isLoading, isError } = useFetchUserAnswers(uid);
   const answers = data ?? {};
 
-  const { data: rawAnswersData, isLoading: isRawAnswersLoading } =
-    useFetchUserAnswers(uid);
-  const rawAnswers = rawAnswersData ?? {};
-
   const changeWeek = (weekCnt: number) => {
-    const tmpDate = new Date(date.dateObj);
+    const tmpDate = new Date(selectedDate.dateObj);
     tmpDate.setDate(tmpDate.getDate() + 7 * weekCnt); // week ago date
 
     if (tmpDate.getTime() < new Date().getTime()) {
-      setDate({
+      setSelectedDate({
         dateObj: tmpDate,
         year: tmpDate.getFullYear(),
         month: tmpDate.getMonth() + 1,
@@ -44,11 +37,11 @@ const Answers: React.FC<Props> = () => {
   };
 
   const changeMonth = (monthCnt: number) => {
-    const tmpDate = new Date(date.dateObj);
+    const tmpDate = new Date(selectedDate.dateObj);
     tmpDate.setMonth(tmpDate.getMonth() + 1 * monthCnt);
 
     if (tmpDate.getTime() < new Date().getTime()) {
-      setDate({
+      setSelectedDate({
         dateObj: tmpDate,
         year: tmpDate.getFullYear(),
         month: tmpDate.getMonth() + 1,
@@ -61,9 +54,9 @@ const Answers: React.FC<Props> = () => {
       <DateFormatPicker />
       <Route path="/answers/monthly">
         <MonthlyAnswers
-          loading={isRawAnswersLoading}
-          date={date}
-          answers={rawAnswers}
+          isLoading={isLoading}
+          date={selectedDate}
+          answers={answers}
           changeMonth={changeMonth}
         />
       </Route>
@@ -73,17 +66,17 @@ const Answers: React.FC<Props> = () => {
 
       <Route path="/answers/weekly">
         <WeeklyAnswers
-          loading={isLoading}
-          changeWeek={changeWeek}
-          date={date}
+          isLoading={isLoading}
+          date={selectedDate}
           answers={answers}
+          changeWeek={changeWeek}
         />
       </Route>
       <Route exact path="/answers">
         <WeeklyAnswers
-          loading={isLoading}
+          isLoading={isLoading}
           changeWeek={changeWeek}
-          date={date}
+          date={selectedDate}
           answers={answers}
         />
       </Route>

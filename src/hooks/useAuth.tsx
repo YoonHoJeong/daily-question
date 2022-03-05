@@ -41,9 +41,11 @@ interface AuthLogout {
 export interface CustomUser {
   uid: string;
   admin: boolean;
-  name?: string;
-  email?: string;
-  intro?: string;
+  profile: {
+    name?: string;
+    email?: string;
+    intro?: string;
+  };
 }
 
 interface RegisterForm {
@@ -154,8 +156,10 @@ const useProviderAuth = () => {
       const userProfileData = await fetchUserDB(customUser.uid, "profile");
       setCustomUser({
         ...customUser,
-        name: userProfileData?.name || "익명",
-        intro: userProfileData?.intro || "내 소개를 입력해주세요",
+        profile: {
+          name: userProfileData?.name || "익명",
+          intro: userProfileData?.intro || "내 소개를 입력해주세요",
+        },
       });
     } else {
       throw new Error("user not logged in");
@@ -169,11 +173,13 @@ const useProviderAuth = () => {
         const userProfileData = await fetchUserDB(user.uid, "profile");
 
         setCustomUser({
-          email: user.email || "",
+          profile: {
+            email: user.email || "",
+            name: userProfileData?.name || "",
+            intro: userProfileData?.intro || "",
+          },
           uid: user.uid,
           admin: token.claims.admin ? true : false,
-          name: userProfileData?.name,
-          intro: userProfileData?.intro,
         });
 
         setIsAuthenticating(false);

@@ -5,24 +5,9 @@ import Loader from "../components/common/Loader";
 import { usePreloadImages } from "../hooks/usePreloadImages";
 import HeartColored from "../assets/4_heart.svg";
 import HeartUnColored from "../assets/4_heart2.svg";
-import { useFetchRecentAnswers } from "../hooks/customUseQueries";
-import { FetchedAnswers } from "../model/interfaces";
-import { getDateQuestionAnswers } from "../services/fireDB";
+import { useFetchBoardAnswers } from "../hooks/customUseQueries";
 
 interface Props {}
-
-function getDescendingDatesFromAnswers(answers: FetchedAnswers) {
-  const datesObj = {};
-  console.log(answers);
-
-  Object.keys(answers).forEach((aid) => {
-    const date = answers[aid].question.publish_date;
-    datesObj[date] = true;
-  });
-  const dates = Object.keys(datesObj).sort((a, b) => (a > b ? -1 : 1));
-
-  return dates;
-}
 
 const Board: React.FC<Props> = () => {
   const { loading: imageLoading } = usePreloadImages([
@@ -30,17 +15,12 @@ const Board: React.FC<Props> = () => {
     HeartUnColored,
   ]);
 
-  const { data, isLoading, isError } = useFetchRecentAnswers();
-
+  const { data, isLoading, isError } = useFetchBoardAnswers();
   const answers = data ?? {};
-  const descendingDates = getDescendingDatesFromAnswers(answers);
+
+  const descendingDates = Object.keys(answers).sort((a, b) => (a > b ? -1 : 1));
 
   if (isError) return <>Error</>;
-
-  async function fetchData() {
-    await getDateQuestionAnswers();
-  }
-  fetchData();
 
   return (
     <ViewWindow>
@@ -48,7 +28,11 @@ const Board: React.FC<Props> = () => {
         <Loader />
       ) : (
         descendingDates.map((date) => (
-          <DateAnswersCard key={date} date={date} answers={{}} />
+          <DateAnswersCard
+            key={date}
+            date={date}
+            questionsWithAnswers={answers[date]}
+          />
         ))
       )}
     </ViewWindow>
