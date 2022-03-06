@@ -1,46 +1,10 @@
 import React from "react";
-import styled from "styled-components";
-import { useAuth } from "../hooks/useAuth";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useHistory } from "react-router-dom";
-import UserImage from "./user/UserImage";
+import styled from "styled-components";
+import { useAuth } from "../../hooks/useAuth";
+import UserImage from "./UserImage";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-const ProfileContainer = styled.section`
-  display: flex;
-
-  width: 100%;
-
-  background-color: ${(props) => props.theme.palette.white};
-`;
-
-const UserInfo = styled.ul`
-  width: 100%;
-  max-height: 60px;
-  margin-left: 15px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  & > li:not(:first-child) {
-    margin-top: 5px;
-  }
-`;
-const UserName = styled.li`
-  font-weight: 700;
-  color: ${({ theme }) => theme.palette.black};
-`;
-
-const UserAddress = styled.li`
-  font-size: 14px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.palette.black};
-`;
-const UserIntro = styled.li`
-  font-size: 14px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.palette.black};
-`;
 interface Props {
   editable?: boolean;
   showEmail?: boolean;
@@ -92,5 +56,42 @@ const MoveToUserEditButton: React.FC<MoveToUserEditButtonProps> = ({
     </button>
   );
 };
+
+const ProfileContainer = styled.section`
+  display: flex;
+
+  width: 100%;
+
+  background-color: ${(props) => props.theme.palette.white};
+`;
+
+const UserInfo = styled.ul`
+  width: 100%;
+  max-height: 60px;
+  margin-left: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  & > li:not(:first-child) {
+    margin-top: 5px;
+  }
+`;
+const UserName = styled.li`
+  font-weight: 700;
+  color: ${({ theme }) => theme.palette.black};
+`;
+
+const UserAddress = styled.li`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.palette.black};
+`;
+const UserIntro = styled.li`
+  font-size: 14px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.palette.black};
+`;
 
 export default UserProfile;

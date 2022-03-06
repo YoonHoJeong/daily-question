@@ -1,13 +1,16 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
-import BottomNavigation from "../layouts/BottomNavigation";
-import Header from "../layouts/Header";
-import { Answers, Question, SubmitDone } from "../routes";
-import Home from "../routes/Home";
-import User from "./User/User";
-import Board from "./Board";
-import UserEdit from "./User/UserEdit";
+import { Switch, Route } from "react-router-dom";
+import { Header, BottomNavigation } from "../layouts";
+import {
+  Answers,
+  Question,
+  SubmitDone,
+  Home,
+  User,
+  Board,
+  UserEdit,
+} from "../pages";
 
 const Container = styled.div`
   width: 100vw;
@@ -37,7 +40,6 @@ const ClientRoutes: React.FC<Props> = () => {
         <Route path="/user/edit">
           <UserEdit />
         </Route>
-
         <Route exact path="/user">
           <User />
         </Route>

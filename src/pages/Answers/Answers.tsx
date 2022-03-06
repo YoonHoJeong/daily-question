@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { Route } from "react-router-dom";
+
 import styled from "styled-components";
+
 import { useAuth } from "../../hooks/useAuth";
-import MonthlyAnswers from "./MonthlyAnswers";
+
 import DailyAnswers from "./DailyAnswers";
+import MonthlyAnswers from "./MonthlyAnswers";
+import WeeklyAnswers from "./WeeklyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserAnswers } from "../../hooks/customUseQueries";
-import { Route } from "react-router-dom";
-import WeeklyAnswers from "./WeeklyAnswers";
 
 interface Props {}
 

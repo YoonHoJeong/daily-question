@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
@@ -21,6 +21,11 @@ const QuestionScreen: React.FC<Props> = () => {
   const [submitting, setSubmitting] = useState(false);
   const { data: questions } = useFetchQuestions();
   const question = questions && questions[qid];
+
+  const answerRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    answerRef?.current?.focus();
+  }, []);
 
   const {
     data,
@@ -90,6 +95,7 @@ const QuestionScreen: React.FC<Props> = () => {
             rows={5}
             onChange={onChange}
             disabled={submitting}
+            ref={answerRef}
           ></AnswerInput>
           <AnswerOptionCheckBoxes
             form={form}

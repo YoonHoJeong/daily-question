@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "styled-components";
 import { useHistory, useLocation } from "react-router";
-import { VariablesContext } from "../../App";
+import { VariablesContext } from "../App";
 
 const backDisabledRoutes = [
   "/",

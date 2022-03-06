@@ -1,10 +1,12 @@
 import React from "react";
-import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
 import styled from "styled-components";
-import AdminAnswers from "./AdminAnswers";
-import AdminDashboard from "./AdminDashboard";
-import AdminQuestions from "./AdminQuestions";
-import AdminUsers from "./AdminUsers";
+import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
+import {
+  AdminAnswers,
+  AdminDashboard,
+  AdminQuestions,
+  AdminUsers,
+} from "../pages/Admin";
 
 const Container = styled.div`
   display: flex;

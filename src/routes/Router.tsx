@@ -1,13 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Login } from "../routes";
-import AdminLogin from "../routes/admin/AdminLogin";
-import AdminRoutes from "../routes/admin/AdminRoutes";
-import ClientRoutes from "../routes/ClientRoutes";
-import Register from "../routes/Register";
-import Onboarding from "../routes/Onboarding";
-import AdminRoute from "./AdminRoute";
-import PrivateRoute from "./PrivateRoute";
+import { Login, Register, Onboarding, AdminLogin } from "../pages";
+import { AdminRoutes, ClientRoutes, AdminRoute, PrivateRoute } from "./";
 
 interface Props {}
 

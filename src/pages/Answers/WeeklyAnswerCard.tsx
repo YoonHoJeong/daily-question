@@ -92,7 +92,7 @@ const KeywordText = styled.p`
   color: ${(props) => props.theme.palette.deepGrey};
 `;
 const QuestionText = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   line-height: 20px;
   margin-top: 4px;
   color: ${(props) => props.theme.palette.blue};

@@ -1,16 +1,19 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import { CustomAuthError, useAuth } from "../hooks/useAuth";
-import { useForm } from "../hooks/useForm";
-import Header from "../components/common/Header";
-import Input from "../components/common/Input";
-import Loader from "../components/common/Loader";
-import { Spinner } from "../components/common/Spinner";
-import ErrorMessage from "../components/common/ErrorMessage";
+import { useHistory } from "react-router-dom";
+import { CustomAuthError, useAuth } from "../../hooks/useAuth";
+import { useForm } from "../../hooks/useForm";
+import { usePreloadImages } from "../../hooks/usePreloadImages";
 
-import { usePreloadImages } from "../hooks/usePreloadImages";
+import Header from "../../layouts/Header";
+import {
+  Input,
+  Button,
+  LoadScreen,
+  Spinner,
+  ErrorMessage,
+} from "../../components/common";
+
 import BoxLogoGreyLogo from "../assets/icons/box_logo_grey.svg";
 
 interface Props {}
@@ -44,7 +47,7 @@ const Login: React.FC<Props> = () => {
       <Header transparent />
       <Container>
         {loading ? (
-          <Loader />
+          <LoadScreen />
         ) : (
           <LoginForm onSubmit={onSubmit}>
             <ServiceIcon src={BoxLogoGreyLogo} />

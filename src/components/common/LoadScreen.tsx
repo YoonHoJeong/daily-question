@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Spinner } from "./Spinner";
+import Spinner from "./Spinner";
 
 const BackGround = styled.div`
   position: absolute;
@@ -21,7 +21,7 @@ const BackGround = styled.div`
 
 interface Props {}
 
-const Loader: React.FC<Props> = () => {
+const LoadScreen: React.FC<Props> = () => {
   return (
     <BackGround>
       <Spinner />
@@ -29,4 +29,4 @@ const Loader: React.FC<Props> = () => {
   );
 };
 
-export default Loader;
+export default LoadScreen;

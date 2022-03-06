@@ -85,13 +85,15 @@ const WeeklyAnswers: React.FC<Props> = ({
         <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
         {totalWeekAnswerCnt > 0 ? (
           <DailyAnswersList>
-            {Object.keys(weekAnswers).map((date) => (
-              <DailyAnswers
-                key={date}
-                date={date}
-                answers={weekAnswers[date]}
-              />
-            ))}
+            {Object.keys(weekAnswers)
+              .sort((a, b) => (a > b ? -1 : 1))
+              .map((date) => (
+                <DailyAnswers
+                  key={date}
+                  date={date}
+                  answers={weekAnswers[date]}
+                />
+              ))}
           </DailyAnswersList>
         ) : (
           <Link to="/">

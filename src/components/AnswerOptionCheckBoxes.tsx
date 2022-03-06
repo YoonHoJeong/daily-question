@@ -40,8 +40,6 @@ const AnswerOptionCheckBoxes: React.FC<Props> = ({
   );
 };
 
-export default AnswerOptionCheckBoxes;
-
 const Options = styled.ul`
   width: 100%;
   display: flex;
@@ -59,3 +57,5 @@ const Option = styled.li`
 
   font-size: 12px;
 `;
+
+export default AnswerOptionCheckBoxes;

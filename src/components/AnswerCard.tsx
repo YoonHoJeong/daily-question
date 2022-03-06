@@ -58,10 +58,11 @@ const AnswerContainer = styled.li`
 `;
 
 const AnswerAndFav = styled.div``;
+
 const AnswerText = styled.p`
   font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
+  font-size: 13px;
+  line-height: 18px;
 
   color: #4d4d4d;
 

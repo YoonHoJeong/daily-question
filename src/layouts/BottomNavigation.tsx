@@ -3,14 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { VariablesContext } from "../App";
 
-import BoxClickedIcon from "../assets/icons/box_blue.png";
-import BoxIcon from "../assets/icons/box_gray.png";
-import FeedClickedIcon from "../assets/icons/feed_blue.png";
-import FeedIcon from "../assets/icons/feed_gray.png";
-import PersonClickedIcon from "../assets/icons/person_blue.png";
-import PersonIcon from "../assets/icons/person_gray.png";
-import DiaryClickedIcon from "../assets/icons/diary_blue.png";
-import DiaryIcon from "../assets/icons/diary_gray.png";
+import {
+  BoxClickedIcon,
+  BoxIcon,
+  FeedClickedIcon,
+  FeedIcon,
+  PersonClickedIcon,
+  PersonIcon,
+  DiaryClickedIcon,
+  DiaryIcon,
+} from "../assets/icons";
 
 interface Navigation {
   pathnames: string[];
@@ -46,26 +48,10 @@ const Navigations: Navigation[] = [
 
 interface Props {}
 
-function hasNotBottomNavigation(pathname: string) {
-  const exceptPathnames = ["/user/edit", "/user/keeps", "/question"];
-
-  for (const exceptPathname of exceptPathnames) {
-    if (pathname.includes(exceptPathname)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 const BottomNavigation: React.FC<Props> = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const globalVariables = useContext(VariablesContext);
-
-  if (hasNotBottomNavigation(pathname)) {
-    return null;
-  }
 
   const NavigationItem = (navigation: Navigation) => (
     <NavItem key={navigation.pathnames[0]}>
@@ -87,6 +73,22 @@ const BottomNavigation: React.FC<Props> = () => {
       </SLink>
     </NavItem>
   );
+
+  if (hasNotBottomNavigation(pathname)) {
+    return null;
+  }
+
+  function hasNotBottomNavigation(pathname: string) {
+    const exceptPathnames = ["/user/edit", "/user/keeps", "/question"];
+
+    for (const exceptPathname of exceptPathnames) {
+      if (pathname.includes(exceptPathname)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   return (
     <Navigator>

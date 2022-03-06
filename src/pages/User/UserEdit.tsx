@@ -19,7 +19,7 @@ const UserEdit: React.FC<Props> = () => {
   const handleOpenPopup = (e: SyntheticEvent) => {
     e.preventDefault();
     const key = (e.currentTarget as HTMLButtonElement).name;
-    setPopupValues({ key, defaultValue: auth.user!![key] || "" });
+    setPopupValues({ key, defaultValue: auth.user!!.profile[key] || "" });
     setShowPopup(true);
   };
 
@@ -99,7 +99,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({
   const { form, onChange } = useForm({ [keyname]: defaultValue });
   const [submitting, setSubmitting] = useState(false);
 
-  const submitUserProfile = async (e: SyntheticEvent) => {
+  const updateUserProfile = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     setSubmitting(true);
@@ -118,12 +118,12 @@ const EditorPopup: React.FC<EditorPopupProps> = ({
   }
 
   return (
-    <EditorContainer onSubmit={submitUserProfile}>
+    <EditorContainer onSubmit={updateUserProfile}>
       <EditorHeader>
         <button onClick={handleCancel} disabled={submitting}>
           취소
         </button>
-        <button onClick={submitUserProfile} disabled={submitting}>
+        <button onClick={updateUserProfile} disabled={submitting}>
           확인
         </button>
       </EditorHeader>

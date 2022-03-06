@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
-import { Router } from "./components/Router";
+import { Router } from "./routes/Router";
 import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 
