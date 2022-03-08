@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
-import UserProfile from "../../components/UserProfile";
-import { FetchedAnswers } from "../../model/interfaces";
-import { formatAnswersToDateQidAnswers } from "../../services/utils";
+import UserProfile from "../../components/user/UserProfile";
+import { DateQidAnswers, FetchedAnswers } from "../../model/interfaces";
+import { formatToDateQidAnswers } from "../../services/AnswerApi";
 
 interface Props {
-  answers: FetchedAnswers;
+  dateQidAnswers: DateQidAnswers;
 }
 
-const DailyAnswers: React.FC<Props> = ({ answers }) => {
-  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
-  const descendingDates = Object.keys(dateQidAnswers).sort((a, b) =>
-    a > b ? -1 : 1
+const DailyAnswers: React.FC<Props> = ({ dateQidAnswers }) => {
+  const descendingDates = useMemo(
+    () => Object.keys(dateQidAnswers).sort((a, b) => (a > b ? -1 : 1)),
+    [dateQidAnswers]
   );
 
   return (

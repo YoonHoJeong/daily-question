@@ -1,17 +1,15 @@
 import React from "react";
-import { AnswerDateCount, HelperText } from "./WeeklyAnswers";
 import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
-import Loader from "../../components/common/Loader";
+import LoadScreen from "../../components/common/LoadScreen";
 import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
 import {
-  Answer,
+  AnswerType,
   DateQidAnswers,
-  FetchedAnswers,
-  Question,
+  QuestionType,
 } from "../../model/interfaces";
 import WeekToggle from "./WeekToggle";
-import { formatAnswersToDateQidAnswers } from "../../services/utils";
+import HelperText from "../../components/HelperText";
 
 interface Props {
   isLoading: boolean;
@@ -20,17 +18,16 @@ interface Props {
     year: number;
     month: number;
   };
-  answers: FetchedAnswers;
+  dateQidAnswers: DateQidAnswers;
   changeMonth: (monthCnt: number) => void;
 }
 
 const MonthlyAnswers: React.FC<Props> = ({
   isLoading,
   date,
-  answers,
+  dateQidAnswers,
   changeMonth,
 }) => {
-  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
   const monthAnswers: DateQidAnswers = Object.keys(dateQidAnswers).reduce(
     (obj, tmpDate) => {
       const [tmpYear, tmpMonth] = tmpDate.split("-");
@@ -64,7 +61,7 @@ const MonthlyAnswers: React.FC<Props> = ({
         changeWeekOrMonth={changeMonth}
       />
       {isLoading ? (
-        <Loader />
+        <LoadScreen />
       ) : (
         <>
           <HelperText>
@@ -88,6 +85,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const AnswerDateCount = styled.span`
+  color: ${(props) => props.theme.palette.blue};
 `;
 
 interface CalendarProps {
@@ -126,9 +127,9 @@ const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
 
 const cellStyleByAnswerCnt = (dateAnswers?: {
   [qid: string]: {
-    question: Question;
+    question: QuestionType;
     answers: {
-      [aid: string]: Answer;
+      [aid: string]: AnswerType;
     };
   };
 }) => {

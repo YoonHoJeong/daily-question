@@ -1,36 +1,22 @@
 import styled from "styled-components";
-import { Answer } from "../../model/interfaces";
-import { useForm } from "../../hooks/useForm";
-import AnswerOptionCheckBoxes from "../../components/AnswerOptionCheckBoxes";
+import { AnswerType } from "../../../model/interfaces";
+import { useForm } from "../../../hooks/useForm";
+import AnswerOptionCheckBoxes from "../../../components/AnswerOptionCheckBoxes";
 import { SyntheticEvent } from "react";
-import { updateAnswer } from "../../services/fireDB";
 import {
   useFetchBoardAnswers,
   useFetchUserAnswers,
-} from "../../hooks/customUseQueries";
-import { useAuth } from "../../hooks/useAuth";
-
-const ConvertPublicMessage = "공개 글로 전환하시겠어요?";
-const ConvertPrivateMessage = "비공개 글로 전환하시겠어요?";
-const ConvertAnonymousMessage = "익명 글로 전환하시겠어요?";
-const ConvertRealnameMessage = "실명 글로 전환하시겠어요?";
-const ConfirmMessages = {
-  isPublic: {
-    true: ConvertPrivateMessage,
-    false: ConvertPublicMessage,
-  },
-  isAnonymous: {
-    true: ConvertRealnameMessage,
-    false: ConvertAnonymousMessage,
-  },
-};
+} from "../../../hooks/customUseQueries";
+import { useAuth } from "../../../hooks/useAuth";
+import { Answer } from "../../../services/AnswerApi";
 
 interface Props {
-  answers: { [aid: string]: Answer };
+  answers: { [aid: string]: AnswerType };
 }
 
 const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
-  const answer = Object.values(answers)[0];
+  const answer = new Answer(Object.values(answers)[0]);
+
   const { form, setProperty } = useForm({
     isPublic: answer.isPublic ?? false,
     isAnonymous: answer.isAnonymous ?? false,
@@ -49,7 +35,10 @@ const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
     const response = window.confirm(confirmMessage);
     if (response === true) {
       setProperty(elem.name, !currentValue);
-      await updateAnswer(answer, { [elem.name]: !currentValue });
+      // await updateAnswer(answer.aid, answer.uid, {
+      //   [elem.name]: !currentValue,
+      // });
+      await answer.update({ [elem.name]: !currentValue });
       await userAnswersRefetch();
       await boardAnswersRefetch();
     }
@@ -58,17 +47,32 @@ const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
   return (
     <Container>
       <CardContainer>
-        <KeywordText>{answer.question.keyword}</KeywordText>
+        <KeywordText>{answer.keyword}</KeywordText>
         <QuestionText>
-          Q.<p>{answer.question.question}</p>
+          Q.<p>{answer.question}</p>
         </QuestionText>
         <AnswerText>
-          A.<p>{answer.answer}</p>
+          A.<p>{answer.answerText}</p>
         </AnswerText>
       </CardContainer>
       <AnswerOptionCheckBoxes form={form} onClickCheckbox={onClickCheckbox} />
     </Container>
   );
+};
+
+const ConvertPublicMessage = "공개 글로 전환하시겠어요?";
+const ConvertPrivateMessage = "비공개 글로 전환하시겠어요?";
+const ConvertAnonymousMessage = "익명 글로 전환하시겠어요?";
+const ConvertRealnameMessage = "실명 글로 전환하시겠어요?";
+const ConfirmMessages = {
+  isPublic: {
+    true: ConvertPrivateMessage,
+    false: ConvertPublicMessage,
+  },
+  isAnonymous: {
+    true: ConvertRealnameMessage,
+    false: ConvertAnonymousMessage,
+  },
 };
 
 const Container = styled.li``;

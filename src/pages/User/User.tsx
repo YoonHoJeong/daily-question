@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import UserProfile from "../../components/UserProfile";
-import Loader from "../../components/common/Loader";
+import UserProfile from "../../components/user/UserProfile";
+import LoadScreen from "../../components/common/LoadScreen";
 import { useAuth } from "../../hooks/useAuth";
 
 import { usePreloadImages } from "../../hooks/usePreloadImages";
@@ -14,7 +14,7 @@ const User: React.FC<Props> = () => {
   const { loading } = usePreloadImages([UserIcon, BoxOpenedIcon]);
 
   if (loading) {
-    return <Loader />;
+    return <LoadScreen />;
   }
 
   return (
@@ -35,15 +35,8 @@ interface LogOutButtonProps {}
 
 const LogOutButton: React.FC<LogOutButtonProps> = () => {
   const auth = useAuth();
-  const confirmMessage = "로그아웃 하시겠어요?";
-  const handleLogout = () => {
-    const response = window.confirm(confirmMessage);
-    if (response === true) {
-      auth.logout();
-    }
-  };
 
-  return <Button onClick={handleLogout}>로그아웃</Button>;
+  return <Button onClick={auth.logout}>로그아웃</Button>;
 };
 
 const Container = styled.div`

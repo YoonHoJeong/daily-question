@@ -5,7 +5,7 @@ import { AdminRoutes, ClientRoutes, AdminRoute, PrivateRoute } from "./";
 
 interface Props {}
 
-export const Router: React.FC<Props> = () => {
+const Router: React.FC<Props> = () => {
   return (
     <BrowserRouter>
       <Switch>
@@ -34,3 +34,5 @@ export const Router: React.FC<Props> = () => {
     </BrowserRouter>
   );
 };
+
+export default Router;

@@ -1,6 +1,6 @@
 {
-  "short_name": "Daily Question(beta)",
-  "name": "Daily Question Beta version",
+  "short_name": "묻다",
+  "name": "묻는 다이어리, 묻다",
   "icons": [
     {
       "src": "logo.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo.png",
+      "src": "logo_512.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "logo_512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

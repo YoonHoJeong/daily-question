@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import { useAuth } from "../hooks/useAuth";
-import Loader from "../components/common/Loader";
+import Button from "../../components/common/Button";
+import { useAuth } from "../../hooks/useAuth";
+import LoadScreen from "../../components/common/LoadScreen";
 
-import { usePreloadImages } from "../hooks/usePreloadImages";
-import BoxBlueLineLogo from "../assets/icons/box_blue_line.png";
+import { usePreloadImages } from "../../hooks/usePreloadImages";
+import BoxBlueLineLogo from "../../assets/icons/box_blue_line.png";
 
 interface Props {}
 
@@ -32,7 +32,7 @@ const Onboarding: React.FC<Props> = () => {
   return (
     <Container>
       {loading ? (
-        <Loader />
+        <LoadScreen />
       ) : (
         <>
           <ServiceIcon src={BoxBlueLineLogo} />

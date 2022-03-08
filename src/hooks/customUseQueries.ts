@@ -4,11 +4,8 @@ import {
   FetchedAnswers,
   DateQidAnswers,
 } from "../model/interfaces";
-import {
-  getBoardAnswers,
-  getTodayQuestions,
-  getUserAnswers,
-} from "../services/fireDB";
+import { getBoardAnswers, getUserAnswers } from "../services/AnswerApi";
+import { getTodayQuestions } from "../services/QuestionApi";
 
 const config = { initialData: {} };
 

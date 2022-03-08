@@ -1,17 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import { calcWeek, getAllWeeklyDate, getDay } from "../../services/DateManager";
-import Button from "../../components/common/Button";
+import {
+  calcWeek,
+  getAllWeeklyDate,
+  getDay,
+} from "../../../services/DateManager";
+import Button from "../../../components/common/Button";
 import { Link } from "react-router-dom";
-import { Answer, FetchedAnswers, Question } from "../../model/interfaces";
-import Loader from "../../components/common/Loader";
-import WeekToggle from "./WeekToggle";
+import {
+  AnswerType,
+  DateQidAnswers,
+  QuestionType,
+} from "../../../model/interfaces";
+import LoadScreen from "../../../components/common/LoadScreen";
+import WeekToggle from "../WeekToggle";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
-import { formatAnswersToDateQidAnswers } from "../../services/utils";
 
-import { usePreloadImages } from "../../hooks/usePreloadImages";
-import BoxOpenedIcon from "../../assets/icons/box_opened.png";
-import BoxClosedIcon from "../../assets/icons/box_closed.png";
+import { usePreloadImages } from "../../../hooks/usePreloadImages";
+import BoxOpenedIcon from "../../../assets/icons/box_opened.png";
+import BoxClosedIcon from "../../../assets/icons/box_closed.png";
+import HelperText from "../../../components/HelperText";
 
 interface Props {
   isLoading: boolean;
@@ -20,17 +28,16 @@ interface Props {
     year: number;
     month: number;
   };
-  answers: FetchedAnswers;
+  dateQidAnswers: DateQidAnswers;
   changeWeek: (weekCnt: number) => void;
 }
 
 const WeeklyAnswers: React.FC<Props> = ({
   isLoading: dataLoading,
   date,
-  answers,
+  dateQidAnswers,
   changeWeek,
 }) => {
-  const dateQidAnswers = formatAnswersToDateQidAnswers(answers);
   const selectedWeekStr = calcWeek(date.dateObj);
   const weekAnswers = Object.keys(dateQidAnswers)
     .filter((date) => calcWeek(new Date(date)) === selectedWeekStr)
@@ -58,7 +65,7 @@ const WeeklyAnswers: React.FC<Props> = ({
 
   const loading = dataLoading || imageLoading;
   if (loading) {
-    return <Loader />;
+    return <LoadScreen />;
   }
 
   return (
@@ -130,8 +137,8 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
 interface DailyAnswersProps {
   answers: {
     [qid: string]: {
-      question: Question;
-      answers: { [aid: string]: Answer };
+      question: QuestionType;
+      answers: { [aid: string]: AnswerType };
     };
   };
   date: string;
@@ -162,15 +169,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export const HelperText = styled.p`
-  margin-top: 14px;
-
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 26px;
-`;
-
-export const AnswerDateCount = styled.span`
+const AnswerDateCount = styled.span`
   color: ${(props) => props.theme.palette.blue};
 `;
 const DateIconContainer = styled.li``;

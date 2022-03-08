@@ -1,31 +1,28 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
-import Loader from "../components/common/Loader";
+import AnswerOptionCheckBoxes from "../../components/AnswerOptionCheckBoxes";
+import LoadScreen from "../../components/common/LoadScreen";
 import {
   useFetchQuestions,
   useFetchUserAnswers,
-} from "../hooks/customUseQueries";
-import { useAuth } from "../hooks/useAuth";
-import { useForm } from "../hooks/useForm";
-import { submitAnswer } from "../services/fireDB";
+} from "../../hooks/customUseQueries";
+import { useAuth } from "../../hooks/useAuth";
+import { useForm } from "../../hooks/useForm";
+import { submitAnswer } from "../../services/fireDB";
 
 interface Props {}
 
 const QuestionScreen: React.FC<Props> = () => {
+  // initial state
   const { qid } = useParams<{ qid: string }>();
   const auth = useAuth();
   const user = auth?.user;
-
   const [submitting, setSubmitting] = useState(false);
+
+  // data fetching
   const { data: questions } = useFetchQuestions();
   const question = questions && questions[qid];
-
-  const answerRef = useRef<HTMLTextAreaElement>(null);
-  useEffect(() => {
-    answerRef?.current?.focus();
-  }, []);
 
   const {
     data,
@@ -40,12 +37,20 @@ const QuestionScreen: React.FC<Props> = () => {
     .map((aid) => userAnswers[aid])
     .pop();
 
+  // form state setting
   const { form, onChange, setProperty } = useForm({
     answer: answer?.answer ?? "",
     aid: answer?.aid ?? "",
     isPublic: answer?.isPublic ?? false,
     isAnonymous: answer?.isAnonymous ?? false,
   });
+
+  // input focus
+  const answerRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    answerRef?.current?.focus();
+  }, []);
+
   const history = useHistory();
 
   const onSubmit = async (e: SyntheticEvent) => {
@@ -58,11 +63,7 @@ const QuestionScreen: React.FC<Props> = () => {
     if (question) {
       setSubmitting(true);
       try {
-        await submitAnswer(
-          { uid: user!!.uid, profile: user!!.profile },
-          question,
-          form
-        );
+        await auth.user?.submitAnswer();
         await userAnswersRefetch();
         await questionsRefetch();
         setSubmitting(false);
@@ -84,7 +85,7 @@ const QuestionScreen: React.FC<Props> = () => {
   return (
     <Container onSubmit={onSubmit}>
       {isLoading || submitting ? (
-        <Loader />
+        <LoadScreen />
       ) : (
         <>
           <QuestionText>{question?.question}</QuestionText>

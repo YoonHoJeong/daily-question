@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
+import Button from "../../components/common/Button";
 
 const Container = styled.div`
   width: 100%;

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import Loader from "../components/common/Loader";
-import { useFetchQuestions } from "../hooks/customUseQueries";
+import { Button, LoadScreen } from "../../components/common";
+import { useFetchQuestions } from "../../hooks/customUseQueries";
+import { FetchedQuestions, QuestionType } from "../../model/interfaces";
 
 interface Props {}
 
@@ -15,33 +15,42 @@ const Home: React.FC<Props> = () => {
   return (
     <Container>
       {isLoading ? (
-        <Loader />
+        <LoadScreen />
+      ) : questions ? (
+        <KeywordsScreen questions={questions} />
       ) : (
-        <>
-          {questions ? (
-            <>
-              <Title>키워드를 선택해주세요.</Title>
-              <KeywordList>
-                {Object.keys(questions).map((qid) => (
-                  <Keyword key={qid}>
-                    <Link to={`/question/${qid}`}>
-                      <Button
-                        small
-                        style={{ fontSize: "18px", fontWeight: 500 }}
-                      >
-                        {questions[qid].keyword}
-                      </Button>
-                    </Link>
-                  </Keyword>
-                ))}
-              </KeywordList>
-            </>
-          ) : (
-            <Title>오늘은 질문이 없어요.</Title>
-          )}
-        </>
+        <Title>오늘은 질문이 없어요.</Title>
       )}
     </Container>
+  );
+};
+
+interface KeywordsSreenProps {
+  questions: FetchedQuestions;
+}
+
+const KeywordsScreen: React.FC<KeywordsSreenProps> = ({ questions }) => {
+  return (
+    <>
+      <Title>키워드를 선택해주세요.</Title>
+      <KeywordList>
+        {Object.keys(questions).map((qid) => (
+          <KeywordLink key={qid} question={questions[qid]} />
+        ))}
+      </KeywordList>
+    </>
+  );
+};
+
+const KeywordLink: React.FC<{ question: QuestionType }> = ({ question }) => {
+  return (
+    <Keyword>
+      <Link to={`/question/${question.qid}`}>
+        <Button small style={{ fontSize: "18px", fontWeight: 500 }}>
+          {question.keyword}
+        </Button>
+      </Link>
+    </Keyword>
   );
 };
 

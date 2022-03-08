@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Route } from "react-router-dom";
 
 import styled from "styled-components";
@@ -7,9 +7,10 @@ import { useAuth } from "../../hooks/useAuth";
 
 import DailyAnswers from "./DailyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
-import WeeklyAnswers from "./WeeklyAnswers";
+import WeeklyAnswers from "./Weekly/WeeklyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserAnswers } from "../../hooks/customUseQueries";
+import { formatToDateQidAnswers } from "../../services/AnswerApi";
 
 interface Props {}
 
@@ -24,7 +25,10 @@ const Answers: React.FC<Props> = () => {
   });
 
   const { data, isLoading, isError } = useFetchUserAnswers(uid);
-  const answers = data ?? {};
+  const dateQidAnswers = useMemo(
+    () => formatToDateQidAnswers(data ?? {}),
+    [data]
+  );
 
   const changeWeek = (weekCnt: number) => {
     const tmpDate = new Date(selectedDate.dateObj);
@@ -63,19 +67,19 @@ const Answers: React.FC<Props> = () => {
         <MonthlyAnswers
           isLoading={isLoading}
           date={selectedDate}
-          answers={answers}
+          dateQidAnswers={dateQidAnswers}
           changeMonth={changeMonth}
         />
       </Route>
       <Route path="/answers/daily">
-        <DailyAnswers answers={answers} />
+        <DailyAnswers dateQidAnswers={dateQidAnswers} />
       </Route>
 
       <Route path="/answers/weekly">
         <WeeklyAnswers
           isLoading={isLoading}
           date={selectedDate}
-          answers={answers}
+          dateQidAnswers={dateQidAnswers}
           changeWeek={changeWeek}
         />
       </Route>
@@ -84,7 +88,7 @@ const Answers: React.FC<Props> = () => {
           isLoading={isLoading}
           changeWeek={changeWeek}
           date={selectedDate}
-          answers={answers}
+          dateQidAnswers={dateQidAnswers}
         />
       </Route>
     </Container>

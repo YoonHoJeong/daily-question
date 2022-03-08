@@ -2,120 +2,105 @@ import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import UserImage from "../../components/user/UserImage";
 import EditIcon from "../../assets/icons/pencil.png";
-import { useForm } from "../../hooks/useForm";
 import { useAuth } from "../../hooks/useAuth";
+import { useForm } from "../../hooks/useForm";
 
 interface Props {}
 
 const UserEdit: React.FC<Props> = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [popupValues, setPopupValues] = useState({
-    key: "",
-    defaultValue: "",
-  });
-  const popupInputRef = useRef<HTMLInputElement>(null);
+  const [popupKey, setPopupKey] = useState("");
 
-  const auth = useAuth();
+  const { user } = useAuth();
   const handleOpenPopup = (e: SyntheticEvent) => {
     e.preventDefault();
+
     const key = (e.currentTarget as HTMLButtonElement).name;
-    setPopupValues({ key, defaultValue: auth.user!!.profile[key] || "" });
+
+    setPopupKey(key);
     setShowPopup(true);
   };
-
   const closePopup = () => {
     setShowPopup(false);
   };
 
-  const submitUserProfile = async (key: string, value: number | string) => {
-    await auth.updateUserProfile({ [key]: value });
-  };
-
-  useEffect(() => {
-    popupInputRef.current?.focus();
-  }, [showPopup]);
+  const inputFields = [
+    {
+      label: "닉네임",
+      name: "name",
+      value: user!!.name || "이름을 입력해주세요.",
+      editable: true,
+    },
+    {
+      label: "소개",
+      name: "intro",
+      value: user!!.intro || "내 소개를 입력해주세요.",
+      editable: true,
+    },
+    {
+      label: "이메일",
+      name: "email",
+      value: user!!.email || "이메일을 입력해주세요.",
+      editable: false,
+    },
+  ];
 
   return (
     <>
-      <EditorPopup
-        show={showPopup}
-        keyname={popupValues.key}
-        defaultValue={popupValues.defaultValue}
-        closePopup={closePopup}
-        submitPopup={submitUserProfile}
-        popupInputRef={popupInputRef}
-      />
-      <div>
-        <ProfileImageEditor>
-          <UserImage style={{ width: "96px", height: "96px" }} />
-          <button style={{ marginTop: "10px" }}>프로필 사진 바꾸기</button>
-        </ProfileImageEditor>
-        <ProfileInfoForm>
-          <InputRow>
-            <InputLabel>닉네임</InputLabel>
-            <Field>{auth.user?.profile.name || "이름을 입력해주세요."}</Field>
-            <EditButton name="name" onClick={handleOpenPopup}>
-              <EditIconImg src={EditIcon} />
-            </EditButton>
+      {showPopup ? (
+        <EditorPopup keyname={popupKey} closePopup={closePopup} />
+      ) : null}
+      <ProfileImageEditor>
+        <UserImage style={{ width: "96px", height: "96px" }} />
+        <button style={{ marginTop: "10px" }}>프로필 사진 바꾸기</button>
+      </ProfileImageEditor>
+      <ProfileInfoForm>
+        {inputFields.map((field) => (
+          <InputRow key={field.label}>
+            <InputLabel>{field.label}</InputLabel>
+            <Field>{field.value}</Field>
+            {field.editable ? (
+              <EditButton name={field.name} onClick={handleOpenPopup}>
+                <EditIconImg src={EditIcon} />
+              </EditButton>
+            ) : null}
           </InputRow>
-          <InputRow>
-            <InputLabel>소개</InputLabel>
-            <Field>
-              {auth.user?.profile.intro || "내 소개를 입력해주세요."}
-            </Field>
-            <EditButton name="intro" onClick={handleOpenPopup}>
-              <EditIconImg src={EditIcon} />
-            </EditButton>
-          </InputRow>
-          <InputRow>
-            <InputLabel>이메일</InputLabel>
-            <Field>
-              {auth.user?.profile.email || "이메일을 입력해주세요."}
-            </Field>
-          </InputRow>
-        </ProfileInfoForm>
-      </div>
+        ))}
+      </ProfileInfoForm>
     </>
   );
 };
 
 interface EditorPopupProps {
-  show: boolean;
   keyname: string;
-  defaultValue: string;
   closePopup: () => void;
-  submitPopup: (key: string, value: number | string) => Promise<void>;
-  popupInputRef: React.RefObject<HTMLInputElement>;
 }
 
-const EditorPopup: React.FC<EditorPopupProps> = ({
-  show,
-  keyname,
-  defaultValue,
-  closePopup,
-  submitPopup,
-  popupInputRef,
-}) => {
-  const { form, onChange } = useForm({ [keyname]: defaultValue });
+const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
+  const { user } = useAuth();
+  const { form, onChange, reset } = useForm({ [keyname]: user!![keyname] });
   const [submitting, setSubmitting] = useState(false);
+  const popupInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    popupInputRef.current?.focus();
+  }, []);
 
   const updateUserProfile = async (e: SyntheticEvent) => {
     e.preventDefault();
+    console.log("updateUserProfile");
 
     setSubmitting(true);
-    await submitPopup(keyname, form[keyname]);
+    await user!!.updateProfile(form);
     setSubmitting(false);
     closePopup();
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
+    reset();
     closePopup();
   };
-
-  if (!show) {
-    return null;
-  }
 
   return (
     <EditorContainer onSubmit={updateUserProfile}>
@@ -129,7 +114,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({
       </EditorHeader>
       <EditorInput
         name={keyname}
-        defaultValue={defaultValue}
+        defaultValue={user!![keyname]}
         onChange={onChange}
         contentEditable={!submitting}
         autoComplete="off"

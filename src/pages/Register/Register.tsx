@@ -1,12 +1,12 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import ErrorMessage from "../components/common/ErrorMessage";
-import Input from "../components/common/Input";
-import Header from "../layouts/Header";
-import { CustomAuthError, useAuth } from "../hooks/useAuth";
-import { useForm } from "../hooks/useForm";
+import Button from "../../components/common/Button";
+import ErrorMessage from "../../components/common/ErrorMessage";
+import Input from "../../components/common/Input";
+import Header from "../../layouts/Header";
+import { CustomAuthError, useAuth } from "../../hooks/useAuth";
+import { useForm } from "../../hooks/useForm";
 
 interface Props {}
 

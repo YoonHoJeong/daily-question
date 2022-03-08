@@ -14,7 +14,7 @@ import {
   ErrorMessage,
 } from "../../components/common";
 
-import BoxLogoGreyLogo from "../assets/icons/box_logo_grey.svg";
+import BoxLogoGreyLogo from "../../assets/icons/box_logo_grey.svg";
 
 interface Props {}
 

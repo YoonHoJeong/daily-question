@@ -16,7 +16,7 @@ const AdminRoute: React.FC<Props> = ({ children, ...rest }) => {
     return <>loading...</>;
   }
 
-  if (!auth.user?.admin) {
+  if (!auth.user?.isAdmin()) {
     return <Redirect to="/dqadmin/login" />;
   }
 

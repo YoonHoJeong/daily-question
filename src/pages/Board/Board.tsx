@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import DateAnswersCard from "../components/DateAnswersCard";
-import Loader from "../components/common/Loader";
-import { useFetchBoardAnswers } from "../hooks/customUseQueries";
+import DateAnswersCard from "../../components/DateAnswersCard";
+import LoadScreen from "../../components/common/LoadScreen";
+import { useFetchBoardAnswers } from "../../hooks/customUseQueries";
 
 interface Props {}
 
@@ -17,7 +17,7 @@ const Board: React.FC<Props> = () => {
   return (
     <ViewWindow>
       {isLoading ? (
-        <Loader />
+        <LoadScreen />
       ) : (
         descendingDates.map((date) => (
           <DateAnswersCard

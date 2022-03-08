@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import { Answer, Question } from "../model/interfaces";
+import { AnswerType, QuestionType } from "../model/interfaces";
 import QuestionCard from "./QuestionCard";
 
 interface Props {
   date: string;
   questionsWithAnswers: {
     [qid: string]: {
-      question: Question;
+      question: QuestionType;
       answers: {
-        [aid: string]: Answer;
+        [aid: string]: AnswerType;
       };
     };
   };

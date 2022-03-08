@@ -4,12 +4,10 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  User,
 } from "firebase/auth";
-import { get, ref, update } from "firebase/database";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { firebaseApp, fireDB } from "../services/firebase";
-import { getUserAnswers } from "../services/fireDB";
+import React, { useContext, useEffect, useState } from "react";
+import { firebaseApp } from "../services/firebase";
+import { CustomUser, getUserData, updateUserData } from "../services/UserApi";
 
 interface Props {}
 
@@ -19,13 +17,12 @@ export interface Auth {
   login: (email: string, password: string) => Promise<Response> | null;
   logout: () => Promise<Response> | null;
   register: (form: RegisterForm) => Promise<Response>;
-  updateUserProfile: (userProfileData: UserProfileData) => Promise<void>;
 }
-interface UserProfileData {
+export interface UserProfileData {
   [key: string]: string | number;
 }
 
-export interface CustomUser {
+export interface CustomUserType {
   uid: string;
   admin: boolean;
   profile: {
@@ -86,7 +83,7 @@ const authErrorMsgs = {
   },
 };
 
-const defaultAuth = {
+const defaultAuth: Auth = {
   user: null,
   isAuthenticating: false,
   login: async (email: string, password: string) => {
@@ -98,7 +95,7 @@ const defaultAuth = {
   register: async (form: RegisterForm) => {
     return { status: false };
   },
-} as Auth;
+};
 
 export const AuthContext = React.createContext<Auth>(defaultAuth);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
@@ -112,86 +109,32 @@ const useProviderAuth = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const auth = getAuth(firebaseApp);
 
-  const formatUser = useCallback(async (user: User | null) => {
-    if (user) {
-      try {
-        const token = await user.getIdTokenResult();
-        const userProfileData = await fetchUserDB(user.uid, "profile");
-
-        setCustomUser({
-          profile: {
-            email: user.email || "",
-            name: userProfileData?.name || "",
-            intro: userProfileData?.intro || "",
-          },
-          uid: user.uid,
-          admin: token.claims.admin ? true : false,
-        });
-
-        setIsAuthenticating(false);
-      } catch (e: any) {
-        const error = new Error(e);
-        let timeoutCnt = 0;
-        if (error.message.includes("offline")) {
-          setIsAuthenticating(true);
-          setTimeout(() => {
-            if (timeoutCnt > 10) {
-              return;
-            }
-            formatUser(user);
-            timeoutCnt++;
-          }, 1000);
-        } else {
-          throw new Error(e);
-        }
-      }
-    } else {
-      setCustomUser(null);
-    }
-
-    setIsAuthenticating(false);
-  }, []);
-
   useEffect(() => {
-    const unsubAuth = onAuthStateChanged(auth, (user) => {
+    const unsubAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
         // log in
-        formatUser(user);
+        await formatUser(user.uid);
       } else {
         // log out.
-        formatUser(null);
+        setCustomUser(null);
       }
     });
 
     return () => unsubAuth();
-  }, [auth, formatUser]);
+  }, [auth]);
 
-  const fetchUserDB = async (uid: string, path: string) => {
-    const userData = (await get(ref(fireDB, `users/${uid}/${path}`))).val();
-    return userData;
-  };
-
-  const refreshCustomUser = async () => {
-    if (customUser) {
-      const userProfileData = await fetchUserDB(customUser.uid, "profile");
-      setCustomUser({
-        ...customUser,
-        profile: {
-          email: userProfileData.email || "이메일을 등록해주세요.",
-          name: userProfileData?.name || "익명",
-          intro: userProfileData?.intro || "내 소개를 입력해주세요",
-        },
-      });
-    } else {
-      throw new Error("user not logged in");
-    }
-  };
+  async function formatUser(uid: string) {
+    setIsAuthenticating(true);
+    const userData = await getUserData(uid);
+    const customUser = new CustomUser(userData, setCustomUser);
+    setCustomUser(customUser);
+    setIsAuthenticating(false);
+  }
 
   const login = async (email: string, password: string) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-
-      formatUser(user);
+      formatUser(user.uid);
 
       return { status: true };
     } catch (e) {
@@ -212,7 +155,12 @@ const useProviderAuth = () => {
 
   const logout = async () => {
     try {
-      await auth.signOut();
+      const confirmMessage = "로그아웃 하시겠어요?";
+      const response = window.confirm(confirmMessage);
+
+      if (response) {
+        await auth.signOut();
+      }
       return { status: true };
     } catch (e) {
       const firebaseError = e as FirebaseError;
@@ -228,86 +176,45 @@ const useProviderAuth = () => {
   const register = async (formData: RegisterForm) => {
     const form = { ...formData };
 
-    let error;
-    let status = true;
-
-    /* validate error handling */
     try {
       formValidation(form);
-    } catch (e: any) {
-      const errorType = new Error(error).message.split(": ")[1];
-      if (authErrorMsgs[errorType]) {
-        error = authErrorMsgs[errorType];
-      } else {
-        error = authErrorMsgs["default"];
-      }
-      formatUser(null);
-      status = false;
 
-      return { status, error };
-    }
-
-    /* firebase auth error handling */
-    try {
-      /* create user auth in firebase-auth */
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         form.email,
         form.password
       );
 
-      /* create user auth in firebase-database */
-      const userDBData = {
+      const newUserData: CustomUserType = {
         uid: userCredential.user.uid,
-        "profile/name": form.name,
-        "profile/email": form.email,
+        admin: false,
+        profile: { name: form.name, email: form.email },
       };
-      await updateUserDB(userCredential.user.uid, userDBData);
+      const newUser = new CustomUser(
+        {
+          uid: userCredential.user.uid,
+          admin: false,
+          profile: { name: form.name, email: form.email },
+        },
+        setCustomUser
+      );
+      await newUser.update(newUserData);
 
-      /* update 'user' state */
-      formatUser(userCredential.user);
+      setCustomUser(newUser);
 
       return { status: true };
-    } catch (e) {
-      const firebaseError = e as FirebaseError;
+    } catch (e: any) {
       let error;
-
-      if (authErrorMsgs[firebaseError.code]) {
-        error = authErrorMsgs[firebaseError.code];
+      const errorType = new Error(e).message.split(": ")[1];
+      if (authErrorMsgs[errorType]) {
+        error = authErrorMsgs[errorType];
       } else {
         error = authErrorMsgs["default"];
       }
-      formatUser(null);
+      setCustomUser(null);
 
       return { status: false, error };
     }
-  };
-
-  const updateUserProfile = async (userProfileData: UserProfileData) => {
-    const userData = Object.keys(userProfileData).reduce(
-      (userData, key) => ({
-        ...userData,
-        [`profile/${key}`]: userProfileData[key],
-      }),
-      {}
-    );
-    await updateUserDB(customUser!!.uid, userData);
-  };
-
-  const updateUserDB = async (uid: string, userData: UserProfileData) => {
-    const userAnswers = await getUserAnswers(uid);
-    const updates = Object.keys(userData).reduce((userProfile, key) => {
-      Object.keys(userAnswers).forEach((aid) => {
-        userProfile[`user-answers/${uid}/${aid}/user/${key}`] = userData[key];
-        userProfile[`answers/${aid}/user/${key}`] = userData[key];
-      });
-      userProfile[`users/${uid}/${key}`] = userData[key];
-
-      return userProfile;
-    }, {});
-
-    await update(ref(fireDB), updates);
-    await refreshCustomUser();
   };
 
   return {
@@ -316,7 +223,6 @@ const useProviderAuth = () => {
     login,
     logout,
     register,
-    updateUserProfile,
   };
 };
 
