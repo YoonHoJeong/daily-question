@@ -14,7 +14,7 @@ const UserProfile: React.FC<Props> = ({
   editable = true,
   showEmail = true,
 }) => {
-  const auth = useAuth();
+  const { user } = useAuth();
   const history = useHistory();
   const moveToUserEdit = () => {
     history.push("/user/edit");
@@ -24,11 +24,11 @@ const UserProfile: React.FC<Props> = ({
     <ProfileContainer>
       <UserImage style={{ width: "60px", height: "60px" }} />
       <UserInfo>
-        <UserName>{auth.user?.name}</UserName>
-        <UserIntro>{auth.user?.intro}</UserIntro>
+        <UserName>{user!!.profile.name}</UserName>
+        <UserIntro>{user!!.profile.intro}</UserIntro>
         {showEmail && (
           <UserAddress>
-            {auth.user?.email || "이메일을 등록해주세요."}
+            {user!!.profile.email || "이메일을 등록해주세요."}
           </UserAddress>
         )}
       </UserInfo>

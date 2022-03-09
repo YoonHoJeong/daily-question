@@ -1,84 +1,125 @@
-import { CustomUserType } from "../hooks/useAuth";
+import { submitAnswer } from "./fireDB";
+import { useState } from "react";
 import { getUserAnswers } from "./AnswerApi";
 import { getData, updateData } from "./DBInterface";
 
-export class CustomUser {
-  private _uid: string;
-  private _admin: boolean;
-  private _profile: {
+/*
+    현재 사용자에 대한 정보를 관리.
+    
+    1. User data Read(Fetch)
+    2. User data Update
+        - user profile
+        - answers
+*/
+
+export type UserData = {
+  uid: string;
+  admin: boolean;
+  profile: {
     name?: string;
     email?: string;
     intro?: string;
   };
-  constructor(user: CustomUserType) {
-    this._uid = user.uid;
-    this._admin = user.admin;
-    this._profile = user.profile;
-  }
-  isAdmin() {
-    return this._admin;
-  }
-  public get uid() {
-    return this._uid;
-  }
-  public get name() {
-    return this._profile.name;
-  }
-  public get email() {
-    return this._profile.email;
-  }
-  public get intro() {
-    return this._profile.intro;
-  }
-  public get data() {
-    return {
-      uid: this._uid,
-      admin: this._admin,
-      profile: this._profile,
-    };
-  }
-  async update(newData: object) {
-    await updateUserData(this._uid, newData);
-  }
-
-  async updateProfile(newData: object) {
-    const profileData = Object.keys(newData).reduce(
-      (profileData, key) => ({
-        ...profileData,
-        [`profile/${key}`]: newData[key],
-      }),
-      {}
-    );
-
-    await this.update(profileData);
-  }
-
-  async submitAnswer() {
-    throw new Error("구현 중 기능");
-  }
-}
-
-export const getUserData = async (uid: string) => {
-  const userData: CustomUserType = await getData(`users/${uid}`);
-  return userData;
+  answers?: {
+    [aid: string]: boolean;
+  };
+};
+type UserFunctions = {
+  submitAnswer: () => Promise<void>;
+  updateProfile: (newProfileData: object) => Promise<void>;
 };
 
-export const updateUserData = async (uid: string, userData: object) => {
-  // when update user profile data, answer data have to be updated.
-  console.log("updateUserData");
-  console.log(uid, userData);
+export type CustomUser = UserData & UserFunctions;
 
-  // 'users', 'answers', 'user-answers'
-  const userAnswers = await getUserAnswers(uid);
-  const updates = Object.keys(userData).reduce((updates, key) => {
-    Object.keys(userAnswers).forEach((aid) => {
-      updates[`user-answers/${uid}/${aid}/user/${key}`] = userData[key];
-      updates[`answers/${aid}/user/${key}`] = userData[key];
-    });
-    updates[`users/${uid}/${key}`] = userData[key];
+export type User = {
+  user: CustomUser | null;
+  fetchAndSyncUserData: (uid: string) => Promise<void>;
+  setUserNull: () => void;
+  registerUserDataAndSync: (uid: string, userData: UserData) => Promise<void>;
+};
 
-    return updates;
-  }, {});
+export const useCustomUser = () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
 
-  await updateData("", updates);
+  const fetchAndSyncUserData = async (uid: string) => {
+    const userData = await getUserData(uid);
+    setUserData({ ...userData });
+  };
+
+  const setUserNull = () => {
+    setUserData(null);
+  };
+
+  const registerUserDataAndSync = async (uid: string, userData: UserData) => {
+    await updateAllUserDataAndSync(uid, userData);
+  };
+
+  const updateProfile = async (newProfileData: object) => {
+    if (!userData) {
+      throw new Error("updateProfile : user not logged in!");
+    }
+
+    await updateAllUserDataAndSync(
+      userData!!.uid,
+      appendProfilePath(newProfileData)
+    );
+  };
+
+  const submitAnswer = async () => {
+    throw new Error("submitAnswers - 구현 중인 기능");
+  };
+
+  const updateAllUserDataAndSync = async (uid: string, userData: object) => {
+    // when update user profile data, answer data have to be updated.
+    // 'users', 'answers', 'user-answers'
+    const userAnswers = await getUserAnswers(uid);
+    const updates = Object.keys(userData).reduce((updates, key) => {
+      Object.keys(userAnswers).forEach((aid) => {
+        updates[`user-answers/${uid}/${aid}/user/${key}`] = userData[key];
+        updates[`answers/${aid}/user/${key}`] = userData[key];
+      });
+      updates[`users/${uid}/${key}`] = userData[key];
+
+      return updates;
+    }, {});
+
+    await updateData("", updates);
+    await fetchAndSyncUserData(uid);
+  };
+
+  if (!userData) {
+    return {
+      user: null,
+      fetchAndSyncUserData,
+      registerUserDataAndSync,
+      setUserNull,
+    } as User;
+  }
+
+  return {
+    user: {
+      ...userData,
+      updateProfile,
+      submitAnswer,
+    },
+    fetchAndSyncUserData,
+    registerUserDataAndSync,
+    setUserNull,
+  } as User;
+};
+
+const appendProfilePath = (newData: object) => {
+  const profileData = Object.keys(newData).reduce(
+    (profileData, key) => ({
+      ...profileData,
+      [`profile/${key}`]: newData[key],
+    }),
+    {}
+  );
+  return profileData;
+};
+
+export const getUserData = async (uid: string) => {
+  const userData: UserData = await getData(`users/${uid}`);
+  return userData;
 };

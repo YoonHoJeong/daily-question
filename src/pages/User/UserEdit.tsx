@@ -28,19 +28,19 @@ const UserEdit: React.FC<Props> = () => {
     {
       label: "닉네임",
       name: "name",
-      value: user!!.name || "이름을 입력해주세요.",
+      value: user!!.profile.name || "이름을 입력해주세요.",
       editable: true,
     },
     {
       label: "소개",
       name: "intro",
-      value: user!!.intro || "내 소개를 입력해주세요.",
+      value: user!!.profile.intro || "내 소개를 입력해주세요.",
       editable: true,
     },
     {
       label: "이메일",
       name: "email",
-      value: user!!.email || "이메일을 입력해주세요.",
+      value: user!!.profile.email || "이메일을 입력해주세요.",
       editable: false,
     },
   ];
@@ -114,7 +114,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
       </EditorHeader>
       <EditorInput
         name={keyname}
-        defaultValue={user!![keyname]}
+        defaultValue={user!!.profile[keyname]}
         onChange={onChange}
         contentEditable={!submitting}
         autoComplete="off"

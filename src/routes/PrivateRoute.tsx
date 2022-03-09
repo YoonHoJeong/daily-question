@@ -6,6 +6,7 @@ interface Props extends RouteProps {}
 
 const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
+  console.log(auth);
 
   if (auth.isAuthenticating) {
     return null;
