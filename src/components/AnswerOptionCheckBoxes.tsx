@@ -14,7 +14,7 @@ const AnswerOptionCheckBoxes: React.FC<Props> = ({
     <Options>
       {isPublic && (
         <Option>
-          <input
+          <CheckBox
             type="checkbox"
             id="isAnonymous"
             name="isAnonymous"
@@ -26,7 +26,7 @@ const AnswerOptionCheckBoxes: React.FC<Props> = ({
         </Option>
       )}
       <Option>
-        <input
+        <CheckBox
           type="checkbox"
           id="isPublic"
           name="isPublic"
@@ -56,6 +56,10 @@ const Option = styled.li`
   align-items: center;
 
   font-size: 12px;
+`;
+
+const CheckBox = styled.input`
+  accent-color: ${(props) => props.theme.palette.blue};
 `;
 
 export default AnswerOptionCheckBoxes;
