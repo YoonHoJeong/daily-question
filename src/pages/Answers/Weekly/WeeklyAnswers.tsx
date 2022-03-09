@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { DateQidAnswers } from "../../../model/interfaces";
 import WeekToggle from "../WeekToggle";
 
-import { BoxIcon, BoxClickedIcon } from "../../../assets/icons";
+import { BoxClosedIcon, BoxOpenedIcon } from "../../../assets/icons";
 import HelperText from "../../../components/HelperText";
 import WeeklyAnswerCards from "./WeeklyAnswerCards";
 
@@ -90,7 +90,9 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
       <DateIconContainer key={date}>
         <DateIcon
           src={
-            Object.keys(weekAnswers).includes(date) ? BoxClickedIcon : BoxIcon
+            Object.keys(weekAnswers).includes(date)
+              ? BoxOpenedIcon
+              : BoxClosedIcon
           }
         />
       </DateIconContainer>
@@ -116,17 +118,21 @@ const AnswerDateCount = styled.span`
 `;
 const DateIconContainer = styled.li``;
 const DateIcon = styled.img`
-  max-width: 45px;
-  height: 35px;
+  max-width: 46px;
+  height: 46px;
 `;
 const DateIconsContainer = styled.ul`
   width: 300px;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 
   margin-top: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+
+  & > li:not(:first-child) {
+    margin-left: 12px;
+  }
 `;
 
 export default WeeklyAnswers;

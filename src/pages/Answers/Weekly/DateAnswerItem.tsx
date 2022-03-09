@@ -28,9 +28,7 @@ const DateAnswerItem: React.FC<Props> = ({ answers, date }) => {
 
 export default DateAnswerItem;
 
-const Container = styled.li`
-  margin-top: 10px;
-`;
+const Container = styled.li``;
 const DayText = styled.p`
   font-weight: 500;
 

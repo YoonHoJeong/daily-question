@@ -18,6 +18,10 @@ const WeeklyAnswerCards: React.FC<Props> = ({ weekAnswers }) => {
   );
 };
 
-const Container = styled.ul``;
+const Container = styled.ul`
+  & > li:not(:first-child) {
+    margin-top: 10px;
+  }
+`;
 
 export default WeeklyAnswerCards;
