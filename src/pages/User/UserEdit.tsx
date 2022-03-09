@@ -1,4 +1,10 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import UserImage from "../../components/user/UserImage";
 import EditIcon from "../../assets/icons/pencil.png";
@@ -78,7 +84,9 @@ interface EditorPopupProps {
 
 const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
   const { user } = useAuth();
-  const { form, onChange, reset } = useForm({ [keyname]: user!![keyname] });
+  const { form, onChange, reset } = useForm({
+    [keyname]: user!!.profile[keyname],
+  });
   const [submitting, setSubmitting] = useState(false);
   const popupInputRef = useRef<HTMLInputElement>(null);
 
@@ -86,14 +94,17 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
     popupInputRef.current?.focus();
   }, []);
 
-  const updateUserProfile = async (e: SyntheticEvent) => {
-    e.preventDefault();
-    console.log("updateUserProfile");
-
+  const handleSubmit = async () => {
     setSubmitting(true);
     await user!!.updateProfile(form);
+
     setSubmitting(false);
     closePopup();
+  };
+
+  const updateUserProfile = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    await handleSubmit();
   };
 
   const handleCancel = (e: SyntheticEvent) => {
@@ -101,9 +112,16 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
     reset();
     closePopup();
   };
+  const handlePressEnter = async (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      await handleSubmit();
+    }
+  };
 
   return (
-    <EditorContainer onSubmit={updateUserProfile}>
+    <EditorContainer onSubmit={updateUserProfile} onKeyDown={handlePressEnter}>
       <EditorHeader>
         <button onClick={handleCancel} disabled={submitting}>
           취소
@@ -119,6 +137,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
         contentEditable={!submitting}
         autoComplete="off"
         ref={popupInputRef}
+        maxLength={20}
       />
     </EditorContainer>
   );

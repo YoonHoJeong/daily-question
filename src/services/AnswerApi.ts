@@ -5,7 +5,8 @@ import {
   FetchedAnswers,
   QuestionData,
 } from "../model/interfaces";
-import { getData, updateData } from "./DBInterface";
+import { getData, getNewId, updateData } from "./DBInterface";
+import { UserData } from "./UserApi";
 
 export interface AnswerFormData {
   question: QuestionData;
@@ -102,4 +103,29 @@ export function formatToDateQidAnswers(answers: FetchedAnswers) {
     {}
   );
   return dateQidAnswers;
+}
+
+export function combineAnswerData(
+  newAid: string,
+  formData: AnswerFormData,
+  userData: UserData
+) {
+  const answerData: AnswerData = {
+    aid: newAid,
+    answer: formData.answer,
+    created_at: convertDate(new Date()),
+    week: calcWeek(new Date(formData.question.publish_date)),
+    qid: formData.question.qid,
+    uid: userData.uid,
+    user: userData,
+    question: {
+      ...formData.question,
+      answers: {
+        [newAid]: true,
+      },
+    },
+    isAnonymous: formData.isAnonymous,
+    isPublic: formData.isPublic,
+  };
+  return answerData;
 }

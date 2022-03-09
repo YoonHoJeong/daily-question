@@ -1,6 +1,6 @@
 import { AnswerData } from "./../model/interfaces";
 import { useCallback, useState } from "react";
-import { AnswerFormData, getUserAnswers } from "./AnswerApi";
+import { AnswerFormData, combineAnswerData, getUserAnswers } from "./AnswerApi";
 import { getData, getNewId, updateData } from "./DBInterface";
 import { calcWeek, convertDate } from "./DateManager";
 
@@ -74,25 +74,14 @@ export const useCustomUser = () => {
       throw new Error("submitAnswer, no userData");
     }
 
-    const newAid = getNewId("answers");
     const updates = {};
-    const answerData: AnswerData = {
-      aid: newAid,
-      answer: formData.answer,
-      created_at: convertDate(new Date()),
-      week: calcWeek(new Date(formData.question.publish_date)),
-      qid: formData.question.qid,
-      uid: userData.uid,
-      user: userData,
-      question: {
-        ...formData.question,
-        answers: {
-          [newAid]: true,
-        },
-      },
-      isAnonymous: formData.isAnonymous,
-      isPublic: formData.isPublic,
-    };
+
+    const newAid = getNewId("answers");
+    const answerData: AnswerData = combineAnswerData(
+      newAid,
+      formData,
+      userData
+    );
 
     updates["answers/" + newAid] = answerData;
     updates["users/" + userData.uid + "/answers/" + newAid] = true;
