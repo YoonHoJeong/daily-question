@@ -2,8 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
 import UserProfile from "../../components/user/UserProfile";
-import { DateQidAnswers, FetchedAnswers } from "../../model/interfaces";
-import { formatToDateQidAnswers } from "../../services/AnswerApi";
+import { DateQidAnswers } from "../../model/interfaces";
 
 interface Props {
   dateQidAnswers: DateQidAnswers;

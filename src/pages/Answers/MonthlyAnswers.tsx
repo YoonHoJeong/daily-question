@@ -12,7 +12,6 @@ import WeekToggle from "./WeekToggle";
 import HelperText from "../../components/HelperText";
 
 interface Props {
-  isLoading: boolean;
   date: {
     dateObj: Date;
     year: number;
@@ -23,7 +22,6 @@ interface Props {
 }
 
 const MonthlyAnswers: React.FC<Props> = ({
-  isLoading,
   date,
   dateQidAnswers,
   changeMonth,
@@ -60,18 +58,12 @@ const MonthlyAnswers: React.FC<Props> = ({
         }}
         changeWeekOrMonth={changeMonth}
       />
-      {isLoading ? (
-        <LoadScreen />
-      ) : (
-        <>
-          <HelperText>
-            <AnswerDateCount> {totalAnswerCnt}개</AnswerDateCount>의 질문에
-            대답했어요.
-          </HelperText>
+      <HelperText>
+        <AnswerDateCount> {totalAnswerCnt}개</AnswerDateCount>의 질문에
+        대답했어요.
+      </HelperText>
 
-          <Calendar dateObj={date.dateObj} monthAnswers={monthAnswers} />
-        </>
-      )}
+      <Calendar dateObj={date.dateObj} monthAnswers={monthAnswers} />
     </Container>
   );
 };

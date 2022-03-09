@@ -4,18 +4,13 @@ import { calcWeek, getAllWeeklyDate } from "../../../services/DateManager";
 import Button from "../../../components/common/Button";
 import { Link } from "react-router-dom";
 import { DateQidAnswers } from "../../../model/interfaces";
-import LoadScreen from "../../../components/common/LoadScreen";
 import WeekToggle from "../WeekToggle";
-import WeeklyAnswerCard from "./WeeklyAnswerCard";
 
-import { usePreloadImages } from "../../../hooks/usePreloadImages";
-import BoxOpenedIcon from "../../../assets/icons/box_opened.png";
-import BoxClosedIcon from "../../../assets/icons/box_closed.png";
+import { BoxIcon, BoxClickedIcon } from "../../../assets/icons";
 import HelperText from "../../../components/HelperText";
 import WeeklyAnswerCards from "./WeeklyAnswerCards";
 
 interface Props {
-  isLoading: boolean;
   date: {
     dateObj: Date;
     year: number;
@@ -26,7 +21,6 @@ interface Props {
 }
 
 const WeeklyAnswers: React.FC<Props> = ({
-  isLoading: dataLoading,
   date,
   dateQidAnswers,
   changeWeek,
@@ -50,16 +44,6 @@ const WeeklyAnswers: React.FC<Props> = ({
     0
   );
   const answeredDateCnt = Object.keys(weekAnswers).length;
-
-  const { loading: imageLoading } = usePreloadImages([
-    BoxOpenedIcon,
-    BoxClosedIcon,
-  ]);
-
-  const loading = dataLoading || imageLoading;
-  if (loading) {
-    return <LoadScreen />;
-  }
 
   return (
     <Container>
@@ -106,9 +90,7 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
       <DateIconContainer key={date}>
         <DateIcon
           src={
-            Object.keys(weekAnswers).includes(date)
-              ? BoxOpenedIcon
-              : BoxClosedIcon
+            Object.keys(weekAnswers).includes(date) ? BoxClickedIcon : BoxIcon
           }
         />
       </DateIconContainer>

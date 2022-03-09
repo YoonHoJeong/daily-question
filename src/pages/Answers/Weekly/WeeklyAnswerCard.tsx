@@ -3,11 +3,6 @@ import { AnswerData } from "../../../model/interfaces";
 import { useForm } from "../../../hooks/useForm";
 import AnswerOptionCheckBoxes from "../../../components/AnswerOptionCheckBoxes";
 import { SyntheticEvent } from "react";
-import {
-  useFetchBoardAnswers,
-  useFetchUserAnswers,
-} from "../../../hooks/customUseQueries";
-import { useAuth } from "../../../hooks/useAuth";
 import { Answer } from "../../../services/AnswerApi";
 
 interface Props {
@@ -21,10 +16,6 @@ const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
     isPublic: answer.isPublic ?? false,
     isAnonymous: answer.isAnonymous ?? false,
   });
-  const auth = useAuth();
-
-  const { refetch: userAnswersRefetch } = useFetchUserAnswers(auth.user!!.uid);
-  const { refetch: boardAnswersRefetch } = useFetchBoardAnswers();
 
   const onClickCheckbox = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -35,12 +26,7 @@ const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
     const response = window.confirm(confirmMessage);
     if (response === true) {
       setProperty(elem.name, !currentValue);
-      // await updateAnswer(answer.aid, answer.uid, {
-      //   [elem.name]: !currentValue,
-      // });
       await answer.update({ [elem.name]: !currentValue });
-      await userAnswersRefetch();
-      await boardAnswersRefetch();
     }
   };
 

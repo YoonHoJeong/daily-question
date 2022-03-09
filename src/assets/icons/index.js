@@ -1,15 +1,19 @@
-import BoxClickedIcon from "./box_blue.png";
-import BoxIcon from "./box_gray.png";
-import FeedClickedIcon from "./feed_blue.png";
-import FeedIcon from "./feed_gray.png";
-import PersonClickedIcon from "./person_blue.png";
-import PersonIcon from "./person_gray.png";
-import DiaryClickedIcon from "./diary_blue.png";
-import DiaryIcon from "./diary_gray.png";
+import BoxClickedIcon from "./box/blue.png";
+import BoxIcon from "./box/gray.png";
+import BoxOpenedIcon from "./box/opened.png";
+import BoxClosedIcon from "./box/closed.png";
+import FeedClickedIcon from "./feed/blue.png";
+import FeedIcon from "./feed/gray.png";
+import PersonClickedIcon from "./person/blue.png";
+import PersonIcon from "./person/gray.png";
+import DiaryClickedIcon from "./diary/blue.png";
+import DiaryIcon from "./diary/gray.png";
 
 export {
   BoxClickedIcon,
   BoxIcon,
+  BoxOpenedIcon,
+  BoxClosedIcon,
   FeedClickedIcon,
   FeedIcon,
   PersonClickedIcon,

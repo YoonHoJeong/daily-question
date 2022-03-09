@@ -5,12 +5,15 @@ import styled from "styled-components";
 
 import { useAuth } from "../../hooks/useAuth";
 
+import { LoadScreen } from "../../components/common";
 import DailyAnswers from "./DailyAnswers";
 import MonthlyAnswers from "./MonthlyAnswers";
 import WeeklyAnswers from "./Weekly/WeeklyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserAnswers } from "../../hooks/customUseQueries";
 import { formatToDateQidAnswers } from "../../services/AnswerApi";
+import { BoxOpenedIcon, BoxClosedIcon } from "../../assets/icons";
+import { usePreloadImages } from "../../hooks/usePreloadImages";
 
 interface Props {}
 
@@ -23,6 +26,10 @@ const Answers: React.FC<Props> = () => {
     year: presentDateObj.getFullYear(),
     month: presentDateObj.getMonth() + 1,
   });
+  const { loading: imageLoading } = usePreloadImages([
+    BoxOpenedIcon,
+    BoxClosedIcon,
+  ]);
 
   const { data, isLoading, isError } = useFetchUserAnswers(uid);
   const dateQidAnswers = useMemo(
@@ -59,13 +66,15 @@ const Answers: React.FC<Props> = () => {
   if (isError) {
     <>Error Page</>;
   }
+  if (isLoading || imageLoading) {
+    <LoadScreen />;
+  }
 
   return (
     <Container>
       <DateFormatPicker />
       <Route path="/answers/monthly">
         <MonthlyAnswers
-          isLoading={isLoading}
           date={selectedDate}
           dateQidAnswers={dateQidAnswers}
           changeMonth={changeMonth}
@@ -77,7 +86,6 @@ const Answers: React.FC<Props> = () => {
 
       <Route path="/answers/weekly">
         <WeeklyAnswers
-          isLoading={isLoading}
           date={selectedDate}
           dateQidAnswers={dateQidAnswers}
           changeWeek={changeWeek}
@@ -85,7 +93,6 @@ const Answers: React.FC<Props> = () => {
       </Route>
       <Route exact path="/answers">
         <WeeklyAnswers
-          isLoading={isLoading}
           changeWeek={changeWeek}
           date={selectedDate}
           dateQidAnswers={dateQidAnswers}
