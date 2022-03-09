@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { AnswerType } from "../model/interfaces";
+import { AnswerData } from "../model/interfaces";
 import UserImage from "./user/UserImage";
 
 interface Props {
-  answer: AnswerType;
+  answer: AnswerData;
   profileOn: boolean;
 }
 

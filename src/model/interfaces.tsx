@@ -1,4 +1,4 @@
-export interface AnswerType {
+export interface AnswerData {
   aid: string;
   answer: string;
   created_at: string; // format - yyyy-mm-ddThh:mm:ss
@@ -6,7 +6,7 @@ export interface AnswerType {
   qid: string;
   uid: string;
   user: User;
-  question: QuestionType;
+  question: QuestionData;
   isAnonymous?: boolean;
   isPublic?: boolean;
   keepers?: {
@@ -15,15 +15,15 @@ export interface AnswerType {
 }
 
 export interface FetchedAnswers {
-  [aid: string]: AnswerType;
+  [aid: string]: AnswerData;
 }
 
 export interface DateQidAnswers {
   [date: string]: {
     [qid: string]: {
-      question: QuestionType;
+      question: QuestionData;
       answers: {
-        [aid: string]: AnswerType;
+        [aid: string]: AnswerData;
       };
     };
   };
@@ -39,7 +39,7 @@ export interface User {
   };
 }
 
-export interface QuestionType {
+export interface QuestionData {
   qid: string;
   keyword: string;
   question: string;
@@ -51,5 +51,5 @@ export interface QuestionType {
 }
 
 export interface FetchedQuestions {
-  [qid: string]: QuestionType;
+  [qid: string]: QuestionData;
 }

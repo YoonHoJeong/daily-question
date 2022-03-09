@@ -1,22 +1,34 @@
+import { calcWeek, convertDate } from "./DateManager";
 import {
-  AnswerType,
+  AnswerData,
   DateQidAnswers,
   FetchedAnswers,
+  QuestionData,
 } from "../model/interfaces";
 import { getData, updateData } from "./DBInterface";
 
+export interface AnswerFormData {
+  question: QuestionData;
+  aid?: string;
+  answer: string;
+  isAnonymous: boolean;
+  isPublic: boolean;
+}
+
 export class Answer {
-  private answer: AnswerType;
-  constructor(answer: AnswerType) {
-    this.answer = answer;
+  private answer: AnswerData;
+  constructor(answerData?: AnswerData) {
+    if (answerData) {
+      this.answer = answerData;
+    }
   }
+
   async update(formData: object) {
     const { aid, uid } = this.answer;
     const data = Object.keys(formData).reduce(
       (data, key) => ({
         ...data,
         [`answers/${aid}/${key}`]: formData[key],
-        [`user/${uid}/answers/${aid}/${key}`]: true,
         [`user-answers/${uid}/${aid}/${key}`]: formData[key],
       }),
       {}

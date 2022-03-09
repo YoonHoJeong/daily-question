@@ -10,12 +10,12 @@ import {
   push,
   update,
 } from "@firebase/database";
-import { calcWeek, convertDate, convertDateUntilDay } from "./DateManager";
-import { AnswerType, QuestionType } from "../model/interfaces";
+import { calcWeek, convertDate } from "./DateManager";
+import { AnswerData, QuestionData } from "../model/interfaces";
 
 export const submitAnswer = async (
   userData: User,
-  question: QuestionType,
+  question: QuestionData,
   formData: {
     answer: string;
     aid?: string;
@@ -34,7 +34,7 @@ export const submitAnswer = async (
     throw new Error("unknown error");
   }
   const updates = {};
-  const answerData: AnswerType = {
+  const answerData: AnswerData = {
     aid,
     answer: formData.answer,
     created_at: convertDate(new Date()),

@@ -1,7 +1,8 @@
-import { submitAnswer } from "./fireDB";
-import { useState } from "react";
-import { getUserAnswers } from "./AnswerApi";
-import { getData, updateData } from "./DBInterface";
+import { AnswerData } from "./../model/interfaces";
+import { useCallback, useState } from "react";
+import { AnswerFormData, getUserAnswers } from "./AnswerApi";
+import { getData, getNewId, updateData } from "./DBInterface";
+import { calcWeek, convertDate } from "./DateManager";
 
 /*
     현재 사용자에 대한 정보를 관리.
@@ -25,7 +26,7 @@ export type UserData = {
   };
 };
 type UserFunctions = {
-  submitAnswer: () => Promise<void>;
+  submitAnswer: (formData: AnswerFormData) => Promise<void>;
   updateProfile: (newProfileData: object) => Promise<void>;
 };
 
@@ -41,14 +42,17 @@ export type User = {
 export const useCustomUser = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  const fetchAndSyncUserData = async (uid: string) => {
-    const userData = await getUserData(uid);
-    setUserData({ ...userData });
-  };
+  const fetchAndSyncUserData = useCallback(
+    async (uid: string) => {
+      const userData = await getUserData(uid);
+      setUserData({ ...userData });
+    },
 
-  const setUserNull = () => {
+    []
+  );
+  const setUserNull = useCallback(() => {
     setUserData(null);
-  };
+  }, []);
 
   const registerUserDataAndSync = async (uid: string, userData: UserData) => {
     await updateAllUserDataAndSync(uid, userData);
@@ -65,8 +69,37 @@ export const useCustomUser = () => {
     );
   };
 
-  const submitAnswer = async () => {
-    throw new Error("submitAnswers - 구현 중인 기능");
+  const submitAnswer = async (formData: AnswerFormData) => {
+    if (!userData) {
+      throw new Error("submitAnswer, no userData");
+    }
+
+    const newAid = getNewId("answers");
+    const updates = {};
+    const answerData: AnswerData = {
+      aid: newAid,
+      answer: formData.answer,
+      created_at: convertDate(new Date()),
+      week: calcWeek(new Date(formData.question.publish_date)),
+      qid: formData.question.qid,
+      uid: userData.uid,
+      user: userData,
+      question: {
+        ...formData.question,
+        answers: {
+          [newAid]: true,
+        },
+      },
+      isAnonymous: formData.isAnonymous,
+      isPublic: formData.isPublic,
+    };
+
+    updates["answers/" + newAid] = answerData;
+    updates["users/" + userData.uid + "/answers/" + newAid] = true;
+    updates["user-answers/" + userData.uid + "/" + newAid] = answerData;
+    updates["questions/" + formData.question.qid + "/answers/" + newAid] = true;
+
+    await updateData("", updates);
   };
 
   const updateAllUserDataAndSync = async (uid: string, userData: object) => {

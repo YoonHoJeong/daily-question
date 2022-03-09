@@ -4,9 +4,9 @@ import LoadScreen from "../../components/common/LoadScreen";
 import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
 import {
-  AnswerType,
+  AnswerData,
   DateQidAnswers,
-  QuestionType,
+  QuestionData,
 } from "../../model/interfaces";
 import WeekToggle from "./WeekToggle";
 import HelperText from "../../components/HelperText";
@@ -127,9 +127,9 @@ const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
 
 const cellStyleByAnswerCnt = (dateAnswers?: {
   [qid: string]: {
-    question: QuestionType;
+    question: QuestionData;
     answers: {
-      [aid: string]: AnswerType;
+      [aid: string]: AnswerData;
     };
   };
 }) => {

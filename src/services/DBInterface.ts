@@ -6,6 +6,8 @@ import {
   query,
   orderByChild,
   equalTo,
+  child,
+  push,
 } from "firebase/database";
 import { firebaseApp } from "./firebase";
 
@@ -36,5 +38,15 @@ export async function updateData(path: string, data: object) {
     (updates, key) => ({ ...updates, [`${path}/${key}`]: data[key] }),
     {}
   );
+
   await update(ref(db), updates);
+}
+
+export function getNewId(path: string) {
+  const newId = push(child(ref(db), path)).key;
+  if (!newId) {
+    throw new Error(`getNedId(${path}) - fail to generate new ID`);
+  }
+
+  return newId;
 }

@@ -9,7 +9,6 @@ import {
 } from "../../hooks/customUseQueries";
 import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "../../hooks/useForm";
-import { submitAnswer } from "../../services/fireDB";
 
 interface Props {}
 
@@ -63,7 +62,7 @@ const QuestionScreen: React.FC<Props> = () => {
     if (question) {
       setSubmitting(true);
       try {
-        await auth.user?.submitAnswer();
+        await auth.user?.submitAnswer({ ...form, question });
         await userAnswersRefetch();
         await questionsRefetch();
         setSubmitting(false);
@@ -160,6 +159,9 @@ const Button = styled.button`
   font-weight: 500;
 
   margin-top: 15px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default QuestionScreen;

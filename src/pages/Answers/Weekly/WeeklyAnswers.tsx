@@ -1,17 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  calcWeek,
-  getAllWeeklyDate,
-  getDay,
-} from "../../../services/DateManager";
+import { calcWeek, getAllWeeklyDate } from "../../../services/DateManager";
 import Button from "../../../components/common/Button";
 import { Link } from "react-router-dom";
-import {
-  AnswerType,
-  DateQidAnswers,
-  QuestionType,
-} from "../../../model/interfaces";
+import { DateQidAnswers } from "../../../model/interfaces";
 import LoadScreen from "../../../components/common/LoadScreen";
 import WeekToggle from "../WeekToggle";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
@@ -20,6 +12,7 @@ import { usePreloadImages } from "../../../hooks/usePreloadImages";
 import BoxOpenedIcon from "../../../assets/icons/box_opened.png";
 import BoxClosedIcon from "../../../assets/icons/box_closed.png";
 import HelperText from "../../../components/HelperText";
+import WeeklyAnswerCards from "./WeeklyAnswerCards";
 
 interface Props {
   isLoading: boolean;
@@ -90,19 +83,8 @@ const WeeklyAnswers: React.FC<Props> = ({
           )}
         </HelperText>
         <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
-        {totalWeekAnswerCnt > 0 ? (
-          <DailyAnswersList>
-            {Object.keys(weekAnswers)
-              .sort((a, b) => (a > b ? -1 : 1))
-              .map((date) => (
-                <DailyAnswers
-                  key={date}
-                  date={date}
-                  answers={weekAnswers[date]}
-                />
-              ))}
-          </DailyAnswersList>
-        ) : (
+        <WeeklyAnswerCards weekAnswers={weekAnswers} />
+        {totalWeekAnswerCnt > 0 ? null : (
           <Link to="/">
             <Button bgColor="blue" style={{ fontSize: "12px" }}>
               오늘의 재밌는 질문 대답하러 가기
@@ -134,28 +116,6 @@ const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   </DateIconsContainer>
 );
 
-interface DailyAnswersProps {
-  answers: {
-    [qid: string]: {
-      question: QuestionType;
-      answers: { [aid: string]: AnswerType };
-    };
-  };
-  date: string;
-}
-const DailyAnswers: React.FC<DailyAnswersProps> = ({ answers, date }) => {
-  return (
-    <DailyAnswersContainer>
-      <DayText>{getDay(date)}</DayText>
-      <AnswerList>
-        {Object.keys(answers).map((qid) => (
-          <WeeklyAnswerCard key={qid} answers={answers[qid].answers} />
-        ))}
-      </AnswerList>
-    </DailyAnswersContainer>
-  );
-};
-
 const Container = styled.div`
   width: 100vw;
   height: 100%;
@@ -185,30 +145,6 @@ const DateIconsContainer = styled.ul`
 
   margin-top: 18px;
   margin-bottom: 30px;
-`;
-
-const DailyAnswersList = styled.ul``;
-
-const DailyAnswersContainer = styled.li`
-  margin-top: 10px;
-`;
-const DayText = styled.p`
-  font-weight: 500;
-
-  margin-left: 10px;
-  margin-bottom: 5px;
-`;
-
-const AnswerList = styled.ul`
-  position: relative;
-
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-
-  & > li:not(:first-child) {
-    margin-top: 10px;
-  }
 `;
 
 export default WeeklyAnswers;

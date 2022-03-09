@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { AnswerType, QuestionType } from "../../../model/interfaces";
+import { AnswerData, QuestionData } from "../../../model/interfaces";
 import { getDay } from "../../../services/DateManager";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
 
@@ -8,8 +8,8 @@ interface Props {
   date: string;
   answers: {
     [qid: string]: {
-      question: QuestionType;
-      answers: { [aid: string]: AnswerType };
+      question: QuestionData;
+      answers: { [aid: string]: AnswerData };
     };
   };
 }

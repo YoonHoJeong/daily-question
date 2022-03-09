@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AnswerType } from "../../../model/interfaces";
+import { AnswerData } from "../../../model/interfaces";
 import { useForm } from "../../../hooks/useForm";
 import AnswerOptionCheckBoxes from "../../../components/AnswerOptionCheckBoxes";
 import { SyntheticEvent } from "react";
@@ -11,7 +11,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Answer } from "../../../services/AnswerApi";
 
 interface Props {
-  answers: { [aid: string]: AnswerType };
+  answers: { [aid: string]: AnswerData };
 }
 
 const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {

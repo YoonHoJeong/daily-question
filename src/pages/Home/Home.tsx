@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button, LoadScreen } from "../../components/common";
 import { useFetchQuestions } from "../../hooks/customUseQueries";
-import { FetchedQuestions, QuestionType } from "../../model/interfaces";
+import { FetchedQuestions, QuestionData } from "../../model/interfaces";
 
 interface Props {}
 
@@ -42,7 +42,7 @@ const KeywordsScreen: React.FC<KeywordsSreenProps> = ({ questions }) => {
   );
 };
 
-const KeywordLink: React.FC<{ question: QuestionType }> = ({ question }) => {
+const KeywordLink: React.FC<{ question: QuestionData }> = ({ question }) => {
   return (
     <Keyword>
       <Link to={`/question/${question.qid}`}>

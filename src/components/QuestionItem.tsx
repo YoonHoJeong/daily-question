@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { QuestionType } from "../model/interfaces";
+import { QuestionData } from "../model/interfaces";
 
 interface Props {
-  question: QuestionType;
+  question: QuestionData;
   onQuestionDelete: (qid: string) => Promise<void>;
-  onQuestionEdit: (question: QuestionType) => void;
+  onQuestionEdit: (question: QuestionData) => void;
 }
 
 const QuestionContainer = styled.li``;
