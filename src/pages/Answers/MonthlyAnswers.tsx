@@ -1,6 +1,5 @@
 import React from "react";
 import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
-import LoadScreen from "../../components/common/LoadScreen";
 import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
 import {

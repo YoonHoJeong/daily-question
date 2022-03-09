@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import UserIcon from "../../assets/icons/person_gray.png";
+import { PersonIcon } from "../../assets/icons";
 
 interface Props {
   imageUrl?: string;
@@ -21,7 +21,7 @@ const UserImage: React.FC<Props> = ({ style: styleInput, imageUrl }) => {
     ></UserImgContainer>
   ) : (
     <UserImgContainer style={{ ...style }}>
-      <UserImg src={UserIcon} />
+      <UserImg src={PersonIcon} />
     </UserImgContainer>
   );
 };
@@ -31,7 +31,7 @@ const UserImgContainer = styled.div<{ imageUrl?: string }>`
   width: 60px;
   height: 60px;
 
-  background-color: ${(props) => props.theme.palette.bgGrey};
+  background-color: ${(props) => props.theme.palette.bgGrey2};
   background-image: ${(props) => props.imageUrl};
   border-radius: 50%;
 

@@ -2,8 +2,6 @@ import { AnswerData } from "./../model/interfaces";
 import { useCallback, useState } from "react";
 import { AnswerFormData, combineAnswerData, getUserAnswers } from "./AnswerApi";
 import { getData, getNewId, updateData } from "./DBInterface";
-import { calcWeek, convertDate } from "./DateManager";
-
 /*
     현재 사용자에 대한 정보를 관리.
     

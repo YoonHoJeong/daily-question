@@ -12,18 +12,6 @@ import {
   UserEdit,
 } from "../pages";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #f2f2f2;
-
-  box-sizing: border-box;
-
-  padding-top: ${({ theme }) => theme.sizes.headerHeight};
-  padding-bottom: ${({ theme }) => theme.sizes.bottomNavHeight};
-`;
-
 interface Props {}
 
 const ClientRoutes: React.FC<Props> = () => {
@@ -57,5 +45,17 @@ const ClientRoutes: React.FC<Props> = () => {
     </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #f2f2f2;
+
+  box-sizing: border-box;
+
+  padding-top: ${({ theme }) => theme.sizes.headerHeight};
+  padding-bottom: ${({ theme }) => theme.sizes.bottomNavHeight};
+`;
 
 export default ClientRoutes;

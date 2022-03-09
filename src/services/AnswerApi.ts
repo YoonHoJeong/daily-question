@@ -5,8 +5,9 @@ import {
   FetchedAnswers,
   QuestionData,
 } from "../model/interfaces";
-import { getData, getNewId, updateData } from "./DBInterface";
+import { getData, updateData } from "./DBInterface";
 import { UserData } from "./UserApi";
+import { queryClient } from "../App";
 
 export interface AnswerFormData {
   question: QuestionData;
@@ -36,6 +37,10 @@ export class Answer {
     );
 
     await updateData("", data);
+    await Promise.all([
+      queryClient.invalidateQueries("user-answers"),
+      queryClient.invalidateQueries("board-answers"),
+    ]);
   }
 
   public get aid() {

@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { firebaseApp } from "../services/firebase";
 import { UserData, useCustomUser, CustomUser } from "../services/UserApi";
 
@@ -75,13 +75,11 @@ const useProviderAuth = () => {
       if (user) {
         // log in.
         setIsAuthenticating(true);
-        console.log("user log in");
 
         await fetchAndSyncUserData(user.uid);
         setIsAuthenticating(false);
       } else {
         // log out.
-        console.log("user log out");
         setUserNull();
         setIsAuthenticating(false);
       }

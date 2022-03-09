@@ -64,7 +64,7 @@ export const VariablesContext = createContext<GlobalVariables>(globalVariables);
 
 interface Props {}
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const App: React.FC<Props> = () => {
   return (

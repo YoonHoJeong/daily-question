@@ -1,10 +1,4 @@
-import React, {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import UserImage from "../../components/user/UserImage";
 import EditIcon from "../../assets/icons/pencil.png";
@@ -137,7 +131,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
         contentEditable={!submitting}
         autoComplete="off"
         ref={popupInputRef}
-        maxLength={20}
+        maxLength={keyname === "intro" ? 20 : 8}
       />
     </EditorContainer>
   );

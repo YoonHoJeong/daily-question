@@ -1,22 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import UserProfile from "../../components/user/UserProfile";
-import LoadScreen from "../../components/common/LoadScreen";
 import { useAuth } from "../../hooks/useAuth";
-
-import { usePreloadImages } from "../../hooks/usePreloadImages";
-import BoxOpenedIcon from "../../assets/icons/box_opened.png";
-import UserIcon from "../../assets/icons/person_gray.png";
 
 interface Props {}
 
 const User: React.FC<Props> = () => {
-  const { loading } = usePreloadImages([UserIcon, BoxOpenedIcon]);
-
-  if (loading) {
-    return <LoadScreen />;
-  }
-
   return (
     <>
       <Container>

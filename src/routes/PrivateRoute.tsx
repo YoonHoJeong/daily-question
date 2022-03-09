@@ -1,15 +1,15 @@
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import { LoadScreen } from "../components/common";
 import { useAuth } from "../hooks/useAuth";
 
 interface Props extends RouteProps {}
 
 const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   const auth = useAuth();
-  console.log(auth);
 
   if (auth.isAuthenticating) {
-    return null;
+    return <LoadScreen />;
   }
 
   return (

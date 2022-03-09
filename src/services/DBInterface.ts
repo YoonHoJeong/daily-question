@@ -28,9 +28,14 @@ export async function getData<T>(
     getQuery = ref(db, path);
   }
 
-  const data: T = (await get(getQuery)).val() ?? {};
+  try {
+    const data: T = (await get(getQuery)).val() ?? {};
+    return data;
+  } catch (e: any) {
+    console.log(new Error(e));
 
-  return data;
+    throw new Error();
+  }
 }
 
 export async function updateData(path: string, data: object) {
@@ -38,7 +43,6 @@ export async function updateData(path: string, data: object) {
     (updates, key) => ({ ...updates, [`${path}/${key}`]: data[key] }),
     {}
   );
-
   await update(ref(db), updates);
 }
 
