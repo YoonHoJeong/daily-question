@@ -18,8 +18,7 @@ import { usePreloadImages } from "../../hooks/usePreloadImages";
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
-  const auth = useAuth();
-  const uid = auth?.user?.uid || "";
+  const { user } = useAuth();
   const presentDateObj = new Date();
   const [selectedDate, setSelectedDate] = useState({
     dateObj: presentDateObj,
@@ -31,7 +30,7 @@ const Answers: React.FC<Props> = () => {
     BoxClosedIcon,
   ]);
 
-  const { data, isLoading, isError } = useFetchUserAnswers(uid);
+  const { data, isLoading, isError } = useFetchUserAnswers(user!!.uid);
   const dateQidAnswers = useMemo(
     () => formatToDateQidAnswers(data ?? {}),
     [data]
@@ -52,7 +51,7 @@ const Answers: React.FC<Props> = () => {
 
   const changeMonth = (monthCnt: number) => {
     const tmpDate = new Date(selectedDate.dateObj);
-    tmpDate.setMonth(tmpDate.getMonth() + 1 * monthCnt);
+    tmpDate.setMonth(tmpDate.getMonth() + monthCnt);
 
     if (tmpDate.getTime() < new Date().getTime()) {
       setSelectedDate({
