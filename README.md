@@ -1,44 +1,52 @@
 # 묻는 다이어리, 묻다 (Daily Question)
 
-'묻다'는 나를 더 이해하고 싶은 사람들을 위해 시작한 서비스입니다.
+'묻다'는 나를 이해하고 싶은 사람들을 위해 시작한 서비스입니다.
 
-자기 이해를 위한 첫 걸음은 의문이라고 생각합니다. 아직 의문이 익숙치 않은 사람들을 위해, 매일 3개의 질문을 전달합니다.
+자기 이해를 위한 첫 걸음은 의문이라고 생각합니다. 의문이 익숙치 않은 사람들을 위해, 매일 3개의 질문을 전달합니다.
 
 # Project Status
 
-## **22.01.01 ~ 현재**
+## 2022.01 ~
 
-[묻다 서비스 링크](https://asking-diary.netlify.app/)
+['묻다' 서비스 구경하기](https://asking-diary.netlify.app/)
 
-**디자인을 다시 만들고 있어요.**
+<br/>
+
+> **디자인을 다시 만들고 있어요.**
 
 - 디자이너와 협업해서 디자인을 개선하고 있어요.
 
-**기능을 추가하고 있어요.**
+<br/>
+
+> **기능을 추가하고 있어요.**
 
 - 둘러보기
 
-  이제 내 답변을 공개하고, 다른 사람의 답변도 확인할 수 있어요.
+  내 답변을 공개하고, 다른 사람의 답변을 확인할 수 있어요.
 
 - 익명으로 답변 공유하기
 
-  내 정보를 공개하는 점이 부담스러운 분들을 위해 익명 기능도 개발했어요.
+  내 정보를 공개하는게 부담스러운 분들을 위해 익명 기능도 개발했어요.
 
 - 돌아보기
 
-  내 답변을 일간/주간/월간 화면으로 보면서 나를 돌아보는 시간을 가질 수 있어요.
+  내 답변을 일간 / 주간 / 월간 화면으로 보면서 나를 돌아보는 시간을 가질 수 있어요.
 
-### **사용 가능한 기능(22.03.05 ~ )**
+<br/>
 
-- 회원가입과 로그인, 프로필 편집 기능을 사용할 수 있어요.
+> **현재 사용할 수 있는 기능**
 
-  (프로필 사진 등록 기능은 아직 개발 중이에요.)
+- 회원가입과 로그인, 사진 등록을 제외한 프로필 편집 기능
 
-- 미리 작성된 답변들로, 서비스 화면을 구경할 수 있어요.
+- 이미 작성된 답변들로 서비스 UI 둘러보기
+
+<br/>
 
 ---
 
-## **21.11.01 ~ 21.12.31**
+## 2021.11 ~ 2021.12
+
+<br/>
 
 - 2달간, 약 200분의 사용자들에게 180개의 질문을 전달했어요.
 
@@ -52,50 +60,82 @@
 
 # Reflection
 
-프로젝트를 진행하면서 고려했던 점들을 정리합니다.  
-[Refactoring Log](https://github.com/YoonHoJeong/daily-question/blob/master/refactoring-log.md)
-
 ## State Management
 
-- useState  
-  초기에 특정 컴포넌트 내에서만 사용되는 state는 전부 useState를 사용.
-  - fetched data & loading, error state  
-    이후 **server state caching을 위해 react-query로 대체.**
-  - form data
-- React-Query(RQ)
+<br/>
 
-  - 서버에서 불러와 사용하는 데이터는 react-query를 사용.
-  - [SWR와 RQ를 비교](https://quartz-colony-7d8.notion.site/React-Query-vs-SWR-Comparison-8b2699aaec8545498354046e9ec3a018)해보고 필요한 기능이 더 많은 RQ를 선택.
+### 1. Global State Management
 
-- context API  
-  전역적으로 사용되지만 변경되는 빈도가 높지 않은 state는 context API를 사용했다.
+- Context API
 
-  - user authentication  
-    유저 인증 상태
+  <u>**가끔**</u> 업데이트되는 global state
 
-  - theme palette  
-    dark mode / light mode(default) 기능을 추가하기 위해 styled-components에서 지원하는 ThemeProvider 사용. (현재는 light mode만 구현)
+  - user authentication (with 'useAuth' hook)
+  - global palette data(color, size)
 
-  - sizes  
-    텍스트 위주로 구성된 서비스인 만큼 폰트 크기가 사용자 선호도에 따라 변경될 수 있다고 판단했다. 폰트 크기 변경에 따라 margin, padding 등 크기 요소가 변경될 여지가 있어 sizes도 context API로 관리했다.
+- React Query
+
+  <u>**빈번하게**</u> 업데이트되는 global state
+
+  - server state management
+  - [why do i choose React Query?](https://quartz-colony-7d8.notion.site/React-Query-vs-SWR-Comparison-8b2699aaec8545498354046e9ec3a018)
+    - caching server state
+    - selectors (data transformer function)
+    - render optimization
+    - Query Cancellation
+  - build custom query hooks
+    - manage query key in single source
+
+### 2. Local State Management
+
+- custom hooks & useState
+  - useForm
+    - form data 변화를 반영할 때 사용
+
+<br/>
 
 ---
 
-## firebase realtime DB
+## firebase
 
-- Front-End 작업에 집중하기 위해 firebase의 realtime DB를 사용
-- users / answers / questions 3개의 tables로 이루어진 관계형을 사용
+<br/>
 
-### get() & client offline error
+### 1. RTDB - get( ) & client offline error
 
-- firebase DB에서 서버와 실시간 동기화되지 않아도 되는 데이터는 get 함수로 받아왔다. 서버와 연결이 되어있음에도, 해당 함수만 client offline error가 발생하는 에러가 발생했다.
-- [몇 년전, 해당 에러를 고치고 있다는 답변](https://stackoverflow.com/questions/46602889/firebase-cloud-firestore-throws-client-is-offline)을 확인했지만, 최근까지도 같은 에러가 발생하고 있다.
+firebase database의 'get' 함수를 통해 데이터를 받아올 때, 서버와 연결되어있어도 'client offline error'가 발생할 수 있다.
 
-해결
+원인을 찾아보니 1) sdk internal error, 2) poor network status, 3) allow one person at a time 3가지로 분류할 수 있었다.
 
-- 해당 에러가 첫 시도에서만 발생하기 때문에, 에러가 발생했을 때, 5번까지 재시도하도록 코드를 작성했다.
+1.  sdk internal error
 
-### limited query
+    > firebase 9.4 버전 이후로 나타나는 이유를 알 수 없는 오류.
 
-- 데이터 구조를 여러 테이블들로 이루어진 관계형으로 구축했지만, firebase에서 제공하는 query는 다양한 join을 허용하지 않는다.
-- 사용자의 모든 답변들과 질문을 함께 가져오기 위해선 users, answers, questions의 테이블을 결합해서 불러와야 했는데, 쿼리가 제한적이라 필요한 데이터를 테이블마다 일일이 가져와서 client-side에서 결합해야했다.
+    9.3으로 버전을 낮추면 해결할 수 있다. 본 프로젝트에선 9.1 버전을 사용했으므로, 해당 원인이 될 수 없었다.
+
+1.  poor network status
+
+    > 네트워크 연결이 미흡해서 실제로 서버와 연결이 끊겼을 때 발생하는 오류.
+
+    2개 이상 네트워크 환경에서 테스트해봤을 때도 같은 문제점이 발생했고, firebase의 authentication 기능은 정상적으로 동작하는 것을 보아 network 문제는 아니었다.
+
+1.  allow one person at a time
+
+    > 데이터베이스에 접근하는 사용자 수가 제한되어 있어 발생하는 오류.
+
+    가장 가능성이 높은 오류. 개발 당시 여러 브라우저로 데이터베이스에 동시에 접근한 적이 높은데, 이럴 때 해당 오류가 발생했다.
+
+### 2. limited query
+
+firebase database는 다양한 쿼리를 제공하지 않는다.
+
+- 2개 이상의 테이블에 대해 join을 수행해야하는 경우가 많았는데, firebase에서 제공하는 쿼리로는 해당 작업을 수행할 수 없었다. 해결 방법으로는,
+
+  1. foreign key를 통해 다른 테이블 데이터 fetch.
+  1. 두 개의 테이블을 join한 테이블 사용
+
+     ex, 사용자가 답변한 데이터를 저장하는 user-answers table 생성, 데이터 관리.
+
+1번 방법은 foreign key를 갖는 데이터를 먼저 fetch하고, 해당 foreign key로 다음 데이터를 fetch해야한다. 같은 양의 데이터라도 병렬적으로 처리되지 않아서 더 오랜 시간이 걸린다. 만약, 3개 이상의 테이블을 순차적으로 조회해야 하는 경우 처리하는 시간이 기하급수적으로 시간이 늘어난다.
+
+2번 방법은 중복되는 데이터가 늘어나고, 동기화가 어렵다. 데이터를 불러오는 경우엔 더 빠른 처리가 가능하지만, 업데이트에 시간이 조금 더 걸린다.
+그리고, 업데이트하는 함수를 변경하는 경우, 관련된 테이블의 path를 모두 업데이트해야하므로, 오류가 발생할 확률이 높다.
