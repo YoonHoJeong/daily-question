@@ -136,7 +136,7 @@ const NavItem = styled.li`
 `;
 
 const Icon = styled.img`
-  width: 30px;
+  width: 36px;
 `;
 
 export default BottomNavigation;
