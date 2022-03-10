@@ -1,25 +1,18 @@
 import { calcWeek, convertDate } from "./DateManager";
-import {
-  AnswerData,
-  DateQidAnswers,
-  FetchedAnswers,
-  QuestionData,
-} from "../model/interfaces";
-import { getData, updateData } from "./DBInterface";
-import { UserData } from "./UserApi";
-import { queryClient } from "../App";
 
-export interface AnswerFormData {
-  question: QuestionData;
-  aid?: string;
-  answer: string;
-  isAnonymous: boolean;
-  isPublic: boolean;
-}
+import { getData, updateData } from "./DBInterface";
+import { queryClient } from "../App";
+import {
+  AnswerDataModel,
+  AnswerFormData,
+  DateQidAnswers,
+  AnswersDataModel,
+} from "../model/AnswerModels";
+import { UserDataModel } from "../model/UserModels";
 
 export class Answer {
-  private answer: AnswerData;
-  constructor(answerData?: AnswerData) {
+  private answer: AnswerDataModel;
+  constructor(answerData?: AnswerDataModel) {
     if (answerData) {
       this.answer = answerData;
     }
@@ -67,13 +60,13 @@ export class Answer {
 }
 
 export async function getUserAnswers(uid: string) {
-  const userAnswers = getData<FetchedAnswers>(`user-answers/${uid}`);
+  const userAnswers = getData<AnswersDataModel>(`user-answers/${uid}`);
 
   return userAnswers;
 }
 
 export async function getBoardAnswers() {
-  const answers = await getData<FetchedAnswers>("answers", {
+  const answers = await getData<AnswersDataModel>("answers", {
     key: "isPublic",
     value: true,
   });
@@ -82,7 +75,7 @@ export async function getBoardAnswers() {
   return dateQidAnswers;
 }
 
-export function formatToDateQidAnswers(answers: FetchedAnswers) {
+export function formatToDateQidAnswers(answers: AnswersDataModel) {
   const dateQidAnswers: DateQidAnswers = Object.keys(answers).reduce(
     (obj, aid) => {
       const answer = answers[aid];
@@ -114,9 +107,9 @@ export function formatToDateQidAnswers(answers: FetchedAnswers) {
 export function combineAnswerData(
   newAid: string,
   formData: AnswerFormData,
-  userData: UserData
+  userData: UserDataModel
 ) {
-  const answerData: AnswerData = {
+  const answerData: AnswerDataModel = {
     aid: newAid,
     answer: formData.answer,
     created_at: convertDate(new Date()),

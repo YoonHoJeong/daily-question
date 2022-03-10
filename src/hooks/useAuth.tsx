@@ -6,8 +6,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
+import { CustomUser, UserDataModel } from "../model/UserModels";
 import { firebaseApp } from "../services/firebase";
-import { UserData, useCustomUser, CustomUser } from "../services/UserApi";
+import { useCustomUser } from "../services/UserApi";
 
 interface Props {}
 
@@ -160,7 +161,7 @@ const useProviderAuth = () => {
       const {
         user: { uid },
       } = userCredential;
-      const newUserData: UserData = {
+      const newUserData: UserDataModel = {
         uid,
         admin: false,
         profile: { name: form.name, email: form.email },

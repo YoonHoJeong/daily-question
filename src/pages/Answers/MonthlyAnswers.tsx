@@ -2,13 +2,10 @@ import React from "react";
 import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
 import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
-import {
-  AnswerData,
-  DateQidAnswers,
-  QuestionData,
-} from "../../model/interfaces";
 import WeekToggle from "./WeekToggle";
 import HelperText from "../../components/HelperText";
+import { AnswerDataModel, DateQidAnswers } from "../../model/AnswerModels";
+import { QuestionDataModel } from "../../model/QuestionModels";
 
 interface Props {
   date: {
@@ -118,9 +115,9 @@ const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
 
 const cellStyleByAnswerCnt = (dateAnswers?: {
   [qid: string]: {
-    question: QuestionData;
+    question: QuestionDataModel;
     answers: {
-      [aid: string]: AnswerData;
+      [aid: string]: AnswerDataModel;
     };
   };
 }) => {

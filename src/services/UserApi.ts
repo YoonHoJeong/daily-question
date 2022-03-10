@@ -1,44 +1,11 @@
-/*
-    control current user's data
-    
-    1. User data Read(Fetch)
-    2. User data Update
-        - user profile
-        - answers
-*/
 import { useCallback, useState } from "react";
-import { AnswerData } from "./../model/interfaces";
-import { AnswerFormData, combineAnswerData, getUserAnswers } from "./AnswerApi";
+import { AnswerDataModel, AnswerFormData } from "../model/AnswerModels";
+import { AuthUser, UserDataModel } from "../model/UserModels";
+import { combineAnswerData, getUserAnswers } from "./AnswerApi";
 import { getData, getNewId, updateData } from "./DBInterface";
 
-export type UserData = {
-  uid: string;
-  admin?: boolean;
-  profile: {
-    name?: string;
-    email?: string;
-    intro?: string;
-  };
-  answers?: {
-    [aid: string]: boolean;
-  };
-};
-type UserFunctions = {
-  submitAnswer: (formData: AnswerFormData) => Promise<void>;
-  updateProfile: (newProfileData: object) => Promise<void>;
-};
-
-export type CustomUser = UserData & UserFunctions;
-
-export type User = {
-  user: CustomUser | null;
-  fetchAndSyncUserData: (uid: string) => Promise<void>;
-  setUserNull: () => void;
-  registerUserDataAndSync: (uid: string, userData: UserData) => Promise<void>;
-};
-
 export const useCustomUser = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserDataModel | null>(null);
 
   const fetchAndSyncUserData = useCallback(
     async (uid: string) => {
@@ -52,7 +19,10 @@ export const useCustomUser = () => {
     setUserData(null);
   }, []);
 
-  const registerUserDataAndSync = async (uid: string, userData: UserData) => {
+  const registerUserDataAndSync = async (
+    uid: string,
+    userData: UserDataModel
+  ) => {
     await updateAllUserDataAndSync(uid, userData);
   };
 
@@ -75,7 +45,7 @@ export const useCustomUser = () => {
     const updates = {};
 
     const newAid = getNewId("answers");
-    const answerData: AnswerData = combineAnswerData(
+    const answerData: AnswerDataModel = combineAnswerData(
       newAid,
       formData,
       userData
@@ -113,7 +83,7 @@ export const useCustomUser = () => {
       fetchAndSyncUserData,
       registerUserDataAndSync,
       setUserNull,
-    } as User;
+    } as AuthUser;
   }
 
   return {
@@ -125,7 +95,7 @@ export const useCustomUser = () => {
     fetchAndSyncUserData,
     registerUserDataAndSync,
     setUserNull,
-  } as User;
+  } as AuthUser;
 };
 
 const appendProfilePath = (newData: object) => {
@@ -140,6 +110,6 @@ const appendProfilePath = (newData: object) => {
 };
 
 export const getUserData = async (uid: string) => {
-  const userData: UserData = await getData(`users/${uid}`);
+  const userData: UserDataModel = await getData(`users/${uid}`);
   return userData;
 };

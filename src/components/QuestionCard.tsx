@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { AnswerData, QuestionData } from "../model/interfaces";
+import { AnswerDataModel } from "../model/AnswerModels";
+import { QuestionDataModel } from "../model/QuestionModels";
 import AnswerCard from "./AnswerCard";
 
 interface Props {
-  question: QuestionData;
+  question: QuestionDataModel;
   answers: {
-    [aid: string]: AnswerData;
+    [aid: string]: AnswerDataModel;
   };
   profileOn: boolean;
 }

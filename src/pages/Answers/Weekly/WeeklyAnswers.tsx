@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { calcWeek, getAllWeeklyDate } from "../../../services/DateManager";
 import Button from "../../../components/common/Button";
 import { Link } from "react-router-dom";
-import { DateQidAnswers } from "../../../model/interfaces";
 import WeekToggle from "../WeekToggle";
 
 import { BoxClosedIcon, BoxOpenedIcon } from "../../../assets/icons";
 import HelperText from "../../../components/HelperText";
 import WeeklyAnswerCards from "./WeeklyAnswerCards";
+import { DateQidAnswers } from "../../../model/AnswerModels";
 
 interface Props {
   date: {
@@ -81,8 +81,8 @@ const WeeklyAnswers: React.FC<Props> = ({
 };
 
 interface DateIconsProps {
-  weekDates: any[];
-  weekAnswers: any;
+  weekDates: string[];
+  weekAnswers: DateQidAnswers;
 }
 const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   <DateIconsContainer>

@@ -10,7 +10,7 @@ import {
 } from "../../hooks/customUseQueries";
 import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "../../hooks/useForm";
-import { AnswerFormData } from "../../services/AnswerApi";
+import { AnswerFormData } from "../../model/AnswerModels";
 
 interface Props {}
 
@@ -31,8 +31,6 @@ const QuestionScreen: React.FC<Props> = () => {
     .filter((aid) => userAnswers[aid].qid === qid)
     .map((aid) => userAnswers[aid])
     .pop();
-
-  console.log(answerData);
 
   // form state setting
   const { form, onChange, setProperty } = useForm<AnswerFormData>({

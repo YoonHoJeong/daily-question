@@ -1,20 +1,18 @@
 import { useQuery } from "react-query";
-import {
-  FetchedQuestions,
-  FetchedAnswers,
-  DateQidAnswers,
-} from "../model/interfaces";
+import { DateQidAnswers, AnswersDataModel } from "../model/AnswerModels";
+import { QuestionsDataModel } from "../model/QuestionModels";
+
 import { getBoardAnswers, getUserAnswers } from "../services/AnswerApi";
 import { getTodayQuestions } from "../services/QuestionApi";
 
 const config = { initialData: {} };
 
 export const useFetchQuestions = () => {
-  return useQuery<FetchedQuestions>("questions", getTodayQuestions, config);
+  return useQuery<QuestionsDataModel>("questions", getTodayQuestions, config);
 };
 
 export const useFetchBoardAnswers = () =>
   useQuery<DateQidAnswers>("board-answers", getBoardAnswers, config);
 
 export const useFetchUserAnswers = (uid: string) =>
-  useQuery<FetchedAnswers>("user-answers", () => getUserAnswers(uid), config);
+  useQuery<AnswersDataModel>("user-answers", () => getUserAnswers(uid), config);

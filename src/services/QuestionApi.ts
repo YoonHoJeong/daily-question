@@ -1,9 +1,15 @@
-import { FetchedQuestions } from "../model/interfaces";
+import { QuestionsDataModel } from "../model/QuestionModels";
 import { getToday } from "./DateManager";
 import { getData } from "./DBInterface";
 
 export const getTodayQuestions = async () => {
-  const questions = await getData<FetchedQuestions>("questions", {
+  if (process.env.NODE_ENV === "development") {
+    const questions = await getData<QuestionsDataModel>("questions");
+
+    return questions;
+  }
+
+  const questions = await getData<QuestionsDataModel>("questions", {
     key: "publish_date",
     value: getToday(),
   });

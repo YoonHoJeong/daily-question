@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
 import UserProfile from "../../components/user/UserProfile";
-import { DateQidAnswers } from "../../model/interfaces";
+import { DateQidAnswers } from "../../model/AnswerModels";
 
 interface Props {
   dateQidAnswers: DateQidAnswers;

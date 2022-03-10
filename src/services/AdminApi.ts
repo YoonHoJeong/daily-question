@@ -1,5 +1,5 @@
-import { FetchedQuestions } from "./../model/interfaces";
 import { child, push, ref, update } from "firebase/database";
+import { QuestionsDataModel } from "../model/QuestionModels";
 import { calcWeek } from "./DateManager";
 import { fireDB } from "./firebase";
 import { fetchFireDBData } from "./fireDB";
@@ -57,7 +57,7 @@ const enrollQuestion = async (questionUpdateForm: QuestionInputsForm) => {
 };
 
 const getfilteredByDate = async (date: string) => {
-  const questions: FetchedQuestions = await fetchFireDBData("questions", {
+  const questions: QuestionsDataModel = await fetchFireDBData("questions", {
     by: "publish_date",
     value: date,
   });
