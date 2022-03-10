@@ -1,19 +1,19 @@
-import { AnswerData } from "./../model/interfaces";
-import { useCallback, useState } from "react";
-import { AnswerFormData, combineAnswerData, getUserAnswers } from "./AnswerApi";
-import { getData, getNewId, updateData } from "./DBInterface";
 /*
-    현재 사용자에 대한 정보를 관리.
+    control current user's data
     
     1. User data Read(Fetch)
     2. User data Update
         - user profile
         - answers
 */
+import { useCallback, useState } from "react";
+import { AnswerData } from "./../model/interfaces";
+import { AnswerFormData, combineAnswerData, getUserAnswers } from "./AnswerApi";
+import { getData, getNewId, updateData } from "./DBInterface";
 
 export type UserData = {
   uid: string;
-  admin: boolean;
+  admin?: boolean;
   profile: {
     name?: string;
     email?: string;

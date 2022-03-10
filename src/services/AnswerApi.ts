@@ -86,6 +86,7 @@ export function formatToDateQidAnswers(answers: FetchedAnswers) {
   const dateQidAnswers: DateQidAnswers = Object.keys(answers).reduce(
     (obj, aid) => {
       const answer = answers[aid];
+
       const {
         question: { publish_date: date, qid },
         question,

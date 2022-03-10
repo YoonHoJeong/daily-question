@@ -25,7 +25,7 @@ const AdminLogin: React.FC<Props> = () => {
     await auth?.login(form.email, form.password);
   };
 
-  if (auth?.user?.admin) {
+  if (auth.user?.admin) {
     history.push("/dqadmin");
     console.log("already logged in!");
   }
