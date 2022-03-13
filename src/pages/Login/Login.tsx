@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { CustomAuthError, useAuth } from "../../hooks/useAuth";
 import { useForm } from "../../hooks/useForm";
-import { usePreloadImages } from "../../hooks/usePreloadImages";
+// import { usePreloadImages } from "../../hooks/usePreloadImages";
 
 import Header from "../../layouts/Header";
 import {
@@ -14,7 +14,7 @@ import {
   ErrorMessage,
 } from "../../components/common";
 
-import BoxLogoGreyLogo from "../../assets/icons/box_logo_grey.svg";
+import BoxLogoGreyLogo from "../../assets/icons/box/opened_gray_bg.svg";
 
 interface Props {}
 
@@ -24,7 +24,7 @@ const Login: React.FC<Props> = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const auth = useAuth();
   const history = useHistory();
-  const { loading } = usePreloadImages([BoxLogoGreyLogo]);
+  // const { loading } = usePreloadImages([BoxLogoGreyLogo]);
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -46,44 +46,40 @@ const Login: React.FC<Props> = () => {
     <>
       <Header transparent />
       <Container>
-        {loading ? (
-          <LoadScreen />
-        ) : (
-          <LoginForm onSubmit={onSubmit}>
-            <ServiceIcon src={BoxLogoGreyLogo} />
+        <LoginForm onSubmit={onSubmit}>
+          <ServiceIcon src={BoxLogoGreyLogo} />
 
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="이메일"
-              onChange={onChange}
-              disabled={submitting}
-            />
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              onChange={onChange}
-              placeholder="비밀번호"
-              style={{ marginTop: "10px" }}
-              disabled={submitting}
-            />
-            {/* <input id="autoLogin" type="checkBox" checked />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="이메일"
+            onChange={onChange}
+            disabled={submitting}
+          />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            onChange={onChange}
+            placeholder="비밀번호"
+            style={{ marginTop: "10px" }}
+            disabled={submitting}
+          />
+          {/* <input id="autoLogin" type="checkBox" checked />
           <label htmlFor="autoLogin">자동 로그인</label> */}
-            <Button
-              large
-              bgColor="blue"
-              type="submit"
-              variant="contained"
-              style={{ marginTop: "35px" }}
-              disabled={submitting}
-            >
-              {submitting ? <Spinner /> : "로그인"}
-            </Button>
-            <ErrorMessage error={error} />
-          </LoginForm>
-        )}
+          <Button
+            large
+            bgColor="blue"
+            type="submit"
+            variant="contained"
+            style={{ marginTop: "35px" }}
+            disabled={submitting}
+          >
+            {submitting ? <Spinner /> : "로그인"}
+          </Button>
+          <ErrorMessage error={error} />
+        </LoginForm>
       </Container>
     </>
   );
@@ -101,14 +97,14 @@ const Container = styled.div`
   align-items: center;
 `;
 const ServiceIcon = styled.img`
-  width: 85px;
+  width: 128px;
 
   position: absolute;
   margin: 0 auto;
   left: 0;
   right: 0;
   text-align: center;
-  top: -130px;
+  top: -150px;
 `;
 const LoginForm = styled.form`
   position: relative;

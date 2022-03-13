@@ -164,7 +164,8 @@ const useProviderAuth = () => {
       const newUserData: UserDataModel = {
         uid,
         admin: false,
-        profile: { name: form.name, email: form.email },
+        email: form.email,
+        profile: { name: form.name },
       };
 
       await registerUserDataAndSync(uid, newUserData);

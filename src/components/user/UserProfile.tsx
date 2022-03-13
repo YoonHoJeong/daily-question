@@ -27,9 +27,7 @@ const UserProfile: React.FC<Props> = ({
         <UserName>{user!!.profile.name}</UserName>
         <UserIntro>{user!!.profile.intro}</UserIntro>
         {showEmail && (
-          <UserAddress>
-            {user!!.profile.email || "이메일을 등록해주세요."}
-          </UserAddress>
+          <UserAddress>{user!!.email || "이메일을 등록해주세요."}</UserAddress>
         )}
       </UserInfo>
       <MoveToUserEditButton show={editable} moveToUserEdit={moveToUserEdit} />

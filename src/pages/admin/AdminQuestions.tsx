@@ -4,7 +4,6 @@ import QuestionItem from "../../components/QuestionItem";
 import { useForm } from "../../hooks/useForm";
 import { getToday } from "../../services/DateManager";
 import AdminApi, { QuestionInputsForm } from "../../services/AdminApi";
-import { FetchedQuestions, QuestionData } from "../../model/interfaces";
 import {
   Button,
   Dialog,
@@ -14,11 +13,15 @@ import {
   Input,
   TextField,
 } from "@mui/material";
+import {
+  QuestionsDataModel,
+  QuestionDataModel,
+} from "../../model/QuestionModels";
 
 interface Props {}
 
 const AdminQuestions: React.FC<Props> = () => {
-  const [questions, setQuestions] = useState<FetchedQuestions>({});
+  const [questions, setQuestions] = useState<QuestionsDataModel>({});
   const [currentDate, setCurrentDate] = useState(getToday());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -76,7 +79,7 @@ const AdminQuestions: React.FC<Props> = () => {
     keyword,
     qid,
     publish_date,
-  }: QuestionData) => {
+  }: QuestionDataModel) => {
     setForm({ qid, question, keyword, publish_date });
     setOpen(true);
   };
@@ -135,11 +138,11 @@ export default AdminQuestions;
 
 interface QuestionsProps {
   loading: boolean;
-  questions: FetchedQuestions;
+  questions: QuestionsDataModel;
   date: string;
   onDateChange: (e: SyntheticEvent) => void;
   onQuestionDelete: (qid: string) => Promise<void>;
-  onQuestionEdit: (question: QuestionData) => void;
+  onQuestionEdit: (question: QuestionDataModel) => void;
 }
 
 const QuestionsViewer: React.FC<QuestionsProps> = ({

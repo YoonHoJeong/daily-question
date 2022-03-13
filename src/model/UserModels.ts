@@ -13,9 +13,9 @@ export type AuthUser = {
 export type UserDataModel = {
   uid: string;
   admin?: boolean;
+  email?: string;
   profile: {
     name?: string;
-    email?: string;
     intro?: string;
   };
   answers?: {

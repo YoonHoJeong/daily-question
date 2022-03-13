@@ -5,8 +5,8 @@ import Button from "../../components/common/Button";
 import { useAuth } from "../../hooks/useAuth";
 import LoadScreen from "../../components/common/LoadScreen";
 
-import { usePreloadImages } from "../../hooks/usePreloadImages";
-import BoxBlueLineLogo from "../../assets/icons/box_blue_line.png";
+// import { usePreloadImages } from "../../hooks/usePreloadImages";
+import BoxBlueLineLogo from "../../assets/icons/box/opened_white_bg.svg";
 
 interface Props {}
 
@@ -21,7 +21,7 @@ const Onboarding: React.FC<Props> = () => {
     history.push("/register");
   };
 
-  const { loading } = usePreloadImages([BoxBlueLineLogo]);
+  // const { loading } = usePreloadImages([BoxBlueLineLogo]);
 
   useEffect(() => {
     if (auth && auth.user) {
@@ -31,22 +31,16 @@ const Onboarding: React.FC<Props> = () => {
 
   return (
     <Container>
-      {loading ? (
-        <LoadScreen />
-      ) : (
-        <>
-          <ServiceIcon src={BoxBlueLineLogo} />
+      <ServiceIcon src={BoxBlueLineLogo} />
 
-          <Buttons>
-            <Button type="submit" variant="contained" onClick={moveToLogin}>
-              로그인하기
-            </Button>
-            <Button bgColor="blue" onClick={moveToRegister}>
-              회원가입
-            </Button>
-          </Buttons>
-        </>
-      )}
+      <Buttons>
+        <Button type="submit" variant="contained" onClick={moveToLogin}>
+          로그인하기
+        </Button>
+        <Button bgColor="blue" onClick={moveToRegister}>
+          회원가입
+        </Button>
+      </Buttons>
     </Container>
   );
 };
@@ -63,7 +57,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 const ServiceIcon = styled.img`
-  height: 150px;
+  height: 256px;
 
   position: relative;
   top: -30px;

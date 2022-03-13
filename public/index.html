@@ -2,16 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/Qbox1.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="Daily Question" content="Daily question is on beta version." />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
+    <meta
+      name="묻는 다이어리, 묻다"
+      content="묻는 다이어리, 묻다로 나를 알아보는 시간을 가져보세요."
+    />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="apple-touch-icon" href="images/192x192.png" />
+
+    <script type="module">
+      import "https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate";
+      const el = document.createElement("pwa-update");
+      document.body.appendChild(el);
+    </script>
     <title>묻는 다이어리, 묻다</title>
   </head>
   <body>

@@ -40,7 +40,7 @@ const UserEdit: React.FC<Props> = () => {
     {
       label: "이메일",
       name: "email",
-      value: user!!.profile?.email || "이메일을 입력해주세요.",
+      value: user!!.email || "이메일을 입력해주세요.",
       editable: false,
     },
   ];
