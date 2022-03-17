@@ -1,17 +1,15 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { AdminRoute, PrivateRoute } from "./";
-import { Login, Onboarding, Register, AdminLogin } from "../pages";
-import { AdminRoutes, ClientRoutes } from "./";
+// import { Login, Onboarding, Register, AdminLogin } from "../pages";
+// import { AdminRoutes, ClientRoutes } from "./";
 
-// const Onboarding = React.lazy(
-//   () => import("../pages/Onboarding/Onboarding")
-// );
-// const Login = React.lazy(() => import("../pages/Login/Login"));
-// const Register = React.lazy(() => import("../pages/Register/Register"));
-// const AdminLogin = React.lazy(() => import("../pages/Admin/AdminLogin"));
-// const AdminRoutes = React.lazy(() => import("./AdminRoutes"));
-// const ClientRoutes = React.lazy(() => import("./ClientRoutes"));
+const Onboarding = React.lazy(() => import("../pages/Onboarding/Onboarding"));
+const Login = React.lazy(() => import("../pages/Login/Login"));
+const Register = React.lazy(() => import("../pages/Register/Register"));
+const AdminLogin = React.lazy(() => import("../pages/Admin/AdminLogin"));
+const AdminRoutes = React.lazy(() => import("./AdminRoutes"));
+const ClientRoutes = React.lazy(() => import("./ClientRoutes"));
 
 interface Props {}
 
