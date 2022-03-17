@@ -2,17 +2,15 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
 import UserProfile from "../../components/user/UserProfile";
-import { DateQidAnswers } from "../../model/AnswerModels";
+import { AnswersWrapper } from "../../services/AnswerApi";
 
 interface Props {
-  dateQidAnswers: DateQidAnswers;
+  answers: AnswersWrapper;
 }
 
-const DailyAnswers: React.FC<Props> = ({ dateQidAnswers }) => {
-  const descendingDates = useMemo(
-    () => Object.keys(dateQidAnswers).sort((a, b) => (a > b ? -1 : 1)),
-    [dateQidAnswers]
-  );
+const DailyAnswers: React.FC<Props> = ({ answers }) => {
+  const dateQidAnswers = answers.getDateQidAnswers();
+  const descendingDates = answers.getDatesDescending();
 
   return (
     <Container>
@@ -24,7 +22,7 @@ const DailyAnswers: React.FC<Props> = ({ dateQidAnswers }) => {
           <DateAnswersCard
             key={date}
             date={date}
-            questionsWithAnswers={dateQidAnswers[date]}
+            questionsWithAnswers={dateQidAnswers.data[date]}
             profileOn={false}
           />
         ))}

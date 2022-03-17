@@ -11,62 +11,39 @@ import MonthlyAnswers from "./MonthlyAnswers";
 import WeeklyAnswers from "./Weekly/WeeklyAnswers";
 import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserAnswers } from "../../hooks/customUseQueries";
-import { formatToDateQidAnswers } from "../../services/AnswerApi";
 import { BoxOpenedIcon, BoxClosedIcon } from "../../assets/icons";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
+import { AnswersWrapper } from "../../services/AnswerApi";
+import { CustomDate } from "../../services/CustomDate";
 
 interface Props {}
 
 const Answers: React.FC<Props> = () => {
   const { user } = useAuth();
-  const presentDateObj = new Date();
-  const [selectedDate, setSelectedDate] = useState({
-    dateObj: presentDateObj,
-    year: presentDateObj.getFullYear(),
-    month: presentDateObj.getMonth() + 1,
-  });
+
+  const { data, isLoading, isError } = useFetchUserAnswers(user!!.uid);
+  const answers = new AnswersWrapper(data);
+
+  const [selectedDate, setSelectedDate] = useState<CustomDate>(
+    new CustomDate(new Date())
+  );
+  const changeWeek = (weekCount: number) => {
+    setSelectedDate(selectedDate.changeWeek(weekCount));
+  };
+  const changeMonth = (monthCount: number) => {
+    setSelectedDate(selectedDate.changeMonth(monthCount));
+  };
+
   const { loading: imageLoading } = usePreloadImages([
     BoxOpenedIcon,
     BoxClosedIcon,
   ]);
 
-  const { data, isLoading, isError } = useFetchUserAnswers(user!!.uid);
-  const dateQidAnswers = useMemo(
-    () => formatToDateQidAnswers(data ?? {}),
-    [data]
-  );
-
-  const changeWeek = (weekCnt: number) => {
-    const tmpDate = new Date(selectedDate.dateObj);
-    tmpDate.setDate(tmpDate.getDate() + 7 * weekCnt); // week ago date
-
-    if (tmpDate.getTime() < new Date().getTime()) {
-      setSelectedDate({
-        dateObj: tmpDate,
-        year: tmpDate.getFullYear(),
-        month: tmpDate.getMonth() + 1,
-      });
-    }
-  };
-
-  const changeMonth = (monthCnt: number) => {
-    const tmpDate = new Date(selectedDate.dateObj);
-    tmpDate.setMonth(tmpDate.getMonth() + monthCnt);
-
-    if (tmpDate.getTime() < new Date().getTime()) {
-      setSelectedDate({
-        dateObj: tmpDate,
-        year: tmpDate.getFullYear(),
-        month: tmpDate.getMonth() + 1,
-      });
-    }
-  };
-
   if (isError) {
-    <>Error Page</>;
+    return <>Error Page</>;
   }
   if (isLoading || imageLoading) {
-    <LoadScreen />;
+    return <LoadScreen />;
   }
 
   return (
@@ -75,26 +52,26 @@ const Answers: React.FC<Props> = () => {
       <Route path="/answers/monthly">
         <MonthlyAnswers
           date={selectedDate}
-          dateQidAnswers={dateQidAnswers}
+          answers={answers}
           changeMonth={changeMonth}
         />
       </Route>
       <Route path="/answers/daily">
-        <DailyAnswers dateQidAnswers={dateQidAnswers} />
+        <DailyAnswers answers={answers} />
       </Route>
 
       <Route path="/answers/weekly">
         <WeeklyAnswers
           date={selectedDate}
-          dateQidAnswers={dateQidAnswers}
+          answers={answers}
           changeWeek={changeWeek}
         />
       </Route>
       <Route exact path="/answers">
         <WeeklyAnswers
-          changeWeek={changeWeek}
           date={selectedDate}
-          dateQidAnswers={dateQidAnswers}
+          answers={answers}
+          changeWeek={changeWeek}
         />
       </Route>
     </Container>

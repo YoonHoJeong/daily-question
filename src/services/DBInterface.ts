@@ -38,11 +38,24 @@ export async function getData<T>(
   }
 }
 
-export async function updateData(path: string, data: object) {
-  const updates = Object.keys(data).reduce(
-    (updates, key) => ({ ...updates, [`${path}/${key}`]: data[key] }),
-    {}
-  );
+export async function updateData(path: string, data: object | null) {
+  let updates;
+  if (data) {
+    updates = Object.keys(data).reduce(
+      (updates, key) => ({ ...updates, [`${path}/${key}`]: data[key] }),
+      {}
+    );
+  } else {
+    if (
+      path === "answers" ||
+      path === "questions" ||
+      path === "users" ||
+      path === "user-answers"
+    ) {
+      throw new Error("삭제할 수 없는 범위");
+    }
+    updates = { [path]: data };
+  }
   await update(ref(db), updates);
 }
 

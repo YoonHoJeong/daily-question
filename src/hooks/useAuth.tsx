@@ -98,6 +98,8 @@ const useProviderAuth = () => {
         email,
         password
       );
+      console.log(user);
+
       await fetchAndSyncUserData(fireUser.uid);
       setIsAuthenticating(false);
 

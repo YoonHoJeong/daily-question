@@ -29,7 +29,7 @@ export interface AnswerFormData {
   isPublic: boolean;
 }
 
-export interface DateQidAnswers {
+export interface DateQidAnswersDataModel {
   [date: string]: {
     [qid: string]: {
       question: QuestionDataModel;

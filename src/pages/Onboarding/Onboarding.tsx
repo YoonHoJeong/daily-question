@@ -3,9 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/common/Button";
 import { useAuth } from "../../hooks/useAuth";
-import LoadScreen from "../../components/common/LoadScreen";
 
-// import { usePreloadImages } from "../../hooks/usePreloadImages";
 import BoxBlueLineLogo from "../../assets/icons/box/opened_white_bg.svg";
 
 interface Props {}
@@ -49,13 +47,14 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: #515fa9;
+  background-color: ${(props) => props.theme.palette.blue};
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
+
 const ServiceIcon = styled.img`
   height: 256px;
 

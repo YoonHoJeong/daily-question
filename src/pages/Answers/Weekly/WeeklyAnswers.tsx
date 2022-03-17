@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { calcWeek, getAllWeeklyDate } from "../../../services/DateManager";
 import Button from "../../../components/common/Button";
 import { Link } from "react-router-dom";
 import WeekToggle from "../WeekToggle";
@@ -8,52 +7,28 @@ import WeekToggle from "../WeekToggle";
 import { BoxClosedIcon, BoxOpenedIcon } from "../../../assets/icons";
 import HelperText from "../../../components/HelperText";
 import WeeklyAnswerCards from "./WeeklyAnswerCards";
-import { DateQidAnswers } from "../../../model/AnswerModels";
+import { DateQidAnswersDataModel } from "../../../model/AnswerModels";
+import { AnswersWrapper } from "../../../services/AnswerApi";
+import { CustomDate } from "../../../services/CustomDate";
 
 interface Props {
-  date: {
-    dateObj: Date;
-    year: number;
-    month: number;
-  };
-  dateQidAnswers: DateQidAnswers;
-  changeWeek: (weekCnt: number) => void;
+  date: CustomDate;
+  answers: AnswersWrapper;
+  changeWeek: (weekCount: number) => void;
 }
 
-const WeeklyAnswers: React.FC<Props> = ({
-  date,
-  dateQidAnswers,
-  changeWeek,
-}) => {
-  const selectedWeekStr = calcWeek(date.dateObj);
-  const weekAnswers = Object.keys(dateQidAnswers)
-    .filter((date) => calcWeek(new Date(date)) === selectedWeekStr)
-    .reduce((obj, date) => ({ ...obj, [date]: dateQidAnswers[date] }), {});
-
-  const [year, month, week] = selectedWeekStr.replace("W", "-").split("-");
-  const weekDates = getAllWeeklyDate(date.dateObj);
-  const totalWeekAnswerCnt = Object.keys(weekAnswers).reduce(
-    (weekAcc, date) => {
-      const dateCnt = Object.keys(weekAnswers[date]).reduce(
-        (dateAcc, qid) =>
-          dateAcc + Object.keys(weekAnswers[date][qid].answers).length,
-        0
-      );
-      return weekAcc + dateCnt;
-    },
-    0
-  );
-  const answeredDateCnt = Object.keys(weekAnswers).length;
+const WeeklyAnswers: React.FC<Props> = ({ date, answers, changeWeek }) => {
+  const weekAnswers = answers.getDateQidAnswers().filteredByWeek(date);
+  const weekDates = date.getAllWeeklyDates();
+  const totalWeekAnswerCnt = weekAnswers.answerCount;
+  const answeredDateCnt = weekAnswers.answeredDateCount;
 
   return (
     <Container>
       <>
         <WeekToggle
-          date={{
-            year: parseInt(year),
-            month: parseInt(month),
-            week: parseInt(week),
-          }}
+          toggleType="week"
+          date={date}
           changeWeekOrMonth={changeWeek}
         />
         <HelperText>
@@ -66,8 +41,8 @@ const WeeklyAnswers: React.FC<Props> = ({
             <>이번 주에는 아직 답변이 없네요...</>
           )}
         </HelperText>
-        <DateIcons weekDates={weekDates} weekAnswers={weekAnswers} />
-        <WeeklyAnswerCards weekAnswers={weekAnswers} />
+        <DateIcons weekDates={weekDates} weekAnswers={weekAnswers.data} />
+        <WeeklyAnswerCards weekAnswers={weekAnswers.data} />
         {totalWeekAnswerCnt > 0 ? null : (
           <Link to="/">
             <Button bgColor="blue" style={{ fontSize: "12px" }}>
@@ -82,7 +57,7 @@ const WeeklyAnswers: React.FC<Props> = ({
 
 interface DateIconsProps {
   weekDates: string[];
-  weekAnswers: DateQidAnswers;
+  weekAnswers: DateQidAnswersDataModel;
 }
 const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   <DateIconsContainer>

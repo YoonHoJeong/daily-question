@@ -11,6 +11,7 @@ import {
   Board,
   UserEdit,
 } from "../pages";
+import { ErrorBoundary } from "../components/common/ErrorBoundary";
 
 interface Props {}
 
@@ -20,27 +21,42 @@ const ClientRoutes: React.FC<Props> = () => {
       <Header />
       <Switch>
         <Route path="/submit-done">
-          <SubmitDone />
+          <ErrorBoundary>
+            <SubmitDone />
+          </ErrorBoundary>
         </Route>
         <Route path="/board">
-          <Board />
+          <ErrorBoundary>
+            <Board />
+          </ErrorBoundary>
         </Route>
         <Route path="/user/edit">
-          <UserEdit />
+          <ErrorBoundary>
+            <UserEdit />
+          </ErrorBoundary>
         </Route>
         <Route exact path="/user">
-          <User />
+          <ErrorBoundary>
+            <User />
+          </ErrorBoundary>
         </Route>
         <Route path="/answers">
-          <Answers />
+          <ErrorBoundary>
+            <Answers />
+          </ErrorBoundary>
         </Route>
         <Route path="/question/:qid">
-          <Question />
+          <ErrorBoundary>
+            <Question />
+          </ErrorBoundary>
         </Route>
         <Route path="/">
-          <Home />
+          <ErrorBoundary>
+            <Home />
+          </ErrorBoundary>
         </Route>
       </Switch>
+
       <BottomNavigation />
     </Container>
   );

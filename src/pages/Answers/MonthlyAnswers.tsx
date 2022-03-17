@@ -4,62 +4,36 @@ import styles from "../../assets/css/calendar.module.css";
 import styled from "styled-components";
 import WeekToggle from "./WeekToggle";
 import HelperText from "../../components/HelperText";
-import { AnswerDataModel, DateQidAnswers } from "../../model/AnswerModels";
+import {
+  AnswerDataModel,
+  DateQidAnswersDataModel,
+} from "../../model/AnswerModels";
 import { QuestionDataModel } from "../../model/QuestionModels";
+import { AnswersWrapper } from "../../services/AnswerApi";
+import { CustomDate } from "../../services/CustomDate";
 
 interface Props {
-  date: {
-    dateObj: Date;
-    year: number;
-    month: number;
-  };
-  dateQidAnswers: DateQidAnswers;
+  date: CustomDate;
+  answers: AnswersWrapper;
   changeMonth: (monthCnt: number) => void;
 }
 
-const MonthlyAnswers: React.FC<Props> = ({
-  date,
-  dateQidAnswers,
-  changeMonth,
-}) => {
-  const monthAnswers: DateQidAnswers = Object.keys(dateQidAnswers).reduce(
-    (obj, tmpDate) => {
-      const [tmpYear, tmpMonth] = tmpDate.split("-");
-      if (
-        parseInt(tmpYear) === date.year &&
-        parseInt(tmpMonth) === date.month
-      ) {
-        obj[tmpDate] = dateQidAnswers[tmpDate];
-      }
-
-      return obj;
-    },
-    {}
-  );
-  const totalAnswerCnt = Object.keys(monthAnswers).reduce((monthAcc, date) => {
-    const dateCnt = Object.keys(monthAnswers[date]).reduce(
-      (dateAcc, qid) =>
-        dateAcc + Object.keys(monthAnswers[date][qid].answers).length,
-      0
-    );
-    return monthAcc + dateCnt;
-  }, 0);
+const MonthlyAnswers: React.FC<Props> = ({ date, answers, changeMonth }) => {
+  const monthAnswers = answers.getDateQidAnswers().filteredByMonth(date);
+  const answerCount = monthAnswers.answerCount;
 
   return (
     <Container>
       <WeekToggle
-        date={{
-          year: date.year,
-          month: date.month,
-        }}
+        toggleType="month"
+        date={date}
         changeWeekOrMonth={changeMonth}
       />
       <HelperText>
-        <AnswerDateCount> {totalAnswerCnt}개</AnswerDateCount>의 질문에
-        대답했어요.
+        <AnswerDateCount> {answerCount}개</AnswerDateCount>의 질문에 대답했어요.
       </HelperText>
 
-      <Calendar dateObj={date.dateObj} monthAnswers={monthAnswers} />
+      <Calendar dateObj={date.obj} monthAnswers={monthAnswers.data} />
     </Container>
   );
 };
@@ -81,7 +55,7 @@ const AnswerDateCount = styled.span`
 
 interface CalendarProps {
   dateObj: Date;
-  monthAnswers: DateQidAnswers;
+  monthAnswers: DateQidAnswersDataModel;
 }
 
 const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {

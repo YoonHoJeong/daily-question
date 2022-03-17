@@ -5,6 +5,25 @@ import Router from "./routes/Router";
 import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+interface Props {}
+
+const App: React.FC<Props> = () => {
+  return (
+    <ThemeProvider theme={{ palette, sizes }}>
+      <GlobalStyle />
+      <VariablesContext.Provider value={globalVariables}>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <Container>
+              <Router />
+            </Container>
+          </QueryClientProvider>
+        </AuthProvider>
+      </VariablesContext.Provider>
+    </ThemeProvider>
+  );
+};
+
 const Container = styled.div``;
 
 const palette = {
@@ -61,26 +80,6 @@ interface GlobalVariables {
 }
 
 export const VariablesContext = createContext<GlobalVariables>(globalVariables);
-
-interface Props {}
-
 export const queryClient = new QueryClient();
-
-const App: React.FC<Props> = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={{ palette, sizes }}>
-        <GlobalStyle />
-        <VariablesContext.Provider value={globalVariables}>
-          <AuthProvider>
-            <Container>
-              <Router />
-            </Container>
-          </AuthProvider>
-        </VariablesContext.Provider>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-};
 
 export default App;

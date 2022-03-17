@@ -1,28 +1,33 @@
 import styled from "styled-components";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { CustomDate } from "../../services/CustomDate";
 
 interface Props {
-  date: {
-    year: number;
-    month: number;
-    week?: number;
-  };
+  toggleType: "week" | "month";
+  date: CustomDate;
   changeWeekOrMonth: (weekCnt: number) => void;
 }
 
 const WeekToggle: React.FC<Props> = ({
-  date: { year, month, week },
+  toggleType,
+  date,
   changeWeekOrMonth,
 }) => {
+  const [_, monthStr, weekStr] = date.weekString.replace("W", "-").split("-");
+
   return (
     <ToggleContainer>
       <WeekToggleButton onClick={() => changeWeekOrMonth(-1)}>
         <KeyboardArrowLeftIcon />
       </WeekToggleButton>
       <Week>
-        <YearText>{year}년</YearText>
-        {month}월 {week ? week + "주차" : null}
+        <YearText>{date.year}년</YearText>
+        {toggleType === "week"
+          ? `${parseInt(monthStr)}월 
+        ${parseInt(weekStr)}주차
+        `
+          : `${date.month}월`}
       </Week>
       <WeekToggleButton right onClick={() => changeWeekOrMonth(1)}>
         <KeyboardArrowRightIcon />
