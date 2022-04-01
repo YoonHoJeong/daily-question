@@ -12,6 +12,7 @@ import {
   UserEdit,
 } from "../pages";
 import { ErrorBoundary } from "../components/common/ErrorBoundary";
+import sizes from "../layouts/sizes";
 
 interface Props {}
 
@@ -19,59 +20,63 @@ const ClientRoutes: React.FC<Props> = () => {
   return (
     <Container>
       <Header />
-      <Switch>
-        <Route path="/submit-done">
-          <ErrorBoundary>
-            <SubmitDone />
-          </ErrorBoundary>
-        </Route>
-        <Route path="/board">
-          <ErrorBoundary>
-            <Board />
-          </ErrorBoundary>
-        </Route>
-        <Route path="/user/edit">
-          <ErrorBoundary>
-            <UserEdit />
-          </ErrorBoundary>
-        </Route>
-        <Route exact path="/user">
-          <ErrorBoundary>
-            <User />
-          </ErrorBoundary>
-        </Route>
-        <Route path="/answers">
-          <ErrorBoundary>
-            <Answers />
-          </ErrorBoundary>
-        </Route>
-        <Route path="/question/:qid">
-          <ErrorBoundary>
-            <Question />
-          </ErrorBoundary>
-        </Route>
-        <Route path="/">
-          <ErrorBoundary>
-            <Home />
-          </ErrorBoundary>
-        </Route>
-      </Switch>
+      <Main>
+        <Switch>
+          <Route path="/submit-done">
+            <ErrorBoundary>
+              <SubmitDone />
+            </ErrorBoundary>
+          </Route>
+          <Route path="/board">
+            <ErrorBoundary>
+              <Board />
+            </ErrorBoundary>
+          </Route>
+          <Route path="/user/edit">
+            <ErrorBoundary>
+              <UserEdit />
+            </ErrorBoundary>
+          </Route>
+          <Route exact path="/user">
+            <ErrorBoundary>
+              <User />
+            </ErrorBoundary>
+          </Route>
+          <Route path="/answers">
+            <ErrorBoundary>
+              <Answers />
+            </ErrorBoundary>
+          </Route>
+          <Route path="/question/:qid">
+            <ErrorBoundary>
+              <Question />
+            </ErrorBoundary>
+          </Route>
+          <Route path="/">
+            <ErrorBoundary>
+              <Home />
+            </ErrorBoundary>
+          </Route>
+        </Switch>
+      </Main>
 
       <BottomNavigation />
     </Container>
   );
 };
 
+const viewHeight = window.innerHeight;
+const mainHeight = viewHeight - 108;
+
 const Container = styled.div`
   width: 100vw;
-  height: 100vh;
-
-  background-color: #f2f2f2;
-
+  height: ${viewHeight}px;
   box-sizing: border-box;
+`;
 
-  padding-top: ${({ theme }) => theme.sizes.headerHeight};
-  padding-bottom: ${({ theme }) => theme.sizes.bottomNavHeight};
+const Main = styled.main`
+  height: ${mainHeight}px;
+  background-color: ${({ theme }) => theme.palette.bgGrey};
 `;
 
 export default ClientRoutes;

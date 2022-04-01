@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import { AuthProvider } from "./hooks/useAuth";
 import Router from "./routes/Router";
 import GlobalStyle from "./assets/css/GlobalStyle";
@@ -14,17 +14,13 @@ const App: React.FC<Props> = () => {
       <VariablesContext.Provider value={globalVariables}>
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <Container>
-              <Router />
-            </Container>
+            <Router />
           </QueryClientProvider>
         </AuthProvider>
       </VariablesContext.Provider>
     </ThemeProvider>
   );
 };
-
-const Container = styled.div``;
 
 const palette = {
   white: "#FFFFFF",

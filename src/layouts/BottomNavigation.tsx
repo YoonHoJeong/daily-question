@@ -13,38 +13,7 @@ import {
   DiaryClickedIcon,
   DiaryIcon,
 } from "../assets/icons";
-
-interface Navigation {
-  pathnames: string[];
-  iconsUrl: {
-    default: string;
-    clicked: string;
-  };
-}
-
-const Navigations: Navigation[] = [
-  {
-    pathnames: ["/", "/submit-done"],
-    iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
-  },
-  {
-    pathnames: ["/board"],
-    iconsUrl: { clicked: FeedClickedIcon, default: FeedIcon },
-  },
-  {
-    pathnames: [
-      "/answers",
-      "/answers/weekly",
-      "/answers/daily",
-      "/answers/monthly",
-    ],
-    iconsUrl: { clicked: DiaryClickedIcon, default: DiaryIcon },
-  },
-  {
-    pathnames: ["/user"],
-    iconsUrl: { clicked: PersonClickedIcon, default: PersonIcon },
-  },
-];
+import sizes from "./sizes";
 
 interface Props {}
 
@@ -97,13 +66,47 @@ const BottomNavigation: React.FC<Props> = () => {
   );
 };
 
+interface Navigation {
+  pathnames: string[];
+  iconsUrl: {
+    default: string;
+    clicked: string;
+  };
+}
+
+const Navigations: Navigation[] = [
+  {
+    pathnames: ["/", "/submit-done"],
+    iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
+  },
+  {
+    pathnames: ["/board"],
+    iconsUrl: { clicked: FeedClickedIcon, default: FeedIcon },
+  },
+  {
+    pathnames: [
+      "/answers",
+      "/answers/weekly",
+      "/answers/daily",
+      "/answers/monthly",
+    ],
+    iconsUrl: { clicked: DiaryClickedIcon, default: DiaryIcon },
+  },
+  {
+    pathnames: ["/user"],
+    iconsUrl: { clicked: PersonClickedIcon, default: PersonIcon },
+  },
+];
+
+const paddingBottom = "30px";
+
 const Navigator = styled.ul`
   position: fixed;
   bottom: 0;
   left: 0;
 
   width: 100%;
-  height: ${(props) => props.theme.sizes.bottomNavHeight};
+  height: ${sizes.bottomNavigation.height};
 
   background-color: ${(props) => props.theme.palette.bgGrey};
   border-top: 4px solid ${(props) => props.theme.palette.white};
@@ -111,14 +114,17 @@ const Navigator = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
+  padding: 6px 30px;
+  padding-bottom: calc(constant(safe-area-inset-bottom) + 6px);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 6px);
+
   list-style: none;
   border-top: 4px solid white;
 `;
 
 const SLink = styled(Link)<{ current: string }>`
   font-size: 10px;
-  margin-top: 5px;
+  margin-top: 3px;
   color: ${(props) =>
     props.current === "true"
       ? props.theme.palette.blue
@@ -127,7 +133,6 @@ const SLink = styled(Link)<{ current: string }>`
 
 const NavItem = styled.li`
   width: 50px;
-  height: 100%;
 
   display: flex;
   flex-direction: column;
@@ -136,7 +141,7 @@ const NavItem = styled.li`
 `;
 
 const Icon = styled.img`
-  width: 36px;
+  width: 28px;
 `;
 
 export default BottomNavigation;
