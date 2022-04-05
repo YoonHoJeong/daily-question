@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { ArrowRightIcon, ArrowLeftIcon } from "../../assets/icons";
 import { CustomDate } from "../../services/CustomDate";
 
 interface Props {
@@ -19,7 +18,7 @@ const WeekToggle: React.FC<Props> = ({
   return (
     <ToggleContainer>
       <WeekToggleButton onClick={() => changeWeekOrMonth(-1)}>
-        <KeyboardArrowLeftIcon />
+        <Icon src={ArrowLeftIcon} />
       </WeekToggleButton>
       <Week>
         <YearText>{date.year}년</YearText>
@@ -30,11 +29,13 @@ const WeekToggle: React.FC<Props> = ({
           : `${date.month}월`}
       </Week>
       <WeekToggleButton right onClick={() => changeWeekOrMonth(1)}>
-        <KeyboardArrowRightIcon />
+        <Icon src={ArrowRightIcon} />
       </WeekToggleButton>
     </ToggleContainer>
   );
 };
+
+const Icon = styled.img``;
 
 const YearText = styled.p`
   font-weight: 500;

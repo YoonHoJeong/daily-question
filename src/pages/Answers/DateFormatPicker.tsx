@@ -1,8 +1,7 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { ArrowUpIcon, ArrowDownIcon } from "../../assets/icons";
 import { Link, useLocation } from "react-router-dom";
 
 interface Props {}
@@ -39,7 +38,7 @@ const DateFormatPicker: React.FC<Props> = () => {
       </DateFormatList>
 
       <DateFormatToggleButton onClick={onClick}>
-        {folded ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+        {folded ? <Icon src={ArrowDownIcon} /> : <Icon src={ArrowUpIcon} />}
       </DateFormatToggleButton>
     </Container>
   );
@@ -63,6 +62,8 @@ const Container = styled.div`
   right: 40px;
   z-index: 100;
 `;
+
+const Icon = styled.img``;
 const DateFormatList = styled.ul`
   & > li {
     width: 44px;

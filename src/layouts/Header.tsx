@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "styled-components";
 import { useHistory, useLocation } from "react-router";
 import { VariablesContext } from "../App";
+import { ArrowLeftIcon } from "../assets/icons";
 import sizes from "./sizes";
 
 interface Props {
@@ -24,7 +24,7 @@ const Header: React.FC<Props> = ({ transparent = false }) => {
             history.goBack();
           }}
         >
-          <ArrowBackIcon sx={{ width: 22, height: 22 }} />
+          <BackIcon src={ArrowLeftIcon} />
         </ButtonContainer>
       )}
       <HeaderTitle>{pathnames[pathname]}</HeaderTitle>
@@ -43,7 +43,7 @@ const backDisabledRoutes = [
 ];
 
 const Container = styled.header<Props>`
-  position: sticky;
+  position: fixed;
   top: 0px;
   left: 0px;
   z-index: 99;
@@ -70,12 +70,13 @@ interface ButtonProps {
 const ButtonContainer = styled.button<ButtonProps>`
   position: absolute;
   ${(props) => `${props.position}: 20px`};
-  bottom: 15px;
+  bottom: 12px;
 
   background-color: transparent;
   border: none;
-  height: 22px;
+  height: 24px;
 `;
+const BackIcon = styled.img``;
 
 const HeaderTitle = styled.span`
   font-size: 18px;
