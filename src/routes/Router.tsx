@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { LoadScreen } from "../components/common";
+import { ErrorBoundary } from "../components/common/ErrorBoundary";
 import { AdminRoute, PrivateRoute } from "./";
-// import { Login, Onboarding, Register, AdminLogin } from "../pages";
-// import { AdminRoutes, ClientRoutes } from "./";
 
 const Onboarding = React.lazy(() => import("../pages/Onboarding/Onboarding"));
 const Login = React.lazy(() => import("../pages/Login/Login"));
@@ -16,19 +16,27 @@ interface Props {}
 const Router: React.FC<Props> = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback="loading...">
+      <Suspense fallback={<LoadScreen />}>
         <Switch>
           <Route path="/onboarding">
-            <Onboarding />
+            <ErrorBoundary>
+              <Onboarding />
+            </ErrorBoundary>
           </Route>
           <Route path="/login">
-            <Login />
+            <ErrorBoundary>
+              <Login />
+            </ErrorBoundary>
           </Route>
           <Route path="/register">
-            <Register />
+            <ErrorBoundary>
+              <Register />
+            </ErrorBoundary>
           </Route>
           <Route path="/dqadmin/login">
-            <AdminLogin />
+            <ErrorBoundary>
+              <AdminLogin />
+            </ErrorBoundary>
           </Route>
           <AdminRoute path="/dqadmin">
             <AdminRoutes />
