@@ -1,12 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
-import {
-  AdminAnswers,
-  AdminDashboard,
-  AdminQuestions,
-  AdminUsers,
-} from "../pages/Admin";
+// import {
+//   AdminAnswers,
+//   AdminDashboard,
+//   AdminQuestions,
+//   AdminUsers,
+// } from "../pages/Admin";
+import { ErrorBoundary } from "../components/common/ErrorBoundary";
+
+const AdminAnswers = React.lazy(() => import("../pages/Admin/AdminAnswers"));
+const AdminDashboard = React.lazy(
+  () => import("../pages/Admin/AdminDashboard")
+);
+const AdminQuestions = React.lazy(
+  () => import("../pages/Admin/AdminQuestions")
+);
+const AdminUsers = React.lazy(() => import("../pages/Admin/AdminUsers"));
 
 const Container = styled.div`
   display: flex;
@@ -38,16 +48,24 @@ const AdminRoutes: React.FC<Props> = () => {
       </div>
       <Switch>
         <Route path={`${path}/questions`}>
-          <AdminQuestions />
+          <ErrorBoundary>
+            <AdminQuestions />
+          </ErrorBoundary>
         </Route>
         <Route path={`${path}/answers`}>
-          <AdminAnswers />
+          <ErrorBoundary>
+            <AdminAnswers />
+          </ErrorBoundary>
         </Route>
         <Route path={`${path}/users`}>
-          <AdminUsers />
+          <ErrorBoundary>
+            <AdminUsers />
+          </ErrorBoundary>
         </Route>
         <Route exact path={`${path}`}>
-          <AdminDashboard />
+          <ErrorBoundary>
+            <AdminDashboard />
+          </ErrorBoundary>
         </Route>
       </Switch>
     </Container>
