@@ -4,21 +4,26 @@ import { AuthProvider } from "./hooks/useAuth";
 import Router from "./routes/Router";
 import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 interface Props {}
 
+export const queryClient = new QueryClient();
+
 const App: React.FC<Props> = () => {
   return (
-    <ThemeProvider theme={{ palette, sizes }}>
-      <GlobalStyle />
-      <VariablesContext.Provider value={globalVariables}>
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <Router />
-          </QueryClientProvider>
-        </AuthProvider>
-      </VariablesContext.Provider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider theme={{ palette, sizes }}>
+        <GlobalStyle />
+        <VariablesContext.Provider value={globalVariables}>
+          <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <Router />
+            </QueryClientProvider>
+          </AuthProvider>
+        </VariablesContext.Provider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 
@@ -76,6 +81,5 @@ interface GlobalVariables {
 }
 
 export const VariablesContext = createContext<GlobalVariables>(globalVariables);
-export const queryClient = new QueryClient();
 
 export default App;
