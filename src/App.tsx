@@ -4,6 +4,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import Router from "./routes/Router";
 import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 interface Props {}
@@ -19,6 +20,7 @@ const App: React.FC<Props> = () => {
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
               <Router />
+              <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </AuthProvider>
         </VariablesContext.Provider>
