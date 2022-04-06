@@ -1,4 +1,5 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { useMutation } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { queryClient } from "../../App";
@@ -49,15 +50,19 @@ const QuestionScreen: React.FC<Props> = () => {
 
   const history = useHistory();
 
+  const mutation = useMutation(user!!.submitAnswer, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("user-answers");
+      queryClient.invalidateQueries("questions");
+    },
+  });
+
+  // form submit
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await user!!.submitAnswer(form);
-      await Promise.all([
-        queryClient.invalidateQueries("user-answers"),
-        queryClient.invalidateQueries("questions"),
-      ]);
+      mutation.mutate(form);
       history.push("/submit-done");
     } catch (e) {
       console.log(e);
