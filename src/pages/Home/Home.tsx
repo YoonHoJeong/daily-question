@@ -11,11 +11,7 @@ import {
 interface Props {}
 
 const Home: React.FC<Props> = () => {
-  const { data: questions, isLoading, isError } = useFetchQuestions();
-
-  if (isError) {
-    throw new Error();
-  }
+  const { data: questions, isLoading } = useFetchQuestions();
 
   return (
     <Container>
