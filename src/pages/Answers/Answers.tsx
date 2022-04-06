@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Route } from "react-router-dom";
 
 import styled from "styled-components";
@@ -13,7 +13,6 @@ import DateFormatPicker from "./DateFormatPicker";
 import { useFetchUserAnswers } from "../../hooks/customUseQueries";
 import { BoxOpenedIcon, BoxClosedIcon } from "../../assets/icons";
 import { usePreloadImages } from "../../hooks/usePreloadImages";
-import { AnswersWrapper } from "../../services/AnswerApi";
 import { CustomDate } from "../../services/CustomDate";
 
 interface Props {}
@@ -21,8 +20,7 @@ interface Props {}
 const Answers: React.FC<Props> = () => {
   const { user } = useAuth();
 
-  const { data, isLoading, isError } = useFetchUserAnswers(user!!.uid);
-  const answers = new AnswersWrapper(data);
+  const { data: answers, isLoading } = useFetchUserAnswers(user!!.uid);
 
   const [selectedDate, setSelectedDate] = useState<CustomDate>(
     new CustomDate(new Date())
@@ -39,41 +37,43 @@ const Answers: React.FC<Props> = () => {
     BoxClosedIcon,
   ]);
 
-  if (isError) {
-    return <>Error Page</>;
-  }
   if (isLoading || imageLoading) {
     return <LoadScreen />;
   }
 
   return (
     <Container>
-      <DateFormatPicker />
-      <Route path="/answers/monthly">
-        <MonthlyAnswers
-          date={selectedDate}
-          answers={answers}
-          changeMonth={changeMonth}
-        />
-      </Route>
-      <Route path="/answers/daily">
-        <DailyAnswers answers={answers} />
-      </Route>
-
-      <Route path="/answers/weekly">
-        <WeeklyAnswers
-          date={selectedDate}
-          answers={answers}
-          changeWeek={changeWeek}
-        />
-      </Route>
-      <Route exact path="/answers">
-        <WeeklyAnswers
-          date={selectedDate}
-          answers={answers}
-          changeWeek={changeWeek}
-        />
-      </Route>
+      {answers ? (
+        <>
+          <DateFormatPicker />
+          <Route path="/answers/monthly">
+            <MonthlyAnswers
+              date={selectedDate}
+              answers={answers}
+              changeMonth={changeMonth}
+            />
+          </Route>
+          <Route path="/answers/daily">
+            <DailyAnswers answers={answers} />
+          </Route>
+          <Route path="/answers/weekly">
+            <WeeklyAnswers
+              date={selectedDate}
+              answers={answers}
+              changeWeek={changeWeek}
+            />
+          </Route>
+          <Route exact path="/answers">
+            <WeeklyAnswers
+              date={selectedDate}
+              answers={answers}
+              changeWeek={changeWeek}
+            />
+          </Route>
+        </>
+      ) : (
+        <>답변한 질문이 없어요.</>
+      )}
     </Container>
   );
 };

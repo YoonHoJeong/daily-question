@@ -35,16 +35,9 @@ export const useFetchBoardAnswers = () =>
     defaultConfig
   );
 
-export const useFetchUserAnswers = (uid: string) => {
-  const queryResult = useQuery<AnswersDataModel>(
+export const useFetchUserAnswers = (uid: string) =>
+  useQuery<AnswersDataModel, unknown, AnswersWrapper>(
     "user-answers",
     () => getUserAnswers(uid),
-    defaultConfig
+    { ...defaultConfig, select: (data) => new AnswersWrapper(data) }
   );
-  const modelledQueryResult = {
-    ...queryResult,
-    data: new AnswersWrapper(queryResult.data),
-  };
-
-  return modelledQueryResult;
-};
