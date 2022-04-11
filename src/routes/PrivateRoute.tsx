@@ -1,25 +1,24 @@
 import React from "react";
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { RouteProps, Navigate, Outlet } from "react-router-dom";
 import { LoadScreen } from "../components/common";
 import { useAuth } from "../hooks/useAuth";
 
-interface Props extends RouteProps {}
+interface Props extends RouteProps {
+  redirectPath?: string;
+}
 
-const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
+const PrivateRoute: React.FC<Props> = ({ redirectPath = "/onboarding" }) => {
   const auth = useAuth();
 
   if (auth.isAuthenticating) {
     return <LoadScreen />;
   }
 
-  return (
-    <Route
-      {...rest}
-      render={() =>
-        auth?.user !== null ? children : <Redirect to="/onboarding" />
-      }
-    ></Route>
-  );
+  if (auth?.user === null) {
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

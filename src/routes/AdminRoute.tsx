@@ -1,25 +1,26 @@
 import React from "react";
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Navigate, Outlet, RouteProps } from "react-router-dom";
+import { LoadScreen } from "../components/common";
 import { useAuth } from "../hooks/useAuth";
 
 interface Props extends RouteProps {}
 
-const AdminRoute: React.FC<Props> = ({ children, ...rest }) => {
+const AdminRoute: React.FC<Props> = ({ redirectPath = "/" }) => {
   const auth = useAuth();
 
   if (!auth) {
-    return <>404 not found</>;
+    throw new Error("authentication not working");
   }
 
   if (auth.isAuthenticating) {
-    return <>loading...</>;
+    return <LoadScreen />;
   }
 
   if (!auth.user?.admin) {
-    return <Redirect to="/dqadmin/login" />;
+    return <Navigate to="/dqadmin/login" />;
   }
 
-  return <Route {...rest}>{children}</Route>;
+  return <Outlet />;
 };
 
 export default AdminRoute;
