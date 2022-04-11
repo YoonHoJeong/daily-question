@@ -16,7 +16,7 @@ import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
-const QuestionScreen: React.FC<Props> = () => {
+const QuestionPage: React.FC<Props> = () => {
   // initial state
   const { qid } = useParams<{ qid: string }>();
   const { user } = useAuth();
@@ -165,4 +165,4 @@ const Button = styled.button`
   }
 `;
 
-export default QuestionScreen;
+export default QuestionPage;

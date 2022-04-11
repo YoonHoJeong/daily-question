@@ -17,7 +17,7 @@ import { CustomDate } from "../services/CustomDate";
 
 interface Props {}
 
-const Answers: React.FC<Props> = () => {
+const AnswersPage: React.FC<Props> = () => {
   const { user } = useAuth();
 
   const { data: answers, isLoading } = useFetchUserAnswers(user!!.uid);
@@ -89,4 +89,4 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export default Answers;
+export default AnswersPage;

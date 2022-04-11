@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 
 interface Props {}
 
-const User: React.FC<Props> = () => {
+const UserPage: React.FC<Props> = () => {
   return (
     <>
       <Container>
@@ -57,4 +57,4 @@ const Button = styled.button`
   align-items: center;
 `;
 
-export default User;
+export default UserPage;

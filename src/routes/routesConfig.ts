@@ -3,16 +3,16 @@ import {
   AdminDashboard,
   AdminQuestions,
   AdminUsers,
-  Answers,
-  Board,
-  Home,
-  Login,
-  Onboarding,
-  Question,
-  Register,
-  SubmitDone,
-  User,
-  UserEdit,
+  AnswersPage,
+  BoardPage,
+  HomePage,
+  LoginPage,
+  OnboardingPage,
+  QuestionPage,
+  RegisterPage,
+  SubmitDonePage,
+  UserPage,
+  UserEditPage,
 } from "../pages";
 
 interface CustomRoute {
@@ -34,19 +34,19 @@ interface AdminRoute extends CustomRoute {
 }
 
 export const publicRoutes: PublicRoute[] = [
-  { path: "/onboarding", Component: Onboarding },
-  { path: "/login", Component: Login },
-  { path: "/register", Component: Register },
+  { path: "/onboarding", Component: OnboardingPage },
+  { path: "/login", Component: LoginPage },
+  { path: "/register", Component: RegisterPage },
 ];
 
 export const privateRoutes: PrivateRoute[] = [
-  { path: "/submit-done", Component: SubmitDone },
-  { path: "/board", Component: Board },
-  { path: "/user/edit", Component: UserEdit },
-  { path: "/user", Component: User },
-  { path: "/answers", Component: Answers },
-  { path: "/question/:qid", Component: Question },
-  { path: "/", Component: Home },
+  { path: "/submit-done", Component: SubmitDonePage },
+  { path: "/board", Component: BoardPage },
+  { path: "/user/edit", Component: UserEditPage },
+  { path: "/user", Component: UserPage },
+  { path: "/answers", Component: AnswersPage },
+  { path: "/question/:qid", Component: QuestionPage },
+  { path: "/", Component: HomePage },
 ];
 
 export const adminRoutes: AdminRoute[] = [

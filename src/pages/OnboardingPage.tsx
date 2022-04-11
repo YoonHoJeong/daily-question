@@ -8,7 +8,7 @@ import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
-const Onboarding: React.FC<Props> = () => {
+const OnboardingPage: React.FC<Props> = () => {
   const auth = useAuth();
   const { push } = useInternalRouter();
 
@@ -70,4 +70,4 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-export default Onboarding;
+export default OnboardingPage;

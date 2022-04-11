@@ -7,7 +7,7 @@ import { useForm } from "../hooks/useForm";
 
 interface Props {}
 
-const UserEdit: React.FC<Props> = () => {
+const UserEditPage: React.FC<Props> = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupKey, setPopupKey] = useState("");
 
@@ -137,7 +137,7 @@ const EditorPopup: React.FC<EditorPopupProps> = ({ keyname, closePopup }) => {
   );
 };
 
-export default UserEdit;
+export default UserEditPage;
 
 const EditorContainer = styled.form`
   width: 100vw;

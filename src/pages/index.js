@@ -1,13 +1,13 @@
-import Answers from "./Answers";
-import Board from "./Board";
-import Home from "./Home";
-import Login from "./Login";
-import Onboarding from "./Onboarding";
-import Question from "./Question";
-import Register from "./Register";
-import SubmitDone from "./SubmitDone";
-import User from "./User";
-import UserEdit from "./UserEdit";
+import AnswersPage from "./AnswersPage";
+import BoardPage from "./BoardPage";
+import HomePage from "./HomePage";
+import LoginPage from "./LoginPage";
+import OnboardingPage from "./OnboardingPage";
+import QuestionPage from "./QuestionPage";
+import RegisterPage from "./RegisterPage";
+import SubmitDonePage from "./SubmitDonePage";
+import UserPage from "./UserPage";
+import UserEditPage from "./UserEditPage";
 import AdminLogin from "./Admin/AdminLogin";
 import AdminAnswers from "./Admin/AdminAnswers";
 import AdminDashboard from "./Admin/AdminDashboard";
@@ -15,16 +15,16 @@ import AdminQuestions from "./Admin/AdminQuestions";
 import AdminUsers from "./Admin/AdminUsers";
 
 export {
-  Answers,
-  Board,
-  Home,
-  Login,
-  Onboarding,
-  Question,
-  SubmitDone,
-  Register,
-  User,
-  UserEdit,
+  AnswersPage,
+  BoardPage,
+  HomePage,
+  LoginPage,
+  OnboardingPage,
+  QuestionPage,
+  SubmitDonePage,
+  RegisterPage,
+  UserPage,
+  UserEditPage,
   AdminLogin,
   AdminAnswers,
   AdminDashboard,
