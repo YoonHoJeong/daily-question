@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { CustomAuthError, useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
 
-import Header from "../layouts/Header";
+import Header from "../components/layouts/Header";
 import { Input, Button, Spinner, ErrorMessage } from "../components/common";
 
 import BoxLogoGreyLogo from "../assets/icons/box/opened_gray_bg.svg";
+
 import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
