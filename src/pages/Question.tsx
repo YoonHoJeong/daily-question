@@ -1,17 +1,18 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { queryClient } from "../../App";
-import AnswerOptionCheckBoxes from "../../components/AnswerOptionCheckBoxes";
-import LoadScreen from "../../components/common/LoadScreen";
+import { queryClient } from "../App";
+import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
+import LoadScreen from "../components/common/LoadScreen";
 import {
   useFetchQuestions,
   useFetchUserAnswers,
-} from "../../hooks/customUseQueries";
-import { useAuth } from "../../hooks/useAuth";
-import { useForm } from "../../hooks/useForm";
-import { AnswerFormData } from "../../model/AnswerModels";
+} from "../hooks/customUseQueries";
+import { useAuth } from "../hooks/useAuth";
+import { useForm } from "../hooks/useForm";
+import { AnswerFormData } from "../model/AnswerModels";
+import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
@@ -23,7 +24,9 @@ const QuestionScreen: React.FC<Props> = () => {
 
   // data fetching(question, answer)
   const { data: questions } = useFetchQuestions();
-  const question = questions!![qid];
+
+  // TODO : qid default?
+  const question = questions!![qid ?? ""];
 
   const { data, isLoading } = useFetchUserAnswers(user!!.uid);
 
@@ -48,7 +51,7 @@ const QuestionScreen: React.FC<Props> = () => {
     answerRef?.current?.focus();
   }, []);
 
-  const history = useHistory();
+  const { push } = useInternalRouter();
 
   const mutation = useMutation(user!!.submitAnswer, {
     onSuccess: () => {
@@ -63,7 +66,7 @@ const QuestionScreen: React.FC<Props> = () => {
     setSubmitting(true);
     try {
       mutation.mutate(form);
-      history.push("/submit-done");
+      push("/submit-done");
     } catch (e) {
       console.log(e);
       alert("기록에 실패했습니다. 다시 시도해주세요.");

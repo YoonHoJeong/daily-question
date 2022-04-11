@@ -16,11 +16,11 @@ const Router: React.FC<Props> = () => {
             <Route
               key={path}
               path={path}
-              element={() => (
+              element={
                 <ErrorBoundary>
                   <Component />
                 </ErrorBoundary>
-              )}
+              }
             />
           ))}
 
@@ -29,11 +29,11 @@ const Router: React.FC<Props> = () => {
               <Route
                 key={path}
                 path={path}
-                element={() => (
+                element={
                   <ErrorBoundary>
                     <Component />
                   </ErrorBoundary>
-                )}
+                }
               />
             ))}
           </Route>
@@ -43,17 +43,13 @@ const Router: React.FC<Props> = () => {
               <Route
                 key={path}
                 path={path}
-                element={() => (
+                element={
                   <ErrorBoundary>
                     <Component />
                   </ErrorBoundary>
-                )}
+                }
               />
             ))}
-          </Route>
-
-          <Route path="/*">
-            <div>404 Not Found</div>
           </Route>
         </Routes>
       </Suspense>

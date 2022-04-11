@@ -2,6 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import Spinner from "./Spinner";
 
+interface Props {}
+
+const LoadScreen: React.FC<Props> = () => {
+  return (
+    <BackGround>
+      <Spinner />
+    </BackGround>
+  );
+};
+
 const BackGround = styled.div`
   position: absolute;
   top: 0;
@@ -18,15 +28,5 @@ const BackGround = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-interface Props {}
-
-const LoadScreen: React.FC<Props> = () => {
-  return (
-    <BackGround>
-      <Spinner />
-    </BackGround>
-  );
-};
 
 export default LoadScreen;

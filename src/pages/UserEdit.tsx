@@ -1,9 +1,9 @@
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import UserImage from "../../components/user/UserImage";
-import EditIcon from "../../assets/icons/pencil.png";
-import { useAuth } from "../../hooks/useAuth";
-import { useForm } from "../../hooks/useForm";
+import UserImage from "../components/user/UserImage";
+import EditIcon from "../assets/icons/pencil.png";
+import { useAuth } from "../hooks/useAuth";
+import { useForm } from "../hooks/useForm";
 
 interface Props {}
 

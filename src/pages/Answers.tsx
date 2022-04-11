@@ -3,17 +3,17 @@ import { Route } from "react-router-dom";
 
 import styled from "styled-components";
 
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
-import { LoadScreen } from "../../components/common";
-import DailyAnswers from "./DailyAnswers";
-import MonthlyAnswers from "./MonthlyAnswers";
-import WeeklyAnswers from "./Weekly/WeeklyAnswers";
-import DateFormatPicker from "./DateFormatPicker";
-import { useFetchUserAnswers } from "../../hooks/customUseQueries";
-import { BoxOpenedIcon, BoxClosedIcon } from "../../assets/icons";
-import { usePreloadImages } from "../../hooks/usePreloadImages";
-import { CustomDate } from "../../services/CustomDate";
+import { LoadScreen } from "../components/common";
+import DailyAnswers from "./Answers/DailyAnswers";
+import MonthlyAnswers from "./Answers/MonthlyAnswers";
+import WeeklyAnswers from "./Answers/Weekly/WeeklyAnswers";
+import DateFormatPicker from "./Answers/DateFormatPicker";
+import { useFetchUserAnswers } from "../hooks/customUseQueries";
+import { BoxOpenedIcon, BoxClosedIcon } from "../assets/icons";
+import { usePreloadImages } from "../hooks/usePreloadImages";
+import { CustomDate } from "../services/CustomDate";
 
 interface Props {}
 
@@ -63,7 +63,7 @@ const Answers: React.FC<Props> = () => {
               changeWeek={changeWeek}
             />
           </Route>
-          <Route exact path="/answers">
+          <Route path="/answers">
             <WeeklyAnswers
               date={selectedDate}
               answers={answers}

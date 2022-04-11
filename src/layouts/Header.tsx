@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { VariablesContext } from "../App";
 import { ArrowLeftIcon } from "../assets/icons";
 import sizes from "./sizes";
+import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {
   transparent?: boolean;
 }
 
 const Header: React.FC<Props> = ({ transparent = false }) => {
-  const history = useHistory();
+  const { goBack } = useInternalRouter();
   const { pathname } = useLocation();
   const { pathnames } = useContext(VariablesContext);
 
@@ -21,7 +22,7 @@ const Header: React.FC<Props> = ({ transparent = false }) => {
           position="left"
           aria-label="back"
           onClick={() => {
-            history.goBack();
+            goBack();
           }}
         >
           <BackIcon src={ArrowLeftIcon} />

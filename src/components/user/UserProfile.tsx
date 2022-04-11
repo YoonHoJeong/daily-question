@@ -1,9 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
 import UserImage from "./UserImage";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ArrowRightIcon } from "../../assets/icons";
+import { useInternalRouter } from "../../routes/useInternalRouter";
 
 interface Props {
   editable?: boolean;
@@ -15,9 +15,9 @@ const UserProfile: React.FC<Props> = ({
   showEmail = true,
 }) => {
   const { user } = useAuth();
-  const history = useHistory();
+  const { push } = useInternalRouter();
   const moveToUserEdit = () => {
-    history.push("/user/edit");
+    push("/user/edit");
   };
 
   return (
@@ -50,7 +50,7 @@ const MoveToUserEditButton: React.FC<MoveToUserEditButtonProps> = ({
 
   return (
     <button onClick={moveToUserEdit}>
-      <ChevronRightIcon sx={{ height: "24px" }} />
+      <Icon src={ArrowRightIcon} />
     </button>
   );
 };
@@ -61,6 +61,10 @@ const ProfileContainer = styled.section`
   width: 100%;
 
   background-color: ${(props) => props.theme.palette.white};
+`;
+
+const Icon = styled.img`
+  width: 24px;
 `;
 
 const UserInfo = styled.ul`

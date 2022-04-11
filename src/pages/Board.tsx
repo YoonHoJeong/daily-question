@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import DateAnswersCard from "../../components/DateAnswersCard";
-import LoadScreen from "../../components/common/LoadScreen";
-import { useFetchBoardAnswers } from "../../hooks/customUseQueries";
+import DateAnswersCard from "../components/DateAnswersCard";
+import LoadScreen from "../components/common/LoadScreen";
+import { useFetchBoardAnswers } from "../hooks/customUseQueries";
 
 interface Props {}
 

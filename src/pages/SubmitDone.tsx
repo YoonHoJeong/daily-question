@@ -1,7 +1,7 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/common/Button";
+import Button from "../components/common/Button";
+import { useInternalRouter } from "../routes/useInternalRouter";
 
 const Container = styled.div`
   width: 100%;
@@ -21,12 +21,12 @@ const MainText = styled.p`
 interface Props {}
 
 const SubmitDone: React.FC<Props> = () => {
-  const history = useHistory();
+  const { push } = useInternalRouter();
   const moveToMain = () => {
-    history.push("/");
+    push("/");
   };
   const moveToAnswers = () => {
-    history.push("/answers");
+    push("/answers");
   };
 
   return (

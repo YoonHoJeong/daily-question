@@ -1,31 +1,29 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../../components/common/Button";
-import { useAuth } from "../../hooks/useAuth";
+import Button from "../components/common/Button";
+import { useAuth } from "../hooks/useAuth";
 
-import BoxBlueLineLogo from "../../assets/icons/box/opened_white_bg.svg";
+import BoxBlueLineLogo from "../assets/icons/box/opened_white_bg.svg";
+import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
 const Onboarding: React.FC<Props> = () => {
   const auth = useAuth();
-  const history = useHistory();
+  const { push } = useInternalRouter();
 
   const moveToLogin = () => {
-    history.push("/login");
+    push("/login");
   };
   const moveToRegister = () => {
-    history.push("/register");
+    push("/register");
   };
-
-  // const { loading } = usePreloadImages([BoxBlueLineLogo]);
 
   useEffect(() => {
     if (auth && auth.user) {
-      history.push("/");
+      push("/");
     }
-  }, [auth, history]);
+  }, [auth, push]);
 
   return (
     <Container>

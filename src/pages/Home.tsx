@@ -1,12 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Button, LoadScreen } from "../../components/common";
-import { useFetchQuestions } from "../../hooks/customUseQueries";
-import {
-  QuestionsDataModel,
-  QuestionDataModel,
-} from "../../model/QuestionModels";
+import { Button, LoadScreen } from "../components/common";
+import { useFetchQuestions } from "../hooks/customUseQueries";
+import { QuestionsDataModel, QuestionDataModel } from "../model/QuestionModels";
 
 interface Props {}
 

@@ -21,13 +21,25 @@ interface CustomRoute {
   lazy?: boolean;
 }
 
-export const publicRoutes: CustomRoute[] = [
+interface PublicRoute extends CustomRoute {
+  path: PublicPath;
+}
+
+interface PrivateRoute extends CustomRoute {
+  path: PrivatePath;
+}
+
+interface AdminRoute extends CustomRoute {
+  path: AdminPath;
+}
+
+export const publicRoutes: PublicRoute[] = [
   { path: "/onboarding", Component: Onboarding },
   { path: "/login", Component: Login },
   { path: "/register", Component: Register },
 ];
 
-export const privateRoutes: CustomRoute[] = [
+export const privateRoutes: PrivateRoute[] = [
   { path: "/submit-done", Component: SubmitDone },
   { path: "/board", Component: Board },
   { path: "/user/edit", Component: UserEdit },
@@ -37,9 +49,20 @@ export const privateRoutes: CustomRoute[] = [
   { path: "/", Component: Home },
 ];
 
-export const adminRoutes: CustomRoute[] = [
+export const adminRoutes: AdminRoute[] = [
   { path: "/questions", Component: AdminQuestions },
   { path: "/answers", Component: AdminAnswers },
   { path: "/users", Component: AdminUsers },
   { path: "/", Component: AdminDashboard },
 ];
+
+export type PublicPath = "/onboarding" | "/login" | "/register";
+export type PrivatePath =
+  | "/"
+  | "/submit-done"
+  | "/board"
+  | "/user"
+  | "/user/edit"
+  | "/answers"
+  | "/question/:qid";
+export type AdminPath = "/" | "/questions" | "/answers" | "/users";

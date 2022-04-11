@@ -1,20 +1,13 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
-import { CustomAuthError, useAuth } from "../../hooks/useAuth";
-import { useForm } from "../../hooks/useForm";
-// import { usePreloadImages } from "../../hooks/usePreloadImages";
+import { CustomAuthError, useAuth } from "../hooks/useAuth";
+import { useForm } from "../hooks/useForm";
 
-import Header from "../../layouts/Header";
-import {
-  Input,
-  Button,
-  LoadScreen,
-  Spinner,
-  ErrorMessage,
-} from "../../components/common";
+import Header from "../layouts/Header";
+import { Input, Button, Spinner, ErrorMessage } from "../components/common";
 
-import BoxLogoGreyLogo from "../../assets/icons/box/opened_gray_bg.svg";
+import BoxLogoGreyLogo from "../assets/icons/box/opened_gray_bg.svg";
+import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
@@ -23,8 +16,7 @@ const Login: React.FC<Props> = () => {
   const [error, setError] = useState<CustomAuthError>();
   const [submitting, setSubmitting] = useState<boolean>(false);
   const auth = useAuth();
-  const history = useHistory();
-  // const { loading } = usePreloadImages([BoxLogoGreyLogo]);
+  const { push } = useInternalRouter();
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -38,9 +30,9 @@ const Login: React.FC<Props> = () => {
   };
   useEffect(() => {
     if (auth && auth.user) {
-      history.push("/");
+      push("/");
     }
-  }, [auth, history]);
+  }, [auth]);
 
   return (
     <>
@@ -66,8 +58,7 @@ const Login: React.FC<Props> = () => {
             style={{ marginTop: "10px" }}
             disabled={submitting}
           />
-          {/* <input id="autoLogin" type="checkBox" checked />
-          <label htmlFor="autoLogin">자동 로그인</label> */}
+
           <Button
             large
             bgColor="blue"

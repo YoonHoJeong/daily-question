@@ -3,9 +3,11 @@ import { Navigate, Outlet, RouteProps } from "react-router-dom";
 import { LoadScreen } from "../components/common";
 import { useAuth } from "../hooks/useAuth";
 
-interface Props extends RouteProps {}
+interface Props extends RouteProps {
+  redirectPath?: string;
+}
 
-const AdminRoute: React.FC<Props> = ({ redirectPath = "/" }) => {
+const AdminRoute: React.FC<Props> = ({ redirectPath = "/dqadmin/login" }) => {
   const auth = useAuth();
 
   if (!auth) {
@@ -17,7 +19,7 @@ const AdminRoute: React.FC<Props> = ({ redirectPath = "/" }) => {
   }
 
   if (!auth.user?.admin) {
-    return <Navigate to="/dqadmin/login" />;
+    return <Navigate to={redirectPath} />;
   }
 
   return <Outlet />;

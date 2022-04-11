@@ -23,6 +23,8 @@ class Question {
 }
 
 export const getTodayQuestions = async () => {
+  console.log("getTodayQuestions");
+
   if (process.env.NODE_ENV === "development") {
     const questions = await getData<QuestionsDataModel>("questions");
 
