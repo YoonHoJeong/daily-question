@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router";
 import { ArrowLeftIcon } from "../../assets/icons";
 import sizes from "./sizes";
 import { useInternalRouter } from "../../routes/useInternalRouter";
 import { layoutConfigs } from "./layoutConfig";
+import { GlobalPortal } from "./GlobalPortal";
 interface Props {
   transparent?: boolean;
 }
@@ -15,20 +16,22 @@ const Header: React.FC<Props> = ({ transparent = false }) => {
   const { pathnames } = layoutConfigs;
 
   return (
-    <Container transparent={transparent}>
-      {!backDisabledRoutes.includes(pathname) && (
-        <ButtonContainer
-          position="left"
-          aria-label="back"
-          onClick={() => {
-            goBack();
-          }}
-        >
-          <BackIcon src={ArrowLeftIcon} />
-        </ButtonContainer>
-      )}
-      <HeaderTitle>{pathnames[pathname]}</HeaderTitle>
-    </Container>
+    <GlobalPortal.Consumer>
+      <Container transparent={transparent}>
+        {!backDisabledRoutes.includes(pathname) && (
+          <ButtonContainer
+            position="left"
+            aria-label="back"
+            onClick={() => {
+              goBack();
+            }}
+          >
+            <BackIcon src={ArrowLeftIcon} />
+          </ButtonContainer>
+        )}
+        <HeaderTitle>{pathnames[pathname]}</HeaderTitle>
+      </Container>
+    </GlobalPortal.Consumer>
   );
 };
 

@@ -12,6 +12,7 @@ import {
   DiaryClickedIcon,
   DiaryIcon,
 } from "../../assets/icons";
+import { GlobalPortal } from "./GlobalPortal";
 
 import { layoutConfigs } from "./layoutConfig";
 import sizes from "./sizes";
@@ -44,28 +45,14 @@ const BottomNavigation: React.FC<Props> = () => {
     </NavItem>
   );
 
-  if (hasNotBottomNavigation(pathname)) {
-    return null;
-  }
-
   return (
-    <Navigator>
-      {Navigations.map((navigation) => NavigationItem(navigation))}
-    </Navigator>
+    <GlobalPortal.Consumer>
+      <Navigator>
+        {Navigations.map((navigation) => NavigationItem(navigation))}
+      </Navigator>
+    </GlobalPortal.Consumer>
   );
 };
-
-function hasNotBottomNavigation(pathname: string) {
-  const exceptPathnames = ["/user/edit", "/user/keeps", "/question"];
-
-  for (const exceptPathname of exceptPathnames) {
-    if (pathname.includes(exceptPathname)) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 interface Navigation {
   pathnames: string[];

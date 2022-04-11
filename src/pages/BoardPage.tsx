@@ -3,10 +3,12 @@ import styled from "styled-components";
 import DateAnswersCard from "../components/DateAnswersCard";
 import LoadScreen from "../components/common/LoadScreen";
 import { useFetchBoardAnswers } from "../hooks/customUseQueries";
+import { BottomNavigation, Header } from "../components/layouts";
+import { ClientLayout } from "../components/layouts/ClientLayout";
 
 interface Props {}
 
-const Board: React.FC<Props> = () => {
+const BoardPage: React.FC<Props> = () => {
   const { data, isLoading, isError } = useFetchBoardAnswers();
   const answers = data ?? {};
 
@@ -15,7 +17,8 @@ const Board: React.FC<Props> = () => {
   if (isError) return <>Error</>;
 
   return (
-    <ViewWindow>
+    <ClientLayout>
+      <Header />
       {isLoading ? (
         <LoadScreen />
       ) : (
@@ -27,13 +30,9 @@ const Board: React.FC<Props> = () => {
           />
         ))
       )}
-    </ViewWindow>
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 
-const ViewWindow = styled.ul`
-  overflow-y: scroll;
-  height: 100%;
-`;
-
-export default Board;
+export default BoardPage;

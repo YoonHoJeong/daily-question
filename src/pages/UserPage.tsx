@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { BottomNavigation, Header } from "../components/layouts";
+import { ClientLayout } from "../components/layouts/ClientLayout";
 import UserProfile from "../components/user/UserProfile";
 import { useAuth } from "../hooks/useAuth";
 
@@ -7,7 +9,8 @@ interface Props {}
 
 const UserPage: React.FC<Props> = () => {
   return (
-    <>
+    <ClientLayout>
+      <Header />
       <Container>
         <UserProfile />
       </Container>
@@ -16,7 +19,8 @@ const UserPage: React.FC<Props> = () => {
           <LogOutButton />
         </UserMenu>
       </UserMenues>
-    </>
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 

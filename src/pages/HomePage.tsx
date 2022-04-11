@@ -4,14 +4,17 @@ import styled from "styled-components";
 import { Button, LoadScreen } from "../components/common";
 import { useFetchQuestions } from "../hooks/customUseQueries";
 import { QuestionsDataModel, QuestionDataModel } from "../model/QuestionModels";
+import { Header, BottomNavigation } from "../components/layouts";
+import { ClientLayout } from "../components/layouts/ClientLayout";
 
 interface Props {}
 
-const Home: React.FC<Props> = () => {
+const HomePage: React.FC<Props> = () => {
   const { data: questions, isLoading } = useFetchQuestions();
 
   return (
-    <Container>
+    <ClientLayout>
+      <Header />
       {isLoading ? (
         <LoadScreen />
       ) : questions ? (
@@ -19,7 +22,8 @@ const Home: React.FC<Props> = () => {
       ) : (
         <Title>오늘은 질문이 없어요.</Title>
       )}
-    </Container>
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 
@@ -54,17 +58,6 @@ const KeywordLink: React.FC<{ question: QuestionDataModel }> = ({
   );
 };
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const Title = styled.p`
   font-size: 18px;
 
@@ -84,4 +77,4 @@ const Keyword = styled.li`
   }
 `;
 
-export default Home;
+export default HomePage;

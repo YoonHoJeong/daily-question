@@ -1,9 +1,17 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, {
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import UserImage from "../components/user/UserImage";
 import EditIcon from "../assets/icons/pencil.png";
 import { useAuth } from "../hooks/useAuth";
 import { useForm } from "../hooks/useForm";
+import { ClientLayout } from "../components/layouts/ClientLayout";
+import { BottomNavigation, Header } from "../components/layouts";
 
 interface Props {}
 
@@ -24,29 +32,33 @@ const UserEditPage: React.FC<Props> = () => {
     setShowPopup(false);
   };
 
-  const inputFields = [
-    {
-      label: "닉네임",
-      name: "name",
-      value: user!!.profile?.name || "이름을 입력해주세요.",
-      editable: true,
-    },
-    {
-      label: "소개",
-      name: "intro",
-      value: user!!.profile?.intro || "내 소개를 입력해주세요.",
-      editable: true,
-    },
-    {
-      label: "이메일",
-      name: "email",
-      value: user!!.email || "이메일을 입력해주세요.",
-      editable: false,
-    },
-  ];
+  const inputFields = useMemo(
+    () => [
+      {
+        label: "닉네임",
+        name: "name",
+        value: user!!.profile?.name || "이름을 입력해주세요.",
+        editable: true,
+      },
+      {
+        label: "소개",
+        name: "intro",
+        value: user!!.profile?.intro || "내 소개를 입력해주세요.",
+        editable: true,
+      },
+      {
+        label: "이메일",
+        name: "email",
+        value: user!!.email || "이메일을 입력해주세요.",
+        editable: false,
+      },
+    ],
+    [user]
+  );
 
   return (
-    <>
+    <ClientLayout>
+      <Header />
       {showPopup ? (
         <EditorPopup keyname={popupKey} closePopup={closePopup} />
       ) : null}
@@ -67,7 +79,8 @@ const UserEditPage: React.FC<Props> = () => {
           </InputRow>
         ))}
       </ProfileInfoForm>
-    </>
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 
