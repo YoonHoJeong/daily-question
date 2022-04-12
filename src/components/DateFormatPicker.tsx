@@ -1,7 +1,7 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { ArrowUpIcon, ArrowDownIcon } from "../../assets/icons";
+import { ArrowUpIcon, ArrowDownIcon } from "../assets/icons";
 import { Link, useLocation } from "react-router-dom";
 
 interface Props {}

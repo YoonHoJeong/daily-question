@@ -9,7 +9,7 @@ import { LoadScreen } from "../components/common";
 import DailyAnswers from "./Answers/DailyAnswers";
 import MonthlyAnswers from "./Answers/MonthlyAnswers";
 import WeeklyAnswers from "./Answers/Weekly/WeeklyAnswers";
-import DateFormatPicker from "./Answers/DateFormatPicker";
+import DateFormatPicker from "../components/DateFormatPicker";
 import { useFetchUserAnswers } from "../hooks/customUseQueries";
 import { BoxOpenedIcon, BoxClosedIcon } from "../assets/icons";
 import { usePreloadImages } from "../hooks/usePreloadImages";
@@ -41,41 +41,7 @@ const AnswersPage: React.FC<Props> = () => {
     return <LoadScreen />;
   }
 
-  return (
-    <Container>
-      {answers ? (
-        <>
-          <DateFormatPicker />
-          <Route path="/answers/monthly">
-            <MonthlyAnswers
-              date={selectedDate}
-              answers={answers}
-              changeMonth={changeMonth}
-            />
-          </Route>
-          <Route path="/answers/daily">
-            <DailyAnswers answers={answers} />
-          </Route>
-          <Route path="/answers/weekly">
-            <WeeklyAnswers
-              date={selectedDate}
-              answers={answers}
-              changeWeek={changeWeek}
-            />
-          </Route>
-          <Route path="/answers">
-            <WeeklyAnswers
-              date={selectedDate}
-              answers={answers}
-              changeWeek={changeWeek}
-            />
-          </Route>
-        </>
-      ) : (
-        <>답변한 질문이 없어요.</>
-      )}
-    </Container>
-  );
+  return <Container></Container>;
 };
 
 const Container = styled.div`

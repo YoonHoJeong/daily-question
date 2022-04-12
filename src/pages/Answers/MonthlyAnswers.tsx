@@ -11,20 +11,24 @@ import {
 import { QuestionDataModel } from "../../model/QuestionModels";
 import { AnswersWrapper } from "../../services/AnswerApi";
 import { CustomDate } from "../../services/CustomDate";
+import { BottomNavigation, Header } from "../../components/layouts";
+import { ClientLayout } from "../../components/layouts/ClientLayout";
 
 interface Props {
-  date: CustomDate;
-  answers: AnswersWrapper;
-  changeMonth: (monthCnt: number) => void;
+  // date: CustomDate;
+  // answers: AnswersWrapper;
+  // changeMonth: (monthCnt: number) => void;
 }
 
-const MonthlyAnswers: React.FC<Props> = ({ date, answers, changeMonth }) => {
-  const monthAnswers = answers.getDateQidAnswers().filteredByMonth(date);
-  const answerCount = monthAnswers.answerCount;
+const MonthlyAnswers: React.FC<Props> = () => {
+  // const monthAnswers = answers.getDateQidAnswers().filteredByMonth(date);
+  // const answerCount = monthAnswers.answerCount;
 
   return (
-    <Container>
-      <WeekToggle
+    <ClientLayout>
+      <Header />
+      MonthlyAnswers
+      {/* <WeekToggle
         toggleType="month"
         date={date}
         changeWeekOrMonth={changeMonth}
@@ -33,8 +37,9 @@ const MonthlyAnswers: React.FC<Props> = ({ date, answers, changeMonth }) => {
         <AnswerDateCount> {answerCount}개</AnswerDateCount>의 질문에 대답했어요.
       </HelperText>
 
-      <Calendar dateObj={date.obj} monthAnswers={monthAnswers.data} />
-    </Container>
+      <Calendar dateObj={date.obj} monthAnswers={monthAnswers.data} /> */}
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 

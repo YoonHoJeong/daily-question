@@ -6,6 +6,7 @@ import GlobalStyle from "./assets/css/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
+import { GlobalPortal } from "./components/layouts/GlobalPortal";
 
 interface Props {}
 
@@ -18,7 +19,9 @@ const App: React.FC<Props> = () => {
         <GlobalStyle />
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <Router />
+            <GlobalPortal.Provider>
+              <Router />
+            </GlobalPortal.Provider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </AuthProvider>

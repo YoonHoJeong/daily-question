@@ -12,41 +12,53 @@ const Router: React.FC<Props> = () => {
     <BrowserRouter>
       <Suspense fallback={<LoadScreen />}>
         <Routes>
-          {publicRoutes.map(({ path, Component }) => (
+          {publicRoutes.map(({ path, Component, type }) => (
             <Route
               key={path}
               path={path}
               element={
-                <ErrorBoundary>
+                type === "component" ? (
+                  <ErrorBoundary>
+                    <Component />
+                  </ErrorBoundary>
+                ) : (
                   <Component />
-                </ErrorBoundary>
+                )
               }
             />
           ))}
 
           <Route element={<PrivateRoute />}>
-            {privateRoutes.map(({ path, Component }) => (
+            {privateRoutes.map(({ path, Component, type }) => (
               <Route
                 key={path}
                 path={path}
                 element={
-                  <ErrorBoundary>
+                  type === "component" ? (
+                    <ErrorBoundary>
+                      <Component />
+                    </ErrorBoundary>
+                  ) : (
                     <Component />
-                  </ErrorBoundary>
+                  )
                 }
               />
             ))}
           </Route>
 
           <Route element={<AdminRoute />}>
-            {adminRoutes.map(({ path, Component }) => (
+            {adminRoutes.map(({ path, Component, type }) => (
               <Route
                 key={path}
                 path={path}
                 element={
-                  <ErrorBoundary>
+                  type === "component" ? (
+                    <ErrorBoundary>
+                      <Component />
+                    </ErrorBoundary>
+                  ) : (
                     <Component />
-                  </ErrorBoundary>
+                  )
                 }
               />
             ))}

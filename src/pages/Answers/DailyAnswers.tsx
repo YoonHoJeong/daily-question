@@ -1,20 +1,24 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
+import { BottomNavigation, Header } from "../../components/layouts";
+import { ClientLayout } from "../../components/layouts/ClientLayout";
 import UserProfile from "../../components/user/UserProfile";
 import { AnswersWrapper } from "../../services/AnswerApi";
 
 interface Props {
-  answers: AnswersWrapper;
+  // answers: AnswersWrapper;
 }
 
-const DailyAnswers: React.FC<Props> = ({ answers }) => {
-  const dateQidAnswers = answers.getDateQidAnswers();
-  const descendingDates = answers.getDatesDescending();
+const DailyAnswers: React.FC<Props> = () => {
+  // const dateQidAnswers = answers.getDateQidAnswers();
+  // const descendingDates = answers.getDatesDescending();
 
   return (
-    <Container>
-      <UserProfileContainer>
+    <ClientLayout>
+      <Header />
+      DailyAnswers
+      {/* <UserProfileContainer>
         <UserProfile editable={false} showEmail={false} />
       </UserProfileContainer>
       <DailyAnswersList>
@@ -26,8 +30,9 @@ const DailyAnswers: React.FC<Props> = ({ answers }) => {
             profileOn={false}
           />
         ))}
-      </DailyAnswersList>
-    </Container>
+      </DailyAnswersList> */}
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 

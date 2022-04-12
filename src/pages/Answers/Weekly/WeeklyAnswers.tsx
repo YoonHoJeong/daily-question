@@ -10,22 +10,28 @@ import WeeklyAnswerCards from "./WeeklyAnswerCards";
 import { DateQidAnswersDataModel } from "../../../model/AnswerModels";
 import { AnswersWrapper } from "../../../services/AnswerApi";
 import { CustomDate } from "../../../services/CustomDate";
+import { BottomNavigation, Header } from "../../../components/layouts";
+import { ClientLayout } from "../../../components/layouts/ClientLayout";
 
 interface Props {
-  date: CustomDate;
-  answers: AnswersWrapper;
-  changeWeek: (weekCount: number) => void;
+  // date: CustomDate;
+  // answers: AnswersWrapper;
+  // changeWeek: (weekCount: number) => void;
 }
 
-const WeeklyAnswers: React.FC<Props> = ({ date, answers, changeWeek }) => {
-  const weekAnswers = answers.getDateQidAnswers().filteredByWeek(date);
-  const weekDates = date.getAllWeeklyDates();
-  const totalWeekAnswerCnt = weekAnswers.answerCount;
-  const answeredDateCnt = weekAnswers.answeredDateCount;
+const WeeklyAnswers: React.FC<Props> = () => {
+  // const weekAnswers = answers.getDateQidAnswers().filteredByWeek(date);
+  // const weekDates = date.getAllWeeklyDates();
+  // const totalWeekAnswerCnt = weekAnswers.answerCount;
+  // const answeredDateCnt = weekAnswers.answeredDateCount;
 
   return (
-    <Container>
-      <>
+    <ClientLayout>
+      <Header />
+      WeeklyAnswers
+      <Link to="/answers/daily">일간</Link>
+      <Link to="/answers/daily">월간</Link>
+      {/* <>
         <WeekToggle
           toggleType="week"
           date={date}
@@ -50,8 +56,9 @@ const WeeklyAnswers: React.FC<Props> = ({ date, answers, changeWeek }) => {
             </Button>
           </Link>
         )}
-      </>
-    </Container>
+      </> */}
+      <BottomNavigation />
+    </ClientLayout>
   );
 };
 

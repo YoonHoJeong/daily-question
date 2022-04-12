@@ -53,8 +53,6 @@ const DateContainer = styled.li`
   background-color: ${(props) => props.theme.palette.white};
 
   display: flex;
-
-  border-top: 4px solid ${(props) => props.theme.palette.bgGrey};
 `;
 const SideDateBar = styled.div`
   display: flex;
