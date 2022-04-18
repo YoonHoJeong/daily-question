@@ -4,39 +4,39 @@ import { AnswersData, DateQidAnswersData } from './AnswerModels';
 
 export const AnswersWrapper = (data: AnswersData) => {
   const today = useMoment();
-  const march = useMoment('2022-03-03');
+  const testDate = useMoment('2022-03-03');
+
+  const filter = getFilter(data, testDate);
 
   return {
     getWeeklyAnswers() {
-      const weeklyAnswers = getFilteredWith(data, march, 'year').filter('week');
-      return getDateQidAnswers(weeklyAnswers.data);
+      const filtered = filter('year', 'week');
+      return getDateQidAnswers(filtered);
     },
     getMonthlyAnswers() {
-      const monthlyAnswers = getFilteredWith(data, march, 'year').filter('month');
-      return getDateQidAnswers(monthlyAnswers.data);
+      const filtered = filter('year', 'month');
+      return getDateQidAnswers(filtered);
     },
   };
 };
 
-const getFilteredWith = (answers: AnswersData, toFilterDate: MomentValue, dateKey: string) => {
-  const filtered: AnswersData = Object.keys(answers)
-    .filter((aid) => {
-      const {
-        question: { publish_date },
-      } = answers[aid];
-      const answerMoment = moment(publish_date);
-      const answerDateValue = answerMoment[dateKey]();
-
-      return toFilterDate[dateKey] === answerDateValue;
-    })
-    .reduce((obj, aid) => {
-      return { ...obj, [aid]: answers[aid] };
-    }, {});
-  return {
-    filter: (filterKey: string) => getFilteredWith(filtered, toFilterDate, filterKey),
-    data: filtered,
+type MomentFilterKeys = 'year' | 'month' | 'week';
+const getFilter =
+  (answers: AnswersData, toFilterDate: MomentValue) =>
+  (...filterKeys: MomentFilterKeys[]) => {
+    const filtered: AnswersData = Object.keys(answers)
+      .filter((aid) => {
+        const {
+          question: { publish_date },
+        } = answers[aid];
+        const answerMoment = moment(publish_date);
+        return filterKeys.every((key) => toFilterDate[key] === answerMoment[key]());
+      })
+      .reduce((obj, aid) => {
+        return { ...obj, [aid]: answers[aid] };
+      }, {});
+    return filtered;
   };
-};
 
 const getDateQidAnswers = (answers: AnswersData) => {
   const dateQidAnswers: DateQidAnswersData = Object.keys(answers).reduce((obj, aid) => {
