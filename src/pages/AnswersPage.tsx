@@ -1,58 +1,34 @@
-import React, { useState } from "react";
-import { Route } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 
-import styled from "styled-components";
-
-import { useAuth } from "../hooks/useAuth";
-
-import { LoadScreen } from "../components/common";
 import DailyAnswers from "./Answers/DailyAnswers";
 import MonthlyAnswers from "./Answers/MonthlyAnswers";
 import WeeklyAnswers from "./Answers/Weekly/WeeklyAnswers";
-import DateFormatPicker from "../components/DateFormatPicker";
-import { useFetchUserAnswers } from "../hooks/customUseQueries";
-import { BoxOpenedIcon, BoxClosedIcon } from "../assets/icons";
-import { usePreloadImages } from "../hooks/usePreloadImages";
-import { CustomDate } from "../services/CustomDate";
+import { DateFormatProvider, useDateFormat } from "../hooks/useDateFormat";
+import { Link } from "react-router-dom";
+import { ClientLayout } from "../components/layouts/ClientLayout";
 
 interface Props {}
 
 const AnswersPage: React.FC<Props> = () => {
-  const { user } = useAuth();
+  const dateFormat = useDateFormat();
+  console.log(dateFormat);
 
-  const { data: answers, isLoading } = useFetchUserAnswers(user!!.uid);
-
-  const [selectedDate, setSelectedDate] = useState<CustomDate>(
-    new CustomDate(new Date())
+  return (
+    <ClientLayout>
+      <DateFormatProvider>
+        <Link to="daily">일간</Link>
+        <Link to="weekly">주간</Link>
+        <Link to="monthly">월간</Link>
+        <Routes>
+          <Route path="" element={<WeeklyAnswers />} />
+          <Route path="weekly" element={<WeeklyAnswers />} />
+          <Route path="daily" element={<DailyAnswers />} />
+          <Route path="monthly" element={<MonthlyAnswers />} />
+        </Routes>
+      </DateFormatProvider>
+    </ClientLayout>
   );
-  const changeWeek = (weekCount: number) => {
-    setSelectedDate(selectedDate.changeWeek(weekCount));
-  };
-  const changeMonth = (monthCount: number) => {
-    setSelectedDate(selectedDate.changeMonth(monthCount));
-  };
-
-  const { loading: imageLoading } = usePreloadImages([
-    BoxOpenedIcon,
-    BoxClosedIcon,
-  ]);
-
-  if (isLoading || imageLoading) {
-    return <LoadScreen />;
-  }
-
-  return <Container></Container>;
 };
-
-const Container = styled.div`
-  position: relative;
-
-  width: 100vw;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
 export default AnswersPage;
