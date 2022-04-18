@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../../../components/common/Button";
+import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
-import WeekToggle from "../WeekToggle";
+import WeekToggle from "./WeekToggle";
 
-import { BoxClosedIcon, BoxOpenedIcon } from "../../../assets/icons";
-import HelperText from "../../../components/HelperText";
-import WeeklyAnswerCards from "./WeeklyAnswerCards";
-import { DateQidAnswersDataModel } from "../../../model/AnswerModels";
-import { AnswersWrapper } from "../../../services/AnswerApi";
-import { CustomDate } from "../../../services/CustomDate";
-import { BottomNavigation, Header } from "../../../components/layouts";
-import { ClientLayout } from "../../../components/layouts/ClientLayout";
+import { BoxClosedIcon, BoxOpenedIcon } from "../../assets/icons";
+import HelperText from "../../components/HelperText";
+import WeeklyAnswerCards from "./Weekly/WeeklyAnswerCards";
+import { DateQidAnswersDataModel } from "../../models/AnswerModels";
+import { AnswersWrapper } from "../../services/AnswerApi";
+import { CustomDate } from "../../services/CustomDate";
+import { BottomNavigation, Header } from "../../components/layouts";
+import { ClientLayout } from "../../components/layouts/ClientLayout";
 
 interface Props {
   // date: CustomDate;
@@ -19,18 +19,15 @@ interface Props {
   // changeWeek: (weekCount: number) => void;
 }
 
-const WeeklyAnswers: React.FC<Props> = () => {
+const WeeklyAnswersPage: React.FC<Props> = () => {
   // const weekAnswers = answers.getDateQidAnswers().filteredByWeek(date);
   // const weekDates = date.getAllWeeklyDates();
   // const totalWeekAnswerCnt = weekAnswers.answerCount;
   // const answeredDateCnt = weekAnswers.answeredDateCount;
 
   return (
-    <ClientLayout>
-      <Header />
+    <>
       WeeklyAnswers
-      <Link to="/answers/daily">일간</Link>
-      <Link to="/answers/daily">월간</Link>
       {/* <>
         <WeekToggle
           toggleType="week"
@@ -57,8 +54,7 @@ const WeeklyAnswers: React.FC<Props> = () => {
           </Link>
         )}
       </> */}
-      <BottomNavigation />
-    </ClientLayout>
+    </>
   );
 };
 
@@ -117,4 +113,4 @@ const DateIconsContainer = styled.ul`
   }
 `;
 
-export default WeeklyAnswers;
+export default WeeklyAnswersPage;

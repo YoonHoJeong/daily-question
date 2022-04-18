@@ -7,8 +7,8 @@ import HelperText from "../../components/HelperText";
 import {
   AnswerDataModel,
   DateQidAnswersDataModel,
-} from "../../model/AnswerModels";
-import { QuestionDataModel } from "../../model/QuestionModels";
+} from "../../models/AnswerModels";
+import { QuestionDataModel } from "../../models/QuestionModels";
 import { AnswersWrapper } from "../../services/AnswerApi";
 import { CustomDate } from "../../services/CustomDate";
 import { BottomNavigation, Header } from "../../components/layouts";
@@ -20,13 +20,12 @@ interface Props {
   // changeMonth: (monthCnt: number) => void;
 }
 
-const MonthlyAnswers: React.FC<Props> = () => {
+const MonthlyAnswersPage: React.FC<Props> = () => {
   // const monthAnswers = answers.getDateQidAnswers().filteredByMonth(date);
   // const answerCount = monthAnswers.answerCount;
 
   return (
-    <ClientLayout>
-      <Header />
+    <>
       MonthlyAnswers
       {/* <WeekToggle
         toggleType="month"
@@ -38,8 +37,7 @@ const MonthlyAnswers: React.FC<Props> = () => {
       </HelperText>
 
       <Calendar dateObj={date.obj} monthAnswers={monthAnswers.data} /> */}
-      <BottomNavigation />
-    </ClientLayout>
+    </>
   );
 };
 
@@ -121,4 +119,4 @@ const cellStyleByAnswerCnt = (dateAnswers?: {
   return cellStyle;
 };
 
-export default MonthlyAnswers;
+export default MonthlyAnswersPage;

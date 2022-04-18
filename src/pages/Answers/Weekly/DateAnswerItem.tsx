@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { AnswerDataModel } from "../../../model/AnswerModels";
-import { QuestionDataModel } from "../../../model/QuestionModels";
+import { AnswerDataModel } from "../../../models/AnswerModels";
+import { QuestionDataModel } from "../../../models/QuestionModels";
 import { getDay } from "../../../services/DateManager";
 import WeeklyAnswerCard from "./WeeklyAnswerCard";
 

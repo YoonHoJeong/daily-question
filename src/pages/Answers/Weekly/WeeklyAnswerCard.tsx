@@ -3,7 +3,7 @@ import { useForm } from "../../../hooks/useForm";
 import AnswerOptionCheckBoxes from "../../../components/AnswerOptionCheckBoxes";
 import { SyntheticEvent } from "react";
 import { Answer } from "../../../services/AnswerApi";
-import { AnswerDataModel } from "../../../model/AnswerModels";
+import { AnswerDataModel } from "../../../models/AnswerModels";
 
 interface Props {
   answers: { [aid: string]: AnswerDataModel };

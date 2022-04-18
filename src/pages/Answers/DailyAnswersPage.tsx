@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import DateAnswersCard from "../../components/DateAnswersCard";
 import { BottomNavigation, Header } from "../../components/layouts";
-import { ClientLayout } from "../../components/layouts/ClientLayout";
 import UserProfile from "../../components/user/UserProfile";
 import { AnswersWrapper } from "../../services/AnswerApi";
 
@@ -10,13 +9,12 @@ interface Props {
   // answers: AnswersWrapper;
 }
 
-const DailyAnswers: React.FC<Props> = () => {
+const DailyAnswersPage: React.FC<Props> = () => {
   // const dateQidAnswers = answers.getDateQidAnswers();
   // const descendingDates = answers.getDatesDescending();
 
   return (
-    <ClientLayout>
-      <Header />
+    <>
       DailyAnswers
       {/* <UserProfileContainer>
         <UserProfile editable={false} showEmail={false} />
@@ -31,8 +29,7 @@ const DailyAnswers: React.FC<Props> = () => {
           />
         ))}
       </DailyAnswersList> */}
-      <BottomNavigation />
-    </ClientLayout>
+    </>
   );
 };
 
@@ -49,4 +46,4 @@ const DailyAnswersList = styled.ul`
   width: 100%;
 `;
 
-export default DailyAnswers;
+export default DailyAnswersPage;
