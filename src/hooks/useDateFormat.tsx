@@ -6,12 +6,15 @@ interface DateFormatContextValue {
 }
 const dateFormatContext = createContext<DateFormatContextValue | null>(null);
 
-export const useDateFormat = () => useContext(dateFormatContext);
+interface Props {
+  initVal: DateFormatType;
+}
 
-interface Props {}
-
-export const DateFormatProvider: React.FC<Props> = ({ children }) => {
-  const [dateFormat, setDateFormat] = useState<DateFormatType>("weekly");
+export const DateFormatProvider: React.FC<Props> = ({
+  children,
+  initVal = "weekly",
+}) => {
+  const [dateFormat, setDateFormat] = useState<DateFormatType>(() => initVal);
   const changeDateFormat = (newDF: DateFormatType) => {
     setDateFormat(newDF);
   };
@@ -24,4 +27,6 @@ export const DateFormatProvider: React.FC<Props> = ({ children }) => {
   );
 };
 
-export type DateFormatType = "weekly" | "daily" | "monthly";
+export const useDateFormat = () => useContext(dateFormatContext);
+
+type DateFormatType = "weekly" | "daily" | "monthly";
