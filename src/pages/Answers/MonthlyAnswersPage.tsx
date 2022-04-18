@@ -1,18 +1,17 @@
-import React from "react";
-import { getAllDatesOfMonth, getToday } from "../../services/DateManager";
-import styles from "../../assets/css/calendar.module.css";
-import styled from "styled-components";
-import WeekToggle from "./WeekToggle";
-import HelperText from "../../components/HelperText";
-import {
-  AnswerDataModel,
-  DateQidAnswersDataModel,
-} from "../../models/AnswerModels";
-import { QuestionDataModel } from "../../models/QuestionModels";
-import { AnswersWrapper } from "../../services/AnswerApi";
-import { CustomDate } from "../../services/CustomDate";
-import { BottomNavigation, Header } from "../../components/layouts";
-import { ClientLayout } from "../../components/layouts/ClientLayout";
+import React from 'react';
+import { getAllDatesOfMonth, getToday } from '../../services/DateManager';
+import styles from '../../assets/css/calendar.module.css';
+import styled from 'styled-components';
+import DateToggler from '../../components/DateToggler';
+import HelperText from '../../components/HelperText';
+import { AnswerData, DateQidAnswersData } from '../../models/AnswerModels';
+import { QuestionDataModel } from '../../models/QuestionModels';
+import { AnswersWrapper } from '../../services/AnswerApi';
+import { CustomDate } from '../../services/CustomDate';
+import { BottomNavigation, Header } from '../../components/layouts';
+import { ClientLayout } from '../../components/layouts/ClientLayout';
+import { useMyAnswers } from '../../hooks/customUseQueries';
+import { useMoment } from '../../hooks/useMoment';
 
 interface Props {
   // date: CustomDate;
@@ -23,16 +22,18 @@ interface Props {
 const MonthlyAnswersPage: React.FC<Props> = () => {
   // const monthAnswers = answers.getDateQidAnswers().filteredByMonth(date);
   // const answerCount = monthAnswers.answerCount;
+  const { data: answers } = useMyAnswers();
+  const moment = useMoment();
 
   return (
     <>
-      MonthlyAnswers
-      {/* <WeekToggle
-        toggleType="month"
-        date={date}
-        changeWeekOrMonth={changeMonth}
+      <DateToggler
+        year={moment.year}
+        month={moment.month + 1}
+        onClickLeft={moment.setMonth(moment.month - 1)}
+        onClickRight={moment.setMonth(moment.month + 1)}
       />
-      <HelperText>
+      {/* <HelperText>
         <AnswerDateCount> {answerCount}개</AnswerDateCount>의 질문에 대답했어요.
       </HelperText>
 
@@ -58,14 +59,13 @@ const AnswerDateCount = styled.span`
 
 interface CalendarProps {
   dateObj: Date;
-  monthAnswers: DateQidAnswersDataModel;
+  monthAnswers: DateQidAnswersData;
 }
 
 const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
   const dates = getAllDatesOfMonth(dateObj);
   const todayDateObj = new Date(getToday());
-  const isActiveDate = (compareDate: string) =>
-    new Date(compareDate) < todayDateObj ? true : false;
+  const isActiveDate = (compareDate: string) => (new Date(compareDate) < todayDateObj ? true : false);
 
   return (
     <ul className={styles.calendar}>
@@ -75,14 +75,7 @@ const Calendar: React.FC<CalendarProps> = ({ dateObj, monthAnswers }) => {
       <li className={styles.day}>목</li>
       <li className={styles.day}>금</li>
       {dates.map((date) => (
-        <li
-          key={date}
-          className={
-            isActiveDate(date)
-              ? cellStyleByAnswerCnt(monthAnswers[date])
-              : styles.cellNonActive
-          }
-        >
+        <li key={date} className={isActiveDate(date) ? cellStyleByAnswerCnt(monthAnswers[date]) : styles.cellNonActive}>
           {new Date(date).getDate()}
         </li>
       ))}
@@ -94,7 +87,7 @@ const cellStyleByAnswerCnt = (dateAnswers?: {
   [qid: string]: {
     question: QuestionDataModel;
     answers: {
-      [aid: string]: AnswerDataModel;
+      [aid: string]: AnswerData;
     };
   };
 }) => {

@@ -1,21 +1,22 @@
-import React from "react";
-import styled from "styled-components";
-import Button from "../../components/common/Button";
-import { Link } from "react-router-dom";
-import WeekToggle from "./WeekToggle";
+import React from 'react';
+import styled from 'styled-components';
+import Button from '../../components/common/Button';
+import { Link } from 'react-router-dom';
+import DateToggler from '../../components/DateToggler';
 
-import { BoxClosedIcon, BoxOpenedIcon } from "../../assets/icons";
-import HelperText from "../../components/HelperText";
-import WeeklyAnswerCards from "./Weekly/WeeklyAnswerCards";
-import { DateQidAnswersDataModel } from "../../models/AnswerModels";
-import { AnswersWrapper } from "../../services/AnswerApi";
-import { CustomDate } from "../../services/CustomDate";
-import { BottomNavigation, Header } from "../../components/layouts";
-import { ClientLayout } from "../../components/layouts/ClientLayout";
+import { BoxClosedIcon, BoxOpenedIcon } from '../../assets/icons';
+import HelperText from '../../components/HelperText';
+import WeeklyAnswerCards from './Weekly/WeeklyAnswerCards';
+import { DateQidAnswersData } from '../../models/AnswerModels';
+import { AnswersWrapper } from '../../services/AnswerApi';
+import { CustomDate } from '../../services/CustomDate';
+import { BottomNavigation, Header } from '../../components/layouts';
+import { ClientLayout } from '../../components/layouts/ClientLayout';
+import { useMyAnswers } from '../../hooks/customUseQueries';
+import { useMoment } from '../../hooks/useMoment';
 
 interface Props {
   // date: CustomDate;
-  // answers: AnswersWrapper;
   // changeWeek: (weekCount: number) => void;
 }
 
@@ -24,17 +25,19 @@ const WeeklyAnswersPage: React.FC<Props> = () => {
   // const weekDates = date.getAllWeeklyDates();
   // const totalWeekAnswerCnt = weekAnswers.answerCount;
   // const answeredDateCnt = weekAnswers.answeredDateCount;
+  const { data: answers } = useMyAnswers();
+  const moment = useMoment();
 
   return (
     <>
-      WeeklyAnswers
-      {/* <>
-        <WeekToggle
-          toggleType="week"
-          date={date}
-          changeWeekOrMonth={changeWeek}
-        />
-        <HelperText>
+      <DateToggler
+        year={moment.year}
+        month={moment.month}
+        weekOfMonth={moment.weekOfMonth}
+        onClickLeft={moment.setWeek(moment.week - 1)}
+        onClickRight={moment.setWeek(moment.week + 1)}
+      />
+      {/* <HelperText>
           {totalWeekAnswerCnt > 0 ? (
             <>
               5일 중 <AnswerDateCount>{answeredDateCnt}일</AnswerDateCount>{" "}
@@ -52,27 +55,20 @@ const WeeklyAnswersPage: React.FC<Props> = () => {
               오늘의 재밌는 질문 대답하러 가기
             </Button>
           </Link>
-        )}
-      </> */}
+        )} */}
     </>
   );
 };
 
 interface DateIconsProps {
   weekDates: string[];
-  weekAnswers: DateQidAnswersDataModel;
+  weekAnswers: DateQidAnswersData;
 }
 const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
   <DateIconsContainer>
     {weekDates.map((date) => (
       <DateIconContainer key={date}>
-        <DateIcon
-          src={
-            Object.keys(weekAnswers).includes(date)
-              ? BoxOpenedIcon
-              : BoxClosedIcon
-          }
-        />
+        <DateIcon src={Object.keys(weekAnswers).includes(date) ? BoxOpenedIcon : BoxClosedIcon} />
       </DateIconContainer>
     ))}
   </DateIconsContainer>
