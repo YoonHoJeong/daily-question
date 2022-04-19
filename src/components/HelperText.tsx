@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const HelperText = styled.p`
+const HelperText = styled.div`
   margin-top: 14px;
 
   font-weight: 500;

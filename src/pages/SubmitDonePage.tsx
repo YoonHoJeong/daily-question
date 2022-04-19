@@ -20,7 +20,7 @@ const MainText = styled.p`
 
 interface Props {}
 
-const SubmitDone: React.FC<Props> = () => {
+const SubmitDonePage: React.FC<Props> = () => {
   const { push } = useInternalRouter();
   const moveToMain = () => {
     push("/");
@@ -46,4 +46,4 @@ const SubmitDone: React.FC<Props> = () => {
   );
 };
 
-export default SubmitDone;
+export default SubmitDonePage;

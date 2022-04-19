@@ -34,10 +34,12 @@ export interface DateQidAnswersData {
 }
 
 export interface QidAnswersData {
-  [qid: string]: {
-    question: QuestionDataModel;
-    answers: {
-      [aid: string]: AnswerData;
-    };
+  [qid: string]: QuestionAnswersModel;
+}
+
+export interface QuestionAnswersModel {
+  question: QuestionDataModel;
+  answers: {
+    [aid: string]: AnswerData;
   };
 }

@@ -1,4 +1,4 @@
-import AnswersPage from "./AnswersPage";
+import AnswersPage from "./Answers/AnswersPage";
 import BoardPage from "./BoardPage";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";

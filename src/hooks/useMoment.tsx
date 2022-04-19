@@ -14,8 +14,6 @@ export interface UseMomentValue {
   datesOfWeek: string[];
 }
 
-export type MomentValueType = 'year' | 'month' | 'week' | 'weekString';
-
 export const useMoment = (initVal?: string) => {
   const [date, setDate] = useState(moment(initVal));
 

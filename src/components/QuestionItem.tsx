@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { QuestionDataModel } from "../model/QuestionModels";
+import { QuestionDataModel } from "../models/QuestionModels";
 
 interface Props {
   question: QuestionDataModel;

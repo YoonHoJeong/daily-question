@@ -1,5 +1,5 @@
 import React, { SyntheticEvent } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
 import { useForm } from "../../hooks/useForm";
@@ -18,7 +18,7 @@ const Container = styled.form`
 
 const AdminLogin: React.FC<Props> = () => {
   const auth = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { form, onChange } = useForm({ email: "", password: "" });
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -26,8 +26,7 @@ const AdminLogin: React.FC<Props> = () => {
   };
 
   if (auth.user?.admin) {
-    history.push("/dqadmin");
-    console.log("already logged in!");
+    navigate("/dqadmin");
   }
 
   return (

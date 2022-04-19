@@ -4,10 +4,11 @@ interface DateFormatContextValue {
   dateFormat: DateFormatType;
   changeDateFormat: (newDF: DateFormatType) => void;
 }
+
 const dateFormatContext = createContext<DateFormatContextValue | null>(null);
 
 interface Props {
-  initVal: DateFormatType;
+  initVal?: DateFormatType;
 }
 
 export const DateFormatProvider: React.FC<Props> = ({

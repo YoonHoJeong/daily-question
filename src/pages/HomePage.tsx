@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Button, LoadScreen } from "../components/common";
 import { useFetchQuestions } from "../hooks/customUseQueries";
-import { QuestionsDataModel, QuestionDataModel } from "../model/QuestionModels";
+import {
+  QuestionsDataModel,
+  QuestionDataModel,
+} from "../models/QuestionModels";
 import { Header, BottomNavigation } from "../components/layouts";
 import { ClientLayout } from "../components/layouts/ClientLayout";
 

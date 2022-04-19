@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { useForm } from "../../../hooks/useForm";
-import AnswerOptionCheckBoxes from "../../../components/AnswerOptionCheckBoxes";
-import { SyntheticEvent } from "react";
-import { Answer } from "../../../services/AnswerApi";
-import { AnswerDataModel } from "../../../models/AnswerModels";
+import styled from 'styled-components';
+import { useForm } from '../../hooks/useForm';
+import AnswerOptionCheckBoxes from './AnswerOptionCheckBoxes';
+import { SyntheticEvent } from 'react';
+import { Answer } from '../../services/AnswerApi';
+import { AnswerData } from '../../models/AnswerModels';
 
 interface Props {
-  answers: { [aid: string]: AnswerDataModel };
+  answers: { [aid: string]: AnswerData };
 }
 
-const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
+const AnswerCardWithBorder: React.FC<Props> = ({ answers }) => {
   const answer = new Answer(Object.values(answers)[0]);
 
   const { form, setProperty } = useForm({
@@ -46,10 +46,10 @@ const WeeklyAnswerCard: React.FC<Props> = ({ answers }) => {
   );
 };
 
-const ConvertPublicMessage = "공개 글로 전환하시겠어요?";
-const ConvertPrivateMessage = "비공개 글로 전환하시겠어요?";
-const ConvertAnonymousMessage = "익명 글로 전환하시겠어요?";
-const ConvertRealnameMessage = "실명 글로 전환하시겠어요?";
+const ConvertPublicMessage = '공개 글로 전환하시겠어요?';
+const ConvertPrivateMessage = '비공개 글로 전환하시겠어요?';
+const ConvertAnonymousMessage = '익명 글로 전환하시겠어요?';
+const ConvertRealnameMessage = '실명 글로 전환하시겠어요?';
 const ConfirmMessages = {
   isPublic: {
     true: ConvertPrivateMessage,
@@ -64,6 +64,8 @@ const ConfirmMessages = {
 const Container = styled.li``;
 
 const CardContainer = styled.div`
+  width: 300px;
+
   padding: 10px 16px;
   padding-bottom: 19px;
 
@@ -73,7 +75,6 @@ const CardContainer = styled.div`
   line-height: 19px;
   /* identical to box height */
 
-  width: 300px;
   background-color: ${(props) => props.theme.palette.white};
 `;
 
@@ -103,4 +104,4 @@ const AnswerText = styled.div`
   }
 `;
 
-export default WeeklyAnswerCard;
+export default AnswerCardWithBorder;

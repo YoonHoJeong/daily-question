@@ -1,13 +1,12 @@
-import { AnswersWrapper } from "./../services/AnswerApi";
-import { useQuery } from "react-query";
-import {
-  DateQidAnswersDataModel,
-  AnswersDataModel,
-} from "../model/AnswerModels";
-import { QuestionsDataModel } from "../model/QuestionModels";
+import { useAuth } from './useAuth';
+// import { AnswersWrapper } from './../services/AnswerApi';
+import { useQuery } from 'react-query';
+import { DateQidAnswersData, AnswersData } from '../models/AnswerModels';
+import { QuestionsDataModel } from '../models/QuestionModels';
 
-import { getBoardAnswers, getUserAnswers } from "../services/AnswerApi";
-import { getTodayQuestions } from "../services/QuestionApi";
+import { getBoardAnswers, getUserAnswers } from '../services/AnswerApi';
+import { getTodayQuestions } from '../services/QuestionApi';
+import { AnswersWrapper, AnswersWrapperValue } from '../models/AnswersWrapper';
 
 const MIN_IN_MS = 60000;
 const HOUR_IN_MS = MIN_IN_MS * 60;
@@ -21,23 +20,23 @@ const questionConfig = {
 };
 
 export const useFetchQuestions = () => {
-  return useQuery<QuestionsDataModel>(
-    "questions",
-    getTodayQuestions,
-    questionConfig
-  );
+  return useQuery<QuestionsDataModel>('questions', getTodayQuestions, questionConfig);
 };
 
-export const useFetchBoardAnswers = () =>
-  useQuery<DateQidAnswersDataModel>(
-    "board-answers",
-    getBoardAnswers,
-    defaultConfig
-  );
+export const useFetchBoardAnswers = () => useQuery<DateQidAnswersData>('board-answers', getBoardAnswers, defaultConfig);
 
-export const useFetchUserAnswers = (uid: string) =>
-  useQuery<AnswersDataModel, unknown, AnswersWrapper>(
-    "user-answers",
-    () => getUserAnswers(uid),
-    { ...defaultConfig, select: (data) => new AnswersWrapper(data) }
-  );
+export const useMyAnswers = () => {
+  const { user } = useAuth();
+  if (!user?.uid) {
+    throw new Error('fetch user answers, but no uid');
+  }
+
+  return useFetchUserAnswers(user.uid, { suspense: true });
+};
+
+export const useFetchUserAnswers = (uid: string, options?: object) =>
+  useQuery<AnswersData, unknown, AnswersWrapperValue>('user-answers', () => getUserAnswers(uid), {
+    ...defaultConfig,
+    select: (data) => AnswersWrapper(data),
+    ...options,
+  });

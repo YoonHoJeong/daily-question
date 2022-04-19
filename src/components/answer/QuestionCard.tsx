@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { AnswerDataModel } from "../model/AnswerModels";
-import { QuestionDataModel } from "../model/QuestionModels";
-import AnswerCard from "./AnswerCard";
+import styled from 'styled-components';
+import { AnswerData } from '../../models/AnswerModels';
+import { QuestionDataModel } from '../../models/QuestionModels';
+import AnswerCard from './AnswerCard';
 
 interface Props {
   question: QuestionDataModel;
   answers: {
-    [aid: string]: AnswerDataModel;
+    [aid: string]: AnswerData;
   };
   profileOn: boolean;
 }
@@ -22,7 +22,7 @@ const QuestionCard: React.FC<Props> = ({
       <QuestionText>{question.question}</QuestionText>
       <Answers>
         {Object.keys(answers).map((aid) => (
-          <AnswerCard key={aid} answer={answers[aid]} profileOn={profileOn} />
+          <AnswerCard.NoBorder key={aid} answer={answers[aid]} profileOn={profileOn} />
         ))}
       </Answers>
     </QuestionCardContainer>

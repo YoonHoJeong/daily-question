@@ -1,30 +1,27 @@
-import React from "react";
-import styled from "styled-components";
-import { AnswerDataModel } from "../model/AnswerModels";
-import UserImage from "./user/UserImage";
+import React from 'react';
+import styled from 'styled-components';
+import { AnswerData } from '../../models/AnswerModels';
+import { UserImage } from '../user';
 
 interface Props {
-  answer: AnswerDataModel;
-  profileOn: boolean;
+  answer: AnswerData;
+  profileOn?: boolean;
 }
-
-const AnswerCard: React.FC<Props> = ({ answer, profileOn }) => {
+const AnswerCardWithNoBorder: React.FC<Props> = ({ answer, profileOn = false }) => {
   return (
     <AnswerContainer>
       <Profile
         style={{
-          display: profileOn ? "flex" : "none",
+          display: profileOn ? 'flex' : 'none',
         }}
       >
         <UserImage
           style={{
-            width: "28px",
-            height: "28px",
+            width: '28px',
+            height: '28px',
           }}
         />
-        <ProfileName>
-          {answer.isAnonymous ? "익명" : answer.user.profile.name || "묻다"}
-        </ProfileName>
+        <ProfileName>{answer.isAnonymous ? '익명' : answer.user.profile.name || '묻다'}</ProfileName>
       </Profile>
       <AnswerAndFav>
         <AnswerText>{answer.answer}</AnswerText>
@@ -69,4 +66,4 @@ const AnswerText = styled.p`
   white-space: pre-line;
 `;
 
-export default AnswerCard;
+export default AnswerCardWithNoBorder;

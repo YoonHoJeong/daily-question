@@ -1,4 +1,7 @@
-import { QuestionDataModel, QuestionsDataModel } from "../model/QuestionModels";
+import {
+  QuestionDataModel,
+  QuestionsDataModel,
+} from "../models/QuestionModels";
 import { getToday } from "./DateManager";
 import { getData, updateData } from "./DBInterface";
 

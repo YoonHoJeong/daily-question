@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react";
-import { AnswerDataModel, AnswerFormData } from "../model/AnswerModels";
-import { AuthUser, UserDataModel } from "../model/UserModels";
-import { combineAnswerData, getUserAnswers } from "./AnswerApi";
-import { getData, getNewId, updateData } from "./DBInterface";
+import { useCallback, useState } from 'react';
+import { AnswerData, AnswerFormData } from '../models/AnswerModels';
+import { AuthUser, UserDataModel } from '../models/UserModels';
+import { combineAnswerData, getUserAnswers } from './AnswerApi';
+import { getData, getNewId, updateData } from './DBInterface';
 
 export const useCustomUser = () => {
   const [userData, setUserData] = useState<UserDataModel | null>(null);
@@ -19,44 +19,34 @@ export const useCustomUser = () => {
     setUserData(null);
   }, []);
 
-  const registerUserDataAndSync = async (
-    uid: string,
-    userData: UserDataModel
-  ) => {
+  const registerUserDataAndSync = async (uid: string, userData: UserDataModel) => {
     await updateAllUserDataAndSync(uid, userData);
   };
 
   const updateProfile = async (newProfileData: object) => {
     if (!userData) {
-      throw new Error("updateProfile : user not logged in!");
+      throw new Error('updateProfile : user not logged in!');
     }
 
-    await updateAllUserDataAndSync(
-      userData!!.uid,
-      appendProfilePath(newProfileData)
-    );
+    await updateAllUserDataAndSync(userData!!.uid, appendProfilePath(newProfileData));
   };
 
   const submitAnswer = async (formData: AnswerFormData) => {
     if (!userData) {
-      throw new Error("submitAnswer, no userData");
+      throw new Error('submitAnswer, no userData');
     }
 
     const updates = {};
 
-    const newAid = getNewId("answers");
-    const answerData: AnswerDataModel = combineAnswerData(
-      newAid,
-      formData,
-      userData
-    );
+    const newAid = getNewId('answers');
+    const answerData: AnswerData = combineAnswerData(newAid, formData, userData);
 
-    updates["answers/" + newAid] = answerData;
-    updates["users/" + userData.uid + "/answers/" + newAid] = true;
-    updates["user-answers/" + userData.uid + "/" + newAid] = answerData;
-    updates["questions/" + formData.question.qid + "/answers/" + newAid] = true;
+    updates['answers/' + newAid] = answerData;
+    updates['users/' + userData.uid + '/answers/' + newAid] = true;
+    updates['user-answers/' + userData.uid + '/' + newAid] = answerData;
+    updates['questions/' + formData.question.qid + '/answers/' + newAid] = true;
 
-    await updateData("", updates);
+    await updateData('', updates);
   };
 
   const updateAllUserDataAndSync = async (uid: string, userData: object) => {
@@ -73,7 +63,7 @@ export const useCustomUser = () => {
       return updates;
     }, {});
 
-    await updateData("", updates);
+    await updateData('', updates);
     await fetchAndSyncUserData(uid);
   };
 

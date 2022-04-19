@@ -3,6 +3,7 @@ import {
   AdminDashboard,
   AdminQuestions,
   AdminUsers,
+  AnswersPage,
   BoardPage,
   HomePage,
   LoginPage,
@@ -13,9 +14,6 @@ import {
   UserEditPage,
   UserPage,
 } from "../pages";
-import DailyAnswers from "../pages/Answers/DailyAnswers";
-import MonthlyAnswers from "../pages/Answers/MonthlyAnswers";
-import WeeklyAnswers from "../pages/Answers/Weekly/WeeklyAnswers";
 
 interface CustomRoute {
   type: RouteType;
@@ -55,14 +53,14 @@ export const privateRoutes: PrivateRoute[] = [
   { path: "/board", Component: BoardPage, ...componentConfig },
   { path: "/user", Component: UserPage, ...nestedRoutesConfig },
   { path: "/user/edit", Component: UserEditPage, ...nestedRoutesConfig },
-  { path: "/answers", Component: WeeklyAnswers, ...nestedRoutesConfig },
-  { path: "/answers/weekly", Component: WeeklyAnswers, ...nestedRoutesConfig },
-  { path: "/answers/daily", Component: DailyAnswers, ...nestedRoutesConfig },
-  {
-    path: "/answers/monthly",
-    Component: MonthlyAnswers,
-    ...nestedRoutesConfig,
-  },
+  { path: "/answers/*", Component: AnswersPage, ...componentConfig },
+  // { path: "/answers/weekly", Component: WeeklyAnswers, ...nestedRoutesConfig },
+  // { path: "/answers/daily", Component: DailyAnswers, ...nestedRoutesConfig },
+  // {
+  //   path: "/answers/monthly",
+  //   Component: MonthlyAnswers,
+  //   ...nestedRoutesConfig,
+  // },
   {
     path: "/question/:qid",
     Component: QuestionPage,
@@ -89,11 +87,11 @@ export type PrivatePath =
   | "/board"
   | "/user"
   | "/user/edit"
-  | "/answers"
+  | "/answers/*"
   | "/answers/weekly"
   | "/answers/daily"
   | "/answers/monthly"
   | "/question/:qid";
-export type AdminPath = "/" | "/questions" | "/answers" | "/users";
 
+export type AdminPath = "/" | "/questions" | "/answers" | "/users";
 type RouteType = "nestedRoutes" | "component";

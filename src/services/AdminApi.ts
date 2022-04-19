@@ -1,5 +1,5 @@
 import { child, push, ref, update } from "firebase/database";
-import { QuestionsDataModel } from "../model/QuestionModels";
+import { QuestionsDataModel } from "../models/QuestionModels";
 import { calcWeek } from "./DateManager";
 import { fireDB } from "./firebase";
 import { fetchFireDBData } from "./fireDB";

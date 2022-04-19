@@ -1,18 +1,15 @@
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
-import { useMutation } from "react-query";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-import { queryClient } from "../App";
-import AnswerOptionCheckBoxes from "../components/AnswerOptionCheckBoxes";
-import LoadScreen from "../components/common/LoadScreen";
-import {
-  useFetchQuestions,
-  useFetchUserAnswers,
-} from "../hooks/customUseQueries";
-import { useAuth } from "../hooks/useAuth";
-import { useForm } from "../hooks/useForm";
-import { AnswerFormData } from "../model/AnswerModels";
-import { useInternalRouter } from "../routes/useInternalRouter";
+import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { useMutation } from 'react-query';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { queryClient } from '../App';
+import AnswerOptionCheckBoxes from '../components/answer/AnswerOptionCheckBoxes';
+import LoadScreen from '../components/common/LoadScreen';
+import { useFetchQuestions, useFetchUserAnswers } from '../hooks/customUseQueries';
+import { useAuth } from '../hooks/useAuth';
+import { useForm } from '../hooks/useForm';
+import { AnswerFormData } from '../models/AnswerModels';
+import { useInternalRouter } from '../routes/useInternalRouter';
 
 interface Props {}
 
@@ -26,7 +23,7 @@ const QuestionPage: React.FC<Props> = () => {
   const { data: questions } = useFetchQuestions();
 
   // TODO : qid default?
-  const question = questions!![qid ?? ""];
+  const question = questions!![qid ?? ''];
 
   const { data, isLoading } = useFetchUserAnswers(user!!.uid);
 
@@ -39,8 +36,8 @@ const QuestionPage: React.FC<Props> = () => {
   // form state setting
   const { form, onChange, setProperty } = useForm<AnswerFormData>({
     question,
-    aid: answerData?.aid ?? "",
-    answer: answerData?.answer ?? "",
+    aid: answerData?.aid ?? '',
+    answer: answerData?.answer ?? '',
     isPublic: answerData?.isPublic ?? false,
     isAnonymous: answerData?.isAnonymous ?? false,
   });
@@ -55,8 +52,8 @@ const QuestionPage: React.FC<Props> = () => {
 
   const mutation = useMutation(user!!.submitAnswer, {
     onSuccess: () => {
-      queryClient.invalidateQueries("user-answers");
-      queryClient.invalidateQueries("questions");
+      queryClient.invalidateQueries('user-answers');
+      queryClient.invalidateQueries('questions');
     },
   });
 
@@ -66,10 +63,10 @@ const QuestionPage: React.FC<Props> = () => {
     setSubmitting(true);
     try {
       mutation.mutate(form);
-      push("/submit-done");
+      push('/submit-done');
     } catch (e) {
       console.log(e);
-      alert("기록에 실패했습니다. 다시 시도해주세요.");
+      alert('기록에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setSubmitting(false);
     }
@@ -98,10 +95,7 @@ const QuestionPage: React.FC<Props> = () => {
             ref={answerRef}
             required
           ></AnswerInput>
-          <AnswerOptionCheckBoxes
-            form={form}
-            onClickCheckbox={onClickCheckbox}
-          />
+          <AnswerOptionCheckBoxes form={form} onClickCheckbox={onClickCheckbox} />
           <Button type="submit">오늘의 답변 기록하기</Button>
         </>
       )}

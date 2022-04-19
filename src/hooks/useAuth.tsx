@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { CustomUser, UserDataModel } from "../model/UserModels";
+import { CustomUser, UserDataModel } from "../models/UserModels";
 import { firebaseApp } from "../services/firebase";
 import { useCustomUser } from "../services/UserApi";
 

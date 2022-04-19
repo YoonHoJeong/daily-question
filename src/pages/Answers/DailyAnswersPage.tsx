@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import DateAnswersCard from "../../components/DateAnswersCard";
-import { BottomNavigation, Header } from "../../components/layouts";
-import UserProfile from "../../components/user/UserProfile";
-import { AnswersWrapper } from "../../services/AnswerApi";
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import AnswersByDay from '../../components/answer/AnswersByDay';
+import { BottomNavigation, Header } from '../../components/layouts';
+import UserProfile from '../../components/user/UserProfile';
+import { useMyAnswers } from '../../hooks/customUseQueries';
+import { AnswersWrapper } from '../../services/AnswerApi';
 
 interface Props {
   // answers: AnswersWrapper;
@@ -12,6 +13,7 @@ interface Props {
 const DailyAnswersPage: React.FC<Props> = () => {
   // const dateQidAnswers = answers.getDateQidAnswers();
   // const descendingDates = answers.getDatesDescending();
+  const { data: answers } = useMyAnswers();
 
   return (
     <>

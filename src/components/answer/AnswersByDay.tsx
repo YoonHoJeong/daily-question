@@ -1,43 +1,30 @@
-import React from "react";
-import styled from "styled-components";
-import { AnswerDataModel } from "../model/AnswerModels";
-import { QuestionDataModel } from "../model/QuestionModels";
-import QuestionCard from "./QuestionCard";
+import React from 'react';
+import styled from 'styled-components';
+import { UseMomentValue } from '../../hooks/useMoment';
+import { QidAnswersData } from '../../models/AnswerModels';
+import QuestionCard from './QuestionCard';
 
 interface Props {
-  date: string;
-  questionsWithAnswers: {
-    [qid: string]: {
-      question: QuestionDataModel;
-      answers: {
-        [aid: string]: AnswerDataModel;
-      };
-    };
-  };
+  date: UseMomentValue;
+  answers: QidAnswersData;
   profileOn?: boolean;
 }
 
-const DateAnswersCard: React.FC<Props> = ({
-  date,
-  questionsWithAnswers,
-  profileOn = true,
-}) => {
-  const [_, month, day] = date.split("-");
-
+const AnswersByDay: React.FC<Props> = ({ date, answers, profileOn = false }) => {
   return (
     <DateContainer>
       <SideDateBar>
         <MonthDate>
-          <Month>{parseInt(month)}월</Month>
-          <Date>{parseInt(day)}</Date>
+          <Month>{date.month}월</Month>
+          <Date>{date.date}</Date>
         </MonthDate>
       </SideDateBar>
       <QuestionCards>
-        {Object.keys(questionsWithAnswers).map((qid) => (
+        {Object.keys(answers).map((qid) => (
           <QuestionCard
             key={qid}
-            question={questionsWithAnswers[qid].question}
-            answers={questionsWithAnswers[qid].answers}
+            question={answers[qid].question}
+            answers={answers[qid].answers}
             profileOn={profileOn}
           />
         ))}
@@ -94,4 +81,4 @@ const QuestionCards = styled.ul`
   }
 `;
 
-export default DateAnswersCard;
+export default AnswersByDay;

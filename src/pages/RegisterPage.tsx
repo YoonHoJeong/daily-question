@@ -10,7 +10,7 @@ import { useInternalRouter } from "../routes/useInternalRouter";
 
 interface Props {}
 
-const Register: React.FC<Props> = () => {
+const RegisterPage: React.FC<Props> = () => {
   const auth = useAuth();
   const { push } = useInternalRouter();
 
@@ -122,4 +122,4 @@ const RegisterForm = styled.form`
 
   margin-top: 20px;
 `;
-export default Register;
+export default RegisterPage;

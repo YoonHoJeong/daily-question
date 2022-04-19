@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import sizes from './sizes';
 
 export const ClientLayout = styled.div`
   max-width: 100%;
@@ -6,5 +7,6 @@ export const ClientLayout = styled.div`
 
   height: auto;
 
-  padding-top: 48px;
+  padding-top: ${sizes.header.height};
+  padding-bottom: ${sizes.bottomNavigation.height};
 `;

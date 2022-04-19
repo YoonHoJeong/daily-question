@@ -4,16 +4,11 @@ import Button from '../../components/common/Button';
 import { Link } from 'react-router-dom';
 import DateToggler from '../../components/DateToggler';
 
-import { BoxClosedIcon, BoxOpenedIcon } from '../../assets/icons';
 import HelperText from '../../components/HelperText';
-import WeeklyAnswerCards from './Weekly/WeeklyAnswerCards';
-import { DateQidAnswersData } from '../../models/AnswerModels';
-import { AnswersWrapper } from '../../services/AnswerApi';
-import { CustomDate } from '../../services/CustomDate';
-import { BottomNavigation, Header } from '../../components/layouts';
-import { ClientLayout } from '../../components/layouts/ClientLayout';
+import AnswerCardsContainer from '../../components/answer/AnswerCardsContainer';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { useMoment } from '../../hooks/useMoment';
+import DateCheckIcon from '../../components/DateCheckIcon';
 
 interface Props {
   // date: CustomDate;
@@ -21,80 +16,45 @@ interface Props {
 }
 
 const WeeklyAnswersPage: React.FC<Props> = () => {
-  // const weekAnswers = answers.getDateQidAnswers().filteredByWeek(date);
-  // const weekDates = date.getAllWeeklyDates();
-  // const totalWeekAnswerCnt = weekAnswers.answerCount;
-  // const answeredDateCnt = weekAnswers.answeredDateCount;
   const { data: answers } = useMyAnswers();
-  const moment = useMoment();
+  const moment = useMoment('2022-03-03');
+  const weeklyAnswers = answers?.getWeeklyAnswers(moment);
 
   return (
     <>
       <DateToggler
         year={moment.year}
-        month={moment.month}
+        month={moment.month + 1}
         weekOfMonth={moment.weekOfMonth}
         onClickLeft={moment.setWeek(moment.week - 1)}
         onClickRight={moment.setWeek(moment.week + 1)}
       />
-      {/* <HelperText>
-          {totalWeekAnswerCnt > 0 ? (
-            <>
-              5일 중 <AnswerDateCount>{answeredDateCnt}일</AnswerDateCount>{" "}
-              대답했어요.
-            </>
-          ) : (
-            <>이번 주에는 아직 답변이 없네요...</>
-          )}
-        </HelperText>
-        <DateIcons weekDates={weekDates} weekAnswers={weekAnswers.data} />
-        <WeeklyAnswerCards weekAnswers={weekAnswers.data} />
-        {totalWeekAnswerCnt > 0 ? null : (
-          <Link to="/">
-            <Button bgColor="blue" style={{ fontSize: "12px" }}>
-              오늘의 재밌는 질문 대답하러 가기
-            </Button>
-          </Link>
-        )} */}
+      <HelperText>
+        5일 중 <AnswerDateCount>{weeklyAnswers && weeklyAnswers.dateCnt}일</AnswerDateCount> 대답했어요.
+      </HelperText>
+      <DateIconsContainer>
+        {moment.datesOfWeek.map((day) => (
+          <DateCheckIcon checked={Object.keys(weeklyAnswers?.data ?? {}).includes(day)} />
+        ))}
+      </DateIconsContainer>
+
+      {weeklyAnswers ? (
+        <AnswerCardsContainer answers={weeklyAnswers.data} />
+      ) : (
+        <Link to="/">
+          <Button bgColor="blue" style={{ fontSize: '12px' }}>
+            오늘의 재밌는 질문 대답하러 가기
+          </Button>
+        </Link>
+      )}
     </>
   );
 };
 
-interface DateIconsProps {
-  weekDates: string[];
-  weekAnswers: DateQidAnswersData;
-}
-const DateIcons: React.FC<DateIconsProps> = ({ weekDates, weekAnswers }) => (
-  <DateIconsContainer>
-    {weekDates.map((date) => (
-      <DateIconContainer key={date}>
-        <DateIcon src={Object.keys(weekAnswers).includes(date) ? BoxOpenedIcon : BoxClosedIcon} />
-      </DateIconContainer>
-    ))}
-  </DateIconsContainer>
-);
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100%;
-  overflow-y: scroll;
-  padding: 24px 0px;
-
-  background-color: ${(props) => props.theme.palette.white};
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const AnswerDateCount = styled.span`
   color: ${(props) => props.theme.palette.blue};
 `;
-const DateIconContainer = styled.li``;
-const DateIcon = styled.img`
-  max-width: 46px;
-  height: 46px;
-`;
+
 const DateIconsContainer = styled.ul`
   width: 300px;
 
