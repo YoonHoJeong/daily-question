@@ -1,6 +1,6 @@
 import { useAuth } from './useAuth';
 // import { AnswersWrapper } from './../services/AnswerApi';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import { DateQidAnswersData, AnswersData } from '../models/AnswerModels';
 import { QuestionsDataModel } from '../models/QuestionModels';
 
@@ -30,7 +30,6 @@ export const useMyAnswers = () => {
   if (!user?.uid) {
     throw new Error('fetch user answers, but no uid');
   }
-
   return useFetchUserAnswers(user.uid, { suspense: true });
 };
 

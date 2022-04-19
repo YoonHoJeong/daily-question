@@ -1,9 +1,9 @@
-import React, { Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoadScreen } from "../components/common";
-import { ErrorBoundary } from "../components/common/ErrorBoundary";
-import { PrivateRoute } from "./";
-import { privateRoutes, publicRoutes } from "./routesConfig";
+import React, { Suspense } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { LoadScreen } from '../components/common';
+import { ErrorBoundary } from '../components/common/ErrorBoundary';
+import { PrivateRoute } from './';
+import { privateRoutes, publicRoutes } from './routesConfig';
 
 interface Props {}
 
@@ -17,7 +17,7 @@ const Router: React.FC<Props> = () => {
               key={path}
               path={path}
               element={
-                type === "component" ? (
+                type === 'component' ? (
                   <ErrorBoundary>
                     <Component />
                   </ErrorBoundary>
@@ -34,7 +34,7 @@ const Router: React.FC<Props> = () => {
                 key={path}
                 path={path}
                 element={
-                  type === "component" ? (
+                  type === 'component' ? (
                     <ErrorBoundary>
                       <Component />
                     </ErrorBoundary>
@@ -45,24 +45,6 @@ const Router: React.FC<Props> = () => {
               />
             ))}
           </Route>
-
-          {/* <Route element={<AdminRoute />}>
-            {adminRoutes.map(({ path, Component, type }) => (
-              <Route
-                key={path}
-                path={path}
-                element={
-                  type === "component" ? (
-                    <ErrorBoundary>
-                      <Component />
-                    </ErrorBoundary>
-                  ) : (
-                    <Component />
-                  )
-                }
-              />
-            ))}
-          </Route> */}
         </Routes>
       </Suspense>
     </BrowserRouter>

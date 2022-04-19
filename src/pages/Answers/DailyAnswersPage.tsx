@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AnswersByDay from '../../components/answer/AnswersByDay';
 import { BottomNavigation, Header } from '../../components/layouts';
 import UserProfile from '../../components/user/UserProfile';
+import { useMoment } from '../../hooks';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { AnswersWrapper } from '../../services/AnswerApi';
 
@@ -14,6 +15,8 @@ const DailyAnswersPage: React.FC<Props> = () => {
   // const dateQidAnswers = answers.getDateQidAnswers();
   // const descendingDates = answers.getDatesDescending();
   const { data: answers } = useMyAnswers();
+  const { date } = useMoment();
+  console.log(answers?.getMonthlyAnswers(date).data);
 
   return (
     <>

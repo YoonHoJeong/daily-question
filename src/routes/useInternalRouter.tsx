@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
-import { AdminPath, PrivatePath, PublicPath } from "./routesConfig";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMemo } from 'react';
+import { AdminPath, PrivatePath, PublicPath } from './routesConfig';
 
 export function useInternalRouter() {
   const navigate = useNavigate();
+  const params = useParams();
 
   return useMemo(() => {
     return {
@@ -13,8 +14,12 @@ export function useInternalRouter() {
       push(path: RoutePath, state?: any) {
         navigate(path, { state });
       },
+      replace(path: RoutePath, state?: any) {
+        navigate(path, { replace: true, state });
+      },
+      params,
     };
-  }, [navigate]);
+  }, [navigate, params]);
 }
 
-type RoutePath = PublicPath | PrivatePath | AdminPath;
+export type RoutePath = PublicPath | PrivatePath | AdminPath;

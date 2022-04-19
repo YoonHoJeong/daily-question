@@ -12,7 +12,7 @@ interface Props {}
 const BoardPage: React.FC<Props> = () => {
   const { data, isLoading, isError } = useFetchBoardAnswers();
   const answers = data ?? {};
-  const moment = useMoment();
+  const { date: dateMoment } = useMoment();
   const descendingDates = Object.keys(answers).sort((a, b) => (a > b ? -1 : 1));
 
   if (isError) return <>Error</>;
@@ -23,7 +23,7 @@ const BoardPage: React.FC<Props> = () => {
       {isLoading ? (
         <LoadScreen />
       ) : (
-        descendingDates.map((date) => <AnswersByDay key={date} date={moment} answers={answers[date]} />)
+        descendingDates.map((date) => <AnswersByDay key={date} date={dateMoment} answers={answers[date]} />)
       )}
       <BottomNavigation />
     </ClientLayout>

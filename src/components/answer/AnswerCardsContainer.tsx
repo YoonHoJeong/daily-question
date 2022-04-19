@@ -13,7 +13,7 @@ const AnswerCardsContainer: React.FC<Props> = ({ answers }) => {
       {Object.keys(answers)
         .sort((a, b) => (a > b ? 1 : -1))
         .map((date) => (
-          <AnswerCardsByDay key={date} date={date} answers={answers[date]} />
+          <AnswerCardsByDay key={date} dateString={date} answers={answers[date]} />
         ))}
     </Container>
   );

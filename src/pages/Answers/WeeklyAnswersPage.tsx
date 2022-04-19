@@ -7,7 +7,7 @@ import DateToggler from '../../components/DateToggler';
 import HelperText from '../../components/HelperText';
 import AnswerCardsContainer from '../../components/answer/AnswerCardsContainer';
 import { useMyAnswers } from '../../hooks/customUseQueries';
-import { useMoment } from '../../hooks/useMoment';
+import { datesOfWeek, useMoment, weekOfMonth } from '../../hooks/useMoment';
 import DateCheckIcon from '../../components/DateCheckIcon';
 
 interface Props {
@@ -17,24 +17,24 @@ interface Props {
 
 const WeeklyAnswersPage: React.FC<Props> = () => {
   const { data: answers } = useMyAnswers();
-  const moment = useMoment('2022-03-03');
-  const weeklyAnswers = answers?.getWeeklyAnswers(moment);
+  const { date: dateMoment, setWeek } = useMoment();
+  const weeklyAnswers = answers?.getWeeklyAnswers(dateMoment);
 
   return (
     <>
       <DateToggler
-        year={moment.year}
-        month={moment.month + 1}
-        weekOfMonth={moment.weekOfMonth}
-        onClickLeft={moment.setWeek(moment.week - 1)}
-        onClickRight={moment.setWeek(moment.week + 1)}
+        year={dateMoment.year()}
+        month={dateMoment.month() + 1}
+        weekOfMonth={weekOfMonth(dateMoment)}
+        onClickLeft={setWeek(dateMoment.week() - 1)}
+        onClickRight={setWeek(dateMoment.week() + 1)}
       />
       <HelperText>
         5일 중 <AnswerDateCount>{weeklyAnswers && weeklyAnswers.dateCnt}일</AnswerDateCount> 대답했어요.
       </HelperText>
       <DateIconsContainer>
-        {moment.datesOfWeek.map((day) => (
-          <DateCheckIcon checked={Object.keys(weeklyAnswers?.data ?? {}).includes(day)} />
+        {datesOfWeek(dateMoment).map((date) => (
+          <DateCheckIcon key={date} checked={Object.keys(weeklyAnswers?.data ?? {}).includes(date)} />
         ))}
       </DateIconsContainer>
 

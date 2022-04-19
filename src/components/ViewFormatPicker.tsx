@@ -21,8 +21,13 @@ const ViewFormatPicker: React.FC<Props> = ({ top, bottom, left, right }) => {
     [currentViewFormat]
   ) as RoutePath[];
 
-  const onClick = () => {
-    setFolded((currentState) => !currentState);
+  const toggleFold = (val: boolean) => () => {
+    setFolded(val);
+  };
+  const navigateTo = (viewFormat: RoutePath) => () => {
+    const close = toggleFold(true);
+    close();
+    replace(viewFormat);
   };
 
   return (
@@ -40,14 +45,14 @@ const ViewFormatPicker: React.FC<Props> = ({ top, bottom, left, right }) => {
           <DateFormatButton
             key={viewFormat}
             style={{ display: folded ? 'none' : 'flex' }}
-            onClick={() => replace(viewFormat)}
+            onClick={navigateTo(viewFormat)}
           >
             {viewFormatName[viewFormat]}
           </DateFormatButton>
         ))}
       </DateFormatList>
 
-      <DateFormatToggleButton onClick={onClick}>
+      <DateFormatToggleButton onClick={toggleFold(!folded)}>
         {folded ? <Icon src={ArrowDownIcon} /> : <Icon src={ArrowUpIcon} />}
       </DateFormatToggleButton>
     </Container>
@@ -64,6 +69,12 @@ const Container = styled.div`
   bottom: var(--bottom);
   left: var(--left); */
   right: var(--right);
+
+  & button {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const Icon = styled.img``;
@@ -87,7 +98,7 @@ const DateFormatList = styled.div`
 `;
 
 const DateFormatButton = styled.button`
-  background-color: ${(props) => props.theme.palette.bgGrey2};
+  background-color: ${(props) => props.theme.palette.grey300};
 `;
 
 const DateFormatToggleButton = styled.button`

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
 import { UseMomentValue } from '../../hooks/useMoment';
@@ -5,7 +6,7 @@ import { QidAnswersData } from '../../models/AnswerModels';
 import QuestionCard from './QuestionCard';
 
 interface Props {
-  date: UseMomentValue;
+  date: moment.Moment;
   answers: QidAnswersData;
   profileOn?: boolean;
 }
@@ -15,8 +16,8 @@ const AnswersByDay: React.FC<Props> = ({ date, answers, profileOn = false }) => 
     <DateContainer>
       <SideDateBar>
         <MonthDate>
-          <Month>{date.month}월</Month>
-          <Date>{date.date}</Date>
+          <Month>{date.month()}월</Month>
+          <Date>{date.date()}</Date>
         </MonthDate>
       </SideDateBar>
       <QuestionCards>

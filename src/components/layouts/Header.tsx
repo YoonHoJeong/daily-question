@@ -1,11 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { useLocation } from "react-router";
-import { ArrowLeftIcon } from "../../assets/icons";
-import sizes from "./sizes";
-import { useInternalRouter } from "../../routes/useInternalRouter";
-import { layoutConfigs } from "./layoutConfig";
-import { GlobalPortal } from "./GlobalPortal";
+import React from 'react';
+import styled from 'styled-components';
+import { useLocation } from 'react-router';
+import { ArrowLeftIcon } from '../../assets/icons';
+import sizes from '../../constants/sizes';
+import { useInternalRouter } from '../../routes/useInternalRouter';
+import { layoutConfigs } from './layoutConfig';
+import { GlobalPortal } from './GlobalPortal';
+
 interface Props {
   transparent?: boolean;
 }
@@ -36,13 +37,13 @@ const Header: React.FC<Props> = ({ transparent = false }) => {
 };
 
 const backDisabledRoutes = [
-  "/",
-  "/board",
-  "/user",
-  "/answers",
-  "/answers/daily",
-  "/answers/weekly",
-  "/answers/monthly",
+  '/',
+  '/board',
+  '/user',
+  '/answers',
+  '/answers/daily',
+  '/answers/weekly',
+  '/answers/monthly',
 ];
 
 const Container = styled.header<Props>`
@@ -57,9 +58,8 @@ const Container = styled.header<Props>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.transparent ? "transparent" : "white")};
-  border-bottom: 1px solid
-    ${(props) => (props.transparent ? "transparent" : "rgba(0,0,0,0.075)")};
+  background-color: ${(props) => (props.transparent ? 'transparent' : 'white')};
+  border-bottom: 1px solid ${(props) => (props.transparent ? 'transparent' : 'rgba(0,0,0,0.075)')};
 
   padding-top: calc(constant(safe-area-inset-top));
   padding-top: calc(env(safe-area-inset-top));

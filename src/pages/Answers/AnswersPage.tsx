@@ -15,7 +15,9 @@ interface Props {}
 
 const AnswersPage: React.FC<Props> = () => {
   return (
-    <ClientLayout style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+    <ClientLayout
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', paddingTop: 20 }}
+    >
       <Header />
       <ViewFormatPicker top={'0px'} right={'0px'} />
       <ErrorBoundary>

@@ -1,6 +1,6 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 import {
   BoxClickedIcon,
@@ -11,11 +11,11 @@ import {
   PersonIcon,
   DiaryClickedIcon,
   DiaryIcon,
-} from "../../assets/icons";
-import { GlobalPortal } from "./GlobalPortal";
+} from '../../assets/icons';
+import { GlobalPortal } from './GlobalPortal';
 
-import { layoutConfigs } from "./layoutConfig";
-import sizes from "./sizes";
+import { layoutConfigs } from './layoutConfig';
+import sizes from '../../constants/sizes';
 
 interface Props {}
 
@@ -28,18 +28,11 @@ const BottomNavigation: React.FC<Props> = () => {
     <NavItem key={navigation.pathnames[0]}>
       <Link to={navigation.pathnames[0]}>
         <Icon
-          src={
-            navigation.pathnames.includes(pathname)
-              ? navigation.iconsUrl.clicked
-              : navigation.iconsUrl.default
-          }
+          src={navigation.pathnames.includes(pathname) ? navigation.iconsUrl.clicked : navigation.iconsUrl.default}
           alt=""
         />
       </Link>
-      <SLink
-        to={navigation.pathnames[0]}
-        current={navigation.pathnames.includes(pathname) ? "true" : "false"}
-      >
+      <SLink to={navigation.pathnames[0]} current={navigation.pathnames.includes(pathname) ? 'true' : 'false'}>
         {pathnames[navigation.pathnames[0]]}
       </SLink>
     </NavItem>
@@ -47,9 +40,7 @@ const BottomNavigation: React.FC<Props> = () => {
 
   return (
     <GlobalPortal.Consumer>
-      <Navigator>
-        {Navigations.map((navigation) => NavigationItem(navigation))}
-      </Navigator>
+      <Navigator>{Navigations.map((navigation) => NavigationItem(navigation))}</Navigator>
     </GlobalPortal.Consumer>
   );
 };
@@ -64,24 +55,19 @@ interface Navigation {
 
 const Navigations: Navigation[] = [
   {
-    pathnames: ["/", "/submit-done"],
+    pathnames: ['/', '/submit-done'],
     iconsUrl: { clicked: BoxClickedIcon, default: BoxIcon },
   },
   {
-    pathnames: ["/board"],
+    pathnames: ['/board'],
     iconsUrl: { clicked: FeedClickedIcon, default: FeedIcon },
   },
   {
-    pathnames: [
-      "/answers",
-      "/answers/weekly",
-      "/answers/daily",
-      "/answers/monthly",
-    ],
+    pathnames: ['/answers', '/answers/weekly', '/answers/daily', '/answers/monthly'],
     iconsUrl: { clicked: DiaryClickedIcon, default: DiaryIcon },
   },
   {
-    pathnames: ["/user"],
+    pathnames: ['/user'],
     iconsUrl: { clicked: PersonClickedIcon, default: PersonIcon },
   },
 ];
@@ -90,11 +76,12 @@ const Navigator = styled.ul`
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 99;
 
   width: 100%;
   height: ${sizes.bottomNavigation.height};
 
-  background-color: ${(props) => props.theme.palette.bgGrey};
+  background-color: ${(props) => props.theme.palette['grey300']};
   border-top: 4px solid ${(props) => props.theme.palette.white};
 
   display: flex;
@@ -111,10 +98,7 @@ const Navigator = styled.ul`
 const SLink = styled(Link)<{ current: string }>`
   font-size: 10px;
   margin-top: 3px;
-  color: ${(props) =>
-    props.current === "true"
-      ? props.theme.palette.blue
-      : props.theme.palette.deepGrey};
+  color: ${(props) => (props.current === 'true' ? props.theme.palette.blue : props.theme.palette.deepGrey)};
 `;
 
 const NavItem = styled.li`

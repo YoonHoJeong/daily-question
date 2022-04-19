@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useMoment } from '../../hooks/useMoment';
+import { dayString, useMoment } from '../../hooks/useMoment';
 import { QidAnswersData } from '../../models/AnswerModels';
 import AnswerCard from './AnswerCard';
 
 interface Props {
-  date: string;
+  dateString: string;
   answers: QidAnswersData;
 }
-const AnswerCardsByDay: React.FC<Props> = ({ answers, date }) => {
-  const moment = useMoment(date);
+const AnswerCardsByDay: React.FC<Props> = ({ answers, dateString }) => {
+  const { date } = useMoment(dateString);
 
   return (
     <Container>
-      <DayText>{moment.dayString}요일</DayText>
+      <DayText>{dayString(date.day())}요일</DayText>
       <AnswerList>
         {Object.keys(answers).map((qid) => (
           <AnswerCard.Border key={qid} answers={answers[qid].answers} />

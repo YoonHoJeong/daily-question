@@ -13,7 +13,7 @@ import {
   SubmitDonePage,
   UserEditPage,
   UserPage,
-} from "../pages";
+} from '../pages';
 
 interface CustomRoute {
   type: RouteType;
@@ -23,11 +23,11 @@ interface CustomRoute {
 }
 
 const componentConfig: { type: RouteType } = {
-  type: "component",
+  type: 'component',
 };
 
 const nestedRoutesConfig: { type: RouteType } = {
-  type: "nestedRoutes",
+  type: 'nestedRoutes',
 };
 
 interface PublicRoute extends CustomRoute {
@@ -35,9 +35,9 @@ interface PublicRoute extends CustomRoute {
 }
 
 export const publicRoutes: PublicRoute[] = [
-  { path: "/onboarding", Component: OnboardingPage, ...componentConfig },
-  { path: "/login", Component: LoginPage, ...componentConfig },
-  { path: "/register", Component: RegisterPage, ...componentConfig },
+  { path: '/onboarding', Component: OnboardingPage, ...componentConfig },
+  { path: '/login', Component: LoginPage, ...componentConfig },
+  { path: '/register', Component: RegisterPage, ...componentConfig },
 ];
 
 interface PrivateRoute extends CustomRoute {
@@ -46,14 +46,14 @@ interface PrivateRoute extends CustomRoute {
 
 export const privateRoutes: PrivateRoute[] = [
   {
-    path: "/submit-done",
+    path: '/submit-done',
     Component: SubmitDonePage,
     ...componentConfig,
   },
-  { path: "/board", Component: BoardPage, ...componentConfig },
-  { path: "/user", Component: UserPage, ...nestedRoutesConfig },
-  { path: "/user/edit", Component: UserEditPage, ...nestedRoutesConfig },
-  { path: "/answers/*", Component: AnswersPage, ...componentConfig },
+  { path: '/board', Component: BoardPage, ...componentConfig },
+  { path: '/user', Component: UserPage, ...nestedRoutesConfig },
+  { path: '/user/edit', Component: UserEditPage, ...nestedRoutesConfig },
+  { path: '/answers/*', Component: AnswersPage, ...nestedRoutesConfig },
   // { path: "/answers/weekly", Component: WeeklyAnswers, ...nestedRoutesConfig },
   // { path: "/answers/daily", Component: DailyAnswers, ...nestedRoutesConfig },
   // {
@@ -62,36 +62,40 @@ export const privateRoutes: PrivateRoute[] = [
   //   ...nestedRoutesConfig,
   // },
   {
-    path: "/question/:qid",
+    path: '/question/:qid',
     Component: QuestionPage,
     ...componentConfig,
   },
-  { path: "/", Component: HomePage, ...componentConfig },
+  { path: '/', Component: HomePage, ...componentConfig },
 ];
+
+export type PublicPath = '/onboarding' | '/login' | '/register';
+export type PrivatePath =
+  | '/'
+  | '/submit-done'
+  | '/board'
+  | '/user'
+  | '/user/edit'
+  | '/answers/*'
+  | '/answers/weekly'
+  | '/answers/daily'
+  | '/answers/monthly'
+  | '/question/:qid'
+  | 'daily'
+  | 'weekly'
+  | 'monthly';
+
+type RouteType = 'nestedRoutes' | 'component';
 
 interface AdminRoute extends CustomRoute {
   path: AdminPath;
 }
 
 export const adminRoutes: AdminRoute[] = [
-  { path: "/questions", Component: AdminQuestions, ...componentConfig },
-  { path: "/answers", Component: AdminAnswers, ...componentConfig },
-  { path: "/users", Component: AdminUsers, ...componentConfig },
-  { path: "/", Component: AdminDashboard, ...componentConfig },
+  { path: '/questions', Component: AdminQuestions, ...componentConfig },
+  { path: '/answers', Component: AdminAnswers, ...componentConfig },
+  { path: '/users', Component: AdminUsers, ...componentConfig },
+  { path: '/', Component: AdminDashboard, ...componentConfig },
 ];
 
-export type PublicPath = "/onboarding" | "/login" | "/register";
-export type PrivatePath =
-  | "/"
-  | "/submit-done"
-  | "/board"
-  | "/user"
-  | "/user/edit"
-  | "/answers/*"
-  | "/answers/weekly"
-  | "/answers/daily"
-  | "/answers/monthly"
-  | "/question/:qid";
-
-export type AdminPath = "/" | "/questions" | "/answers" | "/users";
-type RouteType = "nestedRoutes" | "component";
+export type AdminPath = '/' | '/questions' | '/answers' | '/users';
