@@ -1,28 +1,31 @@
-import { MomentValue, useMoment } from '../hooks/useMoment';
 import moment from 'moment';
-import { AnswersData, DateQidAnswersData } from './AnswerModels';
+import { UseMomentValue } from '../hooks/useMoment';
+import { AnswersData } from './AnswerModels';
+import { DateQidAnswersValue, DateQidAnswersWrapper } from './DateQidAnswersWrapper';
+
+export interface AnswersWrapperValue {
+  getWeeklyAnswers: (moment: UseMomentValue) => DateQidAnswersValue;
+  getMonthlyAnswers: (moment: UseMomentValue) => DateQidAnswersValue;
+}
 
 export const AnswersWrapper = (data: AnswersData) => {
-  const today = useMoment();
-  const testDate = useMoment('2022-03-03');
-
-  const filter = getFilter(data, testDate);
-
-  return {
-    getWeeklyAnswers() {
-      const filtered = filter('year', 'week');
-      return getDateQidAnswers(filtered);
+  const value: AnswersWrapperValue = {
+    getWeeklyAnswers(momentVal) {
+      const filter = getFilter(data, momentVal);
+      return DateQidAnswersWrapper(filter('year', 'week'));
     },
-    getMonthlyAnswers() {
-      const filtered = filter('year', 'month');
-      return getDateQidAnswers(filtered);
+    getMonthlyAnswers: (momentVal) => {
+      const filter = getFilter(data, momentVal);
+      return DateQidAnswersWrapper(filter('year', 'month'));
     },
   };
+
+  return value;
 };
 
 type MomentFilterKeys = 'year' | 'month' | 'week';
 const getFilter =
-  (answers: AnswersData, toFilterDate: MomentValue) =>
+  (answers: AnswersData, toFilterDate: UseMomentValue) =>
   (...filterKeys: MomentFilterKeys[]) => {
     const filtered: AnswersData = Object.keys(answers)
       .filter((aid) => {
@@ -37,29 +40,3 @@ const getFilter =
       }, {});
     return filtered;
   };
-
-const getDateQidAnswers = (answers: AnswersData) => {
-  const dateQidAnswers: DateQidAnswersData = Object.keys(answers).reduce((obj, aid) => {
-    const answer = answers[aid];
-
-    const {
-      question: { publish_date: date, qid },
-      question,
-    } = answer;
-
-    if (!obj[date]) {
-      obj[date] = {};
-    }
-    if (!obj[date][qid]) {
-      obj[date][qid] = {
-        question,
-        answers: {},
-      };
-    }
-
-    obj[date][qid].answers[aid] = answer;
-
-    return obj;
-  }, {});
-  return dateQidAnswers;
-};
