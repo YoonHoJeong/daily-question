@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { GlobalPortal } from './components/layouts/GlobalPortal';
+import colors from './constants/colors';
 
 interface Props {}
 
@@ -15,7 +16,7 @@ export const queryClient = new QueryClient();
 const App: React.FC<Props> = () => {
   return (
     <ErrorBoundary>
-      <ThemeProvider theme={{ palette }}>
+      <ThemeProvider theme={{ palette: colors }}>
         <GlobalStyle />
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
@@ -28,17 +29,6 @@ const App: React.FC<Props> = () => {
       </ThemeProvider>
     </ErrorBoundary>
   );
-};
-
-const palette = {
-  white: '#FFFFFF',
-  blue: '#515FA9',
-  black: '#4D4D4D',
-  grey: '#CCCCCC',
-  bgGrey: '#F2F2F2',
-  bgGrey2: '#E5E5E5',
-  deepGrey: '#888888',
-  red: '#FF7676',
 };
 
 export default App;
