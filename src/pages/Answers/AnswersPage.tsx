@@ -4,24 +4,20 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import DailyAnswersPage from './DailyAnswersPage';
 import MonthlyAnswersPage from './MonthlyAnswersPage';
 import WeeklyAnswersPage from './WeeklyAnswersPage';
-import { Link } from 'react-router-dom';
 
 import { ClientLayout } from '../../components/layouts/ClientLayout';
 import { BottomNavigation, Header } from '../../components/layouts';
 import { LoadScreen } from '../../components/common';
 import { ErrorBoundary } from '../../components/common/ErrorBoundary';
-import DateFormatPicker from '../../components/DateFormatPicker';
+import ViewFormatPicker from '../../components/ViewFormatPicker';
 
 interface Props {}
 
 const AnswersPage: React.FC<Props> = () => {
   return (
-    <ClientLayout style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <ClientLayout style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
       <Header />
-      <Link to="daily">일간</Link>
-      <Link to="weekly">주간</Link>
-      <Link to="monthly">월간</Link>
-      <DateFormatPicker />
+      <ViewFormatPicker top={'0px'} right={'0px'} />
       <ErrorBoundary>
         <Routes>
           <Route
