@@ -1,36 +1,40 @@
 import moment from 'moment';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export interface UseMomentValue {
   year: number;
   month: number;
   week: number;
+  date: number;
+  dayString: string;
   weekOfMonth: number;
   weekString: string;
   setWeek: (val: number) => () => void;
   setMonth: (val: number) => () => void;
-  daysOfWeek: string[];
+  datesOfWeek: string[];
 }
 
 export type MomentValueType = 'year' | 'month' | 'week' | 'weekString';
 
 export const useMoment = (initVal?: string) => {
-  // check type?
   const [date, setDate] = useState(moment(initVal));
 
   const setDateWithKey = (key: moment.unitOfTime.All, val: number) => {
     const today = moment();
-    if (date.year() === today.year() && val === today[key]()) {
+    const tmpMoment = date.clone();
+    if (tmpMoment.year() === today.year() && val > today[key]()) {
       return;
     }
-    date.set(key, val);
-    setDate(date.clone());
+    tmpMoment.set(key, val);
+    setDate(tmpMoment);
   };
 
   const val: UseMomentValue = {
     year: date.year(),
     month: date.month(),
     week: date.week(),
+    date: date.date(),
+    dayString: useMemo(() => dayString(date.day()), [date]),
     weekOfMonth: weekOfMonth(date),
     weekString: `${date.year()}-${date.month()}W`,
     setWeek: (val: number) => () => {
@@ -39,10 +43,29 @@ export const useMoment = (initVal?: string) => {
     setMonth: (val: number) => () => {
       setDateWithKey('month', val);
     },
-    daysOfWeek: daysOfWeek(date),
+    datesOfWeek: daysOfWeek(date),
   };
 
   return val;
+};
+
+const dayString = (day: number) => {
+  switch (day) {
+    case 1:
+      return '월';
+    case 2:
+      return '화';
+    case 3:
+      return '수';
+    case 4:
+      return '목';
+    case 5:
+      return '금';
+    case 6:
+      return '토';
+    default:
+      return '일';
+  }
 };
 
 const daysOfWeek = (m: moment.Moment) => {
