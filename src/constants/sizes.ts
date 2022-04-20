@@ -7,6 +7,7 @@ const sizes = {
     width: '100%',
     height: '48px',
   },
+  borderSize: '4px',
 };
 
 Object.freeze(sizes);

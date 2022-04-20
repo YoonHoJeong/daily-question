@@ -44,6 +44,8 @@ const Day = styled.li`
   color: #cccccc;
   height: inherit;
   background-color: transparent;
+
+  text-align: center;
 `;
 
 export default Calendar;

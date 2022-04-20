@@ -11,7 +11,7 @@ interface Props {
   profileOn: boolean;
 }
 
-const QuestionCard: React.FC<Props> = ({
+const AnswersByQuestion: React.FC<Props> = ({
   question,
   answers,
   profileOn,
@@ -39,7 +39,7 @@ const QuestionText = styled.div`
 
   margin-bottom: 10px;
 `;
-const QuestionCardContainer = styled.li``;
+export const QuestionCardContainer = styled.li``;
 const Answers = styled.ul`
   width: 100%;
 
@@ -48,4 +48,4 @@ const Answers = styled.ul`
   }
 `;
 
-export default QuestionCard;
+export default AnswersByQuestion;

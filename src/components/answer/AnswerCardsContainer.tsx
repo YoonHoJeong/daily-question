@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DateQidAnswersData } from '../../models/AnswerModels';
-import AnswerCardsByDay from './AnswerCardsByDay';
+import AnswersByDayCardView from './AnswersByDayCardView';
 
 interface Props {
   answers: DateQidAnswersData;
@@ -13,7 +13,7 @@ const AnswerCardsContainer: React.FC<Props> = ({ answers }) => {
       {Object.keys(answers)
         .sort((a, b) => (a > b ? 1 : -1))
         .map((date) => (
-          <AnswerCardsByDay key={date} dateString={date} answers={answers[date]} />
+          <AnswersByDayCardView key={date} dateString={date} answers={answers[date]} />
         ))}
     </Container>
   );

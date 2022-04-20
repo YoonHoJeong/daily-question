@@ -59,7 +59,8 @@ const Container = styled.header<Props>`
   justify-content: center;
   align-items: center;
   background-color: ${(props) => (props.transparent ? 'transparent' : 'white')};
-  border-bottom: 1px solid ${(props) => (props.transparent ? 'transparent' : 'rgba(0,0,0,0.075)')};
+  border-bottom: ${sizes.borderSize} solid
+    ${(props) => (props.transparent ? 'transparent' : props.theme.palette.grey200)};
 
   padding-top: calc(constant(safe-area-inset-top));
   padding-top: calc(env(safe-area-inset-top));

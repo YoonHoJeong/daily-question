@@ -81,7 +81,7 @@ const Navigator = styled.ul`
   width: 100%;
   height: ${sizes.bottomNavigation.height};
 
-  background-color: ${(props) => props.theme.palette['grey300']};
+  background-color: ${(props) => props.theme.palette.grey200};
   border-top: 4px solid ${(props) => props.theme.palette.white};
 
   display: flex;

@@ -5,8 +5,8 @@ const colors = {
   blue300: 'rgba(81, 95, 169, 1)',
   black: '#4D4D4D',
   grey100: '#CCCCCC',
-  grey200: '#E5E5E5',
-  grey300: '#F2F2F2',
+  grey200: '#F2F2F2',
+  grey300: '#E5E5E5',
   grey400: '#888888',
   red: '#FF7676',
 };

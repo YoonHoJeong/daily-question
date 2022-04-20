@@ -8,7 +8,7 @@ interface Props {
   dateString: string;
   answers: QidAnswersData;
 }
-const AnswerCardsByDay: React.FC<Props> = ({ answers, dateString }) => {
+const AnswersByDayCardView: React.FC<Props> = ({ answers, dateString }) => {
   const { date } = useMoment(dateString);
 
   return (
@@ -43,4 +43,4 @@ const AnswerList = styled.ul`
   }
 `;
 
-export default AnswerCardsByDay;
+export default AnswersByDayCardView;

@@ -9,6 +9,7 @@ import AnswerCardsContainer from '../../components/answer/AnswerCardsContainer';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { datesOfWeek, useMoment, weekOfMonth } from '../../hooks/useMoment';
 import DateCheckIcon from '../../components/DateCheckIcon';
+import AnswersHeader from '../../components/answer/AnswersHeader';
 
 interface Props {
   // date: CustomDate;
@@ -22,16 +23,19 @@ const WeeklyAnswersPage: React.FC<Props> = () => {
 
   return (
     <>
-      <DateToggler
-        year={dateMoment.year()}
-        month={dateMoment.month() + 1}
-        weekOfMonth={weekOfMonth(dateMoment)}
-        onClickLeft={setWeek(dateMoment.week() - 1)}
-        onClickRight={setWeek(dateMoment.week() + 1)}
-      />
-      <HelperText>
-        5일 중 <AnswerDateCount>{weeklyAnswers && weeklyAnswers.dateCnt}일</AnswerDateCount> 대답했어요.
-      </HelperText>
+      <AnswersHeader>
+        <DateToggler
+          year={dateMoment.year()}
+          month={dateMoment.month() + 1}
+          weekOfMonth={weekOfMonth(dateMoment)}
+          onClickLeft={setWeek(dateMoment.week() - 1)}
+          onClickRight={setWeek(dateMoment.week() + 1)}
+        />
+        <HelperText>
+          5일 중 <AnswerDateCount>{weeklyAnswers && weeklyAnswers.dateCnt}일</AnswerDateCount> 대답했어요.
+        </HelperText>
+      </AnswersHeader>
+
       <DateIconsContainer>
         {datesOfWeek(dateMoment).map((date) => (
           <DateCheckIcon key={date} checked={Object.keys(weeklyAnswers?.data ?? {}).includes(date)} />

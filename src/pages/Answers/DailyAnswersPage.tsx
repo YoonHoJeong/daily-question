@@ -1,54 +1,51 @@
-import React, { useMemo } from 'react';
+import moment from 'moment';
+import React from 'react';
 import styled from 'styled-components';
 import AnswersByDay from '../../components/answer/AnswersByDay';
-import { BottomNavigation, Header } from '../../components/layouts';
+import { DateContainer } from '../../components/answer/AnswersByDayBoardView';
 import UserProfile from '../../components/user/UserProfile';
 import { useMoment } from '../../hooks';
 import { useMyAnswers } from '../../hooks/customUseQueries';
-import { AnswersWrapper } from '../../services/AnswerApi';
+import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
 
-interface Props {
-  // answers: AnswersWrapper;
-}
+interface Props {}
 
 const DailyAnswersPage: React.FC<Props> = () => {
-  // const dateQidAnswers = answers.getDateQidAnswers();
-  // const descendingDates = answers.getDatesDescending();
-  const { data: answers } = useMyAnswers();
-  const { date } = useMoment();
-  console.log(answers?.getMonthlyAnswers(date).data);
+  const { data } = useMyAnswers();
+
+  const { date } = useMoment('2022-03-03');
+  const answers = data?.getMonthlyAnswers(date) ?? DateQidAnswersWrapper({});
 
   return (
     <>
-      DailyAnswers
-      {/* <UserProfileContainer>
+      <UserProfileContainer>
         <UserProfile editable={false} showEmail={false} />
       </UserProfileContainer>
       <DailyAnswersList>
-        {descendingDates.map((date) => (
-          <DateAnswersCard
-            key={date}
-            date={date}
-            questionsWithAnswers={dateQidAnswers.data[date]}
-            profileOn={false}
-          />
-        ))}
-      </DailyAnswersList> */}
+        {Object.keys(answers.data)
+          .sort((a, b) => (b > a ? 1 : -1))
+          .map((date) => (
+            <AnswersByDay.Board key={date} date={moment(date)} answers={answers.data[date]} />
+          ))}
+      </DailyAnswersList>
     </>
   );
 };
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-`;
 const UserProfileContainer = styled.div`
+  width: 100%;
+
   background-color: ${(props) => props.theme.palette.white};
   padding: 40px 25px;
+
+  margin-bottom: 4px;
 `;
-const DailyAnswersList = styled.ul`
+export const DailyAnswersList = styled.ul`
   width: 100%;
+
+  & ${DateContainer} {
+    border-bottom: 4px ${(props) => props.theme.palette.grey200} solid;
+  }
 `;
 
 export default DailyAnswersPage;

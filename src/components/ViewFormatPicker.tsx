@@ -24,6 +24,7 @@ const ViewFormatPicker: React.FC<Props> = ({ top, bottom, left, right }) => {
   const toggleFold = (val: boolean) => () => {
     setFolded(val);
   };
+
   const navigateTo = (viewFormat: RoutePath) => () => {
     const close = toggleFold(true);
     close();

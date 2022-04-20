@@ -1,18 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import AnswersByDay from '../components/answer/AnswersByDay';
+import AnswersByDayBoardView, { DateContainer } from '../components/answer/AnswersByDayBoardView';
 import LoadScreen from '../components/common/LoadScreen';
 import { useFetchBoardAnswers } from '../hooks/customUseQueries';
 import { BottomNavigation, Header } from '../components/layouts';
-import { ClientLayout } from '../components/layouts/ClientLayout';
-import { useMoment } from '../hooks/useMoment';
+import { ClientLayout as Layout } from '../components/layouts/ClientLayout';
+import moment from 'moment';
 
 interface Props {}
 
 const BoardPage: React.FC<Props> = () => {
   const { data, isLoading, isError } = useFetchBoardAnswers();
   const answers = data ?? {};
-  const { date: dateMoment } = useMoment();
   const descendingDates = Object.keys(answers).sort((a, b) => (a > b ? -1 : 1));
 
   if (isError) return <>Error</>;
@@ -23,11 +22,17 @@ const BoardPage: React.FC<Props> = () => {
       {isLoading ? (
         <LoadScreen />
       ) : (
-        descendingDates.map((date) => <AnswersByDay key={date} date={dateMoment} answers={answers[date]} />)
+        descendingDates.map((date) => <AnswersByDayBoardView key={date} date={moment(date)} answers={answers[date]} />)
       )}
       <BottomNavigation />
     </ClientLayout>
   );
 };
+
+const ClientLayout = styled(Layout)`
+  & ${DateContainer} {
+    border-bottom: 4px ${(props) => props.theme.palette.grey200} solid;
+  }
+`;
 
 export default BoardPage;
