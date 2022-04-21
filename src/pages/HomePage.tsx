@@ -1,14 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { Button, LoadScreen } from "../components/common";
-import { useFetchQuestions } from "../hooks/customUseQueries";
-import {
-  QuestionsDataModel,
-  QuestionDataModel,
-} from "../models/QuestionModels";
-import { Header, BottomNavigation } from "../components/layouts";
-import { ClientLayout } from "../components/layouts/ClientLayout";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Button, LoadScreen } from '../components/common';
+import { useFetchQuestions } from '../hooks/customUseQueries';
+import { QuestionsDataModel, QuestionDataModel } from '../models/QuestionModels';
+import { Header, BottomNavigation } from '../components/layouts';
+import { ClientLayout } from '../components/layouts/ClientLayout';
+import sizes from '../constants/sizes';
 
 interface Props {}
 
@@ -16,7 +14,15 @@ const HomePage: React.FC<Props> = () => {
   const { data: questions, isLoading } = useFetchQuestions();
 
   return (
-    <ClientLayout>
+    <ClientLayout
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: `calc(100vh - ${sizes.bottomNavigation.height})`,
+      }}
+    >
       <Header />
       {isLoading ? (
         <LoadScreen />
@@ -47,13 +53,11 @@ const KeywordsScreen: React.FC<KeywordsSreenProps> = ({ questions }) => {
   );
 };
 
-const KeywordLink: React.FC<{ question: QuestionDataModel }> = ({
-  question,
-}) => {
+const KeywordLink: React.FC<{ question: QuestionDataModel }> = ({ question }) => {
   return (
     <Keyword>
       <Link to={`/question/${question.qid}`}>
-        <Button small style={{ fontSize: "18px", fontWeight: 500 }}>
+        <Button small style={{ fontSize: '18px', fontWeight: 500 }}>
           {question.keyword}
         </Button>
       </Link>

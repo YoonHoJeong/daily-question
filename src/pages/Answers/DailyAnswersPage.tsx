@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import AnswersByDay from '../../components/answer/AnswersByDay';
 import { DateContainer } from '../../components/answer/AnswersByDayBoardView';
 import UserProfile from '../../components/user/UserProfile';
+import sizes from '../../constants/sizes';
 import { useMoment } from '../../hooks';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
@@ -38,7 +39,7 @@ const UserProfileContainer = styled.div`
   background-color: ${(props) => props.theme.palette.white};
   padding: 40px 25px;
 
-  margin-bottom: 4px;
+  border-bottom: ${sizes.borderSize} solid ${(props) => props.theme.palette.grey200};
 `;
 export const DailyAnswersList = styled.ul`
   width: 100%;

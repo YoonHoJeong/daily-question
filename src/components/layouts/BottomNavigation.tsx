@@ -87,7 +87,7 @@ const Navigator = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 30px;
+  padding: 6px 20px;
   padding-bottom: calc(constant(safe-area-inset-bottom) + 6px);
   padding-bottom: calc(env(safe-area-inset-bottom) + 6px);
 

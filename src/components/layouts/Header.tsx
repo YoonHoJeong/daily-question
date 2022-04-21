@@ -21,7 +21,9 @@ const Header: React.FC<Props> = ({ transparent = false }) => {
       <Container transparent={transparent}>
         {!backDisabledRoutes.includes(pathname) && (
           <ButtonContainer
-            position="left"
+            style={{
+              top: `calc((${sizes.header.height} - ${sizes.icon})/2)`,
+            }}
             aria-label="back"
             onClick={() => {
               goBack();
@@ -68,17 +70,13 @@ const Container = styled.header<Props>`
   box-sizing: border-box;
 `;
 
-interface ButtonProps {
-  position: string;
-}
+interface ButtonProps {}
 const ButtonContainer = styled.button<ButtonProps>`
   position: absolute;
-  ${(props) => `${props.position}: 20px`};
-  bottom: 12px;
-
+  left: 1rem;
   background-color: transparent;
   border: none;
-  height: 24px;
+  height: ${sizes.icon};
 `;
 const BackIcon = styled.img``;
 

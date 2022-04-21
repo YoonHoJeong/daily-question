@@ -8,6 +8,7 @@ const sizes = {
     height: '48px',
   },
   borderSize: '4px',
+  icon: '24px',
 };
 
 Object.freeze(sizes);

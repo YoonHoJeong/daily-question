@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import { queryClient } from '../App';
 import AnswerOptionCheckBoxes from '../components/answer/AnswerOptionCheckBoxes';
 import LoadScreen from '../components/common/LoadScreen';
+import { Header } from '../components/layouts';
+import { ClientLayout } from '../components/layouts/ClientLayout';
+import sizes from '../constants/sizes';
 import { useFetchQuestions, useFetchUserAnswers } from '../hooks/customUseQueries';
 import { useAuth } from '../hooks/useAuth';
 import { useForm } from '../hooks/useForm';
@@ -79,27 +82,30 @@ const QuestionPage: React.FC<Props> = () => {
   };
 
   return (
-    <Container onSubmit={onSubmit}>
-      {isLoading || submitting ? (
-        <LoadScreen />
-      ) : (
-        <>
-          <QuestionText>{question?.question}</QuestionText>
-          <AnswerInput
-            name="answer"
-            value={form.answer}
-            placeholder="답변"
-            rows={5}
-            onChange={onChange}
-            disabled={submitting}
-            ref={answerRef}
-            required
-          ></AnswerInput>
-          <AnswerOptionCheckBoxes form={form} onClickCheckbox={onClickCheckbox} />
-          <Button type="submit">오늘의 답변 기록하기</Button>
-        </>
-      )}
-    </Container>
+    <ClientLayout style={{ height: `calc(100vh - ${sizes.header.height})` }}>
+      <Header />
+      <Container onSubmit={onSubmit}>
+        {isLoading || submitting ? (
+          <LoadScreen />
+        ) : (
+          <>
+            <QuestionText>{question?.question}</QuestionText>
+            <AnswerInput
+              name="answer"
+              value={form.answer}
+              placeholder="답변"
+              rows={5}
+              onChange={onChange}
+              disabled={submitting}
+              ref={answerRef}
+              required
+            ></AnswerInput>
+            <AnswerOptionCheckBoxes form={form} onClickCheckbox={onClickCheckbox} />
+            <Button type="submit">오늘의 답변 기록하기</Button>
+          </>
+        )}
+      </Container>
+    </ClientLayout>
   );
 };
 

@@ -46,7 +46,7 @@ const ColoredCell = styled('li')<{ bgColor: string; active: boolean }>`
   justify-content: center;
   align-items: center;
 
-  border: 1px ${(props) => (props.active ? props.theme.palette[props.bgColor] : props.theme.palette.grey400)} solid;
+  border: 1px ${(props) => (props.active ? 'transparent' : props.theme.palette.grey400)} solid;
   color: ${(props) => (props.active ? props.theme.palette.white : props.theme.palette.grey400)};
   background-color: ${(props) => props.theme.palette[props.bgColor]};
 `;

@@ -1,15 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import { BottomNavigation, Header } from "../components/layouts";
-import { ClientLayout } from "../components/layouts/ClientLayout";
-import UserProfile from "../components/user/UserProfile";
-import { useAuth } from "../hooks/useAuth";
+import React from 'react';
+import styled from 'styled-components';
+import { BottomNavigation, Header } from '../components/layouts';
+import { ClientLayout } from '../components/layouts/ClientLayout';
+import UserProfile from '../components/user/UserProfile';
+import sizes from '../constants/sizes';
+import { useAuth } from '../hooks/useAuth';
 
 interface Props {}
 
 const UserPage: React.FC<Props> = () => {
   return (
-    <ClientLayout>
+    <ClientLayout style={{ height: `calc(100vh - ${sizes.bottomNavigation.height})` }}>
       <Header />
       <Container>
         <UserProfile />
@@ -38,6 +39,7 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.palette.white};
 
   padding: 40px 25px;
+  border-bottom: ${sizes.borderSize} solid ${(props) => props.theme.palette.grey200};
 `;
 
 const UserMenues = styled.ul`
