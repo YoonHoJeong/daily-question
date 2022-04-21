@@ -3,11 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 import AnswersByDay from '../../components/answer/AnswersByDay';
 import { DateContainer } from '../../components/answer/AnswersByDayBoardView';
+import { LoadScreen } from '../../components/common';
 import UserProfile from '../../components/user/UserProfile';
 import sizes from '../../constants/sizes';
 import { useMoment } from '../../hooks';
 import { useMyAnswers } from '../../hooks/customUseQueries';
-import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
 
 interface Props {}
 
@@ -15,7 +15,12 @@ const DailyAnswersPage: React.FC<Props> = () => {
   const { data } = useMyAnswers();
 
   const { date } = useMoment('2022-03-03');
-  const answers = data?.getMonthlyAnswers(date) ?? DateQidAnswersWrapper({});
+
+  if (!data) {
+    return <LoadScreen />;
+  }
+
+  const answers = data.getMonthlyAnswers(date);
 
   return (
     <>
@@ -23,11 +28,9 @@ const DailyAnswersPage: React.FC<Props> = () => {
         <UserProfile editable={false} showEmail={false} />
       </UserProfileContainer>
       <DailyAnswersList>
-        {Object.keys(answers.data)
-          .sort((a, b) => (b > a ? 1 : -1))
-          .map((date) => (
-            <AnswersByDay.Board key={date} date={moment(date)} answers={answers.data[date]} />
-          ))}
+        {answers.map((date) => (
+          <AnswersByDay.Board key={date} date={moment(date)} answers={answers.get(date)} />
+        ))}
       </DailyAnswersList>
     </>
   );

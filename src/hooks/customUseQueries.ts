@@ -6,7 +6,7 @@ import { QuestionsDataModel } from '../models/QuestionModels';
 
 import { getBoardAnswers, getUserAnswers } from '../services/AnswerApi';
 import { getTodayQuestions } from '../services/QuestionApi';
-import { AnswersWrapper, AnswersWrapperValue } from '../models/AnswersWrapper';
+import { AnswersWrapper } from '../models/AnswersWrapper';
 
 const MIN_IN_MS = 60000;
 const HOUR_IN_MS = MIN_IN_MS * 60;
@@ -19,23 +19,25 @@ const questionConfig = {
   cacheTime: 3 * HOUR_IN_MS,
 };
 
+export const useFetchUserAnswers = (uid: string, options?: object) =>
+  useQuery<AnswersData, unknown, AnswersWrapper>('user-answers', () => getUserAnswers(uid), {
+    ...defaultConfig,
+    select: (data) => new AnswersWrapper(data),
+    ...options,
+  });
+
+export const useMyAnswers = () => {
+  const { user } = useAuth();
+
+  if (!user?.uid) {
+    throw new Error('fetch user answers, but no uid');
+  }
+
+  return useFetchUserAnswers(user.uid, { suspense: true });
+};
+
 export const useFetchQuestions = () => {
   return useQuery<QuestionsDataModel>('questions', getTodayQuestions, questionConfig);
 };
 
 export const useFetchBoardAnswers = () => useQuery<DateQidAnswersData>('board-answers', getBoardAnswers, defaultConfig);
-
-export const useMyAnswers = () => {
-  const { user } = useAuth();
-  if (!user?.uid) {
-    throw new Error('fetch user answers, but no uid');
-  }
-  return useFetchUserAnswers(user.uid, { suspense: true });
-};
-
-export const useFetchUserAnswers = (uid: string, options?: object) =>
-  useQuery<AnswersData, unknown, AnswersWrapperValue>('user-answers', () => getUserAnswers(uid), {
-    ...defaultConfig,
-    select: (data) => AnswersWrapper(data),
-    ...options,
-  });

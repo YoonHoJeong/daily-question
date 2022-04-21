@@ -5,21 +5,24 @@ import { Link } from 'react-router-dom';
 import DateToggler from '../../components/DateToggler';
 
 import HelperText from '../../components/HelperText';
-import AnswerCardsContainer from '../../components/answer/AnswerCardsContainer';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { datesOfWeek, useMoment, weekOfMonth } from '../../hooks/useMoment';
 import DateCheckIcon from '../../components/DateCheckIcon';
 import AnswersHeader from '../../components/answer/AnswersHeader';
+import { LoadScreen } from '../../components/common';
+import AnswersByDay from '../../components/answer/AnswersByDay';
 
-interface Props {
-  // date: CustomDate;
-  // changeWeek: (weekCount: number) => void;
-}
+interface Props {}
 
 const WeeklyAnswersPage: React.FC<Props> = () => {
-  const { data: answers } = useMyAnswers();
+  const { data } = useMyAnswers();
   const { date: dateMoment, setWeek } = useMoment();
-  const weeklyAnswers = answers?.getWeeklyAnswers(dateMoment);
+
+  if (!data) {
+    return <LoadScreen />;
+  }
+
+  const answers = data.getWeeklyAnswers(dateMoment);
 
   return (
     <>
@@ -32,18 +35,22 @@ const WeeklyAnswersPage: React.FC<Props> = () => {
           onClickRight={setWeek(dateMoment.week() + 1)}
         />
         <HelperText>
-          5일 중 <AnswerDateCount>{weeklyAnswers && weeklyAnswers.dateCnt}일</AnswerDateCount> 대답했어요.
+          5일 중 <AnswerDateCount>{answers.dateCnt}일</AnswerDateCount> 대답했어요.
         </HelperText>
       </AnswersHeader>
 
       <DateIconsContainer>
         {datesOfWeek(dateMoment).map((date) => (
-          <DateCheckIcon key={date} checked={Object.keys(weeklyAnswers?.data ?? {}).includes(date)} />
+          <DateCheckIcon key={date} checked={answers.hasDate(date)} />
         ))}
       </DateIconsContainer>
 
-      {weeklyAnswers ? (
-        <AnswerCardsContainer answers={weeklyAnswers.data} />
+      {answers.size > 0 ? (
+        <AnswersByDayList>
+          {answers.map((date) => (
+            <AnswersByDay.Weekly key={date} dateString={date} answers={answers.get(date)} />
+          ))}
+        </AnswersByDayList>
       ) : (
         <Link to="/">
           <Button bgColor="blue" style={{ fontSize: '12px' }}>
@@ -54,6 +61,12 @@ const WeeklyAnswersPage: React.FC<Props> = () => {
     </>
   );
 };
+
+const AnswersByDayList = styled.ul`
+  & > li:not(:first-child) {
+    margin-top: 10px;
+  }
+`;
 
 const AnswerDateCount = styled.span`
   color: ${(props) => props.theme.palette.blue};
