@@ -4,16 +4,21 @@ import DateToggler from '../../components/DateToggler';
 import HelperText from '../../components/HelperText';
 import { useMyAnswers } from '../../hooks/customUseQueries';
 import { datesOfMonth, useMoment } from '../../hooks/useMoment';
-import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
 import Calendar from '../../components/calendar/Calendar';
 import AnswersHeader from '../../components/answer/AnswersHeader';
+import { LoadScreen } from '../../components/common';
 
 interface Props {}
 
 const MonthlyAnswersPage: React.FC<Props> = () => {
   const { data } = useMyAnswers();
   const { date, setMonth } = useMoment();
-  const answers = data?.getMonthlyAnswers(date) ?? DateQidAnswersWrapper({});
+
+  if (!data) {
+    return <LoadScreen />;
+  }
+
+  const answers = data.getMonthlyAnswers(date);
 
   return (
     <>
@@ -29,7 +34,7 @@ const MonthlyAnswersPage: React.FC<Props> = () => {
         </HelperText>
       </AnswersHeader>
 
-      <Calendar dates={datesOfMonth(date)} current={date} answers={answers} />
+      <Calendar dates={datesOfMonth(date)} answers={answers} />
     </>
   );
 };

@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import moment from 'moment';
-import { DateQidAnswersValue } from '../../models/DateQidAnswersWrapper';
 import { formatDate } from '../../hooks/useMoment';
 import Cell from './Cell';
+import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
 
 interface Props {
   dates: string[];
-  current: moment.Moment;
-  answers: DateQidAnswersValue;
+  answers: DateQidAnswersWrapper;
 }
 
-const Calendar: React.FC<Props> = ({ dates, current, answers }) => {
+const Calendar: React.FC<Props> = ({ dates, answers }) => {
+  const current = moment();
+
   return (
     <CalendarContainer>
       <Day>월</Day>
@@ -20,7 +21,7 @@ const Calendar: React.FC<Props> = ({ dates, current, answers }) => {
       <Day>금</Day>
       {dates.map((date) => {
         const active = isActiveDate(date, current);
-        return <Cell key={date} cnt={Object.keys(answers.data[date] ?? {}).length} active={active} date={date} />;
+        return <Cell key={date} cnt={Object.keys(answers.get(date)).length} active={active} date={date} />;
       })}
     </CalendarContainer>
   );
@@ -29,6 +30,7 @@ const Calendar: React.FC<Props> = ({ dates, current, answers }) => {
 const isActiveDate = (date: string, current: moment.Moment) => {
   return date <= formatDate(current);
 };
+
 const CalendarContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(5, 50px);
