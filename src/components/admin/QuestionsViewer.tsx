@@ -13,24 +13,30 @@ interface QuestionsProps {
 const QuestionsViewer: React.FC<QuestionsProps> = ({ date, onQuestionDelete, onQuestionEdit }) => {
   const { data: questions } = useFetchQuestions();
 
-  if (questions === undefined || questions.size === 0) return <span>등록된 질문이 없습니다.</span>;
-
-  const filteredQuestions = questions.filter(date);
+  const filteredQuestions = questions?.filter(date);
 
   return (
     <TodayQuestions>
-      {filteredQuestions.map((question) => (
-        <QuestionItem
-          key={question.qid}
-          question={question}
-          onQuestionDelete={onQuestionDelete}
-          onQuestionEdit={onQuestionEdit}
-        />
-      ))}
+      {filteredQuestions && filteredQuestions.length > 0 ? (
+        filteredQuestions.map((question) => (
+          <QuestionItem
+            key={question.qid}
+            question={question}
+            onQuestionDelete={onQuestionDelete}
+            onQuestionEdit={onQuestionEdit}
+          />
+        ))
+      ) : (
+        <>해당 날짜에 등록된 질문이 없습니다.</>
+      )}
     </TodayQuestions>
   );
 };
 
-const TodayQuestions = styled.ul``;
+const TodayQuestions = styled.ul`
+  border: 1px solid black;
+
+  padding: 20px 10px;
+`;
 
 export default QuestionsViewer;
