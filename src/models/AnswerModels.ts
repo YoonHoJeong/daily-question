@@ -22,11 +22,11 @@ export interface AnswersData {
 }
 
 export interface AnswerFormData {
-  question: QuestionDataModel;
+  question?: QuestionDataModel;
   aid?: string;
-  answer: string;
-  isAnonymous: boolean;
-  isPublic: boolean;
+  answer?: string;
+  isAnonymous?: boolean;
+  isPublic?: boolean;
 }
 
 export interface DateQidAnswersData {

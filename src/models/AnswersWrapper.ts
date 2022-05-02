@@ -14,9 +14,10 @@ export class AnswersWrapper {
     this.data = data;
   }
 
-  get(key: string) {
+  get(aid: string) {
     // key list
     // 'weekly' 'daily' 'monthly' 'dateAndQid'
+    return this.data[aid];
   }
 
   getWeeklyAnswers(date: Moment) {
