@@ -1,8 +1,8 @@
 import { useAuth } from './useAuth';
 // import { AnswersWrapper } from './../services/AnswerApi';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQueries, useQuery } from 'react-query';
 import { DateQidAnswersData, AnswersData } from '../models/AnswerModels';
-import { QuestionsDataModel } from '../models/QuestionModels';
+import { QuestionsDataModel, QuestionsWrapper } from '../models/QuestionModels';
 
 import { getBoardAnswers, getUserAnswers } from '../services/AnswerApi';
 import { getTodayQuestions } from '../services/QuestionApi';
@@ -19,14 +19,42 @@ const questionConfig = {
   cacheTime: 3 * HOUR_IN_MS,
 };
 
+// TODO : custom useQueries 만들기
+// - input : queryKeys
+// - queryKey로 fetchFunction 가져와서 넣어주면 됨. 근데, my-answers같은 경우 어떻게 할지 고민.
+
+// const fetchFunctions: {
+//   [queryKey:QueryKey]: Function
+// } = {
+//   'board-answers': getBoardAnswers,
+//   'questions': getTodayQuestions,
+//   'my-answers': getUserAnswers,
+//   'user-answers': getUserAnswers,
+// }
+
+// const getFetchFunction = (queryKey: QueryKey) => {
+//   if (queryKey === 'questions') {
+//     return getTodayQuestions;
+//   }
+//   if (queryKey === 'my-answers') {
+//     return (myUid:string) => getUserAnswers(myUid);
+//   }
+//   if (queryKey === 'board-answers') {
+//     return getBoardAnswers;
+//   }
+//   if (Array.isArray(queryKey) && queryKey[0] === 'user-answers') {
+//       return getUserAnswers(queryKey[1].uid);
+//   }
+// }
+
 export const useFetchUserAnswers = (uid: string, options?: object) =>
-  useQuery<AnswersData, unknown, AnswersWrapper>('user-answers', () => getUserAnswers(uid), {
+  useQuery<AnswersData, unknown, AnswersWrapper>(['user-answers', { uid }], () => getUserAnswers(uid), {
     ...defaultConfig,
     select: (data) => new AnswersWrapper(data),
     ...options,
   });
 
-export const useMyAnswers = () => {
+export const useFetchMyAnswers = () => {
   const { user } = useAuth();
 
   if (!user?.uid) {
@@ -37,7 +65,13 @@ export const useMyAnswers = () => {
 };
 
 export const useFetchQuestions = () => {
-  return useQuery<QuestionsDataModel>('questions', getTodayQuestions, questionConfig);
+  return useQuery<QuestionsDataModel, unknown, QuestionsWrapper>('questions', getTodayQuestions, {
+    ...questionConfig,
+    suspense: true,
+    select: (data) => new QuestionsWrapper(data),
+  });
 };
 
 export const useFetchBoardAnswers = () => useQuery<DateQidAnswersData>('board-answers', getBoardAnswers, defaultConfig);
+
+export type QueryKey = 'questions' | ['user-answers', { uid: string }] | 'board-answers' | 'my-answers';
