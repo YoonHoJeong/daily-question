@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import DateToggler from '../../components/DateToggler';
 import HelperText from '../../components/HelperText';
-import { useMyAnswers } from '../../hooks/customUseQueries';
-import { datesOfMonth, useMoment } from '../../hooks/useMoment';
+import { useFetchMyAnswers } from '../../hooks/customUseQueries';
+import { datesOfMonth, useDate } from '../../hooks/useDate';
 import Calendar from '../../components/calendar/Calendar';
 import AnswersHeader from '../../components/answer/AnswersHeader';
 import { LoadScreen } from '../../components/common';
@@ -11,8 +11,8 @@ import { LoadScreen } from '../../components/common';
 interface Props {}
 
 const MonthlyAnswersPage: React.FC<Props> = () => {
-  const { data } = useMyAnswers();
-  const { date, setMonth } = useMoment();
+  const { data } = useFetchMyAnswers();
+  const { date, setMonth } = useDate();
 
   if (!data) {
     return <LoadScreen />;

@@ -1,7 +1,7 @@
 import { useAuth } from './useAuth';
 import { useDateFormat } from './useDateFormat';
 import { useForm } from './useForm';
-import { useMoment } from './useMoment';
+import { useDate } from './useDate';
 import { usePreloadImages } from './usePreloadImages';
 
-export { useAuth, useDateFormat, useForm, useMoment, usePreloadImages };
+export { useAuth, useDateFormat, useForm, useDate as useMoment, usePreloadImages };

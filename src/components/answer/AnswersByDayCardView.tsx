@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { dayString, useMoment } from '../../hooks/useMoment';
+import { dayString, useDate } from '../../hooks/useDate';
 import { QidAnswersData } from '../../models/AnswerModels';
 import AnswerCard from './AnswerCard';
 
@@ -9,7 +9,7 @@ interface Props {
   answers: QidAnswersData;
 }
 const AnswersByDayCardView: React.FC<Props> = ({ answers, dateString }) => {
-  const { date } = useMoment(dateString);
+  const { date } = useDate(dateString);
 
   return (
     <Container>

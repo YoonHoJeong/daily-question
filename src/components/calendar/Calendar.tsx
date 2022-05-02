@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import moment from 'moment';
-import { formatDate } from '../../hooks/useMoment';
+import { DateType, formatDate } from '../../hooks/useDate';
 import Cell from './Cell';
 import { DateQidAnswersWrapper } from '../../models/DateQidAnswersWrapper';
+import { useMoment } from '../../hooks';
 
 interface Props {
   dates: string[];
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Calendar: React.FC<Props> = ({ dates, answers }) => {
-  const current = moment();
+  const { date } = useMoment();
 
   return (
     <CalendarContainer>
@@ -19,15 +19,15 @@ const Calendar: React.FC<Props> = ({ dates, answers }) => {
       <Day>수</Day>
       <Day>목</Day>
       <Day>금</Day>
-      {dates.map((date) => {
-        const active = isActiveDate(date, current);
-        return <Cell key={date} cnt={Object.keys(answers.get(date)).length} active={active} date={date} />;
+      {dates.map((dateStr) => {
+        const active = isActiveDate(dateStr, date);
+        return <Cell key={dateStr} cnt={Object.keys(answers.get(dateStr)).length} active={active} date={dateStr} />;
       })}
     </CalendarContainer>
   );
 };
 
-const isActiveDate = (date: string, current: moment.Moment) => {
+const isActiveDate = (date: string, current: DateType) => {
   return date <= formatDate(current);
 };
 

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import DateToggler from '../../components/DateToggler';
 
 import HelperText from '../../components/HelperText';
-import { useMyAnswers } from '../../hooks/customUseQueries';
-import { datesOfWeek, useMoment, weekOfMonth } from '../../hooks/useMoment';
+import { useFetchMyAnswers } from '../../hooks/customUseQueries';
+import { datesOfWeek, useDate, weekOfMonth } from '../../hooks/useDate';
 import DateCheckIcon from '../../components/DateCheckIcon';
 import AnswersHeader from '../../components/answer/AnswersHeader';
 import { LoadScreen } from '../../components/common';
@@ -15,8 +15,8 @@ import AnswersByDay from '../../components/answer/AnswersByDay';
 interface Props {}
 
 const WeeklyAnswersPage: React.FC<Props> = () => {
-  const { data } = useMyAnswers();
-  const { date: dateMoment, setWeek } = useMoment();
+  const { data } = useFetchMyAnswers();
+  const { date: dateMoment, setWeek } = useDate();
 
   if (!data) {
     return <LoadScreen />;
