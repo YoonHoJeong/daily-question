@@ -1,6 +1,7 @@
 import {
   AdminAnswers,
   AdminDashboard,
+  AdminLogin,
   AdminQuestions,
   AdminUsers,
   AnswersPage,
@@ -54,19 +55,23 @@ export const privateRoutes: PrivateRoute[] = [
   { path: '/user', Component: UserPage, ...nestedRoutesConfig },
   { path: '/user/edit', Component: UserEditPage, ...nestedRoutesConfig },
   { path: '/answers/*', Component: AnswersPage, ...nestedRoutesConfig },
-  // { path: "/answers/weekly", Component: WeeklyAnswers, ...nestedRoutesConfig },
-  // { path: "/answers/daily", Component: DailyAnswers, ...nestedRoutesConfig },
-  // {
-  //   path: "/answers/monthly",
-  //   Component: MonthlyAnswers,
-  //   ...nestedRoutesConfig,
-  // },
   {
     path: '/question/:qid',
     Component: QuestionPage,
     ...componentConfig,
   },
   { path: '/', Component: HomePage, ...componentConfig },
+];
+
+type RouteType = 'nestedRoutes' | 'component';
+
+interface AdminRoute extends CustomRoute {
+  path: AdminPath;
+}
+
+export const adminRoutes: AdminRoute[] = [
+  { path: 'admin', Component: AdminQuestions, ...componentConfig },
+  { path: 'admin/login', Component: AdminLogin, ...componentConfig },
 ];
 
 export type PublicPath = '/onboarding' | '/login' | '/register';
@@ -80,22 +85,9 @@ export type PrivatePath =
   | '/answers/weekly'
   | '/answers/daily'
   | '/answers/monthly'
+  | 'answers'
   | '/question/:qid'
   | 'daily'
   | 'weekly'
   | 'monthly';
-
-type RouteType = 'nestedRoutes' | 'component';
-
-interface AdminRoute extends CustomRoute {
-  path: AdminPath;
-}
-
-export const adminRoutes: AdminRoute[] = [
-  { path: '/questions', Component: AdminQuestions, ...componentConfig },
-  { path: '/answers', Component: AdminAnswers, ...componentConfig },
-  { path: '/users', Component: AdminUsers, ...componentConfig },
-  { path: '/', Component: AdminDashboard, ...componentConfig },
-];
-
-export type AdminPath = '/' | '/questions' | '/answers' | '/users';
+export type AdminPath = 'admin' | 'admin/login' | 'admin/questions' | 'admin/answers' | 'admin/users';

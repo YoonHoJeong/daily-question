@@ -7,13 +7,12 @@ import { LoadScreen } from '../../components/common';
 import UserProfile from '../../components/user/UserProfile';
 import sizes from '../../constants/sizes';
 import { useMoment } from '../../hooks';
-import { useMyAnswers } from '../../hooks/customUseQueries';
+import { useFetchMyAnswers } from '../../hooks/customUseQueries';
 
 interface Props {}
 
 const DailyAnswersPage: React.FC<Props> = () => {
-  const { data } = useMyAnswers();
-
+  const { data } = useFetchMyAnswers();
   const { date } = useMoment('2022-03-03');
 
   if (!data) {
