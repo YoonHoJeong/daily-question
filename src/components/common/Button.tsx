@@ -22,7 +22,7 @@ const StyledButton = styled.button<ButtonProps>`
   padding: 12px;
   outline: none;
 
-  background-color: ${(props) => (props.bgColor === 'blue' ? props.theme.palette.blue : props.theme.palette.white)};
+  background-color: ${(props) => (props.bgColor === 'blue' ? props.theme.palette.blue300 : props.theme.palette.white)};
   color: ${(props) => (props.bgColor === 'blue' ? props.theme.palette.white : props.theme.palette.black)};
 
   border-radius: 50px;

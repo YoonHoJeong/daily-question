@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import Button from "../components/common/Button";
-import { useAuth } from "../hooks/useAuth";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import Button from '../components/common/Button';
+import { useAuth } from '../hooks/useAuth';
 
-import BoxBlueLineLogo from "../assets/icons/box/opened_white_bg.svg";
-import { useInternalRouter } from "../routes/useInternalRouter";
+import BoxBlueLineLogo from '../assets/icons/box/opened_white_bg.svg';
+import { useInternalRouter } from '../routes/useInternalRouter';
 
 interface Props {}
 
@@ -13,15 +13,15 @@ const OnboardingPage: React.FC<Props> = () => {
   const { push } = useInternalRouter();
 
   const moveToLogin = () => {
-    push("/login");
+    push('/login');
   };
   const moveToRegister = () => {
-    push("/register");
+    push('/register');
   };
 
   useEffect(() => {
     if (auth && auth.user) {
-      push("/");
+      push('/');
     }
   }, [auth, push]);
 
@@ -45,7 +45,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: ${(props) => props.theme.palette.blue};
+  background-color: ${(props) => props.theme.palette.blue300};
 
   display: flex;
   flex-direction: column;

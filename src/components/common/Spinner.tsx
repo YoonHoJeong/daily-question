@@ -16,7 +16,7 @@ const Spinner = styled.div`
   border-top: 2px solid ${(props) => props.theme.palette.grey200};
   border-right: 2px solid ${(props) => props.theme.palette.grey200};
   border-bottom: 2px solid ${(props) => props.theme.palette.grey200};
-  border-left: 2px solid ${(props) => props.theme.palette.blue};
+  border-left: 2px solid ${(props) => props.theme.palette.blue300};
   background: transparent;
   width: 24px;
   height: 24px;
