@@ -16,8 +16,8 @@ export interface UseMomentValue {
   datesOfMonth: () => string[];
 }
 
-export const useMoment = (initVal?: string) => {
-  const [date, setDate] = useState(moment(initVal));
+export const useDate = (initVal?: string) => {
+  const [date, setDate] = useState<DateType>(moment(initVal));
 
   const reset = () => {
     setDate(() => moment(initVal));
@@ -40,6 +40,7 @@ export const useMoment = (initVal?: string) => {
 
   return {
     date,
+    setDate: (val: string) => setDate(moment(val)),
     setWeek: (val: number) => () => {
       setDateWithKey('week', val);
     },
@@ -89,3 +90,5 @@ export const datesOfMonth = (m: moment.Moment) => {
 };
 
 export const weekOfMonth = (m: moment.Moment) => Math.ceil(m.date() / 7);
+
+export type DateType = moment.Moment;
